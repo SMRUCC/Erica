@@ -1,0 +1,222 @@
+{
+  "head": {
+    "link": [],
+    "vars": [ "anatEntity", "anatName" ]
+  },
+  "results": {
+    "distinct": false,
+    "ordered": true,
+    "bindings": [
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0000955"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "brain"
+        }
+      },
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0001264"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "pancreas"
+        }
+      },
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0000473"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "testis"
+        }
+      },
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0001155"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "colon"
+        }
+      },
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0001134"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "skeletal muscle tissue"
+        }
+      },
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0000948"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "heart"
+        }
+      },
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0002107"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "liver"
+        }
+      },
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0001870"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "frontal cortex"
+        }
+      },
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0002116"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "ileum"
+        }
+      },
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0002114"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "duodenum"
+        }
+      },
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0002370"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "thymus"
+        }
+      },
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0000945"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "stomach"
+        }
+      },
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0002048"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "lung"
+        }
+      },
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0000992"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "female gonad"
+        }
+      },
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0001377"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "quadriceps femoris"
+        }
+      },
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0002113"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "kidney"
+        }
+      },
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0002115"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "jejunum"
+        }
+      },
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0002106"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "spleen"
+        }
+      },
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0000082"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "adult mammalian kidney"
+        }
+      },
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0001043"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "esophagus"
+        }
+      },
+      {
+        "anatEntity": {
+          "type": "uri",
+          "value": "http://purl.obolibrary.org/obo/UBERON_0002037"
+        },
+        "anatName": {
+          "type": "literal",
+          "value": "cerebellum"
+        }
+      }
+    ]
+  }
+}
