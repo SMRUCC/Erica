@@ -4,18 +4,38 @@ Public Class AdvancedCalls
 
     Public Property geneID As String
     Public Property gene_name As String
+    ''' <summary>
+    ''' Anatomical entity ID
+    ''' </summary>
+    ''' <returns></returns>
     Public Property anatomicalID As String
+    ''' <summary>
+    ''' Anatomical entity name
+    ''' </summary>
+    ''' <returns></returns>
     Public Property anatomicalName As String
+    ''' <summary>
+    ''' Developmental stage ID *
+    ''' </summary>
+    ''' <returns></returns>
     Public Property developmental_stageID As String
+    ''' <summary>
+    ''' Developmental stage name *
+    ''' </summary>
+    ''' <returns></returns>
     Public Property developmental_stage As String
     Public Property expression As String
     Public Property call_quality As String
-    Public Property expression_rank As String
+    Public Property expression_rank As Double
     Public Property including_observed_data As String
     Public Property affymetrix As GeneExpression
     Public Property EST_data As GeneExpression
     Public Property In_Situ As GeneExpression
     Public Property RNASeq As GeneExpression
+
+    Public Overrides Function ToString() As String
+        Return $"[{call_quality}] {gene_name}@{anatomicalName} = {expression_rank}"
+    End Function
 
     Public Shared Iterator Function ParseTable(file As String) As IEnumerable(Of AdvancedCalls)
         For Each line As String In file.LineIterators.Skip(1)
@@ -26,14 +46,14 @@ Public Class AdvancedCalls
     Private Shared Function ParseLine(tsv As String()) As AdvancedCalls
         Return New AdvancedCalls With {
             .geneID = tsv(0),
-            .gene_name = tsv(1),
+            .gene_name = tsv(1).Trim(""""c),
             .anatomicalID = tsv(2),
-            .anatomicalName = tsv(3),
+            .anatomicalName = tsv(3).Trim(""""c),
             .developmental_stageID = tsv(4),
-            .developmental_stage = tsv(5),
+            .developmental_stage = tsv(5).Trim(""""c),
             .expression = tsv(6),
             .call_quality = tsv(7),
-            .expression_rank = tsv(8),
+            .expression_rank = Val(tsv(8)),
             .including_observed_data = tsv(9),
             .affymetrix = New GeneExpression With {
                 .data = tsv(10),
@@ -73,9 +93,31 @@ End Class
 Public Class GeneExpression
 
     Public Property data As String
+    ''' <summary>
+    ''' experiment count showing expression of this gene in 
+    ''' this condition or in sub-conditions with a high quality
+    ''' </summary>
+    ''' <returns></returns>
     Public Property expression_high_quality As Integer
+    ''' <summary>
+    ''' experiment count showing expression of this gene in 
+    ''' this condition or in sub-conditions with a low quality
+    ''' </summary>
+    ''' <returns></returns>
     Public Property expression_low_quality As Integer
+    ''' <summary>
+    ''' experiment count showing absence of expression of this 
+    ''' gene in this condition or valid parent conditions with 
+    ''' a high quality
+    ''' </summary>
+    ''' <returns></returns>
     Public Property absence_high_quality As Integer
+    ''' <summary>
+    ''' experiment count showing absence of expression of this 
+    ''' gene in this condition or valid parent conditions with 
+    ''' a low quality
+    ''' </summary>
+    ''' <returns></returns>
     Public Property absence_low_quality As Integer
     Public Property observed_data As String
 
