@@ -7,7 +7,7 @@ Module Program
 
         Dim data = "E:\Erica\test\bgee.json".LoadJSON(Of DataSet)
         Dim calls = AdvancedCalls.ParseTable("P:\Bgee\Mus_musculus_expr_advanced_development.tsv").Take(10000).ToArray
-        Dim Anatomical = calls.GroupBy(Function(g) g.anatomicalName).ToDictionary(Function(d) d.Key, Function(d) d.ToArray)
+        Dim Anatomical = calls.GroupBy(Function(g) g.anatomicalName.Replace("""", "'")).ToDictionary(Function(d) d.Key, Function(d) d.ToArray)
         Dim json As String = Anatomical.GetJson
 
         Call json.SaveTo("E:\Erica\test\small_parts.json")
