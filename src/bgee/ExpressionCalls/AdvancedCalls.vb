@@ -46,11 +46,11 @@ Public Class AdvancedCalls
     Private Shared Function ParseLine(tsv As String()) As AdvancedCalls
         Return New AdvancedCalls With {
             .geneID = tsv(0),
-            .gene_name = tsv(1).Trim(""""c).Replace("""", "'"),
+            .gene_name = tsv(1).Trim(""""c),
             .anatomicalID = tsv(2),
-            .anatomicalName = tsv(3).Trim(""""c).Replace("""", "'"),
+            .anatomicalName = tsv(3).Trim(""""c),
             .developmental_stageID = tsv(4),
-            .developmental_stage = tsv(5).Trim(""""c).Replace("""", "'"),
+            .developmental_stage = tsv(5).Trim(""""c),
             .expression = tsv(6),
             .call_quality = tsv(7),
             .expression_rank = Val(tsv(8)),
