@@ -12,10 +12,11 @@ tags = names(data);
 i = tags like $".+\s+cell";
 
 
-print(tags[i]);
+print(tags[i], max.print = 1000);
 
 
 part = data$"cortex of kidney";
+part = append(part, (data$"Leydig cell region of testis"));
 
  # str(part);
 
@@ -30,4 +31,13 @@ anatomicalName = sapply(part, i -> i$anatomicalName);
 
 cat("\n\n\n");
 
-print(data.frame(geneID = geneID, gene_name = name,quality=quality,expression_rank =expression_rank ,developmental_stageID=developmental_stageID, developmental_stage = developmental_stage,anatomicalID=anatomicalID, anatomicalName =anatomicalName ));
+print(data.frame(
+row.names = geneID, 
+gene_name = name,
+quality=quality,
+expression_rank = as.numeric(expression_rank) ,
+# developmental_stageID=developmental_stageID,
+# developmental_stage = developmental_stage,
+ anatomicalID=anatomicalID,
+ anatomicalName =anatomicalName 
+));
