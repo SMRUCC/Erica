@@ -1,0 +1,35 @@
+ID	GENUS	SPECIES_NAME	COMMON_NAME	AFFYMETRIX	EST	IN_SITU	RNA_SEQ
+6239	Caenorhabditis	elegans	nematode	T	F	T	T
+7217	Drosophila	ananassae		F	F	F	T
+7227	Drosophila	melanogaster	fruit fly	T	T	T	T
+7230	Drosophila	mojavensis		F	F	F	T
+7237	Drosophila	pseudoobscura		F	F	F	T
+7240	Drosophila	simulans		F	F	F	T
+7244	Drosophila	virilis		F	F	F	T
+7245	Drosophila	yakuba		F	F	F	T
+7955	Danio	rerio	zebrafish	T	T	T	T
+8364	Xenopus	tropicalis	western clawed frog	F	T	T	T
+9031	Gallus	gallus	chicken	F	F	F	T
+9258	Ornithorhynchus	anatinus	platypus	F	F	F	T
+9365	Erinaceus	europaeus	hedgehog	F	F	F	T
+9544	Macaca	mulatta	macaque	T	F	F	T
+9593	Gorilla	gorilla	gorilla	F	F	F	T
+9597	Pan	paniscus	bonobo	F	F	F	T
+9598	Pan	troglodytes	chimpanzee	F	F	F	T
+9606	Homo	sapiens	human	T	T	F	T
+9615	Canis	lupus familiaris	dog	F	F	F	T
+9685	Felis	catus	cat	F	F	F	T
+9796	Equus	caballus	horse	F	F	F	T
+9823	Sus	scrofa	pig	F	F	F	T
+9913	Bos	taurus	cattle	F	F	F	T
+9986	Oryctolagus	cuniculus	rabbit	F	F	F	T
+10090	Mus	musculus	mouse	T	T	T	T
+10116	Rattus	norvegicus	rat	T	F	F	T
+10141	Cavia	porcellus	guinea pig	F	F	F	T
+13616	Monodelphis	domestica	opossum	F	F	F	T
+28377	Anolis	carolinensis	green anole	F	F	F	T
+
+
+
+
+
