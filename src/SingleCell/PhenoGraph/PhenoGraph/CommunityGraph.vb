@@ -74,7 +74,10 @@ Public Module CommunityGraph
     ''' <returns></returns>
     ''' 
     <Extension>
-    Public Function CreatePhenoGraph(data As DataSet(), Optional k As Integer = 60, Optional cutoff As Double = 0) As NetworkGraph
+    Public Function CreatePhenoGraph(data As DataSet(),
+                                     Optional k As Integer = 60,
+                                     Optional cutoff As Double = 0) As NetworkGraph
+
         Dim propertyNames As String() = data.PropertyNames
         Dim matrix As New List(Of Double())
 
@@ -93,12 +96,15 @@ Public Module CommunityGraph
     End Function
 
     ''' <summary>
-    ''' Jacob H. Levine and et.al. Data-Driven Phenotypic Dissection of AML Reveals Progenitor-like Cells that Correlate with Prognosis. Cell, 2015.
+    ''' Jacob H. Levine and et.al. Data-Driven Phenotypic Dissection of AML Reveals 
+    ''' Progenitor-like Cells that Correlate with Prognosis. Cell, 2015.
     ''' </summary>
     ''' <param name="data"></param>
     ''' <param name="k"></param>
     ''' <returns></returns>
-    Public Function CreatePhenoGraph(data As GeneralMatrix, Optional k As Integer = 30, Optional cutoff As Double = 0) As NetworkGraph
+    Public Function CreatePhenoGraph(data As GeneralMatrix,
+                                     Optional k As Integer = 30,
+                                     Optional cutoff As Double = 0) As NetworkGraph
         If k < 1 Then
             Throw New ArgumentException("k must be a positive integer!")
         ElseIf k > data.RowDimension - 2 Then
