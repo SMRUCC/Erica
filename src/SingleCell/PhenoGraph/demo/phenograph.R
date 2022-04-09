@@ -1,13 +1,14 @@
-require(GCModeller);
+require(Erica);
 require(igraph);
 require(charts);
 
-imports ["geneExpression", "phenograph"] from "phenotype_kit";
+imports "phenograph" from "Erica";
+imports "geneExpression" from "phenotype_kit";
 
 setwd(@dir);
 
-"../../demo/HR2MSI mouse urinary bladder S096_top3.csv"
-|> load.expr
+"../../demo/HR2MSI mouse urinary bladder S096_top3.HTS"
+|> load.expr0()
 |> phenograph(k = 200)
 |> save.network(file = "HR2MSI mouse urinary bladder S096_graph")
 ;
