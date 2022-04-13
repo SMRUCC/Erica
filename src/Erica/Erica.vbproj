@@ -73,6 +73,8 @@
     <ProjectReference Include="..\SingleCell\STdeconvolve\STdeconvolve\STdeconvolve.NET5.vbproj" />
   </ItemGroup>
 
-  <Import Project="..\..\..\GCModeller\src\R-sharp\Library\R_graphic.interop\R_graphic.interop.projitems" Label="Shared" />
+  <Import Project="..\..\..\GCModeller\src\R-sharp\Library\shares\R_graphic.interop\R_graphic.interop.projitems" Label="Shared" />
+
+
 
 </Project>

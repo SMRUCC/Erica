@@ -69,8 +69,6 @@ Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "plots-netcore5", "..\..\GCM
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "SparoMx", "SingleCell\SparoMx\SparoMx.vbproj", "{799B8699-5B3F-4370-8C88-C2E91893F3C3}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "R_graphic.interop", "..\..\GCModeller\src\R-sharp\Library\R_graphic.interop\R_graphic.interop.shproj", "{53AF2B13-CCD5-4F73-94D5-612191E785A9}"
-EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "R-cmd.NET5", "..\..\GCModeller\src\R-sharp\studio\R-terminal\R-cmd.NET5.vbproj", "{65613D9E-D17E-4975-8579-22E353C9056B}"
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "UMAP.NET5", "..\..\GCModeller\src\runtime\sciBASIC#\Data_science\DataMining\UMAP\UMAP.NET5.vbproj", "{CAD16863-D706-4F70-86D8-F9C82EE9AB68}"
@@ -79,7 +77,14 @@ Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "DataMining.NET5", "..\..\GC
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "randomizer-netcore5", "..\..\GCModeller\src\runtime\sciBASIC#\Data_science\Mathematica\Math\Randomizer\randomizer-netcore5.vbproj", "{B9E56041-C2DC-497C-90FC-F48F0378780A}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "R_graphic.interop", "..\..\GCModeller\src\R-sharp\Library\shares\R_graphic.interop\R_graphic.interop.shproj", "{53AF2B13-CCD5-4F73-94D5-612191E785A9}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\..\GCModeller\src\R-sharp\Library\shares\R_graphic.interop\R_graphic.interop.projitems*{53af2b13-ccd5-4f73-94d5-612191e785a9}*SharedItemsImports = 13
+		..\..\GCModeller\src\R-sharp\studio\Rstudio.common\Rstudio.common.projitems*{65613d9e-d17e-4975-8579-22e353c9056b}*SharedItemsImports = 5
+		..\..\GCModeller\src\R-sharp\Library\shares\R_graphic.interop\R_graphic.interop.projitems*{f18d5d05-751f-434f-b60b-a6d4edb759ae}*SharedItemsImports = 5
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -940,18 +945,13 @@ Global
 		{8159B1A1-7C5F-43E9-9B1E-EBB9FE207C87} = {7DA56432-FAF6-4960-BC65-1FC28FA89E4B}
 		{1EB0595C-7FD8-4216-A5BE-D68831AEA959} = {7DA56432-FAF6-4960-BC65-1FC28FA89E4B}
 		{799B8699-5B3F-4370-8C88-C2E91893F3C3} = {1282B102-C7CB-44C0-BE72-C733F3F451DA}
-		{53AF2B13-CCD5-4F73-94D5-612191E785A9} = {DE634AC6-244F-41C8-B92C-5622B213DDC3}
 		{65613D9E-D17E-4975-8579-22E353C9056B} = {DE634AC6-244F-41C8-B92C-5622B213DDC3}
 		{CAD16863-D706-4F70-86D8-F9C82EE9AB68} = {E09D8747-B783-4C8D-81E2-94BEB760F1FF}
 		{4B04528E-AB2A-44B5-91F4-01B1858578CE} = {E09D8747-B783-4C8D-81E2-94BEB760F1FF}
 		{B9E56041-C2DC-497C-90FC-F48F0378780A} = {E09D8747-B783-4C8D-81E2-94BEB760F1FF}
+		{53AF2B13-CCD5-4F73-94D5-612191E785A9} = {DE634AC6-244F-41C8-B92C-5622B213DDC3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FCB13455-A4F1-4136-9521-7F40BDAA4692}
-	EndGlobalSection
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		..\..\GCModeller\src\R-sharp\Library\R_graphic.interop\R_graphic.interop.projitems*{53af2b13-ccd5-4f73-94d5-612191e785a9}*SharedItemsImports = 13
-		..\..\GCModeller\src\R-sharp\studio\Rstudio.common\Rstudio.common.projitems*{65613d9e-d17e-4975-8579-22e353c9056b}*SharedItemsImports = 5
-		..\..\GCModeller\src\R-sharp\Library\R_graphic.interop\R_graphic.interop.projitems*{f18d5d05-751f-434f-b60b-a6d4edb759ae}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

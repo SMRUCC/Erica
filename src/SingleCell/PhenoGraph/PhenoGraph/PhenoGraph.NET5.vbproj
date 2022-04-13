@@ -57,7 +57,7 @@
     <RemoveIntegerChecks>true</RemoveIntegerChecks>
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>E:\Erica\assembly\</OutputPath>
+    <OutputPath>D:\Erica\assembly\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
