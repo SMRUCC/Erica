@@ -19,7 +19,7 @@ Public Module Bgee
         If advance Then
             Return AdvancedCalls.ParseTable(file).ToArray
         Else
-            Return AdvancedCalls.ParseSimpleTable(file).Take(100000).ToArray
+            Return AdvancedCalls.ParseSimpleTable(file).ToArray
         End If
     End Function
 
