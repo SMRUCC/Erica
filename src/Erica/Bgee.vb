@@ -19,7 +19,7 @@ Public Module Bgee
         If advance Then
             Return AdvancedCalls.ParseTable(file).ToArray
         Else
-            Return AdvancedCalls.ParseSimpleTable(file).ToArray
+            Return AdvancedCalls.ParseSimpleTable(file).Take(10000).ToArray
         End If
     End Function
 
@@ -31,7 +31,9 @@ Public Module Bgee
     <ExportAPI("tissue_background")>
     Public Function TissueBackground(bgee As AdvancedCalls()) As Background
         Dim tissues = bgee.GroupBy(Function(gene) gene.anatomicalID).ToArray
+        Dim background As New Background
 
+        Return background
     End Function
 
 End Module
