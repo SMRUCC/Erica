@@ -37,6 +37,39 @@ Public Class AdvancedCalls
         Return $"[{call_quality}] {gene_name}@{anatomicalName} = {expression_rank}"
     End Function
 
+    Public Shared Iterator Function ParseSimpleTable(file As String) As IEnumerable(Of AdvancedCalls)
+        For Each line As String In file.LineIterators.Skip(1)
+            Yield ParseSimpleLine(line.Split(ASCII.TAB))
+        Next
+    End Function
+
+    Private Shared Function ParseSimpleLine(tsv As String()) As AdvancedCalls
+        ' 0 Gene ID
+        ' 1 "Gene name"
+        ' 2 Anatomical entity ID
+        ' 3 "Anatomical entity name"
+        ' 4 Developmental stage ID
+        ' 5 "Developmental stage name"
+        ' 6 Sex
+        ' 7 Strain
+        ' 8 Expression
+        ' 9 Call quality
+        ' 10 FDR
+        ' 11 Expression score
+        ' 12 Expression rank
+        Return New AdvancedCalls With {
+            .geneID = tsv(0),
+            .gene_name = tsv(1),
+            .anatomicalID = tsv(2),
+            .anatomicalName = tsv(3),
+            .developmental_stageID = tsv(4),
+            .developmental_stage = tsv(5),
+            .expression = tsv(8),
+            .call_quality = tsv(9),
+            .expression_rank = Double.Parse(tsv(12))
+        }
+    End Function
+
     Public Shared Iterator Function ParseTable(file As String) As IEnumerable(Of AdvancedCalls)
         For Each line As String In file.LineIterators.Skip(1)
             Yield ParseLine(line.Split(ASCII.TAB))
@@ -87,38 +120,5 @@ Public Class AdvancedCalls
             }
         }
     End Function
-
-End Class
-
-Public Class GeneExpression
-
-    Public Property data As String
-    ''' <summary>
-    ''' experiment count showing expression of this gene in 
-    ''' this condition or in sub-conditions with a high quality
-    ''' </summary>
-    ''' <returns></returns>
-    Public Property expression_high_quality As Integer
-    ''' <summary>
-    ''' experiment count showing expression of this gene in 
-    ''' this condition or in sub-conditions with a low quality
-    ''' </summary>
-    ''' <returns></returns>
-    Public Property expression_low_quality As Integer
-    ''' <summary>
-    ''' experiment count showing absence of expression of this 
-    ''' gene in this condition or valid parent conditions with 
-    ''' a high quality
-    ''' </summary>
-    ''' <returns></returns>
-    Public Property absence_high_quality As Integer
-    ''' <summary>
-    ''' experiment count showing absence of expression of this 
-    ''' gene in this condition or valid parent conditions with 
-    ''' a low quality
-    ''' </summary>
-    ''' <returns></returns>
-    Public Property absence_low_quality As Integer
-    Public Property observed_data As String
 
 End Class
