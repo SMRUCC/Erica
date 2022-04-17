@@ -23,19 +23,22 @@ Public Module BackgroundModel
         Dim tissue = geneList.First.First
         Dim memberGenes As BackgroundGene() = geneList _
             .Select(Function(gene)
+                        Dim symbol = gene.First
+                        Dim geneName = symbol.gene_name.Trim(""""c)
+
                         Return New BackgroundGene With {
                             .accessionID = gene.Key,
-                            .[alias] = {gene.First.gene_name},
-                            .locus_tag = New NamedValue With {.name = gene.Key, .text = gene.First.gene_name},
-                            .name = gene.First.gene_name,
+                            .[alias] = {geneName},
+                            .locus_tag = New NamedValue With {.name = gene.Key, .text = geneName},
+                            .name = geneName,
                             .term_id = {}
                         }
                     End Function) _
             .ToArray
 
         Return New Cluster With {
-            .ID = tissue.anatomicalID,
-            .names = tissue.anatomicalName,
+            .ID = tissue.anatomicalID.Trim(""""c),
+            .names = tissue.anatomicalName.Trim(""""c),
             .description = .names,
             .members = memberGenes
         }
