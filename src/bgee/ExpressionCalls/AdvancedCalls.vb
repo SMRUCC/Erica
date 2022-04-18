@@ -1,32 +1,83 @@
 ﻿Imports Microsoft.VisualBasic.Text
 
+''' <summary>
+''' 
+''' </summary>
 Public Class AdvancedCalls
 
+    ''' <summary>
+    ''' Unique identifier of the gene
+    ''' </summary>
+    ''' <returns></returns>
     Public Property geneID As String
+    ''' <summary>
+    ''' Name of the gene defined by Gene ID (column 1)
+    ''' </summary>
+    ''' <returns></returns>
     Public Property gene_name As String
     ''' <summary>
-    ''' Anatomical entity ID
+    ''' Anatomical entity ID, Unique identifier of the 
+    ''' anatomical entity, from the Uberon ontology.
     ''' </summary>
     ''' <returns></returns>
     Public Property anatomicalID As String
     ''' <summary>
-    ''' Anatomical entity name
+    ''' Anatomical entity name, Name of the anatomical entity 
+    ''' defined by Anatomical entity ID (column 3)
     ''' </summary>
     ''' <returns></returns>
     Public Property anatomicalName As String
     ''' <summary>
-    ''' Developmental stage ID *
+    ''' Developmental stage ID *, Unique identifier of the 
+    ''' developmental stage, from the Uberon ontology.
     ''' </summary>
     ''' <returns></returns>
     Public Property developmental_stageID As String
     ''' <summary>
-    ''' Developmental stage name *
+    ''' Developmental stage name *, Name of the developmental 
+    ''' stage defined by Developmental stage ID (column 5)
     ''' </summary>
     ''' <returns></returns>
     Public Property developmental_stage As String
+    ''' <summary>
+    ''' Call generated from all data types for the selected 
+    ''' combination of condition parameters (anatomical or 
+    ''' all conditions). Permitted values: 
+    ''' 
+    ''' 1. present
+    ''' 2. absent
+    ''' 
+    ''' </summary>
+    ''' <returns></returns>
     Public Property expression As String
+    ''' <summary>
+    ''' Call quality from all data types for the selected 
+    ''' combination of condition parameters (anatomical or 
+    ''' all conditions). Permitted values: 
+    ''' 
+    ''' 1. gold quality, 
+    ''' 2. silver quality.
+    ''' 
+    ''' </summary>
+    ''' <returns></returns>
     Public Property call_quality As String
+    ''' <summary>
+    ''' Rank score associated to the call. Rank scores of
+    ''' expression calls are normalized across genes, 
+    ''' conditions and species.
+    ''' 
+    ''' A low score means that the gene Is highly expressed 
+    ''' In the condition.
+    ''' </summary>
+    ''' <returns></returns>
     Public Property expression_rank As Double
+    ''' <summary>
+    ''' Permitted value: yes
+    ''' 
+    ''' Only calls which were actually seen In experimental 
+    ''' data, at least once, are In this file.
+    ''' </summary>
+    ''' <returns></returns>
     Public Property including_observed_data As String
     Public Property affymetrix As GeneExpression
     Public Property EST_data As GeneExpression

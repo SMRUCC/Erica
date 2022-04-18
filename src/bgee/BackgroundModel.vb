@@ -6,7 +6,12 @@ Public Module BackgroundModel
 
     <Extension>
     Public Function CreateTissueBackground(bgee As IEnumerable(Of AdvancedCalls)) As Background
-        Dim tissues = bgee.GroupBy(Function(gene) gene.anatomicalID).ToArray
+        Dim tissues = bgee _
+            .Where(Function(gene) gene.expression = "present") _
+            .GroupBy(Function(gene)
+                         Return gene.anatomicalID
+                     End Function) _
+            .ToArray
         Dim background As New Background With {
             .build = Now,
             .clusters = tissues _
