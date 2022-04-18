@@ -5,6 +5,9 @@ Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Data.IO.MessagePack
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.GSEA
+Imports SMRUCC.genomics.Assembly.Uniprot.XML
+Imports SMRUCC.Rsharp.Runtime
+Imports SMRUCC.Rsharp.Runtime.Internal.Object
 
 ''' <summary>
 ''' the bgee database toolkit
@@ -50,6 +53,14 @@ Public Module Bgee
         Using buffer As Stream = file.Open(FileMode.Open, doClear:=False, [readOnly]:=True)
             Return MsgPackSerializer.Deserialize(Of Background)(buffer)
         End Using
+    End Function
+
+    <ExportAPI("metabolomicsMapping")>
+    Public Function metabolomicsMapping(geneExpressions As Background, uniprot As pipeline, Optional env As Environment = Nothing) As Background
+        Dim maps = uniprot.populates(Of entry)(env).CatalystMapping
+        Dim metabolites = geneExpressions.BackgroundConversion
+
+        Return metabolites
     End Function
 
 End Module
