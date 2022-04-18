@@ -42,6 +42,7 @@ Namespace DataPack
         Protected Overrides Iterator Function GetObjectSchema() As IEnumerable(Of (obj As Type, schema As Dictionary(Of String, NilImplication)))
             Yield (GetType(Background), model())
             Yield (GetType(Cluster), clusterModel())
+            Yield (GetType(BackgroundGene), geneModel)
         End Function
 
         Private Shared Function model() As Dictionary(Of String, NilImplication)
@@ -61,6 +62,16 @@ Namespace DataPack
                 {NameOf(Cluster.names), NilImplication.MemberDefault},
                 {NameOf(Cluster.description), NilImplication.MemberDefault},
                 {NameOf(Cluster.members), NilImplication.MemberDefault}
+            }
+        End Function
+
+        Private Shared Function geneModel() As Dictionary(Of String, NilImplication)
+            Return New Dictionary(Of String, NilImplication) From {
+                {NameOf(BackgroundGene.accessionID), NilImplication.MemberDefault},
+                {NameOf(BackgroundGene.term_id), NilImplication.MemberDefault},
+                {NameOf(BackgroundGene.name), NilImplication.MemberDefault},
+                {NameOf(BackgroundGene.locus_tag), NilImplication.MemberDefault},
+                {NameOf(BackgroundGene.alias), NilImplication.MemberDefault}
             }
         End Function
     End Class
