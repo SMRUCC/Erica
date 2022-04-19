@@ -58,7 +58,7 @@ Public Module Bgee
     <ExportAPI("metabolomicsMapping")>
     Public Function metabolomicsMapping(uniprot As pipeline, geneExpressions As Background, Optional env As Environment = Nothing) As Background
         Dim maps = uniprot.populates(Of entry)(env).CatalystMapping
-        Dim metabolites = geneExpressions.BackgroundConversion
+        Dim metabolites = geneExpressions.BackgroundConversion(maps)
 
         Return metabolites
     End Function

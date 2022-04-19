@@ -1,13 +1,56 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.Linq
+Imports Microsoft.VisualBasic.Text.Xml.Models
 Imports SMRUCC.genomics.Analysis.HTS.GSEA
 Imports SMRUCC.genomics.Assembly.Uniprot.XML
 
 Public Module MetabolomicsMapping
 
+    ''' <summary>
+    ''' convert from gene names to metabolite id
+    ''' </summary>
+    ''' <param name="geneBackground"></param>
+    ''' <returns></returns>
     <Extension>
-    Public Function BackgroundConversion(geneBackground As Background) As Background
+    Public Function BackgroundConversion(geneBackground As Background, maps As Dictionary(Of String, String())) As Background
+        Dim tissueList As Cluster() = geneBackground _
+            .clusters _
+            .Select(Function(c)
+                        Return createTissueMapping(tissue:=c, maps:=maps)
+                    End Function) _
+            .Where(Function(tissue) Not tissue.members.IsNullOrEmpty) _
+            .ToArray
 
+        Return New Background With {
+            .build = Now,
+            .id = "",
+            .comments = "",
+            .name = "",
+            .clusters = tissueList
+        }
+    End Function
+
+    Private Function createTissueMapping(tissue As Cluster, maps As Dictionary(Of String, String())) As Cluster
+        Return New Cluster With {
+            .ID = tissue.ID,
+            .description = tissue.description,
+            .names = tissue.names,
+            .members = tissue.members _
+                .Where(Function(gene) maps.ContainsKey(gene.name)) _
+                .Select(Function(gene) maps(gene.name)) _
+                .IteratesALL _
+                .Distinct _
+                .Select(Function(id)
+                            Return New BackgroundGene With {
+                                .accessionID = id,
+                                .[alias] = {id},
+                                .locus_tag = New NamedValue With {.name = id, .text = id},
+                                .name = id,
+                                .term_id = {id}
+                            }
+                        End Function) _
+                .ToArray
+        }
     End Function
 
     ''' <summary>
@@ -17,7 +60,7 @@ Public Module MetabolomicsMapping
     ''' <returns></returns>
     ''' 
     <Extension>
-    Public Function CatalystMapping(uniprot As IEnumerable(Of entry)) As Dictionary(Of String, List(Of String))
+    Public Function CatalystMapping(uniprot As IEnumerable(Of entry)) As Dictionary(Of String, String())
         Dim maps As New Dictionary(Of String, List(Of String))
 
         uniprot = From protein As entry
@@ -51,7 +94,14 @@ Public Module MetabolomicsMapping
             Next
         Next
 
-        Return maps
+        Return maps _
+            .ToDictionary(Function(gene) gene.Key,
+                          Function(gene)
+                              Return gene _
+                                  .Value _
+                                  .Distinct _
+                                  .ToArray
+                          End Function)
     End Function
 
 End Module
