@@ -22,6 +22,8 @@ Public Module MetabolomicsMapping
 
         uniprot = From protein As entry
                   In uniprot
+                  Where Not protein.comments Is Nothing
+                  Where protein.gene IsNot Nothing AndAlso protein.gene.names IsNot Nothing
                   Where protein.comments _
                       .Where(Function(c)
                                  Return c.type = "catalytic activity"
