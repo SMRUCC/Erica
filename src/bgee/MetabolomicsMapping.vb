@@ -30,8 +30,10 @@ Public Module MetabolomicsMapping
 
         For Each protein As entry In uniprot
             Dim chebiId As String() = protein.comments _
-                .Where(Function(c) c.type = "catalytic activity") _
-                .Select(Function(c) c.dbReferences) _
+                .Where(Function(c)
+                           Return c.type = "catalytic activity" AndAlso Not c.reaction Is Nothing
+                       End Function) _
+                .Select(Function(c) c.reaction.dbReferences) _
                 .IteratesALL _
                 .Where(Function(ref) ref.type = "ChEBI") _
                 .Select(Function(ref) ref.id) _
