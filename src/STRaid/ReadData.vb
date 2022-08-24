@@ -6,6 +6,10 @@ Public Class ReadData
 
     Sub New(path As String)
         buffer = HDF5File.Open(path)
+
+        Dim X = buffer("/X/data").data
+
+        Pause()
     End Sub
 
 End Class
