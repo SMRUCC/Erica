@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>STRaid</RootNamespace>
+    <TargetFramework>net6.0</TargetFramework>
+    <Title>H5ad data reader</Title>
+  </PropertyGroup>
+
+</Project>
