@@ -6,7 +6,7 @@ Imports STRaid
 Module Program
 
     Sub readerTest()
-        Dim demo = New ReadData("\Erica\test\h5ad\GSM5494440_10x_Visium.h5ad")
+        Dim demo = New ReadData("K:\E16.5_E2S3.MOSTA.h5ad")
 
         Pause()
     End Sub
