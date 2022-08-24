@@ -1,11 +1,12 @@
 Imports System
 Imports bgee
 Imports Microsoft.VisualBasic.Serialization.JSON
+Imports STRaid
 
 Module Program
 
     Sub readerTest()
-
+        Dim demo = New ReadData("D:\Erica\test\h5ad\GSM5494440_10x_Visium.h5ad")
 
         Pause()
     End Sub
