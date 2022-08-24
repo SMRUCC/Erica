@@ -3,7 +3,15 @@ Imports bgee
 Imports Microsoft.VisualBasic.Serialization.JSON
 
 Module Program
+
+    Sub readerTest()
+
+
+        Pause()
+    End Sub
+
     Sub Main(args As String())
+        Call readerTest()
 
         Dim data = "E:\Erica\test\bgee.json".LoadJSON(Of DataSet)
         Dim calls = AdvancedCalls.ParseTable("P:\Bgee\Mus_musculus_expr_advanced_development.tsv").Take(50000).ToArray
