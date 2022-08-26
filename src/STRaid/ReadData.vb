@@ -1,6 +1,7 @@
 Imports System.Drawing
 Imports System.Runtime.InteropServices
 Imports System.Text
+Imports System.Xml
 Imports HDF.PInvoke
 Imports HDF.PInvoke.H5O.hdr_info_t
 
@@ -40,8 +41,11 @@ Public Class ReadData
 
     Public Shared Function Load(path As String)
         Dim fileId = H5F.open(path, H5F.ACC_RDONLY)
-        Dim spatial = Read_dataset(fileId, "/obsm/spatial").GetLongs.Split(2).Select(Function(t) New Point(t(0), t(1))).ToArray
+        Dim xpca = Read_dataset(fileId, "/obsm/X_pca")
+        Dim pca_result = xpca.GetSingles.Split(xpca.dims(1)).ToArray
 
+        Dim spatial = Read_dataset(fileId, "/obsm/spatial").GetLongs.Split(2).Select(Function(t) New Point(t(0), t(1))).ToArray
+        Dim xumap = Read_dataset(fileId, "/obsm/X_umap").GetSingles.Split(2).Select(Function(t) New PointF(t(0), t(1))).ToArray
         Dim vargeneids = Read_strings(fileId, "/var/gene_ids")
         Dim obsindex = Read_strings(fileId, "/obs/_index")
         Dim xdata = Read_dataset(fileId, "/X/data").GetSingles.ToArray
