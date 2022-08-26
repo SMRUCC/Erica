@@ -7,6 +7,10 @@ Public Class X
 
     Public Property matrix As SparseMatrix
 
+    Public Overrides Function ToString() As String
+        Return matrix.ToString
+    End Function
+
     ''' <summary>
     ''' 构架出一个稀疏矩阵
     ''' </summary>
