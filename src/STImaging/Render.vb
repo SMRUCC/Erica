@@ -68,7 +68,7 @@ Public Class Render
 
     Public Function Imaging(geneId As String) As Bitmap
         Dim layer As PixelData() = GetLayer(geneId).ToArray
-        Dim render As New PixelRender("Jet", 120, defaultColor:=Color.Black)
+        Dim render As New PixelRender("Jet", 30, defaultColor:=Color.Black)
         Dim sample As MeasureData() = layer.Select(Function(i) New MeasureData(i)).ToArray
         Dim contours As GeneralPath() = ContourLayer _
             .GetContours(sample, interpolateFill:=False) _
@@ -84,11 +84,20 @@ Public Class Render
                         End Function) _
                 .ToArray
 
-            For x As Integer = 0 To dimension.Width
-                For y As Integer = 0 To dimension.Height
-                    If polygons.Any(Function(g) g.inside(x, y)) Then
+            Call Console.WriteLine(layerMap.ToString)
+
+            For Each poly In polygons
+                Dim rect As New Rectangle(
+                    x:=poly.xpoints.Min,
+                    y:=poly.ypoints.Max,
+                    width:=poly.xpoints.Max - poly.xpoints.Min,
+                    height:=poly.ypoints.Max - poly.ypoints.Min
+                )
+
+                For x As Integer = rect.Left To rect.Right
+                    For y As Integer = rect.Top To rect.Bottom
                         pixels.Add(New PixelData(x, y, scale))
-                    End If
+                    Next
                 Next
             Next
         Next
