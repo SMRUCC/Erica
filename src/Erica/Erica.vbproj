@@ -76,6 +76,7 @@
     <ProjectReference Include="..\SingleCell\PhenoGraph\PhenoGraph\PhenoGraph.NET5.vbproj" />
     <ProjectReference Include="..\SingleCell\SparoMx\SparoMx.vbproj" />
     <ProjectReference Include="..\SingleCell\STdeconvolve\STdeconvolve\STdeconvolve.NET5.vbproj" />
+    <ProjectReference Include="..\STImaging\STImaging.vbproj" />
     <ProjectReference Include="..\STRaid\STRaid.vbproj" />
   </ItemGroup>
 
