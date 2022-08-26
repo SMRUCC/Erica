@@ -1,4 +1,5 @@
 Imports System.Runtime.InteropServices
+Imports System.Text
 Imports HDF.PInvoke
 Imports HDF.PInvoke.H5O.hdr_info_t
 
@@ -18,9 +19,22 @@ Public Class ReadData
         Next
     End Function
 
+    Public Iterator Function GetIntegers() As IEnumerable(Of Integer)
+        Dim buf As Byte() = New Byte(byte_size - 1) {}
+
+        For i As Integer = 0 To dataBytes.Length - 1 Step byte_size
+            Call Array.ConstrainedCopy(dataBytes, i, buf, Scan0, byte_size)
+            Yield BitConverter.ToInt32(buf, Scan0)
+        Next
+    End Function
+
     Public Shared Function Load(path As String)
         Dim fileId = H5F.open(path, H5F.ACC_RDONLY)
-        Dim d1 = Read_dataset(fileId, "/X/data").GetSingles.ToArray
+        Dim vargeneids = Read_strings(fileId, "/var/gene_ids")
+        Dim obsindex = Read_strings(fileId, "/obs/_index")
+        Dim xdata = Read_dataset(fileId, "/X/data").GetSingles.ToArray
+        Dim xindices = Read_dataset(fileId, "/X/indices").GetIntegers.ToArray
+        Dim xindptr = Read_dataset(fileId, "X/indptr").GetIntegers.ToArray
 
         Pause()
     End Function
@@ -52,6 +66,45 @@ Public Class ReadData
             .dataBytes = dataBytes,
             .dims = dims
         }
+    End Function
+
+    Private Shared Function Read_strings(fileId As Long, dsname As String) As String()
+        Dim attrId As Long = H5D.open(fileId, dsname, H5P.DEFAULT)
+        Dim typeId As Long = H5D.get_type(attrId)
+        Dim spaceId As Long = H5D.get_space(attrId)
+        Dim count As Long = H5S.get_simple_extent_npoints(spaceId)
+        H5S.close(spaceId)
+
+        If Not H5T.is_variable_str(typeId) > 0 Then
+            Throw New InvalidProgramException($"target data set('{dsname}') is not a variable length string!")
+        End If
+
+        Dim dest = New IntPtr(count - 1) {}
+        Dim handle = GCHandle.Alloc(dest, GCHandleType.Pinned)
+        H5A.read(attrId, typeId, handle.AddrOfPinnedObject())
+
+        Dim attrStrings = New List(Of String)()
+        Dim i = 0
+
+        While i < dest.Length
+            Dim attrLength = 0
+            While Marshal.ReadByte(dest(i), attrLength) <> 0
+                Threading.Interlocked.Increment(attrLength)
+            End While
+
+            Dim buffer = New Byte(attrLength - 1) {}
+            Marshal.Copy(dest(i), buffer, 0, buffer.Length)
+            Dim stringPart = Encoding.UTF8.GetString(buffer)
+
+            attrStrings.Add(stringPart)
+
+            H5.free_memory(dest(i))
+            Threading.Interlocked.Increment(i)
+        End While
+
+        handle.Free()
+
+        Return attrStrings.ToArray
     End Function
 End Class
 
