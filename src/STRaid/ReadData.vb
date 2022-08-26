@@ -81,7 +81,7 @@ Public Class ReadData
 
         Dim dest = New IntPtr(count - 1) {}
         Dim handle = GCHandle.Alloc(dest, GCHandleType.Pinned)
-        H5A.read(attrId, typeId, handle.AddrOfPinnedObject())
+        H5D.read(attrId, typeId, H5S.ALL, H5S.ALL, H5P.DEFAULT, handle.AddrOfPinnedObject())
 
         Dim attrStrings = New List(Of String)()
         Dim i = 0
