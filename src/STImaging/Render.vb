@@ -8,7 +8,7 @@ Public Class Render
     Dim matrix As Dictionary(Of String, DataFrameRow)
     Dim pixels As Point()
 
-    Public ReadOnly Property geneIds As String()
+    Public ReadOnly Property geneIDs As String()
         Get
             Return matrix.Keys.ToArray
         End Get
