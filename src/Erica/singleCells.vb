@@ -59,6 +59,11 @@ Public Module singleCells
         }
     End Function
 
+    <ExportAPI("pca_annotation")>
+    Public Function exportPCA(h5ad As AnnData) As dataframe
+
+    End Function
+
     <ExportAPI("umap_annotation")>
     Public Function exportUMAP(h5ad As AnnData) As dataframe
         Dim umap = h5ad.obsm.X_umap

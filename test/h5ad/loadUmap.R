@@ -20,7 +20,7 @@ bitmap(file = `${@dir}/umap.png`) {
 		 x.lab        = "dimension 1",
 		 y.lab        = "dimension 2",
 		 legend.block = 13,
-		 colorSet     = umap[, "color"], 
+		 colorSet     = "paper", 
 		 grid.fill    = "transparent",
 		 size         = [2600, 1600]
 	);
@@ -37,12 +37,14 @@ bitmap(file = `${@dir}/spatial.png`) {
 		 padding      = "padding:200px 400px 200px 250px;",
 		 class        = spatial[, "class"],
 		 title        = "Spatial 2D Scatter Map",
-		 x.lab        = "dimension 1",
-		 y.lab        = "dimension 2",
+		 x.lab        = "X",
+		 y.lab        = "Y",
 		 legend.block = 13,
-		 point.size   = 30,
-		 colorSet     = spatial[, "color"],  
+		 point.size   = 36,
+		 colorSet     = "paper",  
 		 grid.fill    = "transparent",
-		 size         = [2600, 1600]
+		 size         = [2800, 2600],
+		 x.format     = "F0",
+		 y.format     = "F0"
 	);
 }
