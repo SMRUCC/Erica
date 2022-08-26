@@ -1,7 +1,9 @@
 Imports System.Drawing
+Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.HeatMap
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Math2D.MarchingSquares
+Imports Microsoft.VisualBasic.Imaging.Filters
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Math
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
@@ -70,7 +72,7 @@ Public Class Render
 
     Public Function Imaging(geneId As String) As Bitmap
         Dim layer As PixelData() = GetLayer(geneId).ToArray
-        Dim render As New PixelRender(colorMap, 120, defaultColor:=Color.Black)
+        Dim render As New PixelRender(colorMap, 20, defaultColor:=Color.Black)
         Dim sample As MeasureData() = layer.Select(Function(i) New MeasureData(i)).ToArray
         Dim contours As GeneralPath() = ContourLayer _
             .GetContours(
@@ -116,6 +118,16 @@ Public Class Render
             .ToArray
 
         Dim img = render.RenderRasterImage(layer, Me.dimension)
+        Dim canvas = New Size(img.Width * 5, img.Height * 5).CreateGDIDevice(filled:=Color.Black)
+
+        Call canvas.DrawImage(img, 0, 0, canvas.Width, canvas.Height)
+        Call canvas.Flush()
+
+        img = canvas.ImageResource
+
+        For level As Integer = 0 To 5
+            img = GaussBlur.GaussBlur(img)
+        Next
 
         Return img
     End Function
