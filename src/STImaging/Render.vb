@@ -48,8 +48,12 @@ Public Class Render
             .OrderBy(Function(i) i.Y) _
             .ToArray
 
-        Dim diffX = NumberGroups.diff(pixels.OrderBy(Function(i) i.X).Select(Function(i) CDbl(i.X)))
-        Dim diffY = NumberGroups.diff(pixels.OrderBy(Function(i) i.Y).Select(Function(i) CDbl(i.Y)))
+        Dim diffX = NumberGroups.diff(pixels.OrderBy(Function(i) i.X).Select(Function(i) CDbl(i.X)).ToArray).Average
+        Dim diffY = NumberGroups.diff(pixels.OrderBy(Function(i) i.Y).Select(Function(i) CDbl(i.Y)).ToArray).Average
+
+        pixels = pixels _
+            .Select(Function(i) New Point(CInt(i.X / diffX), CInt(i.Y / diffY))) _
+            .ToArray
 
         Return pixels
     End Function
