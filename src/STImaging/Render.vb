@@ -14,7 +14,7 @@ Public Class Render
     Dim matrix As Dictionary(Of String, DataFrameRow)
     Dim pixels As Point()
     Dim dimension As Size
-    Dim colorMap As String = ScalerPalette.turbo.Description
+    Dim colorMap As String = ScalerPalette.Jet.Description
 
     Public ReadOnly Property geneIDs As String()
         Get
@@ -117,7 +117,14 @@ Public Class Render
                     End Function) _
             .ToArray
 
-        Dim img = render.RenderRasterImage(layer, Me.dimension)
+        Dim img As Bitmap
+
+        If layer.Length = 0 Then
+            img = New Bitmap(dimension.Width, dimension.Height)
+        Else
+            img = render.RenderRasterImage(layer, Me.dimension)
+        End If
+
         Dim canvas = New Size(img.Width * 5, img.Height * 5).CreateGDIDevice(filled:=Color.Black)
 
         Call canvas.DrawImage(img, 0, 0, canvas.Width, canvas.Height)
@@ -125,7 +132,7 @@ Public Class Render
 
         img = canvas.ImageResource
 
-        For level As Integer = 0 To 5
+        For level As Integer = 0 To 10
             img = GaussBlur.GaussBlur(img)
         Next
 
