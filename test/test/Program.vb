@@ -6,7 +6,7 @@ Imports STRaid
 Module Program
 
     Sub readerTest()
-        Dim demo = ReadData.Load("F:\ST202208234793930\raw\10x_Visium_deal.h5ad")
+        Dim demo = LoadDisk.LoadDiskMemory("F:\ST202208234793930\raw\10x_Visium_deal.h5ad")
 
         Pause()
     End Sub
