@@ -1,10 +1,10 @@
 require(Erica);
 
-imports "singleCells" from "Erica";
+imports "singleCell" from "Erica";
 
 umap = "F:\ST202208234793930\raw\10x_Visium_deal.h5ad"
 |> read.h5ad()
-|> umap_annotations()
+|> umap_annotation()
 ;
 
 write.csv(umap, file = `${@dir}/umap.csv`, row.names = FALSE);
