@@ -1,4 +1,5 @@
 Imports System.Drawing
+Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.HeatMap
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Math2D.MarchingSquares
 Imports Microsoft.VisualBasic.Linq
@@ -11,6 +12,7 @@ Public Class Render
     Dim matrix As Dictionary(Of String, DataFrameRow)
     Dim pixels As Point()
     Dim dimension As Size
+    Dim colorMap As String = ScalerPalette.turbo.Description
 
     Public ReadOnly Property geneIDs As String()
         Get
@@ -48,8 +50,8 @@ Public Class Render
             .Select(Function(i) New Point(i.X - offsetX, i.Y - offsetY)) _
             .ToArray
 
-        Dim diffX = NumberGroups.diff(pixels.OrderBy(Function(i) i.X).Select(Function(i) CDbl(i.X)).ToArray).Average
-        Dim diffY = NumberGroups.diff(pixels.OrderBy(Function(i) i.Y).Select(Function(i) CDbl(i.Y)).ToArray).Average
+        Dim diffX = NumberGroups.diff(pixels.OrderBy(Function(i) i.X).Select(Function(i) CDbl(i.X)).ToArray).OrderByDescending(Function(d) d).Take(10).Average
+        Dim diffY = NumberGroups.diff(pixels.OrderBy(Function(i) i.Y).Select(Function(i) CDbl(i.Y)).ToArray).OrderByDescending(Function(d) d).Take(10).Average
 
         pixels = pixels _
             .Select(Function(i) New Point(CInt(i.X / diffX), CInt(i.Y / diffY))) _
@@ -68,10 +70,14 @@ Public Class Render
 
     Public Function Imaging(geneId As String) As Bitmap
         Dim layer As PixelData() = GetLayer(geneId).ToArray
-        Dim render As New PixelRender("Jet", 30, defaultColor:=Color.Black)
+        Dim render As New PixelRender(colorMap, 120, defaultColor:=Color.Black)
         Dim sample As MeasureData() = layer.Select(Function(i) New MeasureData(i)).ToArray
         Dim contours As GeneralPath() = ContourLayer _
-            .GetContours(sample, interpolateFill:=False) _
+            .GetContours(
+                sample:=sample,
+                interpolateFill:=False,
+                levels:={0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.925, 0.95, 0.975, 1}
+            ) _
             .ToArray
         Dim pixels As New List(Of PixelData)
 
