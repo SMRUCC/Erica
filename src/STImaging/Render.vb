@@ -1,6 +1,7 @@
 Imports System.Drawing
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.HeatMap
 Imports Microsoft.VisualBasic.Linq
+Imports Microsoft.VisualBasic.Math
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports STRaid
 
@@ -44,7 +45,11 @@ Public Class Render
 
         pixels = pixels _
             .Select(Function(i) New Point(i.X - offsetX, i.Y - offsetY)) _
+            .OrderBy(Function(i) i.Y) _
             .ToArray
+
+        Dim diffX = NumberGroups.diff(pixels.OrderBy(Function(i) i.X).Select(Function(i) CDbl(i.X)))
+        Dim diffY = NumberGroups.diff(pixels.OrderBy(Function(i) i.Y).Select(Function(i) CDbl(i.Y)))
 
         Return pixels
     End Function
