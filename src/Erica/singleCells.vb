@@ -34,6 +34,31 @@ Public Module singleCells
         Return LoadDisk.LoadDiskMemory(h5adfile)
     End Function
 
+    <ExportAPI("spatialMap")>
+    Public Function spatialMap(h5ad As AnnData) As dataframe
+        Dim spatial = h5ad.obsm.spatial
+        Dim labels = h5ad.obs.class_labels
+        Dim clusters = h5ad.obs.clusters _
+            .Select(Function(i) labels(i)) _
+            .ToArray
+        Dim colors As String() = h5ad.uns.clusters_colors
+        Dim x As Double() = spatial.Select(Function(a) CDbl(a.X)).ToArray
+        Dim y As Double() = spatial.Select(Function(a) CDbl(a.Y)).ToArray
+
+        colors = h5ad.obs.clusters _
+            .Select(Function(i) colors(i)) _
+            .ToArray
+
+        Return New dataframe With {
+            .columns = New Dictionary(Of String, Array) From {
+                {"x", x},
+                {"y", y},
+                {"class", clusters},
+                {"color", colors}
+            }
+        }
+    End Function
+
     <ExportAPI("umap_annotation")>
     Public Function exportUMAP(h5ad As AnnData) As dataframe
         Dim umap = h5ad.obsm.X_umap
