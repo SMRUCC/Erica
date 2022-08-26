@@ -12,6 +12,7 @@
     <ProjectReference Include="..\..\..\GCModeller\src\runtime\sciBASIC#\Data\BinaryData\BinaryData\binarydata-netcore5.vbproj" />
     <ProjectReference Include="..\..\..\GCModeller\src\runtime\sciBASIC#\Data\BinaryData\HDF5\HDF5.vbproj" />
     <ProjectReference Include="..\..\..\GCModeller\src\runtime\sciBASIC#\Microsoft.VisualBasic.Core\src\Core.vbproj" />
+    <ProjectReference Include="..\HDF.PInvoke\HDF.PInvoke.Core.csproj" />
   </ItemGroup>
 
 </Project>
