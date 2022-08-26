@@ -61,7 +61,29 @@ Public Module singleCells
 
     <ExportAPI("pca_annotation")>
     Public Function exportPCA(h5ad As AnnData) As dataframe
+        Dim pca = h5ad.obsm.X_pca.MatrixTranspose.ToArray
+        Dim labels = h5ad.obs.class_labels
+        Dim clusters = h5ad.obs.clusters _
+            .Select(Function(i) labels(i)) _
+            .ToArray
+        Dim colors As String() = h5ad.uns.clusters_colors
 
+        colors = h5ad.obs.clusters _
+            .Select(Function(i) colors(i)) _
+            .ToArray
+
+        Dim pca_matrix As New dataframe With {
+            .columns = New Dictionary(Of String, Array) From {
+                {"class", clusters},
+                {"color", colors}
+            }
+        }
+
+        For i As Integer = 0 To pca.Length - 1
+            pca_matrix.add($"pc{i + 1}", pca(i))
+        Next
+
+        Return pca_matrix
     End Function
 
     <ExportAPI("umap_annotation")>
