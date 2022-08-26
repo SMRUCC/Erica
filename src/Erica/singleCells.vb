@@ -53,7 +53,7 @@ Public Module singleCells
             .columns = New Dictionary(Of String, Array) From {
                 {"x", x},
                 {"y", y},
-                {"class", labels},
+                {"class", clusters},
                 {"color", colors}
             }
         }
