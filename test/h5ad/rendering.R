@@ -13,7 +13,9 @@ img = new_render(raw);
 
 print([img]::geneIDs);
 
-for(id in ["ENSMUSG00000103810", "ENSMUSG00000047459"]) {
+for(id in ["ENSMUSG00000103810", "ENSMUSG00000047459",
+"ENSMUSG00000029581","ENSMUSG00000066640",
+"ENSMUSG00000045467"]) {
 # id = "ENSMUSG00000047459";
 
 bitmap(file = `${@dir}/${id}.png`) {
