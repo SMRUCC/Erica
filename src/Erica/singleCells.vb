@@ -29,6 +29,11 @@ Public Module singleCells
         Return app.Plot(size, ppi, driver)
     End Function
 
+    <ExportAPI("HTS_matrix")>
+    Public Function HTS_matrix(h5ad As AnnData) As Object
+        Return h5ad.ExportExpression
+    End Function
+
     <ExportAPI("read.h5ad")>
     Public Function readH5ad(h5adfile As String) As AnnData
         Return LoadDisk.LoadDiskMemory(h5adfile)
