@@ -21,4 +21,6 @@
     ''' <returns></returns>
     Public Property var As Var
 
+    Public Property uns As Uns
+
 End Class
