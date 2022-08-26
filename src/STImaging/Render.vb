@@ -1,5 +1,6 @@
 Imports System.Drawing
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.HeatMap
+Imports Microsoft.VisualBasic.Imaging.Drawing2D.Math2D.MarchingSquares
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Math
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
@@ -45,7 +46,6 @@ Public Class Render
 
         pixels = pixels _
             .Select(Function(i) New Point(i.X - offsetX, i.Y - offsetY)) _
-            .OrderBy(Function(i) i.Y) _
             .ToArray
 
         Dim diffX = NumberGroups.diff(pixels.OrderBy(Function(i) i.X).Select(Function(i) CDbl(i.X)).ToArray).Average
@@ -69,6 +69,37 @@ Public Class Render
     Public Function Imaging(geneId As String) As Bitmap
         Dim layer As PixelData() = GetLayer(geneId).ToArray
         Dim render As New PixelRender("Jet", 120, defaultColor:=Color.Black)
+        Dim sample As MeasureData() = layer.Select(Function(i) New MeasureData(i)).ToArray
+        Dim contours As GeneralPath() = ContourLayer _
+            .GetContours(sample, interpolateFill:=False) _
+            .ToArray
+        Dim pixels As New List(Of PixelData)
+
+        For Each layerMap As GeneralPath In contours
+            Dim scale As Double = layerMap.level
+            Dim polygons = layerMap _
+                .GetPolygons _
+                .Select(Function(g)
+                            Return New Microsoft.VisualBasic.Imaging.Math2D.Polygon2D(g)
+                        End Function) _
+                .ToArray
+
+            For x As Integer = 0 To dimension.Width
+                For y As Integer = 0 To dimension.Height
+                    If polygons.Any(Function(g) g.inside(x, y)) Then
+                        pixels.Add(New PixelData(x, y, scale))
+                    End If
+                Next
+            Next
+        Next
+
+        layer = pixels _
+            .GroupBy(Function(i) $"{i.X},{i.Y}") _
+            .Select(Function(i)
+                        Return i.OrderByDescending(Function(p) p.Scale).First
+                    End Function) _
+            .ToArray
+
         Dim img = render.RenderRasterImage(layer, Me.dimension)
 
         Return img
