@@ -6,6 +6,8 @@ Public Module LoadDisk
     Public Function LoadDiskMemory(h5ad As String) As AnnData
         Dim fileId = H5F.open(h5ad, H5F.ACC_RDONLY)
 
+        ' /obs
+        Dim obs As Obs = loadObs(fileId)
         ' /X
         Dim x As X = loadX(fileId)
         ' /var
@@ -13,20 +15,38 @@ Public Module LoadDisk
         ' /obsm
         Dim obsm As Obsm = loadObsm(fileId)
 
-        ' Dim obsindex = ReadData.Read_strings(fileId, "/obs/_index")
-
         Return New AnnData With {
             .X = x,
             .var = var,
-            .obsm = obsm
+            .obsm = obsm,
+            .obs = obs
+        }
+    End Function
+
+    Private Function loadObs(fileId As Long) As Obs
+        Dim obsindex = ReadData.Read_strings(fileId, "/obs/_index")
+        Dim clusters As Integer() = ReadData.Read_dataset(fileId, "/obs/clusters").dataBytes.Select(Function(b) CInt(b)).ToArray
+        Dim labels As String() = ReadData.Read_strings(fileId, "/obs/__categories/clusters")
+
+        Return New Obs With {
+            .clusters = clusters,
+            .class_labels = labels
         }
     End Function
 
     Private Function loadObsm(fileId As Long) As Obsm
         Dim xpca = ReadData.Read_dataset(fileId, "/obsm/X_pca")
         Dim pca_result = xpca.GetSingles.Split(xpca.dims(1)).ToArray
-        Dim spatial = ReadData.Read_dataset(fileId, "/obsm/spatial").GetLongs.Split(2).Select(Function(t) New Point(t(0), t(1))).ToArray
-        Dim xumap = ReadData.Read_dataset(fileId, "/obsm/X_umap").GetSingles.Split(2).Select(Function(t) New PointF(t(0), t(1))).ToArray
+        Dim spatial = ReadData.Read_dataset(fileId, "/obsm/spatial") _
+            .GetLongs _
+            .Split(2) _
+            .Select(Function(t) New Point(t(0), t(1))) _
+            .ToArray
+        Dim xumap = ReadData.Read_dataset(fileId, "/obsm/X_umap") _
+            .GetSingles _
+            .Split(2) _
+            .Select(Function(t) New PointF(t(0), t(1))) _
+            .ToArray
 
         Return New Obsm With {
             .spatial = spatial,
