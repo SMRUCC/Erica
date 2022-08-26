@@ -353,3 +353,5 @@ MigrationBackup/
 .Rproj.user
 *.dll
 *.zip
+test/h5ad/rawExpr0.dat
+test/h5ad/rawExpr0.csv
