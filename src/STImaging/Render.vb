@@ -1,5 +1,6 @@
 Imports System.Drawing
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.HeatMap
+Imports Microsoft.VisualBasic.Imaging.Driver
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports STRaid
 
@@ -37,6 +38,14 @@ Public Class Render
         For i As Integer = 0 To pixels.Length - 1
             Yield New PixelData(pixels(i), vec.experiments(i))
         Next
+    End Function
+
+    Public Function Imaging(geneId As String) As Bitmap
+        Dim layer As PixelData() = GetLayer(geneId).ToArray
+        Dim render As New PixelRender("Jet", 120, defaultColor:=Color.Black)
+        Dim img = render.RenderRasterImage(layer, New Size(6000, 5500))
+
+        Return img
     End Function
 
 End Class
