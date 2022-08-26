@@ -19,6 +19,12 @@ Public Class X
     ''' <param name="xindptr"></param>
     ''' <returns></returns>
     Friend Shared Function ShapeMatrix(xdata As Single(), xindices As Integer(), xindptr As Integer()) As X
-        Return New X With {.matrix = SparseMatrix.UnpackData(xdata, xindices, xindptr)}
+        xindices = xindices _
+            .Select(Function(i) i - 1) _
+            .ToArray
+
+        Return New X With {
+            .matrix = SparseMatrix.UnpackData(xdata, xindices, xindptr)
+        }
     End Function
 End Class

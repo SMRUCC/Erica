@@ -23,4 +23,6 @@
 
     Public Property uns As Uns
 
+    Public Property source As String
+
 End Class

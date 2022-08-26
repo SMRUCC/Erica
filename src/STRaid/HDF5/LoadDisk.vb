@@ -22,7 +22,8 @@ Public Module LoadDisk
             .var = var,
             .obsm = obsm,
             .obs = obs,
-            .uns = uns
+            .uns = uns,
+            .source = h5ad.BaseName
         }
     End Function
 
