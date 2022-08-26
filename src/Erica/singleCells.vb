@@ -1,4 +1,5 @@
 ﻿
+Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas
 Imports Microsoft.VisualBasic.Imaging.Driver
 Imports Microsoft.VisualBasic.Scripting.MetaData
@@ -6,6 +7,7 @@ Imports SMRUCC.genomics.Analysis.SingleCell.STdeconvolve
 Imports SMRUCC.Rsharp.Runtime
 Imports SMRUCC.Rsharp.Runtime.Internal.Object
 Imports SparoMx
+Imports STRaid
 
 <Package("singleCell")>
 Public Module singleCells
@@ -25,4 +27,11 @@ Public Module singleCells
 
         Return app.Plot(size, ppi, driver)
     End Function
+
+    <ExportAPI("read.h5ad")>
+    Public Function readH5ad(h5adfile As String) As AnnData
+        Return LoadDisk.LoadDiskMemory(h5adfile)
+    End Function
+
+
 End Module
