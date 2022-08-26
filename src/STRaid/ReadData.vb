@@ -1,3 +1,4 @@
+Imports System.Drawing
 Imports System.Runtime.InteropServices
 Imports System.Text
 Imports HDF.PInvoke
@@ -28,13 +29,24 @@ Public Class ReadData
         Next
     End Function
 
+    Public Iterator Function GetLongs() As IEnumerable(Of Long)
+        Dim buf As Byte() = New Byte(byte_size - 1) {}
+
+        For i As Integer = 0 To dataBytes.Length - 1 Step byte_size
+            Call Array.ConstrainedCopy(dataBytes, i, buf, Scan0, byte_size)
+            Yield BitConverter.ToInt64(buf, Scan0)
+        Next
+    End Function
+
     Public Shared Function Load(path As String)
         Dim fileId = H5F.open(path, H5F.ACC_RDONLY)
+        Dim spatial = Read_dataset(fileId, "/obsm/spatial").GetLongs.Split(2).Select(Function(t) New Point(t(0), t(1))).ToArray
+
         Dim vargeneids = Read_strings(fileId, "/var/gene_ids")
         Dim obsindex = Read_strings(fileId, "/obs/_index")
         Dim xdata = Read_dataset(fileId, "/X/data").GetSingles.ToArray
         Dim xindices = Read_dataset(fileId, "/X/indices").GetIntegers.ToArray
-        Dim xindptr = Read_dataset(fileId, "X/indptr").GetIntegers.ToArray
+        Dim xindptr = Read_dataset(fileId, "/X/indptr").GetIntegers.ToArray
 
         Pause()
     End Function
