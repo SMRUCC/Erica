@@ -17,32 +17,18 @@ Imports SMRUCC.Rsharp.Runtime.Interop
 Public Module Bgee
 
     <ExportAPI("bgee_calls")>
-    Public Function bgeeCalls(bgee As BgeeDiskReader, geneSet As String(), Optional anatomical As Boolean = True) As EnrichmentResult()
+    Public Function bgeeCalls(bgee As BgeeDiskReader, geneSet As String(), Optional development_stage As String = "*") As EnrichmentResult()
         Dim result As New List(Of EnrichmentResult)
+        Dim clusterIDs = bgee.anatomicalIDs.ToArray
 
-        If anatomical Then
-            Dim clusterIDs = bgee.anatomicalIDs.ToArray
+        For Each id As String In clusterIDs
+            Dim hits = bgee.Anatomical(id, geneSet, development_stage).ToArray
+            Dim enrich = bgee.AnatomicalModel(id).calcResult(hits, geneSet.Length, bgee.backgroundSize, outputAll:=False)
 
-            For Each id As String In clusterIDs
-                Dim hits = bgee.Anatomical(id, geneSet).ToArray
-                Dim enrich = bgee.AnatomicalModel(id).calcResult(hits, geneSet.Length, bgee.backgroundSize, outputAll:=False)
-
-                If Not enrich Is Nothing Then
-                    result.Add(enrich)
-                End If
-            Next
-        Else
-            Dim clusterIDs = bgee.developmentalIDs.ToArray
-
-            For Each id As String In clusterIDs
-                Dim hits = bgee.Developmental(id, geneSet).ToArray
-                Dim enrich = bgee.DevelopmentalModel(id).calcResult(hits, geneSet.Length, bgee.backgroundSize, outputAll:=False)
-
-                If Not enrich Is Nothing Then
-                    result.Add(enrich)
-                End If
-            Next
-        End If
+            If Not enrich Is Nothing Then
+                result.Add(enrich)
+            End If
+        Next
 
         Return result.ToArray
     End Function

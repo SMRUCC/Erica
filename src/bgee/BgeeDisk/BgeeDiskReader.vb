@@ -18,9 +18,9 @@ Public Class BgeeDiskReader
         End Get
     End Property
 
-    Public ReadOnly Property developmentalIDs As IEnumerable(Of String)
+    Public ReadOnly Property developmentalIDs As String()
         Get
-            Return developmental_stage.enums.Keys
+            Return developmental_stage.enums.Keys.ToArray
         End Get
     End Property
 
@@ -78,10 +78,19 @@ Public Class BgeeDiskReader
         }
     End Function
 
-    Public Function Anatomical(model As String, geneSet As String()) As IEnumerable(Of String)
+    Public Function Anatomical(model As String, geneSet As String(), development_stage As String) As IEnumerable(Of String)
         Dim cluster_id As Integer = anatomicals(model)
         Dim calls = anatomical_calls(key:=cluster_id)
-        Dim list As IEnumerable(Of String) = calls.Select(Function(v) geneIDs.ToString(v.geneID))
+
+        If Not (development_stage.StringEmpty OrElse development_stage = "*") Then
+            Dim stage_id As Integer = Me.developmental_stage(development_stage)
+
+            calls = calls _
+                .Where(Function(v) v.developmentalID = stage_id) _
+                .ToArray
+        End If
+
+        Dim list As IEnumerable(Of String) = calls.Select(Function(v) geneIDs.ToString(v.geneID)).Distinct
 
         Return geneSet.Intersect(list)
     End Function
