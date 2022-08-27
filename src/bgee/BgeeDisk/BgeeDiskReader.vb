@@ -118,7 +118,7 @@ Public Class BgeeDiskReader
             Dim id As String = bin.ReadString(BinaryStringFormat.ZeroTerminated)
             Dim name As String = bin.ReadString(BinaryStringFormat.ZeroTerminated)
 
-            enums.Add(id, (id, name))
+            enums.Add(id, (index, name))
         Loop
 
         Return New IDFactorEnums(enums)
