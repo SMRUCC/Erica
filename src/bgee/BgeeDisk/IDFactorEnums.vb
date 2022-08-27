@@ -1,6 +1,13 @@
 ﻿Public Class IDFactorEnums
 
-    ReadOnly enums As New Dictionary(Of String, (index As Integer, name As String))
+    Friend ReadOnly enums As New Dictionary(Of String, (index As Integer, name As String))
+
+    Sub New()
+    End Sub
+
+    Sub New(enums As Dictionary(Of String, (index As Integer, name As String)))
+        Me.enums = enums
+    End Sub
 
     Public Function EnumValue(id As String, name As String) As Integer
         If Not enums.ContainsKey(id) Then

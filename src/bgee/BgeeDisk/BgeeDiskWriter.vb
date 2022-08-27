@@ -43,13 +43,13 @@ Public Class BgeeDiskWriter : Implements IDisposable
         Next
     End Sub
 
-    Private Sub writeFactorIndex(buf As Stream, index As Dictionary(Of String, (Integer, String)))
+    Private Sub writeFactorIndex(buf As Stream, index As IDFactorEnums)
         Dim bin As New BinaryDataWriter(buf, Encodings.ASCII) With {.ByteOrder = ByteOrder.BigEndian}
 
-        For Each id In index
-            Call bin.Write(id.Value.Item1)
+        For Each id In index.enums
+            Call bin.Write(id.Value.index)
             Call bin.Write(id.Key, BinaryStringFormat.ZeroTerminated)
-            Call bin.Write(id.Value.Item2, BinaryStringFormat.ZeroTerminated)
+            Call bin.Write(id.Value.name, BinaryStringFormat.ZeroTerminated)
         Next
     End Sub
 
