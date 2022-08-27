@@ -22,8 +22,9 @@ Public Module Bgee
         Dim clusterIDs = bgee.anatomicalIDs.ToArray
 
         For Each id As String In clusterIDs
-            Dim hits = bgee.Anatomical(id, geneSet, development_stage).ToArray
-            Dim enrich = bgee.AnatomicalModel(id).calcResult(hits, geneSet.Length, bgee.backgroundSize, outputAll:=False)
+            Dim size As Integer = -1
+            Dim hits = bgee.Anatomical(id, geneSet, development_stage, size:=size).ToArray
+            Dim enrich = bgee.AnatomicalModel(id, size).calcResult(hits, geneSet.Length, bgee.backgroundSize, outputAll:=False)
 
             If Not enrich Is Nothing Then
                 result.Add(enrich)

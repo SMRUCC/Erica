@@ -22,8 +22,9 @@ for(key in names(geneList)) {
     genes =  geneList[[key]];
     enrich = bgee |> bgee_calls(genes, development_stage = "MmusDv:0000153");
     enrich = as.data.frame(enrich);
+    enrich[,"geneIDs"] = NULL;
 
-    # print(enrich, max.print = 13);
+    print(enrich, max.print = 13);
 
     write.csv(enrich, file = `${@dir}/bgee/${key}.csv`);
 }

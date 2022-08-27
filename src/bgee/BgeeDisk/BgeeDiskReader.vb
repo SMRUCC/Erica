@@ -65,7 +65,7 @@ Public Class BgeeDiskReader
         }
     End Function
 
-    Public Function AnatomicalModel(model As String) As Cluster
+    Public Function AnatomicalModel(model As String, size As Integer) As Cluster
         Dim info = anatomicals.enums(model)
         Dim cluster_id As Integer = anatomicals(model)
         Dim calls = anatomical_calls(key:=cluster_id)
@@ -74,11 +74,15 @@ Public Class BgeeDiskReader
             .description = info.name,
             .names = info.name,
             .ID = model,
-            .members = New BackgroundGene(calls.Length - 1) {}
+            .members = New BackgroundGene(size - 1) {}
         }
     End Function
 
-    Public Function Anatomical(model As String, geneSet As String(), development_stage As String) As IEnumerable(Of String)
+    Public Function Anatomical(model As String,
+                               geneSet As String(),
+                               development_stage As String,
+                               Optional ByRef size As Integer = -1) As IEnumerable(Of String)
+
         Dim cluster_id As Integer = anatomicals(model)
         Dim calls = anatomical_calls(key:=cluster_id)
 
@@ -90,7 +94,13 @@ Public Class BgeeDiskReader
                 .ToArray
         End If
 
-        Dim list As IEnumerable(Of String) = calls.Select(Function(v) geneIDs.ToString(v.geneID)).Distinct
+        Dim list As IEnumerable(Of String) = calls _
+            .Select(Function(v) geneIDs.ToString(v.geneID)) _
+            .Distinct
+
+        size = calls _
+            .GroupBy(Function(d) d.geneID) _
+            .Count
 
         Return geneSet.Intersect(list)
     End Function
