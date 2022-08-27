@@ -115,4 +115,9 @@ Public Module singleCells
             }
         }
     End Function
+
+    <ExportAPI("expression_list")>
+    Public Function ExpressionList(raw As AnnData, Optional q As Double = 0.2) As Dictionary(Of String, String())
+        Return raw.ExpressionList(q)
+    End Function
 End Module
