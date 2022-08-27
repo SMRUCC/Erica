@@ -63,10 +63,20 @@ Public Module Bgee
     End Function
 
     <ExportAPI("write.backgroundPack")>
-    Public Function saveBackgroundPack(background As Background, file As String) As Boolean
-        Using buffer As Stream = file.Open(FileMode.OpenOrCreate, doClear:=True, [readOnly]:=False)
-            Call MsgPackSerializer.SerializeObject(background, buffer)
-            Call buffer.Flush()
+    <RApiReturn(GetType(Boolean))>
+    Public Function saveBackgroundPack(<RRawVectorArgument>
+                                       background As Object,
+                                       file As String,
+                                       Optional env As Environment = Nothing) As Object
+
+        Dim data As pipeline = pipeline.TryCreatePipeline(Of AdvancedCalls)(background, env)
+
+        If data.isError Then
+            Return data.getError
+        End If
+
+        Using disk As New BgeeDiskWriter(file)
+            Call disk.Push(data.populates(Of AdvancedCalls)(env))
         End Using
 
         Return True
