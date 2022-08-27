@@ -357,3 +357,4 @@ test/h5ad/rawExpr0.dat
 test/h5ad/rawExpr0.csv
 test/background/subcellular_location.xml
 test/background/uniprot_keywords.xml
+test/bgee/mmu.bgee
