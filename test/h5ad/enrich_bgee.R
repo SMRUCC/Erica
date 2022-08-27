@@ -13,7 +13,11 @@ raw = "K:\ST\10x_Visium_deal.h5ad"
 geneList = expression_list(raw, q = 0.5);
 bgee = read.backgroundPack("E:\Erica\test\bgee\mmu.bgee");
 
-print([bgee]::developmentalIDs);
+stages = development_stage(bgee);
+
+print(stages);
+
+write.csv(stages, file = `${@dir}/bgee_development_stage.csv`);
 
 str(geneList);
 print(names(geneList));

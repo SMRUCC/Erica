@@ -31,7 +31,24 @@ Public Module Bgee
             End If
         Next
 
-        Return result.ToArray
+        Return result.FDRCorrection.ToArray
+    End Function
+
+    <ExportAPI("development_stage")>
+    Public Function development_stage(bgee As BgeeDiskReader) As dataframe
+        Dim id As String() = bgee.developmentalIDs
+        Dim clusters = id.Select(Function(d) bgee.DevelopmentalModel(d)).ToArray
+        Dim name = clusters.Select(Function(c) c.names).ToArray
+        Dim size = clusters.Select(Function(c) c.size).ToArray
+
+        Return New dataframe With {
+            .columns = New Dictionary(Of String, Array) From {
+                {"stage_id", id},
+                {"development_stage", name},
+                {"cluster_size", size}
+            },
+            .rownames = id
+        }
     End Function
 
     <ExportAPI("parseTsv")>
