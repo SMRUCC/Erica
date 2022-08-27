@@ -120,11 +120,11 @@ Public Class AdvancedCalls
         ' 12 Expression rank
         Return New AdvancedCalls With {
             .geneID = tsv(0),
-            .gene_name = tsv(1),
+            .gene_name = Strings.Trim(tsv(1)).Trim(""""c),
             .anatomicalID = tsv(2),
-            .anatomicalName = tsv(3),
+            .anatomicalName = Strings.Trim(tsv(3)).Trim(""""c),
             .developmental_stageID = tsv(4),
-            .developmental_stage = tsv(5),
+            .developmental_stage = Strings.Trim(tsv(5)).Trim(""""c),
             .expression = tsv(8),
             .call_quality = tsv(9),
             .expression_rank = Double.Parse(tsv(12))

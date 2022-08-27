@@ -46,7 +46,9 @@ Public Module Bgee
     ''' <param name="bgee"></param>
     ''' <returns></returns>
     <ExportAPI("tissue_background")>
-    Public Function TissueBackground(bgee As AdvancedCalls()) As Background
+    Public Function TissueBackground(bgee As AdvancedCalls(), Optional env As Environment = Nothing) As Background
+        Dim println = env.WriteLineHandler
+        Call println($"create tissue enrichment background model based on {bgee.Length} bgee gene expression calls!")
         Return bgee.CreateTissueBackground
     End Function
 
