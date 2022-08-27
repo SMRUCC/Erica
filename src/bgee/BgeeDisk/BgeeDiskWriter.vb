@@ -6,9 +6,9 @@ Imports Microsoft.VisualBasic.Text
 Public Class BgeeDiskWriter : Implements IDisposable
 
     ReadOnly disk As StreamPack
-    ReadOnly geneNames As New Dictionary(Of String, (Integer, String))
-    ReadOnly anatomicalName As New Dictionary(Of String, (Integer, String))
-    ReadOnly developmental_stage As New Dictionary(Of String, (Integer, String))
+    ReadOnly geneNames As New IDFactorEnums
+    ReadOnly anatomicalName As New IDFactorEnums
+    ReadOnly developmental_stage As New IDFactorEnums
     ReadOnly calls As New List(Of BgeeVector)
 
     Private disposedValue As Boolean
@@ -18,33 +18,14 @@ Public Class BgeeDiskWriter : Implements IDisposable
     End Sub
 
     Public Sub Push(expr As AdvancedCalls)
-        Dim geneID As Integer
-        Dim anatomicalID As Integer
-        Dim stageID As Integer
+        Dim geneID As Integer = geneNames.EnumValue(expr.geneID, expr.gene_name)
+        Dim anatomicalID As Integer = anatomicalName.EnumValue(expr.anatomicalID, expr.anatomicalName)
+        Dim stageID As Integer = developmental_stage.EnumValue(expr.developmental_stageID, expr.developmental_stage)
         Dim quality As Quality = If(
             expr.call_quality = "gold quality",
             Quality.gold_quality,
             Quality.silver_quality
         )
-
-        If Not geneNames.ContainsKey(expr.geneID) Then
-            geneID = geneNames.Count + 1
-            geneNames.Add(expr.geneID, (geneID, expr.gene_name))
-        Else
-            geneID = geneNames(expr.geneID).Item1
-        End If
-        If Not anatomicalName.ContainsKey(expr.anatomicalID) Then
-            anatomicalID = anatomicalName.Count + 1
-            anatomicalName.Add(expr.anatomicalID, (anatomicalID, expr.anatomicalName))
-        Else
-            anatomicalID = anatomicalName(expr.anatomicalID).Item1
-        End If
-        If Not developmental_stage.ContainsKey(expr.developmental_stageID) Then
-            stageID = developmental_stage.Count + 1
-            developmental_stage.Add(expr.developmental_stageID, (stageID, expr.developmental_stage))
-        Else
-            stageID = developmental_stage(expr.developmental_stageID).Item1
-        End If
 
         Call calls.Add(New BgeeVector With {
             .anatomicalID = anatomicalID,
