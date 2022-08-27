@@ -47,7 +47,9 @@ Public Class BgeeDiskWriter : Implements IDisposable
             .anatomicalID = anatomicalID,
             .geneID = geneID,
             .developmentalID = stageID,
-            .quality = quality
+            .quality = quality,
+            .expression = expr.expression = "present",
+            .expression_rank = expr.expression_rank
         })
     End Sub
 
