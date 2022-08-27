@@ -22,7 +22,17 @@ Public Module Bgee
     <ExportAPI("parseTsv")>
     Public Function parseTsv(file As String,
                              Optional advance As Boolean = False,
-                             Optional quality As String = "gold quality") As AdvancedCalls()
+                             Optional quality As String = "gold quality",
+                             Optional env As Environment = Nothing) As AdvancedCalls()
+
+        Dim println = env.WriteLineHandler
+
+        If quality.StringEmpty Then
+            println("load bgee expression calls with no quality condition...")
+        Else
+            println($"load bgee expression calls under '{quality}' quality condition...")
+        End If
+
         If advance Then
             Return AdvancedCalls.ParseTable(file).ToArray
         Else
