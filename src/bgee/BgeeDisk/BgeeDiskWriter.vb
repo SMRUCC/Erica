@@ -66,17 +66,22 @@ Public Class BgeeDiskWriter : Implements IDisposable
         Next
     End Sub
 
+    Public Const geneIDFactorFile As String = "/factors/geneIDs.fac"
+    Public Const anatomicalIDFactorFile As String = "/factors/anatomicalIDs.fac"
+    Public Const developmentalIDFactorFile As String = "/factors/developmental_stage.fac"
+    Public Const callsVector As String = "/bgee.vec"
+
     Private Sub writeDisk()
-        Using buf As Stream = disk.OpenBlock("/factors/geneIDs.fac")
+        Using buf As Stream = disk.OpenBlock(geneIDFactorFile)
             Call writeFactorIndex(buf, geneNames)
         End Using
-        Using buf As Stream = disk.OpenBlock("/factors/anatomicalIDs.fac")
+        Using buf As Stream = disk.OpenBlock(anatomicalIDFactorFile)
             Call writeFactorIndex(buf, anatomicalName)
         End Using
-        Using buf As Stream = disk.OpenBlock("/factors/developmental_stage.fac")
+        Using buf As Stream = disk.OpenBlock(developmentalIDFactorFile)
             Call writeFactorIndex(buf, developmental_stage)
         End Using
-        Using buf As Stream = disk.OpenBlock("/bgee.vec")
+        Using buf As Stream = disk.OpenBlock(callsVector)
             Call writeVectorData(buf)
         End Using
     End Sub
