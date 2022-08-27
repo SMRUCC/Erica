@@ -17,14 +17,14 @@ stages = development_stage(bgee);
 
 print(stages);
 
-write.csv(stages, file = `${@dir}/bgee_development_stage.csv`);
+# write.csv(stages, file = `${@dir}/bgee_development_stage.csv`);
 
 str(geneList);
 print(names(geneList));
 
 for(key in names(geneList)) {
     genes =  geneList[[key]];
-    enrich = bgee |> bgee_calls(genes, development_stage = "MmusDv:0000153");
+    enrich = bgee |> bgee_calls(genes, development_stage = "UBERON:0000068");
     enrich = as.data.frame(enrich);
     enrich[,"geneIDs"] = NULL;
 
