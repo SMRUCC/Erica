@@ -20,11 +20,13 @@ Public Module Bgee
     End Function
 
     <ExportAPI("parseTsv")>
-    Public Function parseTsv(file As String, Optional advance As Boolean = False) As AdvancedCalls()
+    Public Function parseTsv(file As String,
+                             Optional advance As Boolean = False,
+                             Optional quality As String = "gold quality") As AdvancedCalls()
         If advance Then
             Return AdvancedCalls.ParseTable(file).ToArray
         Else
-            Return AdvancedCalls.ParseSimpleTable(file).ToArray
+            Return AdvancedCalls.ParseSimpleTable(file, quality).ToArray
         End If
     End Function
 
