@@ -2,7 +2,7 @@ require(Erica);
 
 imports "singleCell" from "Erica";
 
-raw = "K:\ST\10x_Visium_deal.h5ad"
+raw = "K:\\E16.5_E2S3.MOSTA.h5ad"
 |> read.h5ad()
 ;
 

@@ -36,7 +36,7 @@ Public Module LoadDisk
     End Function
 
     Private Function loadObs(fileId As Long) As Obs
-        Dim obsindex = ReadData.Read_strings(fileId, "/obs/_index")
+        ' Dim obsindex = ReadData.Read_strings(fileId, "/obs/_index")
         Dim clusters As Integer() = ReadData.Read_dataset(fileId, "/obs/clusters").dataBytes.Select(Function(b) CInt(b)).ToArray
         Dim labels As String() = ReadData.Read_strings(fileId, "/obs/__categories/clusters")
 
