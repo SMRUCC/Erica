@@ -2,6 +2,7 @@
 Imports Microsoft.VisualBasic.Data.IO
 Imports Microsoft.VisualBasic.DataStorage.HDSPack.FileSystem
 Imports Microsoft.VisualBasic.Text
+Imports SMRUCC.genomics.Analysis.HTS.GSEA
 
 Public Class BgeeDiskReader
 
@@ -10,6 +11,24 @@ Public Class BgeeDiskReader
     ReadOnly geneIDs As IDFactorEnums
     ReadOnly anatomicals As IDFactorEnums
     ReadOnly developmental_stage As IDFactorEnums
+
+    Public ReadOnly Property anatomicalIDs As IEnumerable(Of String)
+        Get
+            Return anatomicals.enums.Keys
+        End Get
+    End Property
+
+    Public ReadOnly Property developmentalIDs As IEnumerable(Of String)
+        Get
+            Return developmental_stage.enums.Keys
+        End Get
+    End Property
+
+    Public ReadOnly Property backgroundSize As Integer
+        Get
+            Return geneIDs.size
+        End Get
+    End Property
 
     Sub New(file As String)
         Dim disk As New StreamPack(file, [readonly]:=True)
@@ -32,6 +51,32 @@ Public Class BgeeDiskReader
                               Return a.ToArray
                           End Function)
     End Sub
+
+    Public Function DevelopmentalModel(model As String) As Cluster
+        Dim info = developmental_stage.enums(model)
+        Dim cluster_id As Integer = developmental_stage(model)
+        Dim calls = developmental_calls(key:=cluster_id)
+
+        Return New Cluster With {
+            .description = info.name,
+            .names = info.name,
+            .ID = model,
+            .members = New BackgroundGene(calls.Length - 1) {}
+        }
+    End Function
+
+    Public Function AnatomicalModel(model As String) As Cluster
+        Dim info = anatomicals.enums(model)
+        Dim cluster_id As Integer = anatomicals(model)
+        Dim calls = anatomical_calls(key:=cluster_id)
+
+        Return New Cluster With {
+            .description = info.name,
+            .names = info.name,
+            .ID = model,
+            .members = New BackgroundGene(calls.Length - 1) {}
+        }
+    End Function
 
     Public Function Anatomical(model As String, geneSet As String()) As IEnumerable(Of String)
         Dim cluster_id As Integer = anatomicals(model)

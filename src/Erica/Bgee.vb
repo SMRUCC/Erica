@@ -16,8 +16,35 @@ Imports SMRUCC.Rsharp.Runtime.Interop
 <Package("Bgee")>
 Public Module Bgee
 
-    Public Function bgeeCalls(advCalls As String)
+    <ExportAPI("bgee_calls")>
+    Public Function bgeeCalls(bgee As BgeeDiskReader, geneSet As String(), Optional anatomical As Boolean = True) As EnrichmentResult()
+        Dim result As New List(Of EnrichmentResult)
 
+        If anatomical Then
+            Dim clusterIDs = bgee.anatomicalIDs.ToArray
+
+            For Each id As String In clusterIDs
+                Dim hits = bgee.Anatomical(id, geneSet).ToArray
+                Dim enrich = bgee.AnatomicalModel(id).calcResult(hits, geneSet.Length, bgee.backgroundSize, outputAll:=False)
+
+                If Not enrich Is Nothing Then
+                    result.Add(enrich)
+                End If
+            Next
+        Else
+            Dim clusterIDs = bgee.developmentalIDs.ToArray
+
+            For Each id As String In clusterIDs
+                Dim hits = bgee.Developmental(id, geneSet).ToArray
+                Dim enrich = bgee.DevelopmentalModel(id).calcResult(hits, geneSet.Length, bgee.backgroundSize, outputAll:=False)
+
+                If Not enrich Is Nothing Then
+                    result.Add(enrich)
+                End If
+            Next
+        End If
+
+        Return result.ToArray
     End Function
 
     <ExportAPI("parseTsv")>
@@ -83,10 +110,8 @@ Public Module Bgee
     End Function
 
     <ExportAPI("read.backgroundPack")>
-    Public Function readBackgroundPack(file As String) As Background
-        Using buffer As Stream = file.Open(FileMode.Open, doClear:=False, [readOnly]:=True)
-            Return MsgPackSerializer.Deserialize(Of Background)(buffer)
-        End Using
+    Public Function readBackgroundPack(file As String) As BgeeDiskReader
+        Return New BgeeDiskReader(file)
     End Function
 
     <ExportAPI("metabolomicsMapping")>
