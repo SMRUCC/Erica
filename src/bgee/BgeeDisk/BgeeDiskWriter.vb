@@ -1,4 +1,7 @@
-﻿Imports Microsoft.VisualBasic.DataStorage.HDSPack.FileSystem
+﻿Imports System.IO
+Imports Microsoft.VisualBasic.Data.IO
+Imports Microsoft.VisualBasic.DataStorage.HDSPack.FileSystem
+Imports Microsoft.VisualBasic.Text
 
 Public Class BgeeDiskWriter : Implements IDisposable
 
@@ -59,10 +62,49 @@ Public Class BgeeDiskWriter : Implements IDisposable
         Next
     End Sub
 
+    Private Sub writeFactorIndex(buf As Stream, index As Dictionary(Of String, (Integer, String)))
+        Dim bin As New BinaryDataWriter(buf, Encodings.ASCII) With {.ByteOrder = ByteOrder.BigEndian}
+
+        For Each id In index
+            Call bin.Write(id.Value.Item1)
+            Call bin.Write(id.Key, BinaryStringFormat.ZeroTerminated)
+            Call bin.Write(id.Value.Item2, BinaryStringFormat.ZeroTerminated)
+        Next
+    End Sub
+
+    Private Sub writeVectorData(buf As Stream)
+        Dim bin As New BinaryDataWriter(buf) With {.ByteOrder = ByteOrder.BigEndian}
+
+        For Each v As BgeeVector In calls
+            Call bin.Write(v.geneID)
+            Call bin.Write(v.anatomicalID)
+            Call bin.Write(v.developmentalID)
+            Call bin.Write(v.quality)
+            Call bin.Write(v.expression)
+            Call bin.Write(v.expression_rank)
+        Next
+    End Sub
+
+    Private Sub writeDisk()
+        Using buf As Stream = disk.OpenBlock("/factors/geneIDs.fac")
+            Call writeFactorIndex(buf, geneNames)
+        End Using
+        Using buf As Stream = disk.OpenBlock("/factors/anatomicalIDs.fac")
+            Call writeFactorIndex(buf, anatomicalName)
+        End Using
+        Using buf As Stream = disk.OpenBlock("/factors/developmental_stage.fac")
+            Call writeFactorIndex(buf, developmental_stage)
+        End Using
+        Using buf As Stream = disk.OpenBlock("/bgee.vec")
+            Call writeVectorData(buf)
+        End Using
+    End Sub
+
     Protected Overridable Sub Dispose(disposing As Boolean)
         If Not disposedValue Then
             If disposing Then
                 ' TODO: dispose managed state (managed objects)
+                Call writeDisk()
                 Call disk.Dispose()
             End If
 
