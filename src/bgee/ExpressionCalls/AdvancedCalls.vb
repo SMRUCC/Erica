@@ -91,6 +91,10 @@ Public Class AdvancedCalls
     Public Shared Iterator Function ParseSimpleTable(file As String, Optional quality As String = "gold quality") As IEnumerable(Of AdvancedCalls)
         Dim calls As AdvancedCalls
 
+        If quality = "*" Then
+            quality = Nothing
+        End If
+
         For Each line As String In file.LineIterators.Skip(1)
             calls = ParseSimpleLine(line.Split(ASCII.TAB))
 

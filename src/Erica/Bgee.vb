@@ -8,6 +8,7 @@ Imports SMRUCC.genomics.Analysis.HTS.GSEA
 Imports SMRUCC.genomics.Assembly.Uniprot.XML
 Imports SMRUCC.Rsharp.Runtime
 Imports SMRUCC.Rsharp.Runtime.Internal.Object
+Imports SMRUCC.Rsharp.Runtime.Interop
 
 ''' <summary>
 ''' the bgee database toolkit
@@ -20,23 +21,32 @@ Public Module Bgee
     End Function
 
     <ExportAPI("parseTsv")>
+    <RApiReturn(GetType(AdvancedCalls))>
     Public Function parseTsv(file As String,
                              Optional advance As Boolean = False,
-                             Optional quality As String = "gold quality",
-                             Optional env As Environment = Nothing) As AdvancedCalls()
+                             Optional quality As String = "*",
+                             Optional pip_stream As Boolean = False,
+                             Optional env As Environment = Nothing) As Object
 
         Dim println = env.WriteLineHandler
+        Dim stream As IEnumerable(Of AdvancedCalls)
 
-        If quality.StringEmpty Then
+        If quality.StringEmpty OrElse quality = "*" Then
             println("load bgee expression calls with no quality condition...")
         Else
             println($"load bgee expression calls under '{quality}' quality condition...")
         End If
 
         If advance Then
-            Return AdvancedCalls.ParseTable(file).ToArray
+            stream = AdvancedCalls.ParseTable(file)
         Else
-            Return AdvancedCalls.ParseSimpleTable(file, quality).ToArray
+            stream = AdvancedCalls.ParseSimpleTable(file, quality)
+        End If
+
+        If pip_stream Then
+            Return pipeline.CreateFromPopulator(stream)
+        Else
+            Return stream.ToArray
         End If
     End Function
 
