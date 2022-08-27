@@ -8,10 +8,10 @@ Public Module LoadDisk
 
         ' /obs
         Dim obs As Obs = loadObs(fileId)
-        ' /X
-        Dim x As X = loadX(fileId)
         ' /var
         Dim var As Var = loadVar(fileId)
+        ' /X
+        Dim x As X = loadX(fileId, var.gene_ids.Length)
         ' /obsm
         Dim obsm As Obsm = loadObsm(fileId)
         ' /uns
@@ -77,11 +77,11 @@ Public Module LoadDisk
         }
     End Function
 
-    Private Function loadX(fileId As Long) As X
+    Private Function loadX(fileId As Long, maxColumns As Integer) As X
         Dim xdata = ReadData.Read_dataset(fileId, "/X/data").GetSingles.ToArray
         Dim xindices = ReadData.Read_dataset(fileId, "/X/indices").GetIntegers.ToArray
         Dim xindptr = ReadData.Read_dataset(fileId, "/X/indptr").GetIntegers.ToArray
-        Dim x As X = X.ShapeMatrix(xdata, xindices, xindptr)
+        Dim x As X = X.ShapeMatrix(xdata, xindices, xindptr, geneIdsize:=maxColumns)
 
         Return x
     End Function

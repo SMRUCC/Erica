@@ -18,13 +18,16 @@ Public Class X
     ''' <param name="xindices"></param>
     ''' <param name="xindptr"></param>
     ''' <returns></returns>
-    Friend Shared Function ShapeMatrix(xdata As Single(), xindices As Integer(), xindptr As Integer()) As X
+    Friend Shared Function ShapeMatrix(xdata As Single(),
+                                       xindices As Integer(),
+                                       xindptr As Integer(),
+                                       geneIdsize As Integer) As X
         xindices = xindices _
             .Select(Function(i) i - 1) _
             .ToArray
 
         Return New X With {
-            .matrix = SparseMatrix.UnpackData(xdata, xindices, xindptr)
+            .matrix = SparseMatrix.UnpackData(xdata, xindices, xindptr, maxColumns:=geneIdsize)
         }
     End Function
 End Class
