@@ -16,15 +16,16 @@ bitmap(file = `${@dir}/spatial_3.png`) {
 	plot(spatial[, "x"], spatial[, "y"],
 		 padding      = "padding:200px 500px 200px 250px;",
 		 class        = spatial[, "class"],
-		 title        = "Spatial 2D Scatter Map",
+		 title        = "Mouse Embryo Spatial 2D Map",
 		 x.lab        = "X",
 		 y.lab        = "Y",
 		 legend.block = 100,
 		 point.size   = 6,
 		 colorSet     = "paper",  
 		 grid.fill    = "transparent",
-		 size         = [2400, 3200],
+		 size         = [2800, 3200],
 		 x.format     = "F0",
-		 y.format     = "F0"
+		 y.format     = "F0",
+		 reverse      = TRUE
 	);
 }
