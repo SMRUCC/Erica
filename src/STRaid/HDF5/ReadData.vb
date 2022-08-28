@@ -77,11 +77,18 @@ Friend Class ReadData
     End Function
 
     Friend Shared Function Read_strings(fileId As Long, dsname As String) As String()
-        Dim attrId As Long = H5D.open(fileId, dsname, H5P.DEFAULT)
-        Dim typeId As Long = H5D.get_type(attrId)
-        Dim spaceId As Long = H5D.get_space(attrId)
+        Dim dataID As Long = H5D.open(fileId, dsname, H5P.DEFAULT)
+
+        If dataID < 0 Then
+            ' no such dataset
+            Return {}
+        End If
+
+        Dim typeId As Long = H5D.get_type(dataID)
+        Dim spaceId As Long = H5D.get_space(dataID)
         Dim count As Long = H5S.get_simple_extent_npoints(spaceId)
-        H5S.close(spaceId)
+
+        Call H5S.close(spaceId)
 
         If Not H5T.is_variable_str(typeId) > 0 Then
             Throw New InvalidProgramException($"target data set('{dsname}') is not a variable length string!")
@@ -89,7 +96,7 @@ Friend Class ReadData
 
         Dim dest = New IntPtr(count - 1) {}
         Dim handle = GCHandle.Alloc(dest, GCHandleType.Pinned)
-        H5D.read(attrId, typeId, H5S.ALL, H5S.ALL, H5P.DEFAULT, handle.AddrOfPinnedObject())
+        H5D.read(dataID, typeId, H5S.ALL, H5S.ALL, H5P.DEFAULT, handle.AddrOfPinnedObject())
 
         Dim attrStrings = New List(Of String)()
         Dim i = 0
