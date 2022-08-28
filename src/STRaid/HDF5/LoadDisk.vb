@@ -3,19 +3,23 @@ Imports HDF.PInvoke
 
 Public Module LoadDisk
 
-    Public Function LoadDiskMemory(h5ad As String) As AnnData
+    Public Function LoadDiskMemory(h5ad As String, Optional loadExpr0 As Boolean = True) As AnnData
         Dim fileId = H5F.open(h5ad, H5F.ACC_RDONLY)
 
         ' /obs
         Dim obs As Obs = loadObs(fileId)
         ' /var
         Dim var As Var = loadVar(fileId)
-        ' /X
-        Dim x As X = loadX(fileId, var.gene_ids.Length)
         ' /obsm
         Dim obsm As Obsm = loadObsm(fileId)
         ' /uns
         Dim uns As Uns = loadUns(fileId)
+        ' /X
+        Dim x As X = Nothing
+
+        If loadExpr0 Then
+            x = loadX(fileId, var.gene_ids.Length)
+        End If
 
         Return New AnnData With {
             .X = x,
@@ -39,8 +43,22 @@ Public Module LoadDisk
 
     Private Function loadObs(fileId As Long) As Obs
         ' Dim obsindex = ReadData.Read_strings(fileId, "/obs/_index")
-        Dim clusters As Integer() = ReadData.Read_dataset(fileId, "/obs/clusters").dataBytes.Select(Function(b) CInt(b)).ToArray
-        Dim labels As String() = ReadData.Read_strings(fileId, "/obs/__categories/clusters")
+        Dim clusters As Integer()
+        Dim labels As String()
+
+        If ReadData.HasDataSet(fileId, "/obs/clusters") Then
+            clusters = ReadData.Read_dataset(fileId, "/obs/clusters") _
+                .dataBytes _
+                .Select(Function(b) CInt(b)) _
+                .ToArray
+            labels = ReadData.Read_strings(fileId, "/obs/__categories/clusters")
+        Else
+            clusters = ReadData.Read_dataset(fileId, "/obs/annotation") _
+                .dataBytes _
+                .Select(Function(b) CInt(b)) _
+                .ToArray
+            labels = ReadData.Read_strings(fileId, "/obs/__categories/annotation")
+        End If
 
         Return New Obs With {
             .clusters = clusters,

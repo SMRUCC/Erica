@@ -35,8 +35,8 @@ Public Module singleCells
     End Function
 
     <ExportAPI("read.h5ad")>
-    Public Function readH5ad(h5adfile As String) As AnnData
-        Return LoadDisk.LoadDiskMemory(h5adfile)
+    Public Function readH5ad(h5adfile As String, Optional loadExpr0 As Boolean = True) As AnnData
+        Return LoadDisk.LoadDiskMemory(h5adfile, loadExpr0)
     End Function
 
     <ExportAPI("spatialMap")>
