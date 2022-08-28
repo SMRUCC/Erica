@@ -66,9 +66,14 @@ Public Module LoadDisk
         }
     End Function
 
-    Private Function loadObsm(fileId As Long) As Obsm
+    Private Function readPCA(fileId As Long) As Single()()
         Dim xpca = ReadData.Read_dataset(fileId, "/obsm/X_pca")
         Dim pca_result = xpca.GetSingles.Split(xpca.dims(1)).ToArray
+
+        Return pca_result
+    End Function
+
+    Private Function loadObsm(fileId As Long) As Obsm
         Dim spatial = ReadData.Read_dataset(fileId, "/obsm/spatial") _
             .GetLongs _
             .Split(2) _
@@ -79,6 +84,11 @@ Public Module LoadDisk
             .Split(2) _
             .Select(Function(t) New PointF(t(0), t(1))) _
             .ToArray
+        Dim pca_result As Single()() = Nothing
+
+        If ReadData.HasDataSet(fileId, "/obsm/X_pca") Then
+            pca_result = readPCA(fileId)
+        End If
 
         Return New Obsm With {
             .spatial = spatial,
