@@ -73,12 +73,21 @@ Public Module LoadDisk
         Return pca_result
     End Function
 
+    Private Function loadSpatialMap(fileId As Long) As PointF()
+        Dim raw = ReadData.Read_dataset(fileId, "/obsm/spatial")
+
+        If raw.byte_size = 8 Then
+            Return raw.GetLongs _
+                .Split(2) _
+                .Select(Function(t) New PointF(t(0), t(1))) _
+                .ToArray
+        Else
+
+        End If
+    End Function
+
     Private Function loadObsm(fileId As Long) As Obsm
-        Dim spatial = ReadData.Read_dataset(fileId, "/obsm/spatial") _
-            .GetLongs _
-            .Split(2) _
-            .Select(Function(t) New Point(t(0), t(1))) _
-            .ToArray
+        Dim spatial = loadSpatialMap(fileId)
         Dim xumap = ReadData.Read_dataset(fileId, "/obsm/X_umap") _
             .GetSingles _
             .Split(2) _
