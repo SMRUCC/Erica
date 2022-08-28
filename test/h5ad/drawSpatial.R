@@ -2,7 +2,7 @@ require(Erica);
 
 imports "singleCell" from "Erica";
 
-raw = "K:\\E16.5_E2S3.MOSTA.h5ad"
+raw = "K:\Downloads\E16.5_E1S1.MOSTA.h5ad"
 |> read.h5ad(loadExpr0 = FALSE)
 ;
 
@@ -12,7 +12,7 @@ spatial = raw
 
 write.csv(spatial, file = `${@dir}/spatial.csv`, row.names = FALSE);
 
-bitmap(file = `${@dir}/spatial_2.png`) {
+bitmap(file = `${@dir}/spatial_3.png`) {
 	plot(spatial[, "x"], spatial[, "y"],
 		 padding      = "padding:200px 500px 200px 250px;",
 		 class        = spatial[, "class"],
