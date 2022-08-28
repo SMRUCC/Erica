@@ -6,12 +6,12 @@ imports "Bgee" from "Erica";
 imports "background" from "gseakit";
 imports "GSEA" from "gseakit";
 
-raw = "K:\ST\10x_Visium_deal.h5ad"
+raw = "K:\\ST\\10x_Visium_deal.h5ad"
 |> read.h5ad()
 ;
 
 geneList = expression_list(raw, q = 0.5);
-bgee = read.backgroundPack("E:\Erica\test\bgee\mmu.bgee");
+bgee = read.backgroundPack("E:\\Erica\\test\\bgee\\mmu.bgee");
 
 stages = development_stage(bgee);
 
