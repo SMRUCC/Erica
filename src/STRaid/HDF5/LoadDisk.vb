@@ -29,9 +29,11 @@ Public Module LoadDisk
 
     Private Function loadUns(fileId As Long) As Uns
         Dim colors As String() = ReadData.Read_strings(fileId, "/uns/clusters_colors")
+        Dim annotations As String() = ReadData.Read_strings(fileId, "/uns/annotation_colors")
 
         Return New Uns With {
-            .clusters_colors = colors
+            .clusters_colors = colors,
+            .annotation_colors = annotations
         }
     End Function
 
@@ -70,10 +72,12 @@ Public Module LoadDisk
     Private Function loadVar(fileId As Long) As Var
         Dim var_geneids = ReadData.Read_strings(fileId, "/var/gene_ids")
         Dim cell_counts = ReadData.Read_dataset(fileId, "/var/n_cells_by_counts").GetLongs.ToArray
+        Dim var_geneNames = ReadData.Read_strings(fileId, "/var/gene_short_name")
 
         Return New Var With {
             .gene_ids = var_geneids,
-            .n_cells_by_counts = cell_counts
+            .n_cells_by_counts = cell_counts,
+            .gene_short_name = var_geneNames
         }
     End Function
 

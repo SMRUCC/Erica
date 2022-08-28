@@ -36,6 +36,13 @@ Friend Class ReadData
         Next
     End Function
 
+    Friend Shared Function HasDataSet(ByVal hdf5file As Long, ByVal dsname As String) As Boolean
+        Dim dsID = H5D.open(hdf5file, dsname, H5P.DEFAULT)
+        Dim exists = dsID > 0
+
+        Return exists
+    End Function
+
     Friend Shared Function Read_dataset(ByVal hdf5file As Long, ByVal dsname As String) As ReadData
         Dim dsID = H5D.open(hdf5file, dsname, H5P.DEFAULT)
 
