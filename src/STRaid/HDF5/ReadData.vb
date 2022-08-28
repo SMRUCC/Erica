@@ -38,6 +38,17 @@ Friend Class ReadData
 
     Friend Shared Function Read_dataset(ByVal hdf5file As Long, ByVal dsname As String) As ReadData
         Dim dsID = H5D.open(hdf5file, dsname, H5P.DEFAULT)
+
+        If dsID < 0 Then
+            ' missing dataset
+            Return New ReadData With {
+                .bytearray_elements = 0,
+                .byte_size = 0,
+                .dataBytes = {},
+                .dims = {0}
+            }
+        End If
+
         Dim spaceID = H5D.get_space(dsID)
         Dim typeID = H5D.get_type(dsID)
         Dim rank = H5S.get_simple_extent_ndims(spaceID)
