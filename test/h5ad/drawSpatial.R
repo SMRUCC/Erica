@@ -7,7 +7,7 @@ raw = "K:\\E16.5_E2S3.MOSTA.h5ad"
 ;
 
 spatial = raw 
-|> spatialMap()
+|> spatialMap(useCellAnnotation = TRUE)
 ;
 
 write.csv(spatial, file = `${@dir}/spatial.csv`, row.names = FALSE);
