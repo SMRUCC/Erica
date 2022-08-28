@@ -14,16 +14,16 @@ write.csv(spatial, file = `${@dir}/spatial.csv`, row.names = FALSE);
 
 bitmap(file = `${@dir}/spatial_2.png`) {
 	plot(spatial[, "x"], spatial[, "y"],
-		 padding      = "padding:200px 400px 200px 250px;",
+		 padding      = "padding:200px 500px 200px 250px;",
 		 class        = spatial[, "class"],
 		 title        = "Spatial 2D Scatter Map",
 		 x.lab        = "X",
 		 y.lab        = "Y",
-		 legend.block = 13,
-		 point.size   = 36,
+		 legend.block = 100,
+		 point.size   = 6,
 		 colorSet     = "paper",  
 		 grid.fill    = "transparent",
-		 size         = [2800, 2600],
+		 size         = [2400, 3200],
 		 x.format     = "F0",
 		 y.format     = "F0"
 	);
