@@ -8,6 +8,7 @@ Friend Class ReadData
     Friend bytearray_elements As Integer
     Friend byte_size As Integer
     Friend dataBytes As Byte()
+    Friend classID As H5T.class_t
 
     Public Iterator Function GetSingles() As IEnumerable(Of Single)
         Dim buf As Byte() = New Byte(byte_size - 1) {}
@@ -36,6 +37,15 @@ Friend Class ReadData
         Next
     End Function
 
+    Public Iterator Function GetDoubles() As IEnumerable(Of Double)
+        Dim buf As Byte() = New Byte(byte_size - 1) {}
+
+        For i As Integer = 0 To dataBytes.Length - 1 Step byte_size
+            Call Array.ConstrainedCopy(dataBytes, i, buf, Scan0, byte_size)
+            Yield BitConverter.ToDouble(buf, Scan0)
+        Next
+    End Function
+
     Friend Shared Function HasDataSet(ByVal hdf5file As Long, ByVal dsname As String) As Boolean
         Dim dsID = H5D.open(hdf5file, dsname, H5P.DEFAULT)
         Dim exists = dsID > 0
@@ -58,6 +68,7 @@ Friend Class ReadData
 
         Dim spaceID = H5D.get_space(dsID)
         Dim typeID = H5D.get_type(dsID)
+        Dim classID = H5T.get_class(typeID)
         Dim rank = H5S.get_simple_extent_ndims(spaceID)
         Dim dims(rank - 1) As ULong
         Dim maxDims(rank - 1) As ULong
@@ -79,7 +90,8 @@ Friend Class ReadData
             .bytearray_elements = bytearray_elements,
             .byte_size = size,
             .dataBytes = dataBytes,
-            .dims = dims
+            .dims = dims,
+            .classID = classID
         }
     End Function
 

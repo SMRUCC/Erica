@@ -76,13 +76,16 @@ Public Module LoadDisk
     Private Function loadSpatialMap(fileId As Long) As PointF()
         Dim raw = ReadData.Read_dataset(fileId, "/obsm/spatial")
 
-        If raw.byte_size = 8 Then
+        If raw.classID = H5T.class_t.INTEGER Then
             Return raw.GetLongs _
                 .Split(2) _
                 .Select(Function(t) New PointF(t(0), t(1))) _
                 .ToArray
         Else
-
+            Return raw.GetDoubles _
+                .Split(2) _
+                .Select(Function(t) New PointF(t(0), t(1))) _
+                .ToArray
         End If
     End Function
 
