@@ -1,0 +1,60 @@
+,stage_id,development_stage,cluster_size
+UBERON:0000113,UBERON:0000113,post-juvenile,2199318
+UBERON:0000104,UBERON:0000104,life cycle,1990470
+MmusDv:0000062,MmusDv:0000062,2-month-old stage (mouse),2212534
+UBERON:0000106,UBERON:0000106,zygote stage,39691
+MmusDv:0000151,MmusDv:0000151,6-week-old stage (mouse),449521
+MmusDv:0000135,MmusDv:0000135,middle aged stage (mouse),255148
+MmusDv:0000139,MmusDv:0000139,4-6 days (mouse),243728
+UBERON:0000112,UBERON:0000112,sexually immature stage,166603
+UBERON:0018241,UBERON:0018241,prime adult stage,2462439
+MmusDv:0000154,MmusDv:0000154,8-week-old stage (mouse),1731201
+MmusDv:0000077,MmusDv:0000077,6-month-old stage (mouse),169485
+MmusDv:0000029,MmusDv:0000029,Theiler stage 22 (mouse),736129
+MmusDv:0000064,MmusDv:0000064,4-month-old stage (mouse),363584
+MmusDv:0000150,MmusDv:0000150,5-week-old stage (mouse),192349
+UBERON:0000066,UBERON:0000066,fully formed stage,1033354
+UBERON:0007221,UBERON:0007221,neonate stage,841208
+MmusDv:0000034,MmusDv:0000034,Theiler stage 25 (mouse),197038
+MmusDv:0000140,MmusDv:0000140,1-week-old stage (mouse),524197
+MmusDv:0000149,MmusDv:0000149,4-week-old stage (mouse),403756
+MmusDv:0000152,MmusDv:0000152,7-week-old stage (mouse),212359
+UBERON:0007222,UBERON:0007222,late adult stage,519323
+UBERON:0000068,UBERON:0000068,embryo stage,44917
+MmusDv:0000156,MmusDv:0000156,10-week-old stage (mouse),285799
+MmusDv:0000028,MmusDv:0000028,Theiler stage 21 (mouse),476690
+MmusDv:0000027,MmusDv:0000027,Theiler stage 20 (mouse),517455
+MmusDv:0000032,MmusDv:0000032,Theiler stage 23 (mouse),761142
+MmusDv:0000033,MmusDv:0000033,Theiler stage 24 (mouse),507823
+MmusDv:0000063,MmusDv:0000063,3-month-old stage (mouse),954013
+MmusDv:0000141,MmusDv:0000141,2-week-old stage (mouse),299358
+MmusDv:0000006,MmusDv:0000006,Theiler stage 03 (mouse),55966
+MmusDv:0000155,MmusDv:0000155,9-week-old stage (mouse),321197
+UBERON:0007220,UBERON:0007220,late embryonic stage,13170
+MmusDv:0000008,MmusDv:0000008,Theiler stage 04 (mouse),23303
+UBERON:0000108,UBERON:0000108,blastula stage,29116
+MmusDv:0000009,MmusDv:0000009,Theiler stage 05 (mouse),27303
+MmusDv:0000024,MmusDv:0000024,Theiler stage 17 (mouse),419234
+MmusDv:0000026,MmusDv:0000026,Theiler stage 19 (mouse),522166
+UBERON:0000110,UBERON:0000110,neurula stage,48916
+MmusDv:0000025,MmusDv:0000025,Theiler stage 18 (mouse),67188
+MmusDv:0000035,MmusDv:0000035,Theiler stage 26 (mouse),448142
+MmusDv:0000157,MmusDv:0000157,11-week-old stage (mouse),231183
+UBERON:0034919,UBERON:0034919,juvenile stage,126920
+UBERON:0034920,UBERON:0034920,infant stage,153388
+MmusDv:0000005,MmusDv:0000005,Theiler stage 02 (mouse),39977
+MmusDv:0000010,MmusDv:0000010,Theiler stage 06 (mouse),3850
+MmusDv:0000011,MmusDv:0000011,Theiler stage 07 (mouse),392
+MmusDv:0000014,MmusDv:0000014,Theiler stage 09 (mouse),22312
+MmusDv:0000015,MmusDv:0000015,Theiler stage 10 (mouse),59001
+MmusDv:0000019,MmusDv:0000019,Theiler stage 12 (mouse),24181
+MmusDv:0000020,MmusDv:0000020,Theiler stage 13 (mouse),41939
+MmusDv:0000021,MmusDv:0000021,Theiler stage 14 (mouse),47887
+MmusDv:0000022,MmusDv:0000022,Theiler stage 15 (mouse),159173
+MmusDv:0000023,MmusDv:0000023,Theiler stage 16 (mouse),144380
+MmusDv:0000094,MmusDv:0000094,Theiler stage 11c (mouse),26061
+MmusDv:0000153,MmusDv:0000153,young adult stage (mouse),363245
+MmusDv:0000069,MmusDv:0000069,5-month-old stage (mouse),176732
+UBERON:0000111,UBERON:0000111,organogenesis stage,10907
+MmusDv:0000012,MmusDv:0000012,Theiler stage 08 (mouse),172
+UBERON:0000107,UBERON:0000107,cleavage stage,5

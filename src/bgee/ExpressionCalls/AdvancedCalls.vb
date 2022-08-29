@@ -88,9 +88,23 @@ Public Class AdvancedCalls
         Return $"[{call_quality}] {gene_name}@{anatomicalName} = {expression_rank}"
     End Function
 
-    Public Shared Iterator Function ParseSimpleTable(file As String) As IEnumerable(Of AdvancedCalls)
+    Public Shared Iterator Function ParseSimpleTable(file As String, Optional quality As String = "gold quality") As IEnumerable(Of AdvancedCalls)
+        Dim calls As AdvancedCalls
+
+        If quality = "*" Then
+            quality = Nothing
+        End If
+
         For Each line As String In file.LineIterators.Skip(1)
-            Yield ParseSimpleLine(line.Split(ASCII.TAB))
+            calls = ParseSimpleLine(line.Split(ASCII.TAB))
+
+            If Not quality Is Nothing Then
+                If calls.call_quality = quality Then
+                    Yield calls
+                End If
+            Else
+                Yield calls
+            End If
         Next
     End Function
 
@@ -110,11 +124,11 @@ Public Class AdvancedCalls
         ' 12 Expression rank
         Return New AdvancedCalls With {
             .geneID = tsv(0),
-            .gene_name = tsv(1),
+            .gene_name = Strings.Trim(tsv(1)).Trim(""""c),
             .anatomicalID = tsv(2),
-            .anatomicalName = tsv(3),
+            .anatomicalName = Strings.Trim(tsv(3)).Trim(""""c),
             .developmental_stageID = tsv(4),
-            .developmental_stage = tsv(5),
+            .developmental_stage = Strings.Trim(tsv(5)).Trim(""""c),
             .expression = tsv(8),
             .call_quality = tsv(9),
             .expression_rank = Double.Parse(tsv(12))

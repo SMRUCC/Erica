@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <RootNamespace>Erica</RootNamespace>
-	  <TargetFrameworks>net6.0;net5.0;net48</TargetFrameworks>
+	  <TargetFrameworks>net6.0</TargetFrameworks>
     <Platforms>AnyCPU;x64</Platforms>
     <Configurations>Debug;Release;Rsharp_app_release</Configurations>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -50,6 +50,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\GCModeller\src\GCModeller\analysis\HTS_matrix\HTS_matrix-netcore5.vbproj" />
     <ProjectReference Include="..\..\..\GCModeller\src\GCModeller\annotations\GSEA\FisherCore\Fisher.NET5.vbproj" />
     <ProjectReference Include="..\..\..\GCModeller\src\GCModeller\core\Bio.Assembly\biocore-netcore5.vbproj" />
@@ -67,9 +71,12 @@
     <ProjectReference Include="..\..\..\GCModeller\src\runtime\sciBASIC#\mime\application%rdf+xml\rdf_xml-netcore5.vbproj" />
     <ProjectReference Include="..\..\..\GCModeller\src\workbench\modules\ExperimentDesigner\designer-netcore5.vbproj" />
     <ProjectReference Include="..\bgee\bgee.vbproj" />
+    <ProjectReference Include="..\HDF.PInvoke\HDF.PInvoke.Core.csproj" />
     <ProjectReference Include="..\SingleCell\PhenoGraph\PhenoGraph\PhenoGraph.NET5.vbproj" />
     <ProjectReference Include="..\SingleCell\SparoMx\SparoMx.vbproj" />
     <ProjectReference Include="..\SingleCell\STdeconvolve\STdeconvolve\STdeconvolve.NET5.vbproj" />
+    <ProjectReference Include="..\STImaging\STImaging.vbproj" />
+    <ProjectReference Include="..\STRaid\STRaid.vbproj" />
   </ItemGroup>
 
   <Import Project="..\..\..\GCModeller\src\R-sharp\Library\shares\R_graphic.interop\R_graphic.interop.projitems" Label="Shared" />

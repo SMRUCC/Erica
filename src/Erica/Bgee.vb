@@ -8,6 +8,7 @@ Imports SMRUCC.genomics.Analysis.HTS.GSEA
 Imports SMRUCC.genomics.Assembly.Uniprot.XML
 Imports SMRUCC.Rsharp.Runtime
 Imports SMRUCC.Rsharp.Runtime.Internal.Object
+Imports SMRUCC.Rsharp.Runtime.Interop
 
 ''' <summary>
 ''' the bgee database toolkit
@@ -15,16 +16,68 @@ Imports SMRUCC.Rsharp.Runtime.Internal.Object
 <Package("Bgee")>
 Public Module Bgee
 
-    Public Function bgeeCalls(advCalls As String)
+    <ExportAPI("bgee_calls")>
+    Public Function bgeeCalls(bgee As BgeeDiskReader, geneSet As String(), Optional development_stage As String = "*") As EnrichmentResult()
+        Dim result As New List(Of EnrichmentResult)
+        Dim clusterIDs = bgee.anatomicalIDs.ToArray
 
+        For Each id As String In clusterIDs
+            Dim size As Integer = -1
+            Dim hits = bgee.Anatomical(id, geneSet, development_stage, size:=size).ToArray
+            Dim enrich = bgee.AnatomicalModel(id, size).calcResult(hits, geneSet.Length, bgee.backgroundSize, outputAll:=False)
+
+            If Not enrich Is Nothing Then
+                result.Add(enrich)
+            End If
+        Next
+
+        Return result.FDRCorrection.ToArray
+    End Function
+
+    <ExportAPI("development_stage")>
+    Public Function development_stage(bgee As BgeeDiskReader) As dataframe
+        Dim id As String() = bgee.developmentalIDs
+        Dim clusters = id.Select(Function(d) bgee.DevelopmentalModel(d)).ToArray
+        Dim name = clusters.Select(Function(c) c.names).ToArray
+        Dim size = clusters.Select(Function(c) c.size).ToArray
+
+        Return New dataframe With {
+            .columns = New Dictionary(Of String, Array) From {
+                {"stage_id", id},
+                {"development_stage", name},
+                {"cluster_size", size}
+            },
+            .rownames = id
+        }
     End Function
 
     <ExportAPI("parseTsv")>
-    Public Function parseTsv(file As String, Optional advance As Boolean = False) As AdvancedCalls()
-        If advance Then
-            Return AdvancedCalls.ParseTable(file).ToArray
+    <RApiReturn(GetType(AdvancedCalls))>
+    Public Function parseTsv(file As String,
+                             Optional advance As Boolean = False,
+                             Optional quality As String = "*",
+                             Optional pip_stream As Boolean = False,
+                             Optional env As Environment = Nothing) As Object
+
+        Dim println = env.WriteLineHandler
+        Dim stream As IEnumerable(Of AdvancedCalls)
+
+        If quality.StringEmpty OrElse quality = "*" Then
+            println("load bgee expression calls with no quality condition...")
         Else
-            Return AdvancedCalls.ParseSimpleTable(file).ToArray
+            println($"load bgee expression calls under '{quality}' quality condition...")
+        End If
+
+        If advance Then
+            stream = AdvancedCalls.ParseTable(file)
+        Else
+            stream = AdvancedCalls.ParseSimpleTable(file, quality)
+        End If
+
+        If pip_stream Then
+            Return pipeline.CreateFromPopulator(stream)
+        Else
+            Return stream.ToArray
         End If
     End Function
 
@@ -34,25 +87,35 @@ Public Module Bgee
     ''' <param name="bgee"></param>
     ''' <returns></returns>
     <ExportAPI("tissue_background")>
-    Public Function TissueBackground(bgee As AdvancedCalls()) As Background
+    Public Function TissueBackground(bgee As AdvancedCalls(), Optional env As Environment = Nothing) As Background
+        Dim println = env.WriteLineHandler
+        Call println($"create tissue enrichment background model based on {bgee.Length} bgee gene expression calls!")
         Return bgee.CreateTissueBackground
     End Function
 
     <ExportAPI("write.backgroundPack")>
-    Public Function saveBackgroundPack(background As Background, file As String) As Boolean
-        Using buffer As Stream = file.Open(FileMode.OpenOrCreate, doClear:=True, [readOnly]:=False)
-            Call MsgPackSerializer.SerializeObject(background, buffer)
-            Call buffer.Flush()
+    <RApiReturn(GetType(Boolean))>
+    Public Function saveBackgroundPack(<RRawVectorArgument>
+                                       background As Object,
+                                       file As String,
+                                       Optional env As Environment = Nothing) As Object
+
+        Dim data As pipeline = pipeline.TryCreatePipeline(Of AdvancedCalls)(background, env)
+
+        If data.isError Then
+            Return data.getError
+        End If
+
+        Using disk As New BgeeDiskWriter(file)
+            Call disk.Push(data.populates(Of AdvancedCalls)(env))
         End Using
 
         Return True
     End Function
 
     <ExportAPI("read.backgroundPack")>
-    Public Function readBackgroundPack(file As String) As Background
-        Using buffer As Stream = file.Open(FileMode.Open, doClear:=False, [readOnly]:=True)
-            Return MsgPackSerializer.Deserialize(Of Background)(buffer)
-        End Using
+    Public Function readBackgroundPack(file As String) As BgeeDiskReader
+        Return New BgeeDiskReader(file)
     End Function
 
     <ExportAPI("metabolomicsMapping")>
