@@ -50,7 +50,7 @@ Public Class X
                 Dim blocksize = idx - left
                 Dim subsetData As Single() = New Single(blocksize - 1) {}
                 Dim subsetIndex As Integer() = New Integer(blocksize - 1) {}
-                Dim row As Double() = New Double(xindices.Max) {}
+                Dim row As Double() = New Double(geneIdsize - 1) {}
 
                 Call Array.ConstrainedCopy(xdata, left, subsetData, Scan0, blocksize)
                 Call Array.ConstrainedCopy(xindices, left, subsetIndex, Scan0, blocksize)

@@ -1,14 +1,36 @@
 ﻿Imports System.Drawing
 Imports HDF.PInvoke
+Imports Microsoft.VisualBasic.Language
+Imports Microsoft.VisualBasic.Math.LinearAlgebra
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 
 Public Module LoadDisk
 
     Public Function LoadRawExpressionMatrix(h5ad As String) As Matrix
         Dim fileId = H5F.open(h5ad, H5F.ACC_RDONLY)
-        ' /var
-        Dim geneIDs = getGeneSymbols(fileId)
+        Dim anno = LoadDiskMemory(h5ad, loadExpr0:=False)
+        Dim geneIDs = If(
+            anno.var.gene_ids.IsNullOrEmpty,
+            anno.var.gene_short_name,
+            anno.var.gene_ids
+        )
+        Dim spotIDs = SpotAnnotation _
+            .LoadAnnotations(anno, useCellAnnotation:=True) _
+            .Select(Function(a) a.ToString) _
+            .ToArray
         Dim x As X = loadX(fileId, geneIDs.Length)
+        Dim m As New List(Of DataFrameRow)
+        Dim cell As i32 = Scan0
+
+        For Each row As Vector In x.matrix.RowVectors
+            m.Add(New DataFrameRow With {.geneID = spotIDs(++cell), .experiments = row.ToArray})
+        Next
+
+        Return New Matrix With {
+            .expression = m.ToArray,
+            .sampleID = geneIDs,
+            .tag = h5ad.FileName
+        }
     End Function
 
     Public Function LoadDiskMemory(h5ad As String, Optional loadExpr0 As Boolean = True) As AnnData

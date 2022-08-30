@@ -61,22 +61,13 @@ Public Module singleCells
     ''' <returns></returns>
     <ExportAPI("spatialMap")>
     Public Function spatialMap(h5ad As AnnData, Optional useCellAnnotation As Boolean = False) As dataframe
-        Dim spatial = h5ad.obsm.spatial
-        Dim labels = h5ad.obs.class_labels
-        Dim clusters = h5ad.obs.clusters _
-            .Select(Function(i) labels(i)) _
+        Dim annos As SpotAnnotation() = SpotAnnotation _
+            .LoadAnnotations(h5ad, useCellAnnotation) _
             .ToArray
-        Dim colors As String() = If(
-            useCellAnnotation,
-            h5ad.uns.annotation_colors,
-            h5ad.uns.clusters_colors
-        )
-        Dim x As Double() = spatial.Select(Function(a) CDbl(a.X)).ToArray
-        Dim y As Double() = spatial.Select(Function(a) CDbl(a.Y)).ToArray
-
-        colors = h5ad.obs.clusters _
-            .Select(Function(i) colors(i)) _
-            .ToArray
+        Dim x = annos.Select(Function(a) a.X).ToArray
+        Dim y = annos.Select(Function(a) a.Y).ToArray
+        Dim colors = annos.Select(Function(a) a.color).ToArray
+        Dim clusters = annos.Select(Function(a) a.label).ToArray
 
         Return New dataframe With {
             .columns = New Dictionary(Of String, Array) From {
