@@ -6,11 +6,9 @@ imports "geneExpression" from "phenotype_kit";
 
 options(memory.load = "max");
 
-raw ="K:\Downloads\E16.5_E1S1.MOSTA.h5ad"
-|> read.h5ad()
+mat ="K:\Downloads\E16.5_E1S1.MOSTA.h5ad"
+|> HTS_matrix()
 ;
-
-mat = HTS_matrix(raw);
 
 write.expr_matrix(mat, file = `${@dir}/rawExpr0.csv`);
 write.expr_matrix(mat, file = `${@dir}/rawExpr0.dat`, binary = TRUE);

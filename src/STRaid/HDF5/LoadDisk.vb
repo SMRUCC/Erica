@@ -7,8 +7,8 @@ Public Module LoadDisk
     Public Function LoadRawExpressionMatrix(h5ad As String) As Matrix
         Dim fileId = H5F.open(h5ad, H5F.ACC_RDONLY)
         ' /var
-        Dim var As Var = loadVar(fileId)
-        Dim x = loadX(fileId, var.gene_ids.Length)
+        Dim geneIDs = getAllGeneIDs(fileId)
+        Dim x As X = loadX(fileId, geneIDs.Length)
     End Function
 
     Public Function LoadDiskMemory(h5ad As String, Optional loadExpr0 As Boolean = True) As AnnData
@@ -117,8 +117,12 @@ Public Module LoadDisk
         }
     End Function
 
+    Private Function getAllGeneIDs(fileId As Long) As String()
+        Return ReadData.Read_strings(fileId, "/var/gene_ids")
+    End Function
+
     Private Function loadVar(fileId As Long) As Var
-        Dim var_geneids = ReadData.Read_strings(fileId, "/var/gene_ids")
+        Dim var_geneids = getAllGeneIDs(fileId)
         Dim cell_counts = ReadData.Read_dataset(fileId, "/var/n_cells_by_counts").GetLongs.ToArray
         Dim var_geneNames = ReadData.Read_strings(fileId, "/var/gene_short_name")
 
