@@ -1,7 +1,15 @@
 ﻿Imports System.Drawing
 Imports HDF.PInvoke
+Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 
 Public Module LoadDisk
+
+    Public Function LoadRawExpressionMatrix(h5ad As String) As Matrix
+        Dim fileId = H5F.open(h5ad, H5F.ACC_RDONLY)
+        ' /var
+        Dim var As Var = loadVar(fileId)
+        Dim x = loadX(fileId, var.gene_ids.Length)
+    End Function
 
     Public Function LoadDiskMemory(h5ad As String, Optional loadExpr0 As Boolean = True) As AnnData
         Dim fileId = H5F.open(h5ad, H5F.ACC_RDONLY)

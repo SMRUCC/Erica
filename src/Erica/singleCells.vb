@@ -1,12 +1,13 @@
-﻿
-Imports HDF.PInvoke
-Imports Microsoft.VisualBasic.CommandLine.Reflection
+﻿Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas
 Imports Microsoft.VisualBasic.Imaging.Driver
+Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Scripting.MetaData
+Imports SMRUCC.genomics.Analysis
 Imports SMRUCC.genomics.Analysis.SingleCell.STdeconvolve
 Imports SMRUCC.Rsharp.Runtime
 Imports SMRUCC.Rsharp.Runtime.Internal.Object
+Imports SMRUCC.Rsharp.Runtime.Interop
 Imports SparoMx
 Imports STRaid
 
@@ -30,8 +31,21 @@ Public Module singleCells
     End Function
 
     <ExportAPI("HTS_matrix")>
-    Public Function HTS_matrix(h5ad As AnnData) As Object
-        Return h5ad.ExportExpression
+    <RApiReturn(GetType(HTS.DataFrame.Matrix))>
+    Public Function HTS_matrix(h5ad As Object, Optional env As Environment = Nothing) As Object
+        If h5ad Is Nothing Then
+            Return Nothing
+        End If
+        If TypeOf h5ad Is AnnData Then
+            Return DirectCast(h5ad, AnnData).ExportExpression
+        ElseIf TypeOf h5ad Is String Then
+            Return DirectCast(h5ad, String).DoCall(AddressOf LoadDisk.LoadRawExpressionMatrix)
+        Else
+            Return Internal.debug.stop({
+                $"A file path or h5ad anndata is required!",
+                $"given: {h5ad.GetType.FullName}"
+            }, env)
+        End If
     End Function
 
     <ExportAPI("read.h5ad")>
