@@ -28,9 +28,14 @@ Public Class X
         Dim memConfig = FrameworkInternal.ConfigMemory
         Dim expr As GeneralMatrix
 
-        xindices = xindices _
-            .Select(Function(i) i - 1) _
-            .ToArray
+        ' 20220830
+        ' the index of the element is ZERO-based
+        ' no needs to minus 1
+        '
+        ' data has been checked!
+        ' xindices = xindices _
+        '    .Select(Function(i) i - 1) _
+        '    .ToArray
 
         If memConfig = MemoryLoads.Light Then
             ' sparse matrix
