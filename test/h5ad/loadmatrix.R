@@ -4,7 +4,7 @@ require(GCModeller);
 imports "singleCell" from "Erica";
 imports "geneExpression" from "phenotype_kit";
 
-raw = "K:\ST\10x_Visium_deal.h5ad"
+raw ="K:\Downloads\E16.5_E1S1.MOSTA.h5ad"
 |> read.h5ad()
 ;
 

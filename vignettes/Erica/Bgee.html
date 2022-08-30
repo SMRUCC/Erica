@@ -1,0 +1,225 @@
+<!DOCTYPE html><html lang="zh-CN">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>Bgee</title>
+    <meta name="author" content="xie.guigang@gcmodeller.org" />
+    <meta name="copyright" content="SMRUCC genomics Copyright (c) 2020" />
+    <meta name="keywords" content="GCModeller; Xanthomonas; Artificial Life" />
+    <meta name="generator" content="https://github.com/xieguigang/xDoc" />
+    <meta name="theme-color" content="#333" />
+    <meta name="last-update" content="2022-08-30" />
+    <meta name="description" content="A software system aim at Artificial Life system design and analysis." />
+    <meta class="foundation-data-attribute-namespace" />
+    <meta class="foundation-mq-xxlarge" />
+    <meta class="foundation-mq-xlarge" />
+    <meta class="foundation-mq-large" />
+    <meta class="foundation-mq-medium" />
+    <meta class="foundation-mq-small" />
+    <meta class="foundation-mq-topbar" />
+  </head>
+  <body>
+    <table width="100%" summary="page for {Bgee}">
+      <tbody>
+        <tr>
+          <td>{Bgee}</td>
+          <td style="text-align: right;">R# Documentation</td>
+        </tr>
+      </tbody>
+    </table>
+    <h1>Bgee</h1>
+    <hr />
+    <p></p>
+    <div id="main-wrapper">
+                           <div>
+  <h2 id="bgee_calls">
+    <a href="./Bgee/bgee_calls.html">bgee_calls</a>
+  </h2>
+  <hr />
+  <p>
+                      
+                
+                    <pre><p>let <code>bgee_calls</code> as function(<code>bgee</code> as <generic> BgeeDiskReader, <code>geneSet</code> as string, <code>development_stage</code> as string = "*") -> <code>&lt;generic&gt; EnrichmentResult[]</code> {
+    #
+    # .NET API information
+    #
+    # module: Erica.Bgee
+    # LibPath: E:/Erica/assembly/net6.0
+    # library: Erica.dll
+    # package: "Bgee"
+    #
+    return call <code>R&#35;.interop_[Bgee::bgeeCalls]</code>(...);
+}</p></pre>
+
+                    
+                       
+                    
+
+                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
+</div><br /><div>
+  <h2 id="development_stage">
+    <a href="./Bgee/development_stage.html">development_stage</a>
+  </h2>
+  <hr />
+  <p>
+                      
+                
+                    <pre><p>let <code>development_stage</code> as function(<code>bgee</code> as <generic> BgeeDiskReader) -> <code>&lt;generic&gt; dataframe</code> {
+    #
+    # .NET API information
+    #
+    # module: Erica.Bgee
+    # LibPath: E:/Erica/assembly/net6.0
+    # library: Erica.dll
+    # package: "Bgee"
+    #
+    return call <code>R&#35;.interop_[Bgee::development_stage]</code>(...);
+}</p></pre>
+
+                    
+                       
+                    
+
+                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
+</div><br /><div>
+  <h2 id="parseTsv">
+    <a href="./Bgee/parseTsv.html">parseTsv</a>
+  </h2>
+  <hr />
+  <p>
+                      
+                
+                    <pre><p>let <code>parseTsv</code> as function(<code>file</code> as string, 
+<code>advance</code> as boolean = FALSE, 
+<code>quality</code> as string = "*", 
+<code>pip_stream</code> as boolean = FALSE, 
+[<code>&lt;Environment&gt;</code>]) -> <code>&lt;generic&gt; AdvancedCalls</code> {
+    #
+    # .NET API information
+    #
+    # module: Erica.Bgee
+    # LibPath: E:/Erica/assembly/net6.0
+    # library: Erica.dll
+    # package: "Bgee"
+    #
+    return call <code>R&#35;.interop_[Bgee::parseTsv]</code>(...);
+}</p></pre>
+
+                    
+                       
+                    
+
+                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
+</div><br /><div>
+  <h2 id="tissue_background">
+    <a href="./Bgee/tissue_background.html">tissue_background</a>
+  </h2>
+  <hr />
+  <p>
+                    <p>create tissue and cell background based on bgee database</p>  
+                
+                    <pre><p>let <code>tissue_background</code> as function(<code>bgee</code> as <generic> AdvancedCalls[], [<code>&lt;Environment&gt;</code>]) -> <code>&lt;generic&gt; Background</code> {
+    #
+    # .NET API information
+    #
+    # module: Erica.Bgee
+    # LibPath: E:/Erica/assembly/net6.0
+    # library: Erica.dll
+    # package: "Bgee"
+    #
+    return call <code>R&#35;.interop_[Bgee::TissueBackground]</code>(...);
+}</p></pre>
+
+                    <div>
+  <h4>Arguments</h4>
+  <ul>
+                   <li>
+  <code>bgee</code>: -
+                </li>
+                </ul>
+</div>
+                       
+                    
+
+                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
+</div><br /><div>
+  <h2 id="write.backgroundPack">
+    <a href="./Bgee/write.backgroundPack.html">write.backgroundPack</a>
+  </h2>
+  <hr />
+  <p>
+                      
+                
+                    <pre><p>let <code>write.backgroundPack</code> as function(<code>background</code> as any, <code>file</code> as string, [<code>&lt;Environment&gt;</code>]) -> <code>boolean</code> {
+    #
+    # .NET API information
+    #
+    # module: Erica.Bgee
+    # LibPath: E:/Erica/assembly/net6.0
+    # library: Erica.dll
+    # package: "Bgee"
+    #
+    return call <code>R&#35;.interop_[Bgee::saveBackgroundPack]</code>(...);
+}</p></pre>
+
+                    
+                       
+                    
+
+                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
+</div><br /><div>
+  <h2 id="read.backgroundPack">
+    <a href="./Bgee/read.backgroundPack.html">read.backgroundPack</a>
+  </h2>
+  <hr />
+  <p>
+                      
+                
+                    <pre><p>let <code>read.backgroundPack</code> as function(<code>file</code> as string) -> <code>&lt;generic&gt; BgeeDiskReader</code> {
+    #
+    # .NET API information
+    #
+    # module: Erica.Bgee
+    # LibPath: E:/Erica/assembly/net6.0
+    # library: Erica.dll
+    # package: "Bgee"
+    #
+    return call <code>R&#35;.interop_[Bgee::readBackgroundPack]</code>(...);
+}</p></pre>
+
+                    
+                       
+                    
+
+                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
+</div><br /><div>
+  <h2 id="metabolomicsMapping">
+    <a href="./Bgee/metabolomicsMapping.html">metabolomicsMapping</a>
+  </h2>
+  <hr />
+  <p>
+                      
+                
+                    <pre><p>let <code>metabolomicsMapping</code> as function(<code>uniprot</code> as <generic> pipeline, <code>geneExpressions</code> as <generic> Background, [<code>&lt;Environment&gt;</code>]) -> <code>&lt;generic&gt; Background</code> {
+    #
+    # .NET API information
+    #
+    # module: Erica.Bgee
+    # LibPath: E:/Erica/assembly/net6.0
+    # library: Erica.dll
+    # package: "Bgee"
+    #
+    return call <code>R&#35;.interop_[Bgee::metabolomicsMapping]</code>(...);
+}</p></pre>
+
+                    
+                       
+                    
+
+                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
+</div>
+                       </div>
+  </body>
+</html>
