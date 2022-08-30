@@ -39,6 +39,12 @@ Public Module singleCells
         Return LoadDisk.LoadDiskMemory(h5adfile, loadExpr0)
     End Function
 
+    ''' <summary>
+    ''' export the spatial maps data
+    ''' </summary>
+    ''' <param name="h5ad"></param>
+    ''' <param name="useCellAnnotation"></param>
+    ''' <returns></returns>
     <ExportAPI("spatialMap")>
     Public Function spatialMap(h5ad As AnnData, Optional useCellAnnotation As Boolean = False) As dataframe
         Dim spatial = h5ad.obsm.spatial
