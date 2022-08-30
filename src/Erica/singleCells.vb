@@ -60,7 +60,7 @@ Public Module singleCells
     ''' <param name="useCellAnnotation"></param>
     ''' <returns></returns>
     <ExportAPI("spatialMap")>
-    Public Function spatialMap(h5ad As AnnData, Optional useCellAnnotation As Boolean = False) As dataframe
+    Public Function spatialMap(h5ad As AnnData, Optional useCellAnnotation As Boolean? = Nothing) As dataframe
         Dim annos As SpotAnnotation() = SpotAnnotation _
             .LoadAnnotations(h5ad, useCellAnnotation) _
             .ToArray

@@ -9,17 +9,36 @@
         Return $"{label}[{CInt(X)},{CInt(Y)}]"
     End Function
 
-    Public Shared Function LoadAnnotations(h5ad As AnnData, Optional useCellAnnotation As Boolean = False) As IEnumerable(Of SpotAnnotation)
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="h5ad"></param>
+    ''' <param name="useCellAnnotation">
+    ''' nothing means auto
+    ''' </param>
+    ''' <returns></returns>
+    Public Shared Function LoadAnnotations(h5ad As AnnData, Optional useCellAnnotation As Boolean? = Nothing) As IEnumerable(Of SpotAnnotation)
         Dim spatial = h5ad.obsm.spatial
         Dim labels = h5ad.obs.class_labels
         Dim clusters = h5ad.obs.clusters _
             .Select(Function(i) labels(i)) _
             .ToArray
-        Dim colors As String() = If(
-            useCellAnnotation,
-            h5ad.uns.annotation_colors,
-            h5ad.uns.clusters_colors
-        )
+        Dim colors As String()
+
+        If useCellAnnotation Is Nothing Then
+            colors = If(
+                h5ad.uns.annotation_colors.IsNullOrEmpty,
+                h5ad.uns.clusters_colors,
+                h5ad.uns.annotation_colors
+            )
+        Else
+            colors = If(
+                useCellAnnotation,
+                h5ad.uns.annotation_colors,
+                h5ad.uns.clusters_colors
+            )
+        End If
+
         Dim x As Double() = spatial.Select(Function(a) CDbl(a.X)).ToArray
         Dim y As Double() = spatial.Select(Function(a) CDbl(a.Y)).ToArray
 

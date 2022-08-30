@@ -6,7 +6,7 @@ imports "geneExpression" from "phenotype_kit";
 
 options(memory.load = "max");
 
-mat ="K:\Downloads\E16.5_E1S1.MOSTA.h5ad"
+mat = "K:\ST\10x_Visium_deal.h5ad"  # "K:\Downloads\E16.5_E1S1.MOSTA.h5ad"
 |> HTS_matrix()
 ;
 

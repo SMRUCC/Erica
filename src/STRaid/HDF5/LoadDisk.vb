@@ -15,7 +15,7 @@ Public Module LoadDisk
             anno.var.gene_ids
         )
         Dim spotIDs = SpotAnnotation _
-            .LoadAnnotations(anno, useCellAnnotation:=True) _
+            .LoadAnnotations(anno, useCellAnnotation:=Nothing) _
             .Select(Function(a) a.ToString) _
             .ToArray
         Dim x As X = loadX(fileId, geneIDs.Length)
