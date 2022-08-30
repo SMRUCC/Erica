@@ -7,7 +7,7 @@ Public Module LoadDisk
     Public Function LoadRawExpressionMatrix(h5ad As String) As Matrix
         Dim fileId = H5F.open(h5ad, H5F.ACC_RDONLY)
         ' /var
-        Dim geneIDs = getAllGeneIDs(fileId)
+        Dim geneIDs = getGeneSymbols(fileId)
         Dim x As X = loadX(fileId, geneIDs.Length)
     End Function
 
@@ -115,6 +115,14 @@ Public Module LoadDisk
             .X_pca = pca_result,
             .X_umap = xumap
         }
+    End Function
+
+    Private Function getGeneSymbols(fileId As Long) As String()
+        If ReadData.HasDataSet(fileId, "/var/gene_ids") Then
+            Return getAllGeneIDs(fileId)
+        Else
+            Return ReadData.Read_strings(fileId, "/var/gene_short_name")
+        End If
     End Function
 
     Private Function getAllGeneIDs(fileId As Long) As String()
