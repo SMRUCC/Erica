@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>export the spatial maps data</title>
+    <title>Create document vector for run LDA mdelling</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <style rel="stylesheet" type="text/css">
@@ -143,12 +143,12 @@
 
         <table style="width: 100%;">
             <tr>
-                <td>spatialMap {singleCell}</td>
+                <td>STCorpus {STdeconvolve}</td>
                 <td style="text-align: right;">R Documentation</td>
             </tr>
         </table>
 
-        <h2>export the spatial maps data</h2>
+        <h2>Create document vector for run LDA mdelling</h2>
 
         <h3>Description</h3>
 
@@ -157,19 +157,35 @@
         <h3>Usage</h3>
 
         <div style="width: 100%; padding-left: 3%; color: black;">
-            <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>spatialMap</strong>(<i>h5ad</i>,
-    <i>useCellAnnotation</i> = <span style='color: blue;'>NULL</span>);</code></pre>
+            <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>STCorpus</strong>(<i>matrix</i>,
+    <i>min</i> = 0.05,
+    <i>max</i> = 0.95,
+    <i>unify</i> = 10,
+    <i>logNorm</i> = TRUE);</code></pre>
         </div>
 
         <h3>Arguments</h3>
 
         <table>
             
-<dt>h5ad</dt>
+<dt>matrix</dt>
+<dd><p><p>row is pixels and column is gene features. each <br />
+ pixel row is a document sample in LDA model</p></p></dd>
+
+
+<dt>min</dt>
 <dd><p><p>-</p></p></dd>
 
 
-<dt>useCellAnnotation</dt>
+<dt>max</dt>
+<dd><p><p>-</p></p></dd>
+
+
+<dt>unify</dt>
+<dd><p><p>-</p></p></dd>
+
+
+<dt>logNorm</dt>
 <dd><p><p>-</p></p></dd>
 
         </table>
@@ -182,11 +198,11 @@
 
         <h3>Value</h3>
 
-        This function has no value returns.
+        <p>document model for run LDA modelling</p>
 
         <hr />
-        <div style="text-align: center;">[Package <em>singleCell</em> version 1.0.0.0 <a
-                href="../singleCell.html">Index</a>]
+        <div style="text-align: center;">[Package <em>STdeconvolve</em> version 1.0.0.0 <a
+                href="../STdeconvolve.html">Index</a>]
         </div>
     </div>
 </body>

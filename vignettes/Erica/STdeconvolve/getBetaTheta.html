@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>export the spatial maps data</title>
+    <title>get deconvolve result matrix</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <style rel="stylesheet" type="text/css">
@@ -143,33 +143,41 @@
 
         <table style="width: 100%;">
             <tr>
-                <td>spatialMap {singleCell}</td>
+                <td>getBetaTheta {STdeconvolve}</td>
                 <td style="text-align: right;">R Documentation</td>
             </tr>
         </table>
 
-        <h2>export the spatial maps data</h2>
+        <h2>get deconvolve result matrix</h2>
 
         <h3>Description</h3>
 
-        
+        <p><br /> Pull out cell-type proportions across pixels (theta) and<br /> cell-type gene probabilities (beta) matrices from fitted <br /> LDA models from fitLDA</p>
 
         <h3>Usage</h3>
 
         <div style="width: 100%; padding-left: 3%; color: black;">
-            <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>spatialMap</strong>(<i>h5ad</i>,
-    <i>useCellAnnotation</i> = <span style='color: blue;'>NULL</span>);</code></pre>
+            <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>getBetaTheta</strong>(<i>LDA</i>, <i>corpus</i>,
+    <i>topGenes</i> = 25);</code></pre>
         </div>
 
         <h3>Arguments</h3>
 
         <table>
             
-<dt>h5ad</dt>
-<dd><p><p>-</p></p></dd>
+<dt>LDA</dt>
+<dd><p><p>an LDA model from <code>topicmodels</code>. From list of models returned by<br />
+ fitLDA</p></p></dd>
 
 
-<dt>useCellAnnotation</dt>
+<dt>corpus</dt>
+<dd><p><p>If corpus is NULL, then it will use the original corpus that<br />
+ the model was fitted to. Otherwise, compute deconvolved topics from this<br />
+ new corpus. Needs to be pixels x genes and nonnegative integer counts. <br />
+ Each row needs at least 1 nonzero entry (default: NULL)</p></p></dd>
+
+
+<dt>topGenes</dt>
 <dd><p><p>-</p></p></dd>
 
         </table>
@@ -182,11 +190,19 @@
 
         <h3>Value</h3>
 
-        This function has no value returns.
+        <p>A Deconvolve object that contains</p>
+
+<ul>
+<li>beta: cell-type (rows) by gene (columns) distribution matrix.<br />
+Each row is a probability distribution of a cell-type expressing <br />
+each gene in the corpus.</li>
+<li>theta: pixel (rows) by cell-types (columns) distribution matrix.<br />
+Each row is the cell-type composition for a given pixel.</li>
+</ul>
 
         <hr />
-        <div style="text-align: center;">[Package <em>singleCell</em> version 1.0.0.0 <a
-                href="../singleCell.html">Index</a>]
+        <div style="text-align: center;">[Package <em>STdeconvolve</em> version 1.0.0.0 <a
+                href="../STdeconvolve.html">Index</a>]
         </div>
     </div>
 </body>

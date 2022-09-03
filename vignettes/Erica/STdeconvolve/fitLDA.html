@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>export the spatial maps data</title>
+    <title>run LDA modelling</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <style rel="stylesheet" type="text/css">
@@ -143,12 +143,12 @@
 
         <table style="width: 100%;">
             <tr>
-                <td>spatialMap {singleCell}</td>
+                <td>fitLDA {STdeconvolve}</td>
                 <td style="text-align: right;">R Documentation</td>
             </tr>
         </table>
 
-        <h2>export the spatial maps data</h2>
+        <h2>run LDA modelling</h2>
 
         <h3>Description</h3>
 
@@ -157,27 +157,36 @@
         <h3>Usage</h3>
 
         <div style="width: 100%; padding-left: 3%; color: black;">
-            <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>spatialMap</strong>(<i>h5ad</i>,
-    <i>useCellAnnotation</i> = <span style='color: blue;'>NULL</span>);</code></pre>
+            <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>fitLDA</strong>(<i>spatialDoc</i>, <i>k</i>,
+    <i>alpha</i> = 2,
+    <i>beta</i> = 0.5);</code></pre>
         </div>
 
         <h3>Arguments</h3>
 
         <table>
             
-<dt>h5ad</dt>
+<dt>spatialDoc</dt>
 <dd><p><p>-</p></p></dd>
 
 
-<dt>useCellAnnotation</dt>
+<dt>k</dt>
+<dd><p><p>-</p></p></dd>
+
+
+<dt>alpha#</dt>
+<dd><p><p>-</p></p></dd>
+
+
+<dt>beta#</dt>
 <dd><p><p>-</p></p></dd>
 
         </table>
 
 
-        <h3 style="display: none;">Details</h3>
+        <h3 style="display: block;">Details</h3>
 
-        
+        <p>Fit the optimal number of cell-types K for the LDA model</p>
 
 
         <h3>Value</h3>
@@ -185,8 +194,8 @@
         This function has no value returns.
 
         <hr />
-        <div style="text-align: center;">[Package <em>singleCell</em> version 1.0.0.0 <a
-                href="../singleCell.html">Index</a>]
+        <div style="text-align: center;">[Package <em>STdeconvolve</em> version 1.0.0.0 <a
+                href="../STdeconvolve.html">Index</a>]
         </div>
     </div>
 </body>

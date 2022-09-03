@@ -1,0 +1,186 @@
+<!DOCTYPE html><html lang="zh-CN">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>STdeconvolve</title>
+    <meta name="author" content="xie.guigang@gcmodeller.org" />
+    <meta name="copyright" content="SMRUCC genomics Copyright (c) 2020" />
+    <meta name="keywords" content="GCModeller; Xanthomonas; Artificial Life" />
+    <meta name="generator" content="https://github.com/xieguigang/xDoc" />
+    <meta name="theme-color" content="#333" />
+    <meta name="last-update" content="2022-09-03" />
+    <meta name="description" content="A software system aim at Artificial Life system design and analysis." />
+    <meta class="foundation-data-attribute-namespace" />
+    <meta class="foundation-mq-xxlarge" />
+    <meta class="foundation-mq-xlarge" />
+    <meta class="foundation-mq-large" />
+    <meta class="foundation-mq-medium" />
+    <meta class="foundation-mq-small" />
+    <meta class="foundation-mq-topbar" />
+  </head>
+  <body>
+    <table width="100%" summary="page for {STdeconvolve}">
+      <tbody>
+        <tr>
+          <td>{STdeconvolve}</td>
+          <td style="text-align: right;">R# Documentation</td>
+        </tr>
+      </tbody>
+    </table>
+    <h1>STdeconvolve</h1>
+    <hr />
+    <p></p>
+    <div id="main-wrapper">
+                           <div>
+  <h2 id="STCorpus">
+    <a href="./STdeconvolve/STCorpus.html">STCorpus</a>
+  </h2>
+  <hr />
+  <p>
+                    <p>Create document vector for run LDA mdelling</p>  
+                
+                    <pre><p>let <code>STCorpus</code> as function(<code>matrix</code> as <generic> Matrix, 
+<code>min</code> as double = 0.05, 
+<code>max</code> as double = 0.95, 
+<code>unify</code> as integer = 10, 
+<code>logNorm</code> as boolean = TRUE) -> <code>&lt;generic&gt; STCorpus</code> {
+    #
+    # .NET API information
+    #
+    # module: Erica.STdeconvolve
+    # LibPath: E:/Erica/assembly/net6.0
+    # library: Erica.dll
+    # package: "STdeconvolve"
+    #
+    return call <code>R&#35;.interop_[STdeconvolve::STCorpus]</code>(...);
+}</p></pre>
+
+                    <div>
+  <h4>Arguments</h4>
+  <ul>
+                   <li>
+  <code>matrix</code>: row is pixels and column is gene features. each <br />
+ pixel row is a document sample in LDA model
+                </li>
+<li>
+  <code>min</code>: -
+                </li>
+<li>
+  <code>max</code>: -
+                </li>
+<li>
+  <code>unify</code>: -
+                </li>
+<li>
+  <code>logNorm</code>: -
+                </li>
+                </ul>
+</div>
+                       
+                    <h4>Value</h4><p>document model for run LDA modelling</p>
+
+                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
+</div><br /><div>
+  <h2 id="fitLDA">
+    <a href="./STdeconvolve/fitLDA.html">fitLDA</a>
+  </h2>
+  <hr />
+  <p>
+                    <p>run LDA modelling</p>  
+                
+                    <pre><p>let <code>fitLDA</code> as function(<code>spatialDoc</code> as <generic> STCorpus, 
+<code>k</code> as integer, 
+<code>alpha</code> as double = 2, 
+<code>beta</code> as double = 0.5) -> <code>&lt;generic&gt; LdaGibbsSampler</code> {
+    #
+    # .NET API information
+    #
+    # module: Erica.STdeconvolve
+    # LibPath: E:/Erica/assembly/net6.0
+    # library: Erica.dll
+    # package: "STdeconvolve"
+    #
+    return call <code>R&#35;.interop_[STdeconvolve::LdaGibbsSampler]</code>(...);
+}</p></pre>
+
+                    <div>
+  <h4>Arguments</h4>
+  <ul>
+                   <li>
+  <code>spatialDoc</code>: -
+                </li>
+<li>
+  <code>k</code>: -
+                </li>
+<li>
+  <code>alpha#</code>: -
+                </li>
+<li>
+  <code>beta#</code>: -
+                </li>
+                </ul>
+</div>
+                       
+                    
+
+                    <span style="font-size:0.9em; display: block"><h4>Details</h4><blockquote><p>Fit the optimal number of cell-types K for the LDA model</p></blockquote></span></p>
+</div><br /><div>
+  <h2 id="getBetaTheta">
+    <a href="./STdeconvolve/getBetaTheta.html">getBetaTheta</a>
+  </h2>
+  <hr />
+  <p>
+                    <p>get deconvolve result matrix</p>
+
+<p>Pull out cell-type proportions across pixels (theta) and<br />
+ cell-type gene probabilities (beta) matrices from fitted <br />
+ LDA models from fitLDA</p>  
+                
+                    <pre><p>let <code>getBetaTheta</code> as function(<code>LDA</code> as <generic> LdaGibbsSampler, <code>corpus</code> as <generic> STCorpus, <code>topGenes</code> as integer = 25) -> <code>&lt;generic&gt; Deconvolve</code> {
+    #
+    # .NET API information
+    #
+    # module: Erica.STdeconvolve
+    # LibPath: E:/Erica/assembly/net6.0
+    # library: Erica.dll
+    # package: "STdeconvolve"
+    #
+    return call <code>R&#35;.interop_[STdeconvolve::Deconvolve]</code>(...);
+}</p></pre>
+
+                    <div>
+  <h4>Arguments</h4>
+  <ul>
+                   <li>
+  <code>LDA</code>: an LDA model from <code>topicmodels</code>. From list of models returned by<br />
+ fitLDA
+                </li>
+<li>
+  <code>corpus</code>: If corpus is NULL, then it will use the original corpus that<br />
+ the model was fitted to. Otherwise, compute deconvolved topics from this<br />
+ new corpus. Needs to be pixels x genes and nonnegative integer counts. <br />
+ Each row needs at least 1 nonzero entry (default: NULL)
+                </li>
+<li>
+  <code>topGenes</code>: -
+                </li>
+                </ul>
+</div>
+                       
+                    <h4>Value</h4><p>A Deconvolve object that contains</p>
+
+<ul>
+<li>beta: cell-type (rows) by gene (columns) distribution matrix.<br />
+Each row is a probability distribution of a cell-type expressing <br />
+each gene in the corpus.</li>
+<li>theta: pixel (rows) by cell-types (columns) distribution matrix.<br />
+Each row is the cell-type composition for a given pixel.</li>
+</ul>
+
+                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
+</div>
+                       </div>
+  </body>
+</html>

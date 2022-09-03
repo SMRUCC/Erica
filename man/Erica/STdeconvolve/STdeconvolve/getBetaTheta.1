@@ -1,0 +1,50 @@
+.\" man page create by R# package system.
+.TH STDECONVOLVE 1 2000-01-01 "getBetaTheta" "getBetaTheta"
+.SH NAME
+getBetaTheta \- get deconvolve result matrix
+.SH SYNOPSIS
+\fIgetBetaTheta(\fBLDA\fR as <generic> LdaGibbsSampler, 
+\fBcorpus\fR as <generic> STCorpus, 
+\fBtopGenes\fR as integer = 25);\fR
+.SH DESCRIPTION
+.PP
+get deconvolve result matrix
+ 
+ Pull out cell-type proportions across pixels (theta) and
+ cell-type gene probabilities (beta) matrices from fitted 
+ LDA models from fitLDA
+.PP
+.SH OPTIONS
+.PP
+\fBLDA\fB \fR\- 
+ an LDA model from `topicmodels`. From list of models returned by
+ fitLDA
+. 
+.PP
+.PP
+\fBcorpus\fB \fR\- 
+ If corpus is NULL, then it will use the original corpus that
+ the model was fitted to. Otherwise, compute deconvolved topics from this
+ new corpus. Needs to be pixels x genes and nonnegative integer counts. 
+ Each row needs at least 1 nonzero entry (default: NULL)
+. 
+.PP
+.PP
+\fBtopGenes\fB \fR\- -. 
+.PP
+.SH VALUE
+.PP
+A Deconvolve object that contains
+
+ + beta: cell-type (rows) by gene (columns) distribution matrix.
+   Each row is a probability distribution of a cell-type expressing 
+   each gene in the corpus.
+ + theta: pixel (rows) by cell-types (columns) distribution matrix.
+   Each row is the cell-type composition for a given pixel.
+.PP
+.SH SEE ALSO
+STdeconvolve
+.SH FILES
+.PP
+Erica.dll
+.PP
