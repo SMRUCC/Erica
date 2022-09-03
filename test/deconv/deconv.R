@@ -9,7 +9,7 @@ docs = "E:\Erica\src\SingleCell\demo\HR2MSI mouse urinary bladder S096_top3.csv"
 |> STdeconvolve::STCorpus()
 ;
 
-model = STdeconvolve::fitLDA(k = 12, alpha = 2.0, beta = 0.5);
+model = STdeconvolve::fitLDA(docs, k = 12, alpha = 2.0, beta = 0.5);
 
 data = model |> getBetaTheta(corpus = docs);
 

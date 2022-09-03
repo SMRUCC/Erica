@@ -54,7 +54,7 @@ Public Module LDADeconvolve
     Public Function CreateSpatialDocuments(matrix As Matrix,
                                            Optional min As Double = 0.05,
                                            Optional max As Double = 0.95,
-                                           Optional unify As Integer = 20,
+                                           Optional unify As Integer = 10,
                                            Optional logNorm As Boolean = True) As STCorpus
 
         Dim filter As Index(Of String) = matrix.GeneFilter(min, max)
