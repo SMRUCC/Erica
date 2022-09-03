@@ -11,5 +11,6 @@ Public Class Obs
     ''' <returns></returns>
     Public Property clusters As Integer()
     Public Property class_labels As String()
+    Public Property _index As String()
 
 End Class

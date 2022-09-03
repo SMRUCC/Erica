@@ -18,6 +18,11 @@ Public Module LoadDisk
             .LoadAnnotations(anno, useCellAnnotation:=Nothing) _
             .Select(Function(a) a.ToString) _
             .ToArray
+
+        If spotIDs.IsNullOrEmpty Then
+            spotIDs = anno.obs._index
+        End If
+
         Dim x As X = loadX(fileId, geneIDs.Length)
         Dim m As New List(Of DataFrameRow)
         Dim cell As i32 = Scan0
@@ -75,6 +80,7 @@ Public Module LoadDisk
         ' Dim obsindex = ReadData.Read_strings(fileId, "/obs/_index")
         Dim clusters As Integer()
         Dim labels As String()
+        Dim index As String() = ReadData.Read_strings(fileId, "/obs/_index")
 
         If ReadData.HasDataSet(fileId, "/obs/clusters") Then
             clusters = ReadData.Read_dataset(fileId, "/obs/clusters") _
@@ -92,7 +98,8 @@ Public Module LoadDisk
 
         Return New Obs With {
             .clusters = clusters,
-            .class_labels = labels
+            .class_labels = labels,
+            ._index = index
         }
     End Function
 
