@@ -19,9 +19,9 @@ data[, "y"] = sapply(xy, a -> a[2]);
 
 print(data, max.print = 13);
 
-bitmap(file = `${@dir}/stdeconv_scatterpie.png`) {
+bitmap(file = `${@dir}/stdeconv_scatterpie.png`, size = [3600, 2800]) {
 
-	ggplot(data, aes(x = "x", y = "y"))
+	ggplot(data, aes(x = "x", y = "y"), padding = "padding: 250px 350px 200px 250px;")
 	+ geom_scatterpie(data = [
 	"topic_1","topic_2","topic_3","topic_4","topic_5",
 	"topic_6","topic_7","topic_8","topic_9","topic_10"
