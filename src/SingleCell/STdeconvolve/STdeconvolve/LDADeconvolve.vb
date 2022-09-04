@@ -73,11 +73,13 @@ Public Module LDADeconvolve
     <Extension>
     Public Function LDAModelling(spatialDoc As STCorpus, k As Integer,
                                  Optional alpha# = 2.0,
-                                 Optional beta# = 0.5) As LdaGibbsSampler
+                                 Optional beta# = 0.5,
+                                 Optional println As Action(Of Object) = Nothing) As LdaGibbsSampler
         ' 2. Create a LDA sampler
         Dim ldaGibbsSampler As New LdaGibbsSampler(
             documents:=spatialDoc.Document(),
-            V:=spatialDoc.VocabularySize()
+            V:=spatialDoc.VocabularySize(),
+            log:=println
         )
 
         ' 3. Train LDA model via gibbs sampling

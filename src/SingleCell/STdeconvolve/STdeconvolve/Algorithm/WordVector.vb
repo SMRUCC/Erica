@@ -17,7 +17,8 @@ Public Module WordVector
         For Each pixel As DataFrameRow In matrix.expression
             For i As Integer = 0 To geneIds.Length - 1
                 If pixel(i) > 0 Then
-                    ' convert the unify levels as document composition
+                    ' convert the unify levels as
+                    ' document composition
                     document += geneIds(i).Replicate(CInt(pixel(i)))
                 End If
             Next
