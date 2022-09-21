@@ -1,3 +1,5 @@
+
+
 require(ggplot);
 require(Erica);
 
@@ -29,7 +31,5 @@ for(id in layer) {
 		ggplot(data, aes(x = "x", y = "y"), colorSet = "viridis:turbo", padding = "padding: 250px 350px 200px 250px;")
 		+ geom_scatterheatmap(data = id)
 		;
-
 	}
-
 }

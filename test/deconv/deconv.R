@@ -1,10 +1,12 @@
+
+
 require(GCModeller);
 require(Erica);
 require(JSON);
 
 imports "STdeconvolve" from "Erica";
 
-docs = "E:\Erica\src\SingleCell\demo\HR2MSI mouse urinary bladder S096_top3.csv"
+docs = "E:\\Erica\\src\\SingleCell\\demo\\HR2MSI mouse urinary bladder S096_top3.csv"
 |> load.expr()
 |> STdeconvolve::STCorpus()
 ;

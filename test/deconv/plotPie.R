@@ -1,3 +1,5 @@
+
+
 require(ggplot);
 require(Erica);
 
@@ -26,5 +28,4 @@ bitmap(file = `${@dir}/stdeconv_scatterpie.png`, size = [3600, 2800]) {
 	"topic_1","topic_2","topic_3","topic_4","topic_5",
 	"topic_6","topic_7","topic_8","topic_9","topic_10"
 	]);
-
 }
