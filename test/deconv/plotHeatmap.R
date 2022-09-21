@@ -26,7 +26,7 @@ for(id in layer) {
 	
 	bitmap(file = `${@dir}/heatmap/${id}.png`, size = [3600, 2800]) {
 
-		ggplot(data, aes(x = "x", y = "y"), colorSet = "Jet", padding = "padding: 250px 350px 200px 250px;")
+		ggplot(data, aes(x = "x", y = "y"), colorSet = "viridis:turbo", padding = "padding: 250px 350px 200px 250px;")
 		+ geom_scatterheatmap(data = id)
 		;
 
