@@ -12,9 +12,9 @@ Public Class BgeeDiskReader
     ReadOnly anatomicals As IDFactorEnums
     ReadOnly developmental_stage As IDFactorEnums
 
-    Public ReadOnly Property anatomicalIDs As IEnumerable(Of String)
+    Public ReadOnly Property anatomicalIDs As String()
         Get
-            Return anatomicals.enums.Keys
+            Return anatomicals.enums.Keys.ToArray
         End Get
     End Property
 
@@ -65,10 +65,13 @@ Public Class BgeeDiskReader
         }
     End Function
 
-    Public Function AnatomicalModel(model As String, size As Integer) As Cluster
+    Public Function AnatomicalModel(model As String, Optional size As Integer = -1) As Cluster
         Dim info = anatomicals.enums(model)
         Dim cluster_id As Integer = anatomicals(model)
-        Dim calls = anatomical_calls(key:=cluster_id)
+
+        If size <= 0 Then
+            size = anatomical_calls(key:=cluster_id).Length
+        End If
 
         Return New Cluster With {
             .description = info.name,

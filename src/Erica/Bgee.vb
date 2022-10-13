@@ -1,8 +1,5 @@
-
-Imports System.IO
 Imports bgee
 Imports Microsoft.VisualBasic.CommandLine.Reflection
-Imports Microsoft.VisualBasic.Data.IO.MessagePack
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.GSEA
 Imports SMRUCC.genomics.Assembly.Uniprot.XML
@@ -19,7 +16,7 @@ Public Module Bgee
     <ExportAPI("bgee_calls")>
     Public Function bgeeCalls(bgee As BgeeDiskReader, geneSet As String(), Optional development_stage As String = "*") As EnrichmentResult()
         Dim result As New List(Of EnrichmentResult)
-        Dim clusterIDs = bgee.anatomicalIDs.ToArray
+        Dim clusterIDs = bgee.anatomicalIDs
 
         For Each id As String In clusterIDs
             Dim size As Integer = -1
@@ -45,6 +42,23 @@ Public Module Bgee
             .columns = New Dictionary(Of String, Array) From {
                 {"stage_id", id},
                 {"development_stage", name},
+                {"cluster_size", size}
+            },
+            .rownames = id
+        }
+    End Function
+
+    <ExportAPI("anatomicalIDs")>
+    Public Function anatomicalIDs(bgee As BgeeDiskReader) As dataframe
+        Dim id As String() = bgee.anatomicalIDs
+        Dim clusters = id.Select(Function(d) bgee.AnatomicalModel(d)).ToArray
+        Dim name = clusters.Select(Function(c) c.names).ToArray
+        Dim size = clusters.Select(Function(c) c.size).ToArray
+
+        Return New dataframe With {
+            .columns = New Dictionary(Of String, Array) From {
+                {"anatomicalID", id},
+                {"anatomical_name", name},
                 {"cluster_size", size}
             },
             .rownames = id
