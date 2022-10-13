@@ -372,3 +372,5 @@ test/h5ad/bgee/11.csv
 test/h5ad/bgee/10.csv
 test/h5ad/bgee/1.csv
 test/h5ad/bgee/0.csv
+test/bgee/Homo_sapiens_expr_simple_all_conditions.tsv
+test/bgee/hsa.bgee
