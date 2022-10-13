@@ -1,0 +1,40 @@
+stage_id,development_stage,cluster_size
+HsapDv:0000240,sixth decade stage (human),5904210
+UBERON:0018241,prime adult stage,234947
+UBERON:0000104,life cycle,3554661
+HsapDv:0000238,fourth decade stage (human),4946307
+HsapDv:0000239,fifth decade stage (human),5637488
+UBERON:0000113,post-juvenile,2520532
+HsapDv:0000237,third decade stage (human),5139414
+HsapDv:0000241,seventh decade stage (human),5412489
+HsapDv:0000242,eighth decade stage (human),2180100
+HsapDv:0000268,15-19 year-old (human),335705
+HsapDv:0000244,tenth decade stage (human),246720
+UBERON:0034919,juvenile stage,264987
+HsapDv:0000243,ninth decade stage (human),571423
+HsapDv:0000197,third LMP month stage (human),233303
+HsapDv:0000198,fourth LMP month stage (human),277310
+HsapDv:0000199,fifth LMP month stage (human),467298
+UBERON:0000111,organogenesis stage,50147
+HsapDv:0000266,young adult stage (human),242415
+UBERON:0007222,late adult stage,125611
+UBERON:0007220,late embryonic stage,132161
+HsapDv:0000270,2-4 year-old child stage (human),154672
+UBERON:0000112,sexually immature stage,85854
+HsapDv:0000246,1-year-old stage (human),227011
+UBERON:0034920,infant stage,201613
+HsapDv:0000016,Carnegie stage 09 (human),6018
+HsapDv:0000017,Carnegie stage 10 (human),6179
+HsapDv:0000018,Carnegie stage 11 (human),5933
+HsapDv:0000019,Carnegie stage 12 (human),5726
+HsapDv:0000020,Carnegie stage 13 (human),5753
+HsapDv:0000021,Carnegie stage 14 (human),6141
+HsapDv:0000200,sixth LMP month stage (human),46951
+HsapDv:0000203,ninth LMP month stage (human),30471
+HsapDv:0000095,80 year-old and over stage (human),34720
+HsapDv:0000245,eleventh decade stage (human),76457
+HsapDv:0000272,60-79 year-old stage (human),6618
+HsapDv:0000023,Carnegie stage 16 (human),18
+UBERON:0000068,embryo stage,224
+HsapDv:0000024,Carnegie stage 17 (human),5
+HsapDv:0000026,Carnegie stage 19 (human),1

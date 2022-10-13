@@ -52,6 +52,17 @@ Public Class BgeeDiskReader
                           End Function)
     End Sub
 
+    Public Function GetAllgeneIDs() As Dictionary(Of String, String)
+        Dim allIds As String() = geneIDs.enums.Keys.ToArray
+        Dim list As New Dictionary(Of String, String)
+
+        For Each id As String In allIds
+            Call list.Add(id, geneIDs.enums(id).name)
+        Next
+
+        Return list
+    End Function
+
     Public Function DevelopmentalModel(model As String) As Cluster
         Dim info = developmental_stage.enums(model)
         Dim cluster_id As Integer = developmental_stage(model)

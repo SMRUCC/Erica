@@ -1,0 +1,332 @@
+anatomicalID,anatomical_name,cluster_size
+CL:0000015,male germ cell,3325
+CL:0000019,sperm,8778
+CL:0000083,epithelial cell of pancreas,14749
+CL:0000094,granulocyte,26270
+CL:0000115,endothelial cell,7734
+CL:0000576,monocyte,43931
+CL:0000738,leukocyte,22530
+CL:0000842,mononuclear cell,10046
+CL:0002079,pancreatic ductal cell,7816
+CL:0002092,bone marrow cell,50066
+CL:0002255,stromal cell of endometrium,25689
+CL:0002328,bronchial epithelial cell,242828
+CL:0002336,buccal mucosa cell,8349
+UBERON:0000002,uterine cervix,111615
+UBERON:0000006,islet of Langerhans,364100
+UBERON:0000007,pituitary gland,458719
+UBERON:0000014,zone of skin,242104
+UBERON:0000029,lymph node,116007
+UBERON:0000043,tendon,57664
+UBERON:0000044,dorsal root ganglion,70846
+UBERON:0000057,urethra,42626
+UBERON:0000059,large intestine,38159
+UBERON:0000074,renal glomerulus,10453
+UBERON:0000081,metanephros,41085
+UBERON:0000082,adult mammalian kidney,390869
+UBERON:0000160,intestine,142660
+UBERON:0000167,oral cavity,66647
+UBERON:0000173,amniotic fluid,16176
+UBERON:0000178,blood,953569
+UBERON:0000317,colonic mucosa,84123
+UBERON:0000331,ileal mucosa,9975
+UBERON:0000355,pharyngeal mucosa,27709
+UBERON:0000362,renal medulla,31598
+UBERON:0000397,colonic epithelium,22763
+UBERON:0000399,jejunal mucosa,11142
+UBERON:0000451,prefrontal cortex,267951
+UBERON:0000458,endocervix,94245
+UBERON:0000465,material anatomical entity,23281
+UBERON:0000467,anatomical system,30024
+UBERON:0000468,multicellular organism,49021
+UBERON:0000473,testis,386765
+UBERON:0000473 ? CL:0000089,testis inmale germ line stem cell (sensu Vertebrata),35237
+UBERON:0000474,female reproductive system,18915
+UBERON:0000922,embryo,38249
+UBERON:0000941,cranial nerve II,6963
+UBERON:0000945,stomach,468616
+UBERON:0000947,aorta,39478
+UBERON:0000948,heart,465427
+UBERON:0000955,brain,469564
+UBERON:0000956,cerebral cortex,194929
+UBERON:0000977,pleura,10367
+UBERON:0000979,tibia,11206
+UBERON:0000988,pons,9297
+UBERON:0000989,penis,11065
+UBERON:0000991 ? CL:0000670,gonad inprimordial germ cell,32007
+UBERON:0000992,ovary,269799
+UBERON:0000995,uterus,30741
+UBERON:0000996,vagina,295639
+UBERON:0000997,mammalian vulva,54021
+UBERON:0000998,seminal vesicle,11901
+UBERON:0001013,adipose tissue,331456
+UBERON:0001017,central nervous system,7511
+UBERON:0001043,esophagus,225107
+UBERON:0001044,saliva-secreting gland,119740
+UBERON:0001052,rectum,35852
+UBERON:0001114,right lobe of liver,270333
+UBERON:0001119,right lobe of thyroid gland,260333
+UBERON:0001120,left lobe of thyroid gland,397943
+UBERON:0001134,skeletal muscle tissue,261328
+UBERON:0001135,smooth muscle tissue,36251
+UBERON:0001150,body of pancreas,352484
+UBERON:0001153,caecum,25846
+UBERON:0001154,vermiform appendix,57797
+UBERON:0001155,colon,453389
+UBERON:0001157,transverse colon,402738
+UBERON:0001159,sigmoid colon,30433
+UBERON:0001160,fundus of stomach,157939
+UBERON:0001161,body of stomach,416668
+UBERON:0001162,cardia of stomach,25914
+UBERON:0001166,pylorus,30735
+UBERON:0001199,mucosa of stomach,29404
+UBERON:0001225,cortex of kidney,115677
+UBERON:0001231,nephron tubule,57513
+UBERON:0001233,right adrenal gland,179063
+UBERON:0001234,left adrenal gland,362871
+UBERON:0001235,adrenal cortex,37687
+UBERON:0001255,urinary bladder,246442
+UBERON:0001259,mucosa of urinary bladder,5549
+UBERON:0001264,pancreas,80735
+UBERON:0001295,endometrium,291985
+UBERON:0001296,myometrium,285528
+UBERON:0001302,right uterine tube,28806
+UBERON:0001303,left uterine tube,65078
+UBERON:0001304,germinal epithelium of ovary,10309
+UBERON:0001323,tibial nerve,462600
+UBERON:0001377,quadriceps femoris,197879
+UBERON:0001379,vastus lateralis,182797
+UBERON:0001383,muscle of leg,96289
+UBERON:0001385,tibialis anterior,26409
+UBERON:0001388,gastrocnemius,461657
+UBERON:0001416,skin of abdomen,399762
+UBERON:0001476,deltoid,63996
+UBERON:0001496,ascending aorta,384965
+UBERON:0001507,biceps brachii,53389
+UBERON:0001511,skin of leg,478919
+UBERON:0001515,thoracic aorta,269587
+UBERON:0001554,skin of hip,12128
+UBERON:0001614,superficial temporal artery,8518
+UBERON:0001621,coronary artery,37002
+UBERON:0001625,right coronary artery,58298
+UBERON:0001626,left coronary artery,292307
+UBERON:0001630,muscle organ,10965
+UBERON:0001675,trigeminal ganglion,63985
+UBERON:0001723,tongue,18466
+UBERON:0001765,mammary duct,9987
+UBERON:0001782,pigmented layer of retina,43562
+UBERON:0001812,palpebral conjunctiva,64337
+UBERON:0001826,nasal cavity mucosa,19799
+UBERON:0001828,gingiva,20942
+UBERON:0001830,minor salivary gland,351706
+UBERON:0001831,parotid gland,65035
+UBERON:0001870,frontal cortex,488554
+UBERON:0001871,temporal lobe,153045
+UBERON:0001872,parietal lobe,109065
+UBERON:0001873,caudate nucleus,429963
+UBERON:0001874,putamen,371373
+UBERON:0001875,globus pallidus,18501
+UBERON:0001876,amygdala,335638
+UBERON:0001882,nucleus accumbens,386054
+UBERON:0001890,forebrain,39341
+UBERON:0001891,midbrain,98055
+UBERON:0001893,telencephalon,11463
+UBERON:0001896,medulla oblongata,101031
+UBERON:0001897,dorsal plus ventral thalamus,100781
+UBERON:0001898,hypothalamus,373036
+UBERON:0001906,subthalamic nucleus,92829
+UBERON:0001911,mammary gland,21663
+UBERON:0001949,gingival epithelium,8777
+UBERON:0001950,neocortex,19613
+UBERON:0001951,epithelium of nasopharynx,9517
+UBERON:0001954,Ammon's horn,503295
+UBERON:0001965,substantia nigra pars compacta,18499
+UBERON:0001966,substantia nigra pars reticulata,18231
+UBERON:0001976,epithelium of esophagus,11012
+UBERON:0001987,placenta,90814
+UBERON:0002021,occipital lobe,60229
+UBERON:0002030,nipple,30417
+UBERON:0002031,epithelium of bronchus,147475
+UBERON:0002037,cerebellum,271045
+UBERON:0002038,substantia nigra,445677
+UBERON:0002046,thyroid gland,655840
+UBERON:0002048,lung,454113
+UBERON:0002073,hair follicle,12002
+UBERON:0002080,heart right ventricle,60792
+UBERON:0002081,cardiac atrium,55797
+UBERON:0002082,cardiac ventricle,58060
+UBERON:0002084,heart left ventricle,562427
+UBERON:0002098,apex of heart,28646
+UBERON:0002106,spleen,425102
+UBERON:0002107,liver,564293
+UBERON:0002108,small intestine,86074
+UBERON:0002110,gall bladder,35159
+UBERON:0002113,kidney,172050
+UBERON:0002114,duodenum,70982
+UBERON:0002115,jejunum,18497
+UBERON:0002118,right ovary,164855
+UBERON:0002119,left ovary,185515
+UBERON:0002127,inferior olivary complex,17752
+UBERON:0002129,cerebellar cortex,83821
+UBERON:0002167,right lung,59430
+UBERON:0002185,bronchus,39316
+UBERON:0002190,subcutaneous adipose tissue,569847
+UBERON:0002196,adenohypophysis,194333
+UBERON:0002217,synovial joint,21097
+UBERON:0002240,spinal cord,141047
+UBERON:0002245,cerebellar hemisphere,478378
+UBERON:0002250,popliteal artery,45531
+UBERON:0002264,olfactory bulb,2550
+UBERON:0002336,corpus callosum,200029
+UBERON:0002345,descending thoracic aorta,93622
+UBERON:0002349,myocardium,89779
+UBERON:0002358,peritoneum,19595
+UBERON:0002367,prostate gland,416367
+UBERON:0002369,adrenal gland,130026
+UBERON:0002370,thymus,41900
+UBERON:0002371,bone marrow,185050
+UBERON:0002372,tonsil,143957
+UBERON:0002384,connective tissue,10851
+UBERON:0002385,muscle tissue,37557
+UBERON:0002400,parietal pleura,45096
+UBERON:0002401,visceral pleura,44157
+UBERON:0002407,pericardium,9031
+UBERON:0002418,cartilage tissue,11023
+UBERON:0002436,primary visual cortex,132541
+UBERON:0002450,decidua,16859
+UBERON:0002469,esophagus mucosa,444888
+UBERON:0002476,lateral globus pallidus,17827
+UBERON:0002477,medial globus pallidus,41920
+UBERON:0002483,trabecular bone tissue,41092
+UBERON:0002581,postcentral gyrus,172865
+UBERON:0002661,superior frontal gyrus,346119
+UBERON:0002691,ventral tegmental area,59280
+UBERON:0002728,entorhinal cortex,269607
+UBERON:0002771,middle temporal gyrus,45647
+UBERON:0002810,right frontal lobe,328844
+UBERON:0002870,dorsal motor nucleus of vagus nerve,11928
+UBERON:0003053,ventricular zone,48313
+UBERON:0003126,trachea,39561
+UBERON:0003244,epithelium of mammary gland,56454
+UBERON:0003379,cardiac muscle of right atrium,55929
+UBERON:0003454,small intestine Peyer's patch,401080
+UBERON:0003701,calcaneal tendon,134412
+UBERON:0003729,mouth mucosa,75049
+UBERON:0003881,CA1 field of hippocampus,22461
+UBERON:0003889,fallopian tube,66389
+UBERON:0003911,choroid plexus epithelium,6177
+UBERON:0004023,ganglionic eminence,55979
+UBERON:0004087,vena cava,6684
+UBERON:0004167,orbitofrontal cortex,33912
+UBERON:0004252,hindlimb stylopod muscle,53884
+UBERON:0004262,upper leg skin,12454
+UBERON:0004263,upper arm skin,29222
+UBERON:0004358,caput epididymis,34952
+UBERON:0004359,corpus epididymis,34185
+UBERON:0004360,cauda epididymis,33613
+UBERON:0004502,skeletal muscle tissue of biceps brachii,16722
+UBERON:0004533,left testis,255220
+UBERON:0004534,right testis,194146
+UBERON:0004720,cerebellar vermis,28682
+UBERON:0004736,metanephric glomerulus,58293
+UBERON:0004797,blood vessel layer,6835
+UBERON:0004801,cervix epithelium,38231
+UBERON:0004804,oviduct epithelium,44980
+UBERON:0004819,kidney epithelium,11587
+UBERON:0004991,mucosa of transverse colon,28818
+UBERON:0004993,mucosa of sigmoid colon,10883
+UBERON:0005030,mucosa of paranasal sinus,8740
+UBERON:0005200,thoracic mammary gland,476479
+UBERON:0005343,cortical plate,48143
+UBERON:0005351,paraflocculus,7465
+UBERON:0005363,inferior vagus X ganglion,57580
+UBERON:0005384,nasal cavity epithelium,70364
+UBERON:0005386,olfactory segment of nasal mucosa,36730
+UBERON:0006469,C1 segment of cervical spinal cord,315952
+UBERON:0006483,Brodmann (1909) area 46,53846
+UBERON:0006566,left ventricle myocardium,24847
+UBERON:0006631,right atrium auricular region,389135
+UBERON:0006914,squamous epithelium,12574
+UBERON:0006919,tongue squamous epithelium,3659
+UBERON:0006920,esophagus squamous epithelium,10016
+UBERON:0006922,cervix squamous epithelium,3626
+UBERON:0007023,adult organism,13520
+UBERON:0007227,superior vestibular nucleus,50866
+UBERON:0007318,saphenous vein,27460
+UBERON:0007371,superior surface of tongue,29616
+UBERON:0007610,tibial artery,421919
+UBERON:0007616,layer of synovial tissue,71730
+UBERON:0007808,adipose tissue of abdominal region,107572
+UBERON:0008188,tendon of biceps brachii,8318
+UBERON:0008266,periodontal ligament,5756
+UBERON:0008948,upper lobe of lung,47532
+UBERON:0008949,lower lobe of lung,93409
+UBERON:0008952,upper lobe of left lung,282169
+UBERON:0009834,dorsolateral prefrontal cortex,594306
+UBERON:0009835,anterior cingulate cortex,335615
+UBERON:0009853,body of uterus,183496
+UBERON:0010414,omental fat pad,435577
+UBERON:0010533,metanephros cortex,63993
+UBERON:0011876,body of tongue,26118
+UBERON:0012249,ectocervix,149740
+UBERON:0013473,lower esophagus,87725
+UBERON:0013540,Brodmann (1909) area 9,287849
+UBERON:0013541,Brodmann (1909) area 10,3986
+UBERON:0013554,Brodmann (1909) area 23,60859
+UBERON:0014890,right hemisphere of cerebellum,285903
+UBERON:0015488,sural nerve,61336
+UBERON:0018303,adrenal tissue,86273
+UBERON:0035805,muscle layer of sigmoid colon,411476
+UBERON:0035825,left adrenal gland cortex,257135
+UBERON:0035827,right adrenal gland cortex,93766
+UBERON:0035833,lower esophagus muscularis layer,435069
+UBERON:0035834,lower esophagus mucosa,27295
+UBERON:0035841,esophagogastric junction muscularis propria,411303
+UBERON:0001509,triceps brachii,8017
+CL:0000023,oocyte,8137
+CL:0000169,type B pancreatic cell,2344
+CL:0000655,secondary oocyte,8820
+UBERON:0001103,diaphragm,2865
+UBERON:0002000,gluteal muscle,4360
+UBERON:0002702,middle frontal gyrus,3775
+UBERON:0002736,lateral nuclear group of thalamus,17036
+UBERON:0002795,frontal pole,6825
+UBERON:0003027,cingulate cortex,2328
+UBERON:0004511,skeletal muscle tissue of rectus abdominis,15057
+UBERON:0004811,endometrium epithelium,3261
+UBERON:0014892,skeletal muscle organ,5393
+UBERON:0016525,frontal lobe,1277
+UBERON:0000966,retina,4075
+UBERON:0000970,eye,6758
+UBERON:0001474,bone element,2419
+UBERON:0001728,nasopharynx,1805
+UBERON:0000010,peripheral nervous system,511
+UBERON:0002018,synovial membrane of synovial joint,55
+UBERON:0001021,nerve,1403
+UBERON:0001638,vein,100
+UBERON:0001637,artery,1073
+UBERON:0001776,optic choroid,296
+UBERON:0000407,sympathetic trunk,190
+UBERON:0001905,pineal body,95
+UBERON:0001301,epididymis,256
+UBERON:0000310,breast,43
+UBERON:0001844,cochlea,347
+UBERON:0001769,iris,41
+UBERON:0004904,neuron projection bundle connecting eye with brain,177
+UBERON:0000965,lens of camera-type eye,114
+UBERON:0002116,ileum,198
+UBERON:0002331,umbilical cord,81
+UBERON:0005969,eye trabecular meshwork,75
+UBERON:0001737,larynx,24
+UBERON:0001817,lacrimal gland,30
+UBERON:0001287,proximal convoluted tubule,14
+UBERON:0001003,skin epidermis,16
+UBERON:0000369,corpus striatum,4
+UBERON:0004362,pharyngeal arch 1,6
+UBERON:0007277,presumptive hindbrain,5
+UBERON:0001051,hypopharynx,8
+UBERON:0005448,greater omentum,3
+UBERON:0007811,craniocervical region,5
+UBERON:0001690,ear,5
+UBERON:0001786,fovea centralis,1
+UBERON:0002092,brain dura mater,1

@@ -12,8 +12,15 @@ close(data);
 
 bgee = read.backgroundPack(diskfile);
 
+data1 = development_stage(bgee);
+data2 = anatomicalIDs(bgee);
+
 print("view of the development_stage:");
-print(development_stage(bgee));
+print(data1);
+
+write.csv(data1, file = "./development_stage.csv", row.names = FALSE);
 
 print("view of the anatomicalIDs:");
-print(anatomicalIDs(bgee));
+print(data2);
+
+write.csv(data2, file = "./anatomicalIDs.csv", row.names = FALSE);

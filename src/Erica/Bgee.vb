@@ -65,6 +65,24 @@ Public Module Bgee
         }
     End Function
 
+    <ExportAPI("geneIDs")>
+    Public Function geneIDList(bgee As BgeeDiskReader) As dataframe
+        Dim geneIDs = bgee.GetAllgeneIDs
+        Dim geneID As String() = geneIDs.Keys.ToArray
+        Dim geneName As String() = geneID _
+            .Select(Function(id) geneIDs(id)) _
+            .ToArray
+        Dim maps As New dataframe With {
+            .columns = New Dictionary(Of String, Array) From {
+                {"geneID", geneID},
+                {"name", geneName}
+            },
+            .rownames = geneID
+        }
+
+        Return maps
+    End Function
+
     <ExportAPI("parseTsv")>
     <RApiReturn(GetType(AdvancedCalls))>
     Public Function parseTsv(file As String,
