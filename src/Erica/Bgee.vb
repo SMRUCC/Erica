@@ -13,22 +13,38 @@ Imports SMRUCC.Rsharp.Runtime.Interop
 <Package("Bgee")>
 Public Module Bgee
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="bgee"></param>
+    ''' <param name="geneSet"></param>
+    ''' <param name="development_stage">
+    ''' this function returns the enrichment result for all existed development stages
+    ''' </param>
+    ''' <returns>
+    ''' the return data value is depends on the parameter 
+    ''' value of <paramref name="development_stage"/>.
+    ''' 
+    ''' + for a specific development_stage id, this function 
+    '''   just returns a enrichment result dataframe
+    ''' + for default value, a list that contains enrichment 
+    '''   result for each development_stage will be returned
+    '''   
+    ''' </returns>
     <ExportAPI("bgee_calls")>
-    Public Function bgeeCalls(bgee As BgeeDiskReader, geneSet As String(), Optional development_stage As String = "*") As EnrichmentResult()
-        Dim result As New List(Of EnrichmentResult)
-        Dim clusterIDs = bgee.anatomicalIDs
+    <RApiReturn(GetType(EnrichmentResult))>
+    Public Function bgeeCalls(bgee As BgeeDiskReader, geneSet As String(), Optional development_stage As String = "*") As Object
+        If development_stage = "*" Then
+            Dim enrichSet As New list With {.slots = New Dictionary(Of String, Object)}
 
-        For Each id As String In clusterIDs
-            Dim size As Integer = -1
-            Dim hits = bgee.Anatomical(id, geneSet, development_stage, size:=size).ToArray
-            Dim enrich = bgee.AnatomicalModel(id, size).calcResult(hits, geneSet.Length, bgee.backgroundSize, outputAll:=False)
+            For Each id As String In bgee.developmentalIDs
+                enrichSet.add(id, bgee.Enrichment(geneSet, development_stage:=id))
+            Next
 
-            If Not enrich Is Nothing Then
-                result.Add(enrich)
-            End If
-        Next
-
-        Return result.FDRCorrection.ToArray
+            Return enrichSet
+        Else
+            Return bgee.Enrichment(geneSet, development_stage)
+        End If
     End Function
 
     <ExportAPI("development_stage")>

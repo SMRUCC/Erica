@@ -6,6 +6,28 @@ bgee_calls \-
 \fIbgee_calls(\fBbgee\fR as <generic> BgeeDiskReader, 
 \fBgeneSet\fR as string, 
 \fBdevelopment_stage\fR as string = "*");\fR
+.SH OPTIONS
+.PP
+\fBbgee\fB \fR\- -. 
+.PP
+.PP
+\fBgeneSet\fB \fR\- -. 
+.PP
+.PP
+\fBdevelopment_stage\fB \fR\- 
+ this function returns the enrichment result for all existed development stages
+. 
+.PP
+.SH VALUE
+.PP
+the return data value is depends on the parameter 
+ value of **`development_stage`**.
+ 
+ + for a specific development_stage id, this function 
+   just returns a enrichment result dataframe
+ + for default value, a list that contains enrichment 
+   result for each development_stage will be returned
+.PP
 .SH SEE ALSO
 Bgee
 .SH FILES

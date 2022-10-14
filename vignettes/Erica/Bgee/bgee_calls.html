@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>bgee_calls</title>
+    <title></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <style rel="stylesheet" type="text/css">
@@ -148,11 +148,11 @@
             </tr>
         </table>
 
-        <h2>bgee_calls</h2>
+        <h2></h2>
 
         <h3>Description</h3>
 
-        bgee_calls
+        
 
         <h3>Usage</h3>
 
@@ -165,6 +165,17 @@
 
         <table>
             
+<dt>bgee</dt>
+<dd><p><p>-</p></p></dd>
+
+
+<dt>geneSet</dt>
+<dd><p><p>-</p></p></dd>
+
+
+<dt>development.stage</dt>
+<dd><p><p>this function returns the enrichment result for all existed development stages</p></p></dd>
+
         </table>
 
 
@@ -175,7 +186,15 @@
 
         <h3>Value</h3>
 
-        This function has no value returns.
+        <p>the return data value is depends on the parameter <br />
+ value of <strong><code>development_stage</code></strong>.</p>
+
+<ul>
+<li>for a specific development_stage id, this function <br />
+just returns a enrichment result dataframe</li>
+<li>for default value, a list that contains enrichment <br />
+result for each development_stage will be returned</li>
+</ul>
 
         <hr />
         <div style="text-align: center;">[Package <em>Bgee</em> version 1.0.0.0 <a

@@ -41,7 +41,7 @@
   <p>
                       
                 
-                    <pre><p>let <code>bgee_calls</code> as function(<code>bgee</code> as <generic> BgeeDiskReader, <code>geneSet</code> as string, <code>development_stage</code> as string = "*") -> <code>&lt;generic&gt; EnrichmentResult[]</code> {
+                    <pre><p>let <code>bgee_calls</code> as function(<code>bgee</code> as <generic> BgeeDiskReader, <code>geneSet</code> as string, <code>development_stage</code> as string = "*") -> <code>&lt;generic&gt; EnrichmentResult</code> {
     #
     # .NET API information
     #
@@ -53,9 +53,30 @@
     return call <code>R&#35;.interop_[Bgee::bgeeCalls]</code>(...);
 }</p></pre>
 
-                    
+                    <div>
+  <h4>Arguments</h4>
+  <ul>
+                   <li>
+  <code>bgee</code>: -
+                </li>
+<li>
+  <code>geneSet</code>: -
+                </li>
+<li>
+  <code>development_stage</code>: this function returns the enrichment result for all existed development stages
+                </li>
+                </ul>
+</div>
                        
-                    
+                    <h4>Value</h4><p>the return data value is depends on the parameter <br />
+ value of <strong><code>development_stage</code></strong>.</p>
+
+<ul>
+<li>for a specific development_stage id, this function <br />
+just returns a enrichment result dataframe</li>
+<li>for default value, a list that contains enrichment <br />
+result for each development_stage will be returned</li>
+</ul>
 
                     <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
 </div><br /><div>
