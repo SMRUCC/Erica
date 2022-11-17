@@ -1,4 +1,5 @@
 Imports System.Drawing
+Imports System.IO
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
@@ -34,5 +35,12 @@ Public Module STdata
                 .Select(Function(r) spotIndex(r.geneID)) _
                 .ToArray
         }
+    End Function
+
+    <ExportAPI("write.straid")>
+    Public Function WriteMatrix(straid As STRaid.STRaid, file As String) As Object
+        Using buffer As Stream = file.Open(FileMode.OpenOrCreate, doClear:=True, [readOnly]:=False)
+            Return Global.STRaid.STRaid.Write(straid, file:=buffer)
+        End Using
     End Function
 End Module

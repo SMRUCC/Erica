@@ -7,5 +7,7 @@ imports "STdata" from "Erica";
 
 spots = read.spatial_spots("F:\20221117-ST\tissue_positions_list.csv");
 matrix = read.ST_spacerangerH5Matrix("F:\20221117-ST\raw_feature_bc_matrix.h5");
+straid = STdata::as.STRaid(matrix, spots);
 
+write.straid(straid, file = "F:\20221117-ST/demo.dat");
 
