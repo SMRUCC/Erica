@@ -15,7 +15,7 @@ Friend Class ReadData
 
         For i As Integer = 0 To dataBytes.Length - 1 Step byte_size
             Call Array.ConstrainedCopy(dataBytes, i, buf, Scan0, byte_size)
-            Yield Encoding.ASCII.GetString(buf)
+            Yield Strings.Trim(Encoding.ASCII.GetString(buf))
         Next
     End Function
 
