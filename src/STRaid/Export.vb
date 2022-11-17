@@ -7,20 +7,35 @@ Public Module Export
 
     <Extension>
     Public Function ExportExpression(raw As AnnData) As Matrix
-        Dim m As New List(Of DataFrameRow)
         Dim spatial = raw.obsm.spatial _
             .Select(Function(i) $"{i.X},{i.Y}") _
             .ToArray
+        Dim mat As Matrix = raw.X.ExportExpression(
+            spotId:=spatial,
+            geneID:=raw.var.gene_ids,
+            source:=raw.source
+        )
+
+        Return mat
+    End Function
+
+    <Extension>
+    Friend Function ExportExpression(X As X,
+                                     spotId As String(),
+                                     geneID As String(),
+                                     source As String) As Matrix
+
+        Dim m As New List(Of DataFrameRow)
         Dim cell As i32 = Scan0
 
-        For Each row As Vector In raw.X.matrix.RowVectors
-            m.Add(New DataFrameRow With {.geneID = spatial(++cell), .experiments = row.ToArray})
+        For Each row As Vector In X.matrix.RowVectors
+            Call m.Add(New DataFrameRow With {.geneID = spotId(++cell), .experiments = row.ToArray})
         Next
 
         Return New Matrix With {
             .expression = m.ToArray,
-            .sampleID = raw.var.gene_ids,
-            .tag = raw.source
+            .sampleID = geneID,
+            .tag = source
         }
     End Function
 

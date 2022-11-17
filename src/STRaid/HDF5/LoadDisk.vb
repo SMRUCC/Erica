@@ -1,10 +1,22 @@
 ﻿Imports System.Drawing
+Imports System.Runtime.CompilerServices
 Imports HDF.PInvoke
 Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Math.LinearAlgebra
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 
 Public Module LoadDisk
+
+    Public Function ReadST_spacerangerH5Matrix(h5ad As String) As Matrix
+        Dim fileId As Long = H5F.open(h5ad, H5F.ACC_RDONLY)
+        Dim shape As Integer() = ReadData.Read_dataset(fileId, "/matrix/shape").GetIntegers.ToArray
+        Dim matrix As X = loadX(Of Integer)(fileId, "/matrix", shape(0))
+        Dim barcodes As String() = ReadData.Read_strings(fileId, "/matrix/barcodes")
+        Dim geneID As String() = ReadData.Read_strings(fileId, "/matrix/features/id")
+        Dim pull As Matrix = matrix.ExportExpression(barcodes, geneID, source:=h5ad.BaseName)
+
+        Return pull
+    End Function
 
     Public Function LoadRawExpressionMatrix(h5ad As String) As Matrix
         Dim fileId = H5F.open(h5ad, H5F.ACC_RDONLY)
@@ -170,10 +182,24 @@ Public Module LoadDisk
         }
     End Function
 
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Private Function loadX(fileId As Long, maxColumns As Integer) As X
-        Dim xdata = ReadData.Read_dataset(fileId, "/X/data").GetSingles.ToArray
-        Dim xindices = ReadData.Read_dataset(fileId, "/X/indices").GetIntegers.ToArray
-        Dim xindptr = ReadData.Read_dataset(fileId, "/X/indptr").GetIntegers.ToArray
+        Return loadX(Of Single)(fileId, "/X/", maxColumns)
+    End Function
+
+    Private Function loadX(Of T)(fileId As Long, folder As String, maxColumns As Integer) As X
+        Dim xdata As Single()
+        Dim xdata_ptr As ReadData = ReadData.Read_dataset(fileId, $"/{folder}/data")
+
+        Select Case GetType(T)
+            Case GetType(Single) : xdata = xdata_ptr.GetSingles.ToArray
+            Case GetType(Integer) : xdata = xdata_ptr.GetIntegers.Select(Function(i) CSng(i)).ToArray
+            Case Else
+                Throw New NotImplementedException(GetType(T).FullName)
+        End Select
+
+        Dim xindices = ReadData.Read_dataset(fileId, $"/{folder}/indices").GetIntegers.ToArray
+        Dim xindptr = ReadData.Read_dataset(fileId, $"/{folder}/indptr").GetIntegers.ToArray
         Dim x As X = X.ShapeMatrix(xdata, xindices, xindptr, geneIdsize:=maxColumns)
 
         Return x
