@@ -4,7 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
-    <title>st-imaging</title>
+    <title>STdata</title>
     <meta name="author" content="xie.guigang@gcmodeller.org" />
     <meta name="copyright" content="SMRUCC genomics Copyright (c) 2020" />
     <meta name="keywords" content="GCModeller; Xanthomonas; Artificial Life" />
@@ -21,36 +21,36 @@
     <meta class="foundation-mq-topbar" />
   </head>
   <body>
-    <table width="100%" summary="page for {st-imaging}">
+    <table width="100%" summary="page for {STdata}">
       <tbody>
         <tr>
-          <td>{st-imaging}</td>
+          <td>{STdata}</td>
           <td style="text-align: right;">R# Documentation</td>
         </tr>
       </tbody>
     </table>
-    <h1>st-imaging</h1>
+    <h1>STdata</h1>
     <hr />
     <p></p>
     <div id="main-wrapper">
                            <div>
-  <h2 id="new_render">
-    <a href="./st-imaging/new_render.html">new_render</a>
+  <h2 id="read.ST_spacerangerH5Matrix">
+    <a href="./STdata/read.ST_spacerangerH5Matrix.html">read.ST_spacerangerH5Matrix</a>
   </h2>
   <hr />
   <p>
                       
                 
-                    <pre><p>let <code>new_render</code> as function(<code>h5ad</code> as <generic> AnnData) -> <code>&lt;generic&gt; Render</code> {
+                    <pre><p>let <code>read.ST_spacerangerH5Matrix</code> as function(<code>h5ad</code> as string) -> <code>&lt;generic&gt; Matrix</code> {
     #
     # .NET API information
     #
-    # module: Erica.stImaging
+    # module: Erica.STdata
     # LibPath: D:/Erica/assembly/net6.0
     # library: Erica.dll
-    # package: "st-imaging"
+    # package: "STdata"
     #
-    return call <code>R&#35;.interop_[stImaging::createRender]</code>(...);
+    return call <code>R&#35;.interop_[STdata::ReadST_spacerangerH5Matrix]</code>(...);
 }</p></pre>
 
                     
@@ -59,71 +59,76 @@
 
                     <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
 </div><br /><div>
-  <h2 id="gene_layer">
-    <a href="./st-imaging/gene_layer.html">gene_layer</a>
+  <h2 id="read.spatial_spots">
+    <a href="./STdata/read.spatial_spots.html">read.spatial_spots</a>
   </h2>
   <hr />
   <p>
-                    <p>get gene layer raw data</p>  
+                      
                 
-                    <pre><p>let <code>gene_layer</code> as function(<code>imaging</code> as <generic> Render, <code>geneId</code> as string) -> <code>&lt;generic&gt; PixelData[]</code> {
+                    <pre><p>let <code>read.spatial_spots</code> as function(<code>file</code> as string) -> <code>&lt;generic&gt; SpaceSpot[]</code> {
     #
     # .NET API information
     #
-    # module: Erica.stImaging
+    # module: Erica.STdata
     # LibPath: D:/Erica/assembly/net6.0
     # library: Erica.dll
-    # package: "st-imaging"
+    # package: "STdata"
     #
-    return call <code>R&#35;.interop_[stImaging::geneLayer]</code>(...);
+    return call <code>R&#35;.interop_[STdata::ReadSpatialSpots]</code>(...);
 }</p></pre>
 
-                    <div>
-  <h4>Arguments</h4>
-  <ul>
-                   <li>
-  <code>imaging</code>: -
-                </li>
-<li>
-  <code>geneId</code>: -
-                </li>
-                </ul>
-</div>
+                    
                        
                     
 
                     <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
 </div><br /><div>
-  <h2 id="imaging">
-    <a href="./st-imaging/imaging.html">imaging</a>
+  <h2 id="as.STRaid">
+    <a href="./STdata/as.STRaid.html">as.STRaid</a>
   </h2>
   <hr />
   <p>
-                    <p>do imaging render of a specific gene expression layer</p>  
+                      
                 
-                    <pre><p>let <code>imaging</code> as function(<code>render</code> as <generic> Render, <code>geneId</code> as string) -> <code>any</code> {
+                    <pre><p>let <code>as.STRaid</code> as function(<code>h5Matrix</code> as <generic> Matrix, <code>spots</code> as <generic> SpaceSpot[]) -> <code>&lt;generic&gt; STRaid</code> {
     #
     # .NET API information
     #
-    # module: Erica.stImaging
+    # module: Erica.STdata
     # LibPath: D:/Erica/assembly/net6.0
     # library: Erica.dll
-    # package: "st-imaging"
+    # package: "STdata"
     #
-    return call <code>R&#35;.interop_[stImaging::imaging]</code>(...);
+    return call <code>R&#35;.interop_[STdata::CombineSTRaid]</code>(...);
 }</p></pre>
 
-                    <div>
-  <h4>Arguments</h4>
-  <ul>
-                   <li>
-  <code>render</code>: -
-                </li>
-<li>
-  <code>geneId</code>: -
-                </li>
-                </ul>
-</div>
+                    
+                       
+                    
+
+                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
+</div><br /><div>
+  <h2 id="write.straid">
+    <a href="./STdata/write.straid.html">write.straid</a>
+  </h2>
+  <hr />
+  <p>
+                      
+                
+                    <pre><p>let <code>write.straid</code> as function(<code>straid</code> as <generic> STRaid, <code>file</code> as string) -> <code>any</code> {
+    #
+    # .NET API information
+    #
+    # module: Erica.STdata
+    # LibPath: D:/Erica/assembly/net6.0
+    # library: Erica.dll
+    # package: "STdata"
+    #
+    return call <code>R&#35;.interop_[STdata::WriteMatrix]</code>(...);
+}</p></pre>
+
+                    
                        
                     
 
