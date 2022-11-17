@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <RootNamespace>STRaid</RootNamespace>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>net6.0;net5.0;net48;net6.0-windows</TargetFrameworks>
     <Title>H5ad data reader</Title>
     <Platforms>AnyCPU;x64</Platforms>
     <Configurations>Debug;Release;Rsharp_app_release</Configurations>

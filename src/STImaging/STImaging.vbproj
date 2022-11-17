@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <RootNamespace>STImaging</RootNamespace>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>net6.0;net5.0;net48;net6.0-windows</TargetFrameworks>
     <Platforms>AnyCPU;x64</Platforms>
     <Configurations>Debug;Release;Rsharp_app_release</Configurations>
   </PropertyGroup>
