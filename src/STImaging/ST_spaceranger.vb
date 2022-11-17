@@ -1,3 +1,4 @@
+Imports System.Drawing
 Imports System.Runtime.CompilerServices
 
 Public Module ST_spaceranger
@@ -29,6 +30,10 @@ Public Class SpaceSpot
     Public Property index As Integer
     Public Property x As Integer
     Public Property y As Integer
+
+    Public Function GetPoint() As Point
+        Return New Point(x, y)
+    End Function
 
     Public Overrides Function ToString() As String
         Return $"[{x},{y}] {barcode}"
