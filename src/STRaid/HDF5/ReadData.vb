@@ -12,10 +12,12 @@ Friend Class ReadData
 
     Public Iterator Function GetFixedLenStrings() As IEnumerable(Of String)
         Dim buf As Byte() = New Byte(byte_size - 1) {}
+        Dim str As Byte()
 
         For i As Integer = 0 To dataBytes.Length - 1 Step byte_size
             Call Array.ConstrainedCopy(dataBytes, i, buf, Scan0, byte_size)
-            Yield Strings.Trim(Encoding.ASCII.GetString(buf))
+            str = buf.TakeWhile(Function(b) b > 0).ToArray
+            Yield Strings.Trim(Encoding.ASCII.GetString(str))
         Next
     End Function
 
