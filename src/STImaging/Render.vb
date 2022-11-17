@@ -44,7 +44,7 @@ Public Class Render
         )
     End Sub
 
-    Private Shared Function ScaleSpots(pixels As Point()) As Point()
+    Public Shared Function ScaleSpots(pixels As Point()) As Point()
         Dim offsetX = pixels.Select(Function(i) i.X).Min
         Dim offsetY = pixels.Select(Function(i) i.Y).Min
 
