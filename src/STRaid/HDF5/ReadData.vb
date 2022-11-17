@@ -10,6 +10,15 @@ Friend Class ReadData
     Friend dataBytes As Byte()
     Friend classID As H5T.class_t
 
+    Public Iterator Function GetFixedLenStrings() As IEnumerable(Of String)
+        Dim buf As Byte() = New Byte(byte_size - 1) {}
+
+        For i As Integer = 0 To dataBytes.Length - 1 Step byte_size
+            Call Array.ConstrainedCopy(dataBytes, i, buf, Scan0, byte_size)
+            Yield Encoding.ASCII.GetString(buf)
+        Next
+    End Function
+
     Public Iterator Function GetSingles() As IEnumerable(Of Single)
         Dim buf As Byte() = New Byte(byte_size - 1) {}
 

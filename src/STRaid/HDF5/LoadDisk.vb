@@ -11,7 +11,9 @@ Public Module LoadDisk
         Dim fileId As Long = H5F.open(h5ad, H5F.ACC_RDONLY)
         Dim shape As Integer() = ReadData.Read_dataset(fileId, "/matrix/shape").GetIntegers.ToArray
         Dim matrix As X = loadX(Of Integer)(fileId, "/matrix", shape(0))
-        Dim barcodes As String() = ReadData.Read_strings(fileId, "/matrix/barcodes")
+        Dim barcodes As String()
+        Dim strs = ReadData.Read_dataset(fileId, "/matrix/barcodes").GetFixedLenStrings.ToArray
+
         Dim geneID As String() = ReadData.Read_strings(fileId, "/matrix/features/id")
         Dim pull As Matrix = matrix.ExportExpression(barcodes, geneID, source:=h5ad.BaseName)
 
