@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <RootNamespace>SMRUCC.genomics.Analysis.SingleCell.STdeconvolve</RootNamespace>
-	  <TargetFrameworks>net6.0;net5.0;net48</TargetFrameworks>
+    <TargetFrameworks>net6.0-windows;net6.0;net48</TargetFrameworks>
     <Platforms>AnyCPU;x64</Platforms>
     <Description>Reference-free cell-type deconvolution of pixel-resolution spatially re 1 solved transcriptomics data</Description>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
