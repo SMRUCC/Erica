@@ -13,6 +13,30 @@ Public Class STRaid
     ''' <returns></returns>
     Public Property spots As Point()
 
+    ''' <summary>
+    ''' join the <see cref="spots"/> [x,y] data to the gene expression <see cref="matrix"/>.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function GetSpatialMatrix() As Matrix
+        Dim stMatrix As New Matrix With {
+            .sampleID = matrix.sampleID,
+            .tag = matrix.tag,
+            .expression = matrix.expression _
+                .Select(Function(r, i)
+                            Dim xy As Point = _spots(i)
+                            Dim spot As New DataFrameRow With {
+                                .geneID = $"{xy.X},{xy.Y}",
+                                .experiments = r.experiments
+                            }
+
+                            Return spot
+                        End Function) _
+                .ToArray
+        }
+
+        Return stMatrix
+    End Function
+
     Public Shared Function Write(raid As STRaid, file As Stream) As Boolean
         Dim pack As New StreamPack(file, meta_size:=8 * 1024 * 1024)
         Dim x As Integer() = raid.spots.Select(Function(p) p.X).ToArray

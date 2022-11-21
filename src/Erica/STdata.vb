@@ -37,6 +37,11 @@ Public Module STdata
         }
     End Function
 
+    <ExportAPI("as.STmatrix")>
+    Public Function CreateSpatialMatrix(h5Matrix As Matrix, spots As SpaceSpot()) As Matrix
+        Return CombineSTRaid(h5Matrix, spots).GetSpatialMatrix
+    End Function
+
     <ExportAPI("write.straid")>
     Public Function WriteMatrix(straid As STRaid.STRaid, file As String) As Object
         Using buffer As Stream = file.Open(FileMode.OpenOrCreate, doClear:=True, [readOnly]:=False)
