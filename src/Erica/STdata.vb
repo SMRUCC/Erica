@@ -1,8 +1,11 @@
 Imports System.Drawing
 Imports System.IO
 Imports Microsoft.VisualBasic.CommandLine.Reflection
+Imports Microsoft.VisualBasic.Math.Distributions
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
+Imports SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner
+Imports SMRUCC.Rsharp.Runtime.Internal.[Object]
 Imports SMRUCC.Rsharp.Runtime.Interop
 Imports STImaging
 Imports STRaid
@@ -50,9 +53,57 @@ Public Module STdata
         End Using
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="matrix">
+    ''' should be a transposed matrix of the output from ``as.STmatrix``. 
+    ''' </param>
+    ''' <param name="nsamples"></param>
+    ''' <returns></returns>
     <ExportAPI("sampling")>
     <RApiReturn("sampleinfo", "matrix")>
     Public Function Sampling(matrix As Matrix, Optional nsamples As Integer = 32) As Object
+        Dim N As Integer = matrix.sampleID.Length / 5
+        Dim repeats = Bootstraping.Samples(matrix.sampleID, bags:=nsamples, N:=N).ToArray
+        Dim samplelist = repeats _
+            .Select(Function(group)
+                        Dim tag As String = $"{matrix.tag}.{group.i + 1}"
+                        Dim submat = matrix.Project(group.value)
+                        Dim v As Double() = submat.expression _
+                            .Select(Function(g) g.experiments.Average) _
+                            .ToArray
 
+                        Return (tag, v)
+                    End Function) _
+            .ToArray
+        Dim sampleinfo = samplelist _
+            .Select(Function(i, j)
+                        Return New SampleInfo With {
+                            .batch = 1,
+                            .color = "",
+                            .ID = i.tag,
+                            .injectionOrder = j + 1,
+                            .sample_info = matrix.tag,
+                            .sample_name = i.tag,
+                            .shape = 1
+                        }
+                    End Function) _
+            .ToArray
+
+        matrix = New Matrix With {
+            .expression = samplelist _
+                .Select(Function(i) New DataFrameRow With {.experiments = i.v, .geneID = i.tag}) _
+                .ToArray,
+            .sampleID = matrix.rownames
+        }
+        matrix = matrix.T
+
+        Return New list With {
+            .slots = New Dictionary(Of String, Object) From {
+                {"sampleinfo", sampleinfo},
+                {"matrix", matrix}
+            }
+        }
     End Function
 End Module
