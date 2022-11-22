@@ -3,6 +3,7 @@ Imports System.IO
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
+Imports SMRUCC.Rsharp.Runtime.Interop
 Imports STImaging
 Imports STRaid
 
@@ -47,5 +48,11 @@ Public Module STdata
         Using buffer As Stream = file.Open(FileMode.OpenOrCreate, doClear:=True, [readOnly]:=False)
             Return Global.STRaid.STRaid.Write(straid, file:=buffer)
         End Using
+    End Function
+
+    <ExportAPI("sampling")>
+    <RApiReturn("sampleinfo", "matrix")>
+    Public Function Sampling(matrix As Matrix, Optional nsamples As Integer = 32) As Object
+
     End Function
 End Module
