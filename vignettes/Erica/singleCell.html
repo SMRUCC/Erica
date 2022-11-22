@@ -11,7 +11,7 @@
     <meta name="generator" content="https://github.com/xieguigang/xDoc" />
     <meta name="theme-color" content="#333" />
     <meta name="last-update" content="2022-11-22" />
-    <meta name="description" content="A software system aim at Artificial Life system design and analysis." />
+    <meta name="description" content="" />
     <meta class="foundation-data-attribute-namespace" />
     <meta class="foundation-mq-xxlarge" />
     <meta class="foundation-mq-xlarge" />
@@ -31,169 +31,60 @@
     </table>
     <h1>singleCell</h1>
     <hr />
+    <p>
+      <code>
+        <span style="color: blue;">imports</span>
+        <span style="color: brown"> "singleCell"</span>
+        <span style="color: blue;"> from</span>
+        <span style="color: brown"> "Erica"</span>
+      </code>
+    </p>
     <p></p>
     <div id="main-wrapper">
-                           <div>
-  <h2 id="HTS_matrix">
+      <table>
+        <thead>
+          <tr>
+            <th>function</th>
+            <th>description</th>
+          </tr>
+        </thead>
+        <tbody><tr>
+  <td id="HTS_matrix">
     <a href="./singleCell/HTS_matrix.html">HTS_matrix</a>
-  </h2>
-  <hr />
-  <p>
-                      
-                
-                    <pre><p>let <code>HTS_matrix</code> as function(<code>h5ad</code> as any, [<code>&lt;Environment&gt;</code>]) -> <code>&lt;generic&gt; Matrix</code> {
-    #
-    # .NET API information
-    #
-    # module: Erica.singleCells
-    # LibPath: D:/Erica/assembly/net6.0
-    # library: Erica.dll
-    # package: "singleCell"
-    #
-    return call <code>R&#35;.interop_[singleCells::HTS_matrix]</code>(...);
-}</p></pre>
-
-                    
-                       
-                    
-
-                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
-</div><br /><div>
-  <h2 id="read.h5ad">
+  </td>
+  <td></td>
+</tr>
+<tr>
+  <td id="read.h5ad">
     <a href="./singleCell/read.h5ad.html">read.h5ad</a>
-  </h2>
-  <hr />
-  <p>
-                      
-                
-                    <pre><p>let <code>read.h5ad</code> as function(<code>h5adfile</code> as string, <code>loadExpr0</code> as boolean = TRUE) -> <code>&lt;generic&gt; AnnData</code> {
-    #
-    # .NET API information
-    #
-    # module: Erica.singleCells
-    # LibPath: D:/Erica/assembly/net6.0
-    # library: Erica.dll
-    # package: "singleCell"
-    #
-    return call <code>R&#35;.interop_[singleCells::readH5ad]</code>(...);
-}</p></pre>
-
-                    
-                       
-                    
-
-                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
-</div><br /><div>
-  <h2 id="spatialMap">
+  </td>
+  <td></td>
+</tr>
+<tr>
+  <td id="spatialMap">
     <a href="./singleCell/spatialMap.html">spatialMap</a>
-  </h2>
-  <hr />
-  <p>
-                    <p>export the spatial maps data</p>  
-                
-                    <pre><p>let <code>spatialMap</code> as function(<code>h5ad</code> as <generic> AnnData, <code>useCellAnnotation</code> as boolean = <code>&lt;NULL&gt;</code>) -> <code>&lt;generic&gt; dataframe</code> {
-    #
-    # .NET API information
-    #
-    # module: Erica.singleCells
-    # LibPath: D:/Erica/assembly/net6.0
-    # library: Erica.dll
-    # package: "singleCell"
-    #
-    return call <code>R&#35;.interop_[singleCells::spatialMap]</code>(...);
-}</p></pre>
-
-                    <div>
-  <h4>Arguments</h4>
-  <ul>
-                   <li>
-  <code>h5ad</code>: -
-                </li>
-<li>
-  <code>useCellAnnotation</code>: -
-                </li>
-                </ul>
-</div>
-                       
-                    
-
-                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
-</div><br /><div>
-  <h2 id="pca_annotation">
+  </td>
+  <td><p>export the spatial maps data</p></td>
+</tr>
+<tr>
+  <td id="pca_annotation">
     <a href="./singleCell/pca_annotation.html">pca_annotation</a>
-  </h2>
-  <hr />
-  <p>
-                      
-                
-                    <pre><p>let <code>pca_annotation</code> as function(<code>h5ad</code> as <generic> AnnData) -> <code>&lt;generic&gt; dataframe</code> {
-    #
-    # .NET API information
-    #
-    # module: Erica.singleCells
-    # LibPath: D:/Erica/assembly/net6.0
-    # library: Erica.dll
-    # package: "singleCell"
-    #
-    return call <code>R&#35;.interop_[singleCells::exportPCA]</code>(...);
-}</p></pre>
-
-                    
-                       
-                    
-
-                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
-</div><br /><div>
-  <h2 id="umap_annotation">
+  </td>
+  <td></td>
+</tr>
+<tr>
+  <td id="umap_annotation">
     <a href="./singleCell/umap_annotation.html">umap_annotation</a>
-  </h2>
-  <hr />
-  <p>
-                      
-                
-                    <pre><p>let <code>umap_annotation</code> as function(<code>h5ad</code> as <generic> AnnData) -> <code>&lt;generic&gt; dataframe</code> {
-    #
-    # .NET API information
-    #
-    # module: Erica.singleCells
-    # LibPath: D:/Erica/assembly/net6.0
-    # library: Erica.dll
-    # package: "singleCell"
-    #
-    return call <code>R&#35;.interop_[singleCells::exportUMAP]</code>(...);
-}</p></pre>
-
-                    
-                       
-                    
-
-                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
-</div><br /><div>
-  <h2 id="expression_list">
+  </td>
+  <td></td>
+</tr>
+<tr>
+  <td id="expression_list">
     <a href="./singleCell/expression_list.html">expression_list</a>
-  </h2>
-  <hr />
-  <p>
-                      
-                
-                    <pre><p>let <code>expression_list</code> as function(<code>raw</code> as <generic> AnnData, <code>q</code> as double = 0.2) -> <code>list[string]</code> {
-    #
-    # .NET API information
-    #
-    # module: Erica.singleCells
-    # LibPath: D:/Erica/assembly/net6.0
-    # library: Erica.dll
-    # package: "singleCell"
-    #
-    return call <code>R&#35;.interop_[singleCells::ExpressionList]</code>(...);
-}</p></pre>
-
-                    
-                       
-                    
-
-                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
-</div>
-                       </div>
+  </td>
+  <td></td>
+</tr></tbody>
+      </table>
+    </div>
   </body>
 </html>

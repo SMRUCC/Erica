@@ -11,7 +11,7 @@
     <meta name="generator" content="https://github.com/xieguigang/xDoc" />
     <meta name="theme-color" content="#333" />
     <meta name="last-update" content="2022-11-22" />
-    <meta name="description" content="A software system aim at Artificial Life system design and analysis." />
+    <meta name="description" content="" />
     <meta class="foundation-data-attribute-namespace" />
     <meta class="foundation-mq-xxlarge" />
     <meta class="foundation-mq-xlarge" />
@@ -31,169 +31,60 @@
     </table>
     <h1>STdata</h1>
     <hr />
+    <p>
+      <code>
+        <span style="color: blue;">imports</span>
+        <span style="color: brown"> "STdata"</span>
+        <span style="color: blue;"> from</span>
+        <span style="color: brown"> "Erica"</span>
+      </code>
+    </p>
     <p></p>
     <div id="main-wrapper">
-                           <div>
-  <h2 id="read.ST_spacerangerH5Matrix">
+      <table>
+        <thead>
+          <tr>
+            <th>function</th>
+            <th>description</th>
+          </tr>
+        </thead>
+        <tbody><tr>
+  <td id="read.ST_spacerangerH5Matrix">
     <a href="./STdata/read.ST_spacerangerH5Matrix.html">read.ST_spacerangerH5Matrix</a>
-  </h2>
-  <hr />
-  <p>
-                      
-                
-                    <pre><p>let <code>read.ST_spacerangerH5Matrix</code> as function(<code>h5ad</code> as string) -> <code>&lt;generic&gt; Matrix</code> {
-    #
-    # .NET API information
-    #
-    # module: Erica.STdata
-    # LibPath: D:/Erica/assembly/net6.0
-    # library: Erica.dll
-    # package: "STdata"
-    #
-    return call <code>R&#35;.interop_[STdata::ReadST_spacerangerH5Matrix]</code>(...);
-}</p></pre>
-
-                    
-                       
-                    
-
-                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
-</div><br /><div>
-  <h2 id="read.spatial_spots">
+  </td>
+  <td></td>
+</tr>
+<tr>
+  <td id="read.spatial_spots">
     <a href="./STdata/read.spatial_spots.html">read.spatial_spots</a>
-  </h2>
-  <hr />
-  <p>
-                      
-                
-                    <pre><p>let <code>read.spatial_spots</code> as function(<code>file</code> as string) -> <code>&lt;generic&gt; SpaceSpot[]</code> {
-    #
-    # .NET API information
-    #
-    # module: Erica.STdata
-    # LibPath: D:/Erica/assembly/net6.0
-    # library: Erica.dll
-    # package: "STdata"
-    #
-    return call <code>R&#35;.interop_[STdata::ReadSpatialSpots]</code>(...);
-}</p></pre>
-
-                    
-                       
-                    
-
-                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
-</div><br /><div>
-  <h2 id="as.STRaid">
+  </td>
+  <td></td>
+</tr>
+<tr>
+  <td id="as.STRaid">
     <a href="./STdata/as.STRaid.html">as.STRaid</a>
-  </h2>
-  <hr />
-  <p>
-                      
-                
-                    <pre><p>let <code>as.STRaid</code> as function(<code>h5Matrix</code> as <generic> Matrix, <code>spots</code> as <generic> SpaceSpot[]) -> <code>&lt;generic&gt; STRaid</code> {
-    #
-    # .NET API information
-    #
-    # module: Erica.STdata
-    # LibPath: D:/Erica/assembly/net6.0
-    # library: Erica.dll
-    # package: "STdata"
-    #
-    return call <code>R&#35;.interop_[STdata::CombineSTRaid]</code>(...);
-}</p></pre>
-
-                    
-                       
-                    
-
-                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
-</div><br /><div>
-  <h2 id="as.STmatrix">
+  </td>
+  <td></td>
+</tr>
+<tr>
+  <td id="as.STmatrix">
     <a href="./STdata/as.STmatrix.html">as.STmatrix</a>
-  </h2>
-  <hr />
-  <p>
-                      
-                
-                    <pre><p>let <code>as.STmatrix</code> as function(<code>h5Matrix</code> as <generic> Matrix, <code>spots</code> as <generic> SpaceSpot[]) -> <code>&lt;generic&gt; Matrix</code> {
-    #
-    # .NET API information
-    #
-    # module: Erica.STdata
-    # LibPath: D:/Erica/assembly/net6.0
-    # library: Erica.dll
-    # package: "STdata"
-    #
-    return call <code>R&#35;.interop_[STdata::CreateSpatialMatrix]</code>(...);
-}</p></pre>
-
-                    
-                       
-                    
-
-                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
-</div><br /><div>
-  <h2 id="write.straid">
+  </td>
+  <td></td>
+</tr>
+<tr>
+  <td id="write.straid">
     <a href="./STdata/write.straid.html">write.straid</a>
-  </h2>
-  <hr />
-  <p>
-                      
-                
-                    <pre><p>let <code>write.straid</code> as function(<code>straid</code> as <generic> STRaid, <code>file</code> as string) -> <code>any</code> {
-    #
-    # .NET API information
-    #
-    # module: Erica.STdata
-    # LibPath: D:/Erica/assembly/net6.0
-    # library: Erica.dll
-    # package: "STdata"
-    #
-    return call <code>R&#35;.interop_[STdata::WriteMatrix]</code>(...);
-}</p></pre>
-
-                    
-                       
-                    
-
-                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
-</div><br /><div>
-  <h2 id="sampling">
+  </td>
+  <td></td>
+</tr>
+<tr>
+  <td id="sampling">
     <a href="./STdata/sampling.html">sampling</a>
-  </h2>
-  <hr />
-  <p>
-                      
-                
-                    <pre><p>let <code>sampling</code> as function(<code>matrix</code> as <generic> Matrix, <code>nsamples</code> as integer = 32) -> <code>list</code> {
-    #
-    # .NET API information
-    #
-    # module: Erica.STdata
-    # LibPath: D:/Erica/assembly/net6.0
-    # library: Erica.dll
-    # package: "STdata"
-    #
-    return call <code>R&#35;.interop_[STdata::Sampling]</code>(...);
-}</p></pre>
-
-                    <div>
-  <h4>Arguments</h4>
-  <ul>
-                   <li>
-  <code>matrix</code>: should be a transposed matrix of the output from <code>as.STmatrix</code>. 
-                </li>
-<li>
-  <code>nsamples</code>: -
-                </li>
-                </ul>
-</div>
-                       
-                    
-
-                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
-</div>
-                       </div>
+  </td>
+  <td></td>
+</tr></tbody>
+      </table>
+    </div>
   </body>
 </html>
