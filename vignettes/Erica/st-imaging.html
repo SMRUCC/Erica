@@ -10,8 +10,8 @@
     <meta name="keywords" content="GCModeller; Xanthomonas; Artificial Life" />
     <meta name="generator" content="https://github.com/xieguigang/xDoc" />
     <meta name="theme-color" content="#333" />
-    <meta name="last-update" content="2022-11-22" />
-    <meta name="description" content="" />
+    <meta name="last-update" content="2022-11-21" />
+    <meta name="description" content="A software system aim at Artificial Life system design and analysis." />
     <meta class="foundation-data-attribute-namespace" />
     <meta class="foundation-mq-xxlarge" />
     <meta class="foundation-mq-xlarge" />
@@ -31,42 +31,104 @@
     </table>
     <h1>st-imaging</h1>
     <hr />
-    <p>
-      <code>
-        <span style="color: blue;">imports</span>
-        <span style="color: brown"> "st-imaging"</span>
-        <span style="color: blue;"> from</span>
-        <span style="color: brown"> "Erica"</span>
-      </code>
-    </p>
     <p></p>
     <div id="main-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>function</th>
-            <th>description</th>
-          </tr>
-        </thead>
-        <tbody><tr>
-  <td id="new_render">
+                           <div>
+  <h2 id="new_render">
     <a href="./st-imaging/new_render.html">new_render</a>
-  </td>
-  <td></td>
-</tr>
-<tr>
-  <td id="gene_layer">
+  </h2>
+  <hr />
+  <p>
+                      
+                
+                    <pre><p>let <code>new_render</code> as function(<code>h5ad</code> as <generic> AnnData) -> <code>&lt;generic&gt; Render</code> {
+    #
+    # .NET API information
+    #
+    # module: Erica.stImaging
+    # LibPath: D:/Erica/assembly/net6.0
+    # library: Erica.dll
+    # package: "st-imaging"
+    #
+    return call <code>R&#35;.interop_[stImaging::createRender]</code>(...);
+}</p></pre>
+
+                    
+                       
+                    
+
+                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
+</div><br /><div>
+  <h2 id="gene_layer">
     <a href="./st-imaging/gene_layer.html">gene_layer</a>
-  </td>
-  <td><p>get gene layer raw data</p></td>
-</tr>
-<tr>
-  <td id="imaging">
+  </h2>
+  <hr />
+  <p>
+                    <p>get gene layer raw data</p>  
+                
+                    <pre><p>let <code>gene_layer</code> as function(<code>imaging</code> as <generic> Render, <code>geneId</code> as string) -> <code>&lt;generic&gt; PixelData[]</code> {
+    #
+    # .NET API information
+    #
+    # module: Erica.stImaging
+    # LibPath: D:/Erica/assembly/net6.0
+    # library: Erica.dll
+    # package: "st-imaging"
+    #
+    return call <code>R&#35;.interop_[stImaging::geneLayer]</code>(...);
+}</p></pre>
+
+                    <div>
+  <h4>Arguments</h4>
+  <ul>
+                   <li>
+  <code>imaging</code>: -
+                </li>
+<li>
+  <code>geneId</code>: -
+                </li>
+                </ul>
+</div>
+                       
+                    
+
+                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
+</div><br /><div>
+  <h2 id="imaging">
     <a href="./st-imaging/imaging.html">imaging</a>
-  </td>
-  <td><p>do imaging render of a specific gene expression layer</p></td>
-</tr></tbody>
-      </table>
-    </div>
+  </h2>
+  <hr />
+  <p>
+                    <p>do imaging render of a specific gene expression layer</p>  
+                
+                    <pre><p>let <code>imaging</code> as function(<code>render</code> as <generic> Render, <code>geneId</code> as string) -> <code>any</code> {
+    #
+    # .NET API information
+    #
+    # module: Erica.stImaging
+    # LibPath: D:/Erica/assembly/net6.0
+    # library: Erica.dll
+    # package: "st-imaging"
+    #
+    return call <code>R&#35;.interop_[stImaging::imaging]</code>(...);
+}</p></pre>
+
+                    <div>
+  <h4>Arguments</h4>
+  <ul>
+                   <li>
+  <code>render</code>: -
+                </li>
+<li>
+  <code>geneId</code>: -
+                </li>
+                </ul>
+</div>
+                       
+                    
+
+                    <span style="font-size:0.9em; display: none"><h4>Details</h4><blockquote></blockquote></span></p>
+</div>
+                       </div>
   </body>
 </html>
