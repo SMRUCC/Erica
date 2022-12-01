@@ -1,7 +1,15 @@
 Imports System.Drawing
 Imports System.Runtime.CompilerServices
+Imports Microsoft.VisualBasic.Imaging.Drawing2D.HeatMap
 
 Public Module ST_spaceranger
+
+    <Extension>
+    Public Iterator Function GetPixels(spots As IEnumerable(Of SpaceSpot)) As IEnumerable(Of PixelData)
+        For Each spot As SpaceSpot In spots
+            Yield New PixelData(spot.x, spot.y, spot.t2)
+        Next
+    End Function
 
     <Extension>
     Public Iterator Function LoadTissueSpots(data As IEnumerable(Of String)) As IEnumerable(Of SpaceSpot)
