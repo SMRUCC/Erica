@@ -36,12 +36,28 @@ Public Class SpaceSpot
     Public Property flag As Integer
 
 #Region "spot xy"
+    ''' <summary>
+    ''' the spot x
+    ''' </summary>
+    ''' <returns></returns>
     Public Property px As Integer
+    ''' <summary>
+    ''' the spot y
+    ''' </summary>
+    ''' <returns></returns>
     Public Property py As Integer
 #End Region
 
-#Region "slice xy"
+#Region "slice physical xy"
+    ''' <summary>
+    ''' the slice physical x
+    ''' </summary>
+    ''' <returns></returns>
     Public Property x As Integer
+    ''' <summary>
+    ''' the slice physical y
+    ''' </summary>
+    ''' <returns></returns>
     Public Property y As Integer
 #End Region
 
