@@ -7,7 +7,7 @@ Public Module ST_spaceranger
     <Extension>
     Public Iterator Function GetPixels(spots As IEnumerable(Of SpaceSpot)) As IEnumerable(Of PixelData)
         For Each spot As SpaceSpot In spots
-            Yield New PixelData(spot.x, spot.y, spot.t2)
+            Yield New PixelData(spot.px, spot.py, spot.flag)
         Next
     End Function
 
@@ -17,9 +17,9 @@ Public Module ST_spaceranger
             Dim t As String() = line.Split(","c)
             Dim spot As New SpaceSpot With {
                 .barcode = t(0),
-                .t1 = Integer.Parse(t(1)),
-                .t2 = Integer.Parse(t(2)),
-                .index = Integer.Parse(t(3)),
+                .flag = Integer.Parse(t(1)),
+                .px = Integer.Parse(t(2)),
+                .py = Integer.Parse(t(3)),
                 .x = Integer.Parse(t(4)),
                 .y = Integer.Parse(t(5))
             }
@@ -33,11 +33,17 @@ End Module
 Public Class SpaceSpot
 
     Public Property barcode As String
-    Public Property t1 As Integer
-    Public Property t2 As Integer
-    Public Property index As Integer
+    Public Property flag As Integer
+
+#Region "spot xy"
+    Public Property px As Integer
+    Public Property py As Integer
+#End Region
+
+#Region "slice xy"
     Public Property x As Integer
     Public Property y As Integer
+#End Region
 
     Public Function GetPoint() As Point
         Return New Point(x, y)
