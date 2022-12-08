@@ -14,11 +14,27 @@ Imports Matrix = SMRUCC.genomics.Analysis.HTS.DataFrame.Matrix
 <Package("STdata")>
 Public Module STdata
 
+    ''' <summary>
+    ''' load the raw expression matrix which is associated
+    ''' with the barcode
+    ''' </summary>
+    ''' <param name="h5ad"></param>
+    ''' <returns></returns>
+    ''' <remarks>
+    ''' the expressin data just associated with the barcode, 
+    ''' no spot spatial information.
+    ''' </remarks>
     <ExportAPI("read.ST_spacerangerH5Matrix")>
     Public Function ReadST_spacerangerH5Matrix(h5ad As String) As Matrix
         Return LoadDisk.ReadST_spacerangerH5Matrix(h5ad)
     End Function
 
+    ''' <summary>
+    ''' load the spatial mapping data of the spot barcode 
+    ''' associated with the spot spaital information
+    ''' </summary>
+    ''' <param name="file"></param>
+    ''' <returns></returns>
     <ExportAPI("read.spatial_spots")>
     Public Function ReadSpatialSpots(file As String) As SpaceSpot()
         Return ST_spaceranger _

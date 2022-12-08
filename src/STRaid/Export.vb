@@ -19,6 +19,14 @@ Public Module Export
         Return mat
     End Function
 
+    ''' <summary>
+    ''' load the raw expression matrix which is associated with the barcode
+    ''' </summary>
+    ''' <param name="X"></param>
+    ''' <param name="spotId"></param>
+    ''' <param name="geneID"></param>
+    ''' <param name="source"></param>
+    ''' <returns></returns>
     <Extension>
     Friend Function ExportExpression(X As X,
                                      spotId As String(),
@@ -29,7 +37,10 @@ Public Module Export
         Dim cell As i32 = Scan0
 
         For Each row As Vector In X.matrix.RowVectors
-            Call m.Add(New DataFrameRow With {.geneID = spotId(++cell), .experiments = row.ToArray})
+            Call m.Add(New DataFrameRow With {
+               .geneID = spotId(++cell),
+               .experiments = row.ToArray
+            })
         Next
 
         Return New Matrix With {
