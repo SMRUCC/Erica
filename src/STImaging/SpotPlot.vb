@@ -13,7 +13,7 @@ Public Class SpotPlot : Inherits Plot
     ReadOnly spots As PixelData()
     ReadOnly dimension_size As Size
 
-    Public Property mapLevels As Integer = 255
+    Public Property mapLevels As Integer = 16
 
     Public Sub New(layer As PixelData(), dimension_size As Size, theme As Theme)
         MyBase.New(theme)
