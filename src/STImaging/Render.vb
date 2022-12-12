@@ -47,8 +47,12 @@ Public Class Render
     End Sub
 
     Sub New(matrix As MatrixViewer, spots As SpaceSpot(), Optional colorMaps As ScalerPalette = ScalerPalette.turbo)
+        Dim spotIndex = spots.ToDictionary(Function(a) a.barcode)
+
         Me.matrix = matrix
-        Me.pixels = spots.Select(Function(p) New Point(p.px, p.py)).ToArray
+        Me.pixels = matrix.SampleIDs _
+            .Select(Function(barcode) spotIndex(barcode).GetSpotPoint) _
+            .ToArray
         Me.colorMap = colorMaps
         Me.dimension = New Size With {
             .Width = pixels.Select(Function(i) i.X).Max,
