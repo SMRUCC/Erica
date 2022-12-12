@@ -1,6 +1,7 @@
 ﻿
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas
+Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.HeatMap
 Imports Microsoft.VisualBasic.MIME.Html
 Imports Microsoft.VisualBasic.Scripting.MetaData
@@ -47,6 +48,8 @@ Module stImaging
     Public Function SpotPlot(spots As SpaceSpot(), matrix As Object, geneId As String,
                              <RRawVectorArgument>
                              Optional size As Object = "3000,3000",
+                             Optional spot_radius As Double = 13,
+                             Optional colorMaps As ScalerPalette = ScalerPalette.turbo,
                              Optional env As Environment = Nothing) As Object
 
         Dim sizeVal = InteropArgumentHelper.getSize(size, env, [default]:="3000,3000")
@@ -57,7 +60,10 @@ Module stImaging
 
         Dim render As New Render(DirectCast(matrix, MatrixViewer), spots)
         Dim layer As PixelData() = render.GetLayer(geneId).ToArray
-        Dim theme As New Theme
+        Dim theme As New Theme With {
+            .pointSize = spot_radius,
+            .colorSet = colorMaps.Description
+        }
         Dim app As New SpotPlot(layer, render.dimension, theme)
 
         Return app.Plot(sizeVal)
