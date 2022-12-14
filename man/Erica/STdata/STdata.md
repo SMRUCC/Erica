@@ -1,6 +1,6 @@
 # STdata
 
-
+spatial transcriptomics data toolkit
 
 + [read.ST_spacerangerH5Matrix](STdata/read.ST_spacerangerH5Matrix.1) load the raw expression matrix which is associated
 + [read.spatial_spots](STdata/read.spatial_spots.1) load the spatial mapping data of the spot barcode 

@@ -11,21 +11,23 @@ Imports STRaid
 
 Public Class Render
 
-    Dim matrix As Dictionary(Of String, DataFrameRow)
+    Dim matrix As MatrixViewer
     Dim pixels As Point()
-    Dim dimension As Size
     Dim colorMap As String = ScalerPalette.Jet.Description
 
     Public ReadOnly Property geneIDs As String()
         Get
-            Return matrix.Keys.ToArray
+            Return matrix.FeatureIDs.ToArray
         End Get
     End Property
 
-    Sub New(anndat As AnnData)
+    Public ReadOnly Property dimension As Size
+
+    Sub New(anndat As AnnData, Optional colorMaps As ScalerPalette = ScalerPalette.turbo)
         Dim matrix = anndat.ExportExpression.T
 
-        Me.matrix = matrix.expression.ToDictionary(Function(a) a.geneID)
+        Me.colorMap = colorMaps
+        Me.matrix = New HTSMatrixViewer(matrix)
         Me.pixels = matrix.sampleID _
             .Select(Function(str)
                         Dim t As Integer() = str _
@@ -42,6 +44,20 @@ Public Class Render
             width:=pixels.Select(Function(i) i.X).Max,
             height:=pixels.Select(Function(i) i.Y).Max
         )
+    End Sub
+
+    Sub New(matrix As MatrixViewer, spots As SpaceSpot(), Optional colorMaps As ScalerPalette = ScalerPalette.turbo)
+        Dim spotIndex = spots.ToDictionary(Function(a) a.barcode)
+
+        Me.matrix = matrix
+        Me.pixels = matrix.SampleIDs _
+            .Select(Function(barcode) spotIndex(barcode).GetSpotPoint) _
+            .ToArray
+        Me.colorMap = colorMaps
+        Me.dimension = New Size With {
+            .Width = pixels.Select(Function(i) i.X).Max,
+            .Height = pixels.Select(Function(i) i.Y).Max
+        }
     End Sub
 
     Public Shared Function ScaleSpots(pixels As Point()) As Point()
@@ -63,13 +79,18 @@ Public Class Render
     End Function
 
     Public Iterator Function GetLayer(geneId As String) As IEnumerable(Of PixelData)
-        Dim vec As DataFrameRow = matrix(geneId)
+        Dim vec As Double() = matrix.GetGeneExpression(geneId)
 
         For i As Integer = 0 To pixels.Length - 1
-            Yield New PixelData(pixels(i), vec.experiments(i))
+            Yield New PixelData(pixels(i), vec(i))
         Next
     End Function
 
+    ''' <summary>
+    ''' imaging in contour heatmap
+    ''' </summary>
+    ''' <param name="geneId"></param>
+    ''' <returns></returns>
     Public Function Imaging(geneId As String) As Bitmap
         Dim layer As PixelData() = GetLayer(geneId).ToArray
         Dim render As New PixelRender(colorMap, 20, defaultColor:=Color.Black)

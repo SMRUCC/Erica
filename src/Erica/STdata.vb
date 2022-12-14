@@ -11,6 +11,9 @@ Imports STImaging
 Imports STRaid
 Imports Matrix = SMRUCC.genomics.Analysis.HTS.DataFrame.Matrix
 
+''' <summary>
+''' spatial transcriptomics data toolkit
+''' </summary>
 <Package("STdata")>
 Public Module STdata
 

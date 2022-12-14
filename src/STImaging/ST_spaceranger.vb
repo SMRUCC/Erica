@@ -61,6 +61,14 @@ Public Class SpaceSpot
     Public Property y As Integer
 #End Region
 
+    Public Function GetSpotPoint() As Point
+        Return New Point(px, py)
+    End Function
+
+    ''' <summary>
+    ''' get physical point
+    ''' </summary>
+    ''' <returns></returns>
     Public Function GetPoint() As Point
         Return New Point(x, y)
     End Function
