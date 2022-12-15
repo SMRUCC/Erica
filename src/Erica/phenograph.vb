@@ -40,7 +40,9 @@
 #End Region
 
 Imports Microsoft.VisualBasic.CommandLine.Reflection
+Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.Data.csv.IO
+Imports Microsoft.VisualBasic.Data.visualize.Network.FileStream.Generic
 Imports Microsoft.VisualBasic.Data.visualize.Network.Graph
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Scripting.MetaData
@@ -120,4 +122,32 @@ Module phenograph
         End If
     End Function
 
+    <ExportAPI("setInteraction")>
+    Public Function setIteractions(g As NetworkGraph,
+                                   geneIds As String(),
+                                   metaboliteIds As String()) As NetworkGraph
+
+        Dim geneIndex As Index(Of String) = geneIds.Indexing
+        Dim metaboliteIndex As Index(Of String) = metaboliteIds.Indexing
+
+        For Each link As Edge In g.graphEdges
+            Dim t1 As String = If(link.U.label Like geneIndex, "gene", If(link.U.label Like metaboliteIndex, "metabolite", "unknown"))
+            Dim t2 As String = If(link.V.label Like geneIndex, "gene", If(link.U.label Like metaboliteIndex, "metabolite", "unknown"))
+            Dim type As String
+
+            If t1 = "gene" AndAlso t2 = "gene" Then
+                type = "gene interaction"
+            ElseIf t1 = "metabolite" AndAlso t2 = "metabolite" Then
+                type = "metabolite interaction"
+            ElseIf t1 <> "unknown" AndAlso t2 <> "unknown" Then
+                type = "cross interaction"
+            Else
+                type = "un-assigned"
+            End If
+
+            link.data(NamesOf.REFLECTION_ID_MAPPING_INTERACTION_TYPE) = type
+        Next
+
+        Return g
+    End Function
 End Module

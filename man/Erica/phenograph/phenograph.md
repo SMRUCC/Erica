@@ -6,3 +6,4 @@ PhenoGraph algorithm
 
 + [phenograph](phenograph/phenograph.1) PhenoGraph algorithm
 + [score_metric](phenograph/score_metric.1) create a new score metric for KNN method in phenograph algorithm
++ [setInteraction](phenograph/setInteraction.1) 
