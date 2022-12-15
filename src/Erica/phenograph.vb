@@ -82,7 +82,7 @@ Module phenograph
                                               End Function)
                         }
                     End Function) _
-            .Transpose
+            .ToArray
         Dim graph As NetworkGraph = CommunityGraph.CreatePhenoGraph(
             data:=dataset,
             k:=k,

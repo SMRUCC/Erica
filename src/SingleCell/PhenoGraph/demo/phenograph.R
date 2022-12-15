@@ -1,4 +1,8 @@
-require(Erica);
+imports "package_utils" from "devkit";
+
+package_utils::attach("E:\Erica");
+
+# require(Erica);
 require(igraph);
 require(charts);
 
@@ -7,9 +11,14 @@ imports "geneExpression" from "phenotype_kit";
 
 setwd(@dir);
 
-"../../demo/HR2MSI mouse urinary bladder S096_top3.HTS"
+x = "../../demo/HR2MSI mouse urinary bladder S096_top3.HTS"
 |> load.expr0()
-|> phenograph(k = 30)
+;
+
+print(geneExpression::dims(x));
+
+x
+|> phenograph(k = 32)
 |> save.network(file = "HR2MSI mouse urinary bladder S096_graph")
 ;
 
@@ -19,7 +28,13 @@ bitmap(file = `Rphenograph.png`) {
 		row.names   = NULL, 
 		check.names = FALSE
 	);
-	const ID       = lapply(data[, 1], function(px) as.numeric(strsplit(px, "[,.]", fixed = FALSE)));
+
+	# print(data[, 1]);
+
+	const ID = lapply(data[, 1], function(px) as.numeric(strsplit(px, ",", fixed = TRUE)));
+
+	# print(ID);
+
 	const clusters = data[, "NodeType"];
 	const x        = sapply(ID, px -> px[1]);
     const y        = sapply(ID, px -> px[2]);
