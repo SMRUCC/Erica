@@ -82,7 +82,7 @@ Public Module CommunityGraph
         Dim matrix As New List(Of Double())
 
         For Each row As DataSet In data
-            matrix.Add(row(keys:=propertyNames))
+            Call matrix.Add(row(keys:=propertyNames))
         Next
 
         Dim dataMat As New NumericMatrix(matrix.ToArray)
@@ -104,7 +104,8 @@ Public Module CommunityGraph
     ''' <returns></returns>
     Public Function CreatePhenoGraph(data As GeneralMatrix,
                                      Optional k As Integer = 30,
-                                     Optional cutoff As Double = 0) As NetworkGraph
+                                     Optional cutoff As Double = 0,
+                                     Optional score As ScoreMetric = Nothing) As NetworkGraph
         If k < 1 Then
             Throw New ArgumentException("k must be a positive integer!")
         ElseIf k > data.RowDimension - 2 Then
@@ -119,10 +120,19 @@ Public Module CommunityGraph
 
         ' t1 <- system.time(neighborMatrix <- find_neighbors(data, k=k+1)[,-1])
         Dim t1 As Value(Of Double) = App.ElapsedMilliseconds
-        Dim neighborMatrix = ApproximateNearNeighbor _
-            .FindNeighbors(data, k:=k + 1) _
-            .Select(Function(row) row.indices) _
-            .ToArray
+        Dim neighborMatrix As Integer()()
+
+        If Not score Is Nothing Then
+            neighborMatrix = New KNN(score) _
+                .FindNeighbors(data, k:=k + 1) _
+                .Select(Function(row) row.indices) _
+                .ToArray
+        Else
+            neighborMatrix = ApproximateNearNeighbor _
+                .FindNeighbors(data, k:=k + 1) _
+                .Select(Function(row) row.indices) _
+                .ToArray
+        End If
 
         cat("DONE ~", (t1 = App.ElapsedMilliseconds - CDbl(t1)) / 1000, "s\n", " Compute jaccard coefficient between nearest-neighbor sets...")
         ' t2 <- system.time(links <- jaccard_coeff(neighborMatrix))
