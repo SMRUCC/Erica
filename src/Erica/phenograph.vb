@@ -132,7 +132,7 @@ Module phenograph
 
         For Each link As Edge In g.graphEdges
             Dim t1 As String = If(link.U.label Like geneIndex, "gene", If(link.U.label Like metaboliteIndex, "metabolite", "unknown"))
-            Dim t2 As String = If(link.V.label Like geneIndex, "gene", If(link.U.label Like metaboliteIndex, "metabolite", "unknown"))
+            Dim t2 As String = If(link.V.label Like geneIndex, "gene", If(link.V.label Like metaboliteIndex, "metabolite", "unknown"))
             Dim type As String
 
             If t1 = "gene" AndAlso t2 = "gene" Then
