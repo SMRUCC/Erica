@@ -86,7 +86,8 @@ Module phenograph
         Dim graph As NetworkGraph = CommunityGraph.CreatePhenoGraph(
             data:=dataset,
             k:=k,
-            cutoff:=cutoff
+            cutoff:=cutoff,
+            score:=score
         )
 
         Return graph
