@@ -18,11 +18,13 @@ x = "../../demo/HR2MSI mouse urinary bladder S096_top3.HTS"
 print(geneExpression::dims(x));
 
 x
-|> phenograph(k = 32)
+|> phenograph(k = 32, score = score_metric("pearson"))
 |> save.network(file = "HR2MSI mouse urinary bladder S096_graph")
 ;
 
-bitmap(file = `Rphenograph.png`) {
+cat("\n\n");
+
+bitmap(file = `Rphenograph_pearson.png`) {
 	const data     = "HR2MSI mouse urinary bladder S096_graph/nodes.csv" 
 	|> read.csv(
 		row.names   = NULL, 
