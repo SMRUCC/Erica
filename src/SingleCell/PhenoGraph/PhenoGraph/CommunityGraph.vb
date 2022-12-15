@@ -50,6 +50,7 @@ Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Math.LinearAlgebra
 Imports Microsoft.VisualBasic.Math.LinearAlgebra.Matrix
 Imports Microsoft.VisualBasic.Math.Scripting.Rscript
+Imports any = Microsoft.VisualBasic.Scripting
 
 ''' <summary>
 ''' implementation of the PhenoGraph algorithm
@@ -124,7 +125,9 @@ Public Module CommunityGraph
 
         message("Run Rphenograph starts:", "\n",
         "  -Input data of ", nrow(data), " rows and ", ncol(data), " columns", "\n",
-        "  -k is set to ", k)
+        "  -k is set to ", k, "\n",
+        "  -knn_cutoff is ", knn_cutoff, "\n",
+        "  -knn_kernel use ", any.ToString(score, null:="default_KD-tree"), "\n\n")
 
         cat("  Finding nearest neighbors...")
 
