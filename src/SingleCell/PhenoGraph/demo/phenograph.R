@@ -9,7 +9,7 @@ setwd(@dir);
 
 "../../demo/HR2MSI mouse urinary bladder S096_top3.HTS"
 |> load.expr0()
-|> phenograph(k = 200)
+|> phenograph(k = 30)
 |> save.network(file = "HR2MSI mouse urinary bladder S096_graph")
 ;
 
