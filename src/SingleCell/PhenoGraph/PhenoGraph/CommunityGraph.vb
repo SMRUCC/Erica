@@ -1,41 +1,41 @@
 ﻿#Region "Microsoft.VisualBasic::c32248ffcda705ad851a8f98fb42d8c2, analysis\PhenoGraph\PhenoGraph\CommunityGraph.vb"
 
-    ' Author:
-    ' 
-    '       asuka (amethyst.asuka@gcmodeller.org)
-    '       xie (genetics@smrucc.org)
-    '       xieguigang (xie.guigang@live.com)
-    ' 
-    ' Copyright (c) 2018 GPL3 Licensed
-    ' 
-    ' 
-    ' GNU GENERAL PUBLIC LICENSE (GPL3)
-    ' 
-    ' 
-    ' This program is free software: you can redistribute it and/or modify
-    ' it under the terms of the GNU General Public License as published by
-    ' the Free Software Foundation, either version 3 of the License, or
-    ' (at your option) any later version.
-    ' 
-    ' This program is distributed in the hope that it will be useful,
-    ' but WITHOUT ANY WARRANTY; without even the implied warranty of
-    ' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    ' GNU General Public License for more details.
-    ' 
-    ' You should have received a copy of the GNU General Public License
-    ' along with this program. If not, see <http://www.gnu.org/licenses/>.
+' Author:
+' 
+'       asuka (amethyst.asuka@gcmodeller.org)
+'       xie (genetics@smrucc.org)
+'       xieguigang (xie.guigang@live.com)
+' 
+' Copyright (c) 2018 GPL3 Licensed
+' 
+' 
+' GNU GENERAL PUBLIC LICENSE (GPL3)
+' 
+' 
+' This program is free software: you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation, either version 3 of the License, or
+' (at your option) any later version.
+' 
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+' 
+' You should have received a copy of the GNU General Public License
+' along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
 
-    ' /********************************************************************************/
+' /********************************************************************************/
 
-    ' Summaries:
+' Summaries:
 
-    ' Module CommunityGraph
-    ' 
-    '     Function: AsGraph, (+2 Overloads) CreatePhenoGraph
-    ' 
-    ' /********************************************************************************/
+' Module CommunityGraph
+' 
+'     Function: AsGraph, (+2 Overloads) CreatePhenoGraph
+' 
+' /********************************************************************************/
 
 #End Region
 
@@ -50,6 +50,7 @@ Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Math.LinearAlgebra
 Imports Microsoft.VisualBasic.Math.LinearAlgebra.Matrix
 Imports Microsoft.VisualBasic.Math.Scripting.Rscript
+Imports Microsoft.VisualBasic.Serialization.JSON
 Imports any = Microsoft.VisualBasic.Scripting
 
 ''' <summary>
@@ -169,13 +170,15 @@ Public Module CommunityGraph
         '    cluster_leading_eigen, cluster_edge_betweenness, 
         '    cluster_fast_greedy, cluster_label_prop  
         Dim community As NetworkGraph = Communities.Analysis(g)
+        Dim qsub As Double() = Nothing
 
         cat("DONE ~", (t4 = App.ElapsedMilliseconds - CDbl(t4)) / 1000, "s\n")
 
-        message("Run Rphenograph DONE, totally takes ", {CDbl(t1), CDbl(t2), CDbl(t3), CDbl(t4)}.Sum / 1000, "s.")
-        cat("  Return a community class\n  -Modularity value:", Communities.Modularity(community), "\n")
-        cat("  -Number of clusters:", Communities.Community(g).Values.Distinct.Count)
-        cat("\n\n")
+        message("Run Rphenograph DONE, totally takes ", {CDbl(t1), CDbl(t2), CDbl(t3), CDbl(t4)}.Sum / 1000, "s.", "\n")
+        cat("  Return a community class\n  -Modularity value:", Communities.Modularity(community, qsub), "\n")
+        cat("  -Number of clusters:", Communities.Community(g).Values.Distinct.Count, "\n")
+        cat("  -Modularity of each clusters: ", qsub.GetJson, "\n")
+        cat("\n")
 
         Return community
     End Function
