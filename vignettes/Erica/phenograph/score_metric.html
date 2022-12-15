@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>PhenoGraph algorithm</title>
+    <title>create a new score metric for KNN method in phenograph algorithm</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <style rel="stylesheet" type="text/css">
@@ -143,12 +143,12 @@
 
         <table style="width: 100%;">
             <tr>
-                <td>phenograph {phenograph}</td>
+                <td>score_metric {phenograph}</td>
                 <td style="text-align: right;">R Documentation</td>
             </tr>
         </table>
 
-        <h2>PhenoGraph algorithm</h2>
+        <h2>create a new score metric for KNN method in phenograph algorithm</h2>
 
         <h3>Description</h3>
 
@@ -157,25 +157,20 @@
         <h3>Usage</h3>
 
         <div style="width: 100%; padding-left: 3%; color: black;">
-            <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>phenograph</strong>(<i>matrix</i>,
-    <i>k</i> = 30,
-    <i>cutoff</i> = 0,
-    <i>score</i> = <span style='color: blue;'>NULL</span>);</code></pre>
+            <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>score_metric</strong>(
+    <i>metric</i> = ["cosine","jaccard","pearson"],
+    <i>env</i> = <span style='color: blue;'>NULL</span>);</code></pre>
         </div>
 
         <h3>Arguments</h3>
 
         <table>
             
-<dt>matrix</dt>
+<dt>metric</dt>
 <dd><p><p>-</p></p></dd>
 
 
-<dt>k</dt>
-<dd><p><p>-</p></p></dd>
-
-
-<dt>cutoff</dt>
+<dt>env</dt>
 <dd><p><p>-</p></p></dd>
 
         </table>
@@ -188,7 +183,7 @@
 
         <h3>Value</h3>
 
-        this function returns data object in type Microsoft.VisualBasic.Data.visualize.Network.Graph.NetworkGraph.
+        this function returns data object in type SMRUCC.genomics.Analysis.SingleCell.PhenoGraph.ScoreMetric.
 
         <hr />
         <div style="text-align: center;">[Package <em>phenograph</em> version 1.0.0.0 <a
