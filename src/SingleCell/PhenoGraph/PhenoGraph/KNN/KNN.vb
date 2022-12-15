@@ -7,9 +7,14 @@ Imports Microsoft.VisualBasic.Math.LinearAlgebra.Matrix
 Friend Class KNN
 
     ReadOnly score As ScoreMetric
+    ''' <summary>
+    ''' knn score cutoff
+    ''' </summary>
+    ReadOnly cutoff As Double
 
-    Sub New(metric As ScoreMetric)
+    Sub New(metric As ScoreMetric, knn_cutoff As Double)
         Me.score = metric
+        Me.cutoff = knn_cutoff
     End Sub
 
     ''' <summary>
@@ -41,7 +46,7 @@ Friend Class KNN
                         Dim w As Double = score.eval(vec, i.vector)
                         Return (i, w)
                     End Function) _
-            .Where(Function(a) a.w > 0) _
+            .Where(Function(a) a.w > cutoff) _
             .OrderByDescending(Function(a) a.w) _
             .Take(k) _
             .ToArray

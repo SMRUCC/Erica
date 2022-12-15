@@ -4,7 +4,18 @@ Imports Microsoft.VisualBasic.Math.LinearAlgebra
 
 Public MustInherit Class ScoreMetric
 
+    ''' <summary>
+    ''' the score function should produce a positive score value,
+    ''' higher score value is better
+    ''' </summary>
+    ''' <param name="x"></param>
+    ''' <param name="y"></param>
+    ''' <returns></returns>
     Public MustOverride Function eval(x As Double(), y As Double()) As Double
+
+    Public Overrides Function ToString() As String
+        Return "knn_score_metric();"
+    End Function
 
 End Class
 
@@ -13,6 +24,11 @@ Public Class Cosine : Inherits ScoreMetric
     Public Overrides Function eval(x() As Double, y() As Double) As Double
         Return New Vector(x).SSM(New Vector(y))
     End Function
+
+    Public Overrides Function ToString() As String
+        Return "cosine();"
+    End Function
+
 End Class
 
 Public Class Jaccard : Inherits ScoreMetric
@@ -28,6 +44,10 @@ Public Class Jaccard : Inherits ScoreMetric
         Next
 
         Return j / u
+    End Function
+
+    Public Overrides Function ToString() As String
+        Return "jaccard();"
     End Function
 End Class
 
@@ -45,5 +65,9 @@ Public Class Pearson : Inherits ScoreMetric
         Else
             Return cor ^ 2
         End If
+    End Function
+
+    Public Overrides Function ToString() As String
+        Return "pearson();"
     End Function
 End Class

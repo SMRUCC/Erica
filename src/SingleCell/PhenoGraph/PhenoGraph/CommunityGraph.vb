@@ -68,7 +68,7 @@ Public Module CommunityGraph
     ''' <param name="k">
     ''' a large of the knn value will generate a better cluster result
     ''' </param>
-    ''' <param name="cutoff">
+    ''' <param name="link_cutoff">
     ''' it is not a good idea to set any coeff cutoff value?
     ''' </param>
     ''' <returns></returns>
@@ -76,7 +76,8 @@ Public Module CommunityGraph
     <Extension>
     Public Function CreatePhenoGraph(data As DataSet(),
                                      Optional k As Integer = 60,
-                                     Optional cutoff As Double = 0,
+                                     Optional link_cutoff As Double = 0,
+                                     Optional knn_cutoff As Double = 0,
                                      Optional score As ScoreMetric = Nothing) As NetworkGraph
 
         Dim propertyNames As String() = data.PropertyNames
@@ -87,7 +88,12 @@ Public Module CommunityGraph
         Next
 
         Dim dataMat As New NumericMatrix(matrix.ToArray)
-        Dim graph As NetworkGraph = CreatePhenoGraph(dataMat, k, cutoff:=cutoff, score:=score)
+        Dim graph As NetworkGraph = dataMat.CreatePhenoGraph(
+            k:=k,
+            link_cutoff:=link_cutoff,
+            knn_cutoff:=knn_cutoff,
+            score:=score
+        )
 
         For Each v As Node In graph.vertex
             v.label = data(Integer.Parse(v.label)).ID
@@ -103,9 +109,12 @@ Public Module CommunityGraph
     ''' <param name="data"></param>
     ''' <param name="k"></param>
     ''' <returns></returns>
+    ''' 
+    <Extension>
     Public Function CreatePhenoGraph(data As GeneralMatrix,
                                      Optional k As Integer = 30,
-                                     Optional cutoff As Double = 0,
+                                     Optional link_cutoff As Double = 0,
+                                     Optional knn_cutoff As Double = 0,
                                      Optional score As ScoreMetric = Nothing) As NetworkGraph
         If k < 1 Then
             Throw New ArgumentException("k must be a positive integer!")
@@ -124,7 +133,7 @@ Public Module CommunityGraph
         Dim neighborMatrix As Integer()()
 
         If Not score Is Nothing Then
-            neighborMatrix = New KNN(score) _
+            neighborMatrix = New KNN(score, knn_cutoff) _
                 .FindNeighbors(data, k:=k + 1) _
                 .Select(Function(row) row.indices) _
                 .ToArray
@@ -144,8 +153,8 @@ Public Module CommunityGraph
         ' take rows
         ' colnames(relations)<- c("from","to","weight")
         ' which its coefficient should be greater than ZERO
-        cutoff = New DoubleRange(0, 1).ScaleMapping(cutoff, links.ColumnVector(2).Range)
-        links = links(links(2, byRow:=False) > cutoff)
+        link_cutoff = New DoubleRange(0, 1).ScaleMapping(link_cutoff, links.ColumnVector(2).Range)
+        links = links(links(2, byRow:=False) > link_cutoff)
 
         Dim t3 As Value(Of Double) = App.ElapsedMilliseconds
         Dim g = DirectCast(links, NumericMatrix).AsGraph()
@@ -163,6 +172,7 @@ Public Module CommunityGraph
         message("Run Rphenograph DONE, totally takes ", {CDbl(t1), CDbl(t2), CDbl(t3), CDbl(t4)}.Sum / 1000, "s.")
         cat("  Return a community class\n  -Modularity value:", Communities.Modularity(community), "\n")
         cat("  -Number of clusters:", Communities.Community(g).Values.Distinct.Count)
+        cat("\n\n")
 
         Return community
     End Function

@@ -62,12 +62,13 @@ Module phenograph
     ''' </summary>
     ''' <param name="matrix"></param>
     ''' <param name="k"></param>
-    ''' <param name="cutoff"></param>
+    ''' <param name="link_cutoff"></param>
     ''' <returns></returns>
     <ExportAPI("phenograph")>
     Public Function phenograph(matrix As Matrix,
                                Optional k As Integer = 30,
-                               Optional cutoff As Double = 0,
+                               Optional link_cutoff As Double = 0,
+                               Optional knn_cutoff As Double = 0,
                                Optional score As ScoreMetric = Nothing) As NetworkGraph
 
         Dim sampleId = matrix.sampleID.SeqIterator.ToArray
@@ -86,8 +87,9 @@ Module phenograph
         Dim graph As NetworkGraph = CommunityGraph.CreatePhenoGraph(
             data:=dataset,
             k:=k,
-            cutoff:=cutoff,
-            score:=score
+            link_cutoff:=link_cutoff,
+            score:=score,
+            knn_cutoff:=knn_cutoff
         )
 
         Return graph
