@@ -76,7 +76,8 @@ Public Module CommunityGraph
     <Extension>
     Public Function CreatePhenoGraph(data As DataSet(),
                                      Optional k As Integer = 60,
-                                     Optional cutoff As Double = 0) As NetworkGraph
+                                     Optional cutoff As Double = 0,
+                                     Optional score As ScoreMetric = Nothing) As NetworkGraph
 
         Dim propertyNames As String() = data.PropertyNames
         Dim matrix As New List(Of Double())
@@ -86,7 +87,7 @@ Public Module CommunityGraph
         Next
 
         Dim dataMat As New NumericMatrix(matrix.ToArray)
-        Dim graph As NetworkGraph = CreatePhenoGraph(dataMat, k, cutoff:=cutoff)
+        Dim graph As NetworkGraph = CreatePhenoGraph(dataMat, k, cutoff:=cutoff, score:=score)
 
         For Each v As Node In graph.vertex
             v.label = data(Integer.Parse(v.label)).ID
