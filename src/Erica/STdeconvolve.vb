@@ -4,6 +4,9 @@ Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports SMRUCC.genomics.Analysis.SingleCell.STdeconvolve
 
+''' <summary>
+''' Reference-free cell-type deconvolution of pixel-resolution spatially resolved transcriptomics data
+''' </summary>
 <Package("STdeconvolve")>
 Module STdeconvolve
 
@@ -51,7 +54,7 @@ Module STdeconvolve
     End Function
 
     ''' <summary>
-    ''' get deconvolve result matrix
+    ''' ### get deconvolve result matrix
     ''' 
     ''' Pull out cell-type proportions across pixels (theta) and
     ''' cell-type gene probabilities (beta) matrices from fitted 

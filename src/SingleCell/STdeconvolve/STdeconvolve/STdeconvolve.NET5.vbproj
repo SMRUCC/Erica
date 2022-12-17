@@ -4,12 +4,13 @@
     <RootNamespace>SMRUCC.genomics.Analysis.SingleCell.STdeconvolve</RootNamespace>
     <TargetFrameworks>net6.0-windows;net6.0;net48</TargetFrameworks>
     <Platforms>AnyCPU;x64</Platforms>
-    <Description>Reference-free cell-type deconvolution of pixel-resolution spatially re 1 solved transcriptomics data</Description>
+    <Description>Reference-free cell-type deconvolution of pixel-resolution spatially resolved transcriptomics data</Description>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <AssemblyName>SMRUCC.genomics.Analysis.SingleCell.STdeconvolve</AssemblyName>
     <Configurations>Debug;Release;Rsharp_app_release</Configurations>
+    <Title>Reference-free cell-type deconvolution of pixel-resolution spatially resolved transcriptomics data</Title>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
