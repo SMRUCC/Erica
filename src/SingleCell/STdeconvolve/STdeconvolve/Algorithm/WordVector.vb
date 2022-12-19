@@ -8,6 +8,13 @@ Imports stdNum = System.Math
 
 Public Module WordVector
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="matrix">
+    ''' pixels in row and genes in columns
+    ''' </param>
+    ''' <returns></returns>
     <Extension>
     Friend Function Documentaries(matrix As Matrix) As STCorpus
         Dim geneIds As String() = matrix.sampleID
