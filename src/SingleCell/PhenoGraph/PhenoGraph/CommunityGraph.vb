@@ -237,6 +237,8 @@ Public Module CommunityGraph
             For Each v As Node In removeNodes
                 Call g.RemoveNode(v.label)
             Next
+
+            g = g.Copy
         End If
 
         VBDebugger.Mute = False
