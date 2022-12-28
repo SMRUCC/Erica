@@ -183,16 +183,16 @@ Module phenograph
     <ExportAPI("cluster_colors")>
     Public Function ClusterColors(g As NetworkGraph,
                                   <RRawVectorArgument>
-                                  Optional colorSet As Object = "Paper",
+                                  Optional colorSet As Object = "viridis:turbo",
                                   Optional env As Environment = Nothing) As Object
 
         Dim palette = RColorPalette.getColorSet(colorSet, [default]:="Paper")
-        Dim colors As LoopArray(Of SolidBrush) = Designer _
-            .GetColors(palette, n:=64) _
-            .Select(Function(c) New SolidBrush(c)) _
-            .ToArray
         Dim groupDesc = Communities.GetCommunitySet(g) _
             .OrderByDescending(Function(v) v.Value.Length) _
+            .ToArray
+        Dim colors As LoopArray(Of SolidBrush) = Designer _
+            .GetColors(palette, n:=groupDesc.Where(Function(c) c.Value.Length > 4).Count) _
+            .Select(Function(c) New SolidBrush(c)) _
             .ToArray
 
         For Each group In groupDesc
