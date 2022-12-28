@@ -100,7 +100,11 @@ Module phenograph
     ''' <summary>
     ''' create a new score metric for KNN method in phenograph algorithm
     ''' </summary>
-    ''' <param name="metric"></param>
+    ''' <param name="metric">
+    ''' 1. cosine: the cosine similarity score
+    ''' 2. jaccard: the jaccard similarity score
+    ''' 3. pearson: the pearson correlation score(WGCNA co-expression weight actually)
+    ''' </param>
     ''' <param name="env"></param>
     ''' <returns></returns>
     <ExportAPI("score_metric")>
