@@ -39,11 +39,16 @@
 
 #End Region
 
+Imports System.Drawing
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.ComponentModel.Collection
+Imports Microsoft.VisualBasic.ComponentModel.DataStructures
 Imports Microsoft.VisualBasic.Data.csv.IO
+Imports Microsoft.VisualBasic.Data.visualize.Network.Analysis
 Imports Microsoft.VisualBasic.Data.visualize.Network.FileStream.Generic
 Imports Microsoft.VisualBasic.Data.visualize.Network.Graph
+Imports Microsoft.VisualBasic.Imaging
+Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
@@ -163,6 +168,39 @@ Module phenograph
             ElseIf v.label Like metaboliteIndex Then
                 v.data("group") = "metabolite"
             End If
+        Next
+
+        Return g
+    End Function
+
+    ''' <summary>
+    ''' set cluster colors of the phenograph result
+    ''' </summary>
+    ''' <param name="g"></param>
+    ''' <param name="colorSet"></param>
+    ''' <param name="env"></param>
+    ''' <returns></returns>
+    <ExportAPI("cluster_colors")>
+    Public Function ClusterColors(g As NetworkGraph,
+                                  <RRawVectorArgument>
+                                  Optional colorSet As Object = "Paper",
+                                  Optional env As Environment = Nothing) As Object
+
+        Dim palette = RColorPalette.getColorSet(colorSet, [default]:="Paper")
+        Dim colors As LoopArray(Of SolidBrush) = Designer _
+            .GetColors(palette, n:=64) _
+            .Select(Function(c) New SolidBrush(c)) _
+            .ToArray
+        Dim groupDesc = Communities.GetCommunitySet(g) _
+            .OrderByDescending(Function(v) v.Value.Length) _
+            .ToArray
+
+        For Each group In groupDesc
+            Dim color As Brush = ++colors
+
+            For Each v In group.Value
+                v.data.color = color
+            Next
         Next
 
         Return g
