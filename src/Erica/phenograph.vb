@@ -152,6 +152,14 @@ Module phenograph
             link.data(NamesOf.REFLECTION_ID_MAPPING_INTERACTION_TYPE) = type
         Next
 
+        For Each v As Node In g.vertex
+            If v.label Like geneIndex Then
+                v.data("group") = "gene"
+            ElseIf v.label Like metaboliteIndex Then
+                v.data("group") = "metabolite"
+            End If
+        Next
+
         Return g
     End Function
 End Module
