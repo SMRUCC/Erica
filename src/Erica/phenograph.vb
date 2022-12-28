@@ -65,13 +65,17 @@ Module phenograph
     ''' <param name="matrix"></param>
     ''' <param name="k"></param>
     ''' <param name="link_cutoff"></param>
+    ''' <param name="subcomponents_filter">
+    ''' removes small subnetwork
+    ''' </param>
     ''' <returns></returns>
     <ExportAPI("phenograph")>
     Public Function phenograph(matrix As Matrix,
                                Optional k As Integer = 30,
                                Optional link_cutoff As Double = 0,
                                Optional knn_cutoff As Double = 0,
-                               Optional score As ScoreMetric = Nothing) As NetworkGraph
+                               Optional score As ScoreMetric = Nothing,
+                               Optional subcomponents_filter As Integer = 0) As NetworkGraph
 
         Dim sampleId = matrix.sampleID.SeqIterator.ToArray
         Dim dataset As DataSet() = matrix.expression _
@@ -91,7 +95,8 @@ Module phenograph
             k:=k,
             link_cutoff:=link_cutoff,
             score:=score,
-            knn_cutoff:=knn_cutoff
+            knn_cutoff:=knn_cutoff,
+            subcomponents_filter:=subcomponents_filter
         )
 
         Return graph
