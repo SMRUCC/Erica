@@ -215,6 +215,11 @@ Public Module CommunityGraph
                 Call g.CreateNode([to])
             End If
 
+            ' avoid of the duplicated edges
+            If g.ExistEdge(from, [to]) OrElse g.ExistEdge([to], from) Then
+                Continue For
+            End If
+
             Call g.CreateEdge(
                 u:=g.GetElementByID(from),
                 v:=g.GetElementByID([to]),
