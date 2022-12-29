@@ -1,5 +1,4 @@
 ﻿Imports System.Drawing
-Imports System.IO
 Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic
 Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas
 Imports Microsoft.VisualBasic.Data.GraphTheory
@@ -37,9 +36,20 @@ Public Class SpotHeatMap : Inherits HeatMapPlot
         Dim physicalCellHeight As Double = rect.Height / ncellsHeight
         Dim physicalCell As New Size(physicalCellWidth, physicalCellHeight)
         Dim cells = LoadCells(rect, physicalCellWidth, physicalCellHeight)
+        Dim raster = New HeatMapRaster(Of SpotCell)() _
+            .SetDatas(cells.EnumerateData) _
+            .GetRasterPixels _
+            .ToArray
 
         ' rendering the heatmap cells
-
+        Call PixelRender.FillRectangles(
+            g:=g,
+            raster:=raster,
+            colors:=GetColors,
+            defaultColor:=theme.gridFill.TranslateColor,
+            cw:=1,
+            ch:=1
+        )
     End Sub
 
     Private Function LoadCells(rect As Rectangle,
