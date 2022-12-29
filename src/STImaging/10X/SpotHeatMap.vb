@@ -25,7 +25,7 @@ Public Class SpotHeatMap : Inherits HeatMapPlot
 
         Me.dimension_size = dimension_size
         Me.spots = layer
-        Me.spotSize = Render.SpotDiff(layer.Select(Function(p) New Point(p.X, p.Y)))
+        Me.spotSize = Render.SpotDiff(layer.Select(Function(p) New Point(p.X, p.Y)).ToArray)
     End Sub
 
     Protected Overrides Sub PlotInternal(ByRef g As IGraphics, canvas As GraphicsRegion)
