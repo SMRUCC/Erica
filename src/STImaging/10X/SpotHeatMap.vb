@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.IO
 Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic
 Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas
 Imports Microsoft.VisualBasic.Data.GraphTheory
@@ -12,11 +13,11 @@ Public Class SpotHeatMap : Inherits HeatMapPlot
     ReadOnly dimension_size As Size
     ReadOnly spotSize As SizeF
 
-    Private Class SpotCell
+    Private Class SpotCell : Implements Pixel
 
-        Public X As Integer
-        Public Y As Integer
-        Public Value As Double
+        Public Property X As Integer Implements Pixel.X
+        Public Property Y As Integer Implements Pixel.Y
+        Public Property Scale As Double Implements Pixel.Scale
 
     End Class
 
@@ -50,13 +51,13 @@ Public Class SpotHeatMap : Inherits HeatMapPlot
             Dim yi As Double = scaleY(spot.Y)
             Dim pixels As SpotCell() = cells.Query(xi, yi, gridSize:=physicalCell).ToArray
 
-            For Each cell In pixels
-                cell.Value += spot.Scale
+            For Each cell As SpotCell In pixels
+                cell.Scale += spot.Scale
             Next
         Next
 
         ' rendering the heatmap cells
-
+        Dim render As New PixelRender(theme.colorSet, mapLevels, defaultColor:=theme.gridFill.TranslateColor)
     End Sub
 
     Private Function LoadCells(rect As Size,
