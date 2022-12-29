@@ -36,7 +36,23 @@ Public Class SpotHeatMap : Inherits HeatMapPlot
         Dim physicalCellWidth As Double = rect.Width / ncellsWidth
         Dim physicalCellHeight As Double = rect.Height / ncellsHeight
         Dim physicalCell As New Size(physicalCellWidth, physicalCellHeight)
-        Dim cells = LoadCells(rect.Size, physicalCellWidth, physicalCellHeight)
+        Dim cells = LoadCells(rect, physicalCellWidth, physicalCellHeight)
+
+        ' rendering the heatmap cells
+
+    End Sub
+
+    Private Function LoadCells(rect As Rectangle,
+                               physicalCellWidth As Double,
+                               physicalCellHeight As Double) As Grid(Of SpotCell)
+
+        Dim physicalCell As New Size(physicalCellWidth, physicalCellHeight)
+        Dim heatmap As Grid(Of SpotCell) = Grid(Of SpotCell).Blank(
+            dims:=rect.Size,
+            blankSpot:=Function(x, y) New SpotCell With {.X = x, .Y = y},
+            steps:=New SizeF(physicalCellWidth, physicalCellHeight),
+            getSpot:=Function(i) New Point(i.X, i.Y)
+        )
         Dim scaleX = d3js.scale _
             .linear() _
             .domain(values:=New Integer() {0, dimension_size.Width}) _
@@ -49,27 +65,14 @@ Public Class SpotHeatMap : Inherits HeatMapPlot
         For Each spot As PixelData In spots
             Dim xi As Double = scaleX(spot.X)
             Dim yi As Double = scaleY(spot.Y)
-            Dim pixels As SpotCell() = cells.Query(xi, yi, gridSize:=physicalCell).ToArray
+            Dim pixels As SpotCell() = heatmap _
+                .Query(xi, yi, gridSize:=physicalCell) _
+                .ToArray
 
             For Each cell As SpotCell In pixels
                 cell.Scale += spot.Scale
             Next
         Next
-
-        ' rendering the heatmap cells
-        Dim render As New PixelRender(theme.colorSet, mapLevels, defaultColor:=theme.gridFill.TranslateColor)
-    End Sub
-
-    Private Function LoadCells(rect As Size,
-                               physicalCellWidth As Double,
-                               physicalCellHeight As Double) As Grid(Of SpotCell)
-
-        Dim heatmap As Grid(Of SpotCell) = Grid(Of SpotCell).Blank(
-            dims:=rect,
-            blankSpot:=Function(x, y) New SpotCell With {.X = x, .Y = y},
-            steps:=New SizeF(physicalCellWidth, physicalCellHeight),
-            getSpot:=Function(i) New Point(i.X, i.Y)
-        )
 
         Return heatmap
     End Function
