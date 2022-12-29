@@ -46,6 +46,14 @@ Public Class Render
         )
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="matrix">
+    ''' sample id should be the barcodes
+    ''' </param>
+    ''' <param name="spots"></param>
+    ''' <param name="colorMaps"></param>
     Sub New(matrix As MatrixViewer, spots As SpaceSpot(), Optional colorMaps As ScalerPalette = ScalerPalette.turbo)
         Dim spotIndex = spots.ToDictionary(Function(a) a.barcode)
 
@@ -95,6 +103,11 @@ Public Class Render
         Return pixels
     End Function
 
+    ''' <summary>
+    ''' get the raw data of a specific gene layer
+    ''' </summary>
+    ''' <param name="geneId"></param>
+    ''' <returns></returns>
     Public Iterator Function GetLayer(geneId As String) As IEnumerable(Of PixelData)
         Dim vec As Double() = matrix.GetGeneExpression(geneId)
 
