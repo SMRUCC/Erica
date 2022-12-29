@@ -36,11 +36,7 @@ Public Class SpotHeatMap : Inherits HeatMapPlot
         Dim physicalCellHeight As Double = rect.Height / ncellsHeight
         Dim physicalCell As New Size(physicalCellWidth, physicalCellHeight)
         Dim cells = LoadCells(rect, physicalCellWidth, physicalCellHeight)
-        Dim raster = New HeatMapRaster(Of SpotCell)() _
-            .SetDatas(cells.EnumerateData) _
-            .GetRasterPixels _
-            .Where(Function(p) p.Scale > 0) _
-            .ToArray
+        Dim raster = cells.EnumerateData.ToArray
 
         ' rendering the heatmap cells
         Call PixelRender.FillRectangles(
@@ -72,8 +68,13 @@ Public Class SpotHeatMap : Inherits HeatMapPlot
             .linear() _
             .domain(values:=New Integer() {0, dimension_size.Height}) _
             .range(integers:={rect.Top, rect.Bottom})
+        Dim raster = New HeatMapRaster(Of PixelData)() _
+            .SetDatas(spots) _
+            .GetRasterPixels _
+            .Where(Function(p) p.Scale > 0) _
+            .ToArray
 
-        For Each spot As PixelData In spots
+        For Each spot As Pixel In raster
             Dim xi As Double = scaleX(spot.X)
             Dim yi As Double = scaleY(spot.Y)
             Dim pixels As SpotCell() = heatmap _
