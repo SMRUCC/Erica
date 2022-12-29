@@ -60,19 +60,36 @@ Public Class Render
         }
     End Sub
 
-    Public Shared Function ScaleSpots(pixels As Point()) As Point()
+    Public Shared Function SpotDiff(ByRef pixels As Point(), Optional top As Integer = 10) As SizeF
         Dim offsetX = pixels.Select(Function(i) i.X).Min
         Dim offsetY = pixels.Select(Function(i) i.Y).Min
+        Dim pixelList = pixels
+        Dim diffFormula = Function(dimVal As Func(Of Point, Double))
+                              Return pixelList _
+                                 .OrderBy(Function(i) dimVal(i)) _
+                                 .Select(Function(i) dimVal(i)) _
+                                 .ToArray _
+                                 .DoCall(AddressOf NumberGroups.diff) _
+                                 .OrderByDescending(Function(d) d) _
+                                 .Take(top) _
+                                 .Average
+                          End Function
 
         pixels = pixels _
             .Select(Function(i) New Point(i.X - offsetX, i.Y - offsetY)) _
             .ToArray
 
-        Dim diffX = NumberGroups.diff(pixels.OrderBy(Function(i) i.X).Select(Function(i) CDbl(i.X)).ToArray).OrderByDescending(Function(d) d).Take(10).Average
-        Dim diffY = NumberGroups.diff(pixels.OrderBy(Function(i) i.Y).Select(Function(i) CDbl(i.Y)).ToArray).OrderByDescending(Function(d) d).Take(10).Average
+        Dim diffX = diffFormula(Function(p) p.X)
+        Dim diffY = diffFormula(Function(p) p.Y)
+
+        Return New SizeF(diffX, diffY)
+    End Function
+
+    Public Shared Function ScaleSpots(pixels As Point()) As Point()
+        Dim diff = SpotDiff(pixels)
 
         pixels = pixels _
-            .Select(Function(i) New Point(CInt(i.X / diffX), CInt(i.Y / diffY))) _
+            .Select(Function(i) New Point(CInt(i.X / diff.Width), CInt(i.Y / diff.Height))) _
             .ToArray
 
         Return pixels
