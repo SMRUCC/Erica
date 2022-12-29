@@ -39,6 +39,7 @@ Public Class SpotHeatMap : Inherits HeatMapPlot
         Dim raster = New HeatMapRaster(Of SpotCell)() _
             .SetDatas(cells.EnumerateData) _
             .GetRasterPixels _
+            .Where(Function(p) p.Scale > 0) _
             .ToArray
 
         ' rendering the heatmap cells
@@ -47,8 +48,8 @@ Public Class SpotHeatMap : Inherits HeatMapPlot
             raster:=raster,
             colors:=GetColors,
             defaultColor:=theme.gridFill.TranslateColor,
-            cw:=1,
-            ch:=1
+            cw:=physicalCellWidth,
+            ch:=physicalCellHeight
         )
     End Sub
 
