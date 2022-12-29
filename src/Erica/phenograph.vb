@@ -39,11 +39,16 @@
 
 #End Region
 
+Imports System.Drawing
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.ComponentModel.Collection
+Imports Microsoft.VisualBasic.ComponentModel.DataStructures
 Imports Microsoft.VisualBasic.Data.csv.IO
+Imports Microsoft.VisualBasic.Data.visualize.Network.Analysis
 Imports Microsoft.VisualBasic.Data.visualize.Network.FileStream.Generic
 Imports Microsoft.VisualBasic.Data.visualize.Network.Graph
+Imports Microsoft.VisualBasic.Imaging
+Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
@@ -65,13 +70,17 @@ Module phenograph
     ''' <param name="matrix"></param>
     ''' <param name="k"></param>
     ''' <param name="link_cutoff"></param>
+    ''' <param name="subcomponents_filter">
+    ''' removes small subnetwork
+    ''' </param>
     ''' <returns></returns>
     <ExportAPI("phenograph")>
     Public Function phenograph(matrix As Matrix,
                                Optional k As Integer = 30,
                                Optional link_cutoff As Double = 0,
                                Optional knn_cutoff As Double = 0,
-                               Optional score As ScoreMetric = Nothing) As NetworkGraph
+                               Optional score As ScoreMetric = Nothing,
+                               Optional subcomponents_filter As Integer = 0) As NetworkGraph
 
         Dim sampleId = matrix.sampleID.SeqIterator.ToArray
         Dim dataset As DataSet() = matrix.expression _
@@ -91,7 +100,8 @@ Module phenograph
             k:=k,
             link_cutoff:=link_cutoff,
             score:=score,
-            knn_cutoff:=knn_cutoff
+            knn_cutoff:=knn_cutoff,
+            subcomponents_filter:=subcomponents_filter
         )
 
         Return graph
@@ -100,7 +110,11 @@ Module phenograph
     ''' <summary>
     ''' create a new score metric for KNN method in phenograph algorithm
     ''' </summary>
-    ''' <param name="metric"></param>
+    ''' <param name="metric">
+    ''' 1. cosine: the cosine similarity score
+    ''' 2. jaccard: the jaccard similarity score
+    ''' 3. pearson: the pearson correlation score(WGCNA co-expression weight actually)
+    ''' </param>
     ''' <param name="env"></param>
     ''' <returns></returns>
     <ExportAPI("score_metric")>
@@ -146,6 +160,47 @@ Module phenograph
             End If
 
             link.data(NamesOf.REFLECTION_ID_MAPPING_INTERACTION_TYPE) = type
+        Next
+
+        For Each v As Node In g.vertex
+            If v.label Like geneIndex Then
+                v.data("group") = "gene"
+            ElseIf v.label Like metaboliteIndex Then
+                v.data("group") = "metabolite"
+            End If
+        Next
+
+        Return g
+    End Function
+
+    ''' <summary>
+    ''' set cluster colors of the phenograph result
+    ''' </summary>
+    ''' <param name="g"></param>
+    ''' <param name="colorSet"></param>
+    ''' <param name="env"></param>
+    ''' <returns></returns>
+    <ExportAPI("cluster_colors")>
+    Public Function ClusterColors(g As NetworkGraph,
+                                  <RRawVectorArgument>
+                                  Optional colorSet As Object = "viridis:turbo",
+                                  Optional env As Environment = Nothing) As Object
+
+        Dim palette = RColorPalette.getColorSet(colorSet, [default]:="Paper")
+        Dim groupDesc = Communities.GetCommunitySet(g) _
+            .OrderByDescending(Function(v) v.Value.Length) _
+            .ToArray
+        Dim colors As LoopArray(Of SolidBrush) = Designer _
+            .GetColors(palette, n:=groupDesc.Where(Function(c) c.Value.Length > 4).Count) _
+            .Select(Function(c) New SolidBrush(c)) _
+            .ToArray
+
+        For Each group In groupDesc
+            Dim color As Brush = ++colors
+
+            For Each v In group.Value
+                v.data.color = color
+            Next
         Next
 
         Return g

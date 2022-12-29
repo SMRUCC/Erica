@@ -80,7 +80,8 @@ Public Module CommunityGraph
                                      Optional k As Integer = 60,
                                      Optional link_cutoff As Double = 0,
                                      Optional knn_cutoff As Double = 0,
-                                     Optional score As ScoreMetric = Nothing) As NetworkGraph
+                                     Optional score As ScoreMetric = Nothing,
+                                     Optional subcomponents_filter As Integer = 0) As NetworkGraph
 
         Dim propertyNames As String() = data.PropertyNames
         Dim matrix As New List(Of Double())
@@ -94,7 +95,8 @@ Public Module CommunityGraph
             k:=k,
             link_cutoff:=link_cutoff,
             knn_cutoff:=knn_cutoff,
-            score:=score
+            score:=score,
+            subcomponents_filter:=subcomponents_filter
         )
 
         For Each v As Node In graph.vertex
@@ -117,7 +119,8 @@ Public Module CommunityGraph
                                      Optional k As Integer = 30,
                                      Optional link_cutoff As Double = 0,
                                      Optional knn_cutoff As Double = 0,
-                                     Optional score As ScoreMetric = Nothing) As NetworkGraph
+                                     Optional score As ScoreMetric = Nothing,
+                                     Optional subcomponents_filter As Integer = 0) As NetworkGraph
         If k < 1 Then
             Throw New ArgumentException("k must be a positive integer!")
         ElseIf k > data.RowDimension - 2 Then
@@ -151,7 +154,7 @@ Public Module CommunityGraph
         cat("DONE ~", (t1 = App.ElapsedMilliseconds - CDbl(t1)) / 1000, "s\n", " Compute jaccard coefficient between nearest-neighbor sets...")
         ' t2 <- system.time(links <- jaccard_coeff(neighborMatrix))
         Dim t2 As Value(Of Double) = App.ElapsedMilliseconds
-        Dim links As GeneralMatrix = jaccard_coeff(neighborMatrix)
+        Dim links As GeneralMatrix = jaccard_coeff(neighborMatrix, symmetrize:=False)
         cat("DONE ~", (t2 = App.ElapsedMilliseconds - CDbl(t2)) / 1000, "s\n", " Build undirected graph from the weighted links...")
 
         ' take rows
@@ -161,7 +164,7 @@ Public Module CommunityGraph
         links = links(links(2, byRow:=False) > link_cutoff)
 
         Dim t3 As Value(Of Double) = App.ElapsedMilliseconds
-        Dim g = DirectCast(links, NumericMatrix).AsGraph()
+        Dim g = DirectCast(links, NumericMatrix).AsGraph(subcomponents_filter)
         cat("DONE ~", (t3 = App.ElapsedMilliseconds - CDbl(t3)) / 1000, "s\n", " Run louvain clustering on the graph ...")
         Dim t4 As Value(Of Double) = App.ElapsedMilliseconds
 
@@ -192,7 +195,7 @@ Public Module CommunityGraph
     ''' <returns></returns>
     ''' 
     <Extension>
-    Private Function AsGraph(links As NumericMatrix) As NetworkGraph
+    Private Function AsGraph(links As NumericMatrix, subcomponents_filter As Integer) As NetworkGraph
         Dim g As New NetworkGraph
         Dim from As String
         Dim [to] As String
@@ -212,12 +215,36 @@ Public Module CommunityGraph
                 Call g.CreateNode([to])
             End If
 
+            ' avoid of the duplicated edges
+            If g.ExistEdge(from, [to]) OrElse g.ExistEdge([to], from) Then
+                Continue For
+            End If
+
             Call g.CreateEdge(
                 u:=g.GetElementByID(from),
                 v:=g.GetElementByID([to]),
                 weight:=weight
             )
         Next
+
+        If subcomponents_filter > 0 Then
+            Dim subComponents = g.IteratesSubNetworks(singleNodeAsGraph:=True).ToArray
+            Dim smallComponents = subComponents _
+                .Where(Function(gi) gi.vertex.Count <= subcomponents_filter) _
+                .ToArray
+            Dim removeNodes = smallComponents _
+                .Select(Function(gi) gi.vertex) _
+                .IteratesALL _
+                .GroupBy(Function(v) v.label) _
+                .Select(Function(vg) vg.First) _
+                .ToArray
+
+            For Each v As Node In removeNodes
+                Call g.RemoveNode(v.label)
+            Next
+
+            g = g.Copy
+        End If
 
         VBDebugger.Mute = False
 

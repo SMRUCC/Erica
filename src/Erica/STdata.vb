@@ -22,7 +22,11 @@ Public Module STdata
     ''' with the barcode
     ''' </summary>
     ''' <param name="h5ad"></param>
-    ''' <returns></returns>
+    ''' <returns>
+    ''' the result matrix object in format of sample id of the 
+    ''' result matrix is the gene id and the row id in matrix is 
+    ''' actually the spot xy data tag or the barcoede data
+    ''' </returns>
     ''' <remarks>
     ''' the expressin data just associated with the barcode, 
     ''' no spot spatial information.

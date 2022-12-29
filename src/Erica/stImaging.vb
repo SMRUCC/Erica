@@ -1,10 +1,13 @@
 ﻿
+Imports System.Drawing
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.HeatMap
+Imports Microsoft.VisualBasic.Imaging.Math2D
 Imports Microsoft.VisualBasic.MIME.Html
 Imports Microsoft.VisualBasic.Scripting.MetaData
+Imports Microsoft.VisualBasic.Scripting.Runtime
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports SMRUCC.Rsharp.Runtime
 Imports SMRUCC.Rsharp.Runtime.Interop
@@ -20,6 +23,19 @@ Module stImaging
     <ExportAPI("new_render")>
     Public Function createRender(h5ad As AnnData) As Render
         Return New Render(h5ad)
+    End Function
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="raw">
+    ''' the sample id should be the barcodes, and the row id is the gene id
+    ''' </param>
+    ''' <param name="spots"></param>
+    ''' <returns></returns>
+    <ExportAPI("as.STrender")>
+    Public Function createRender(raw As Matrix, spots As SpaceSpot()) As Render
+        Return New Render(New HTSMatrixViewer(raw), spots)
     End Function
 
     ''' <summary>
@@ -42,6 +58,26 @@ Module stImaging
     <ExportAPI("imaging")>
     Public Function imaging(render As Render, geneId As String) As Object
         Return render.Imaging(geneId)
+    End Function
+
+    <ExportAPI("spot_heatmap")>
+    Public Function SpotHeatmap(spots As PixelData(),
+                                <RRawVectorArgument>
+                                Optional size As Object = "3000,3000",
+                                Optional colorMaps As ScalerPalette = ScalerPalette.turbo,
+                                Optional env As Environment = Nothing) As Object
+
+        Dim sizeVal = InteropArgumentHelper.getSize(size, env, [default]:="3000,3000")
+        Dim poly As New Polygon2D(spots.Select(Function(a) New PointF(a.X, a.Y)).ToArray)
+        Dim theme As New Theme With {
+            .colorSet = colorMaps.Description
+        }
+        Dim dimSize As New Size(poly.xpoints.Max, poly.ypoints.Max)
+        Dim app As New SpotHeatMap(spots, dimSize, theme) With {
+            .mapLevels = 120
+        }
+
+        Return app.Plot(sizeVal)
     End Function
 
     <ExportAPI("plot_spots")>

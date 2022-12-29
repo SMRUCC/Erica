@@ -26,7 +26,11 @@ Public Module Export
     ''' <param name="spotId"></param>
     ''' <param name="geneID"></param>
     ''' <param name="source"></param>
-    ''' <returns></returns>
+    ''' <returns>
+    ''' the result matrix object in format of sample id of the 
+    ''' result matrix is the gene id and the row id in matrix is 
+    ''' actually the spot xy data tag or the barcoede data
+    ''' </returns>
     <Extension>
     Friend Function ExportExpression(X As X,
                                      spotId As String(),

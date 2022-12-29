@@ -11,7 +11,11 @@ Public Module LoadDisk
     ''' load the raw expression matrix which is associated with the barcode
     ''' </summary>
     ''' <param name="h5ad"></param>
-    ''' <returns></returns>
+    ''' <returns>
+    ''' the result matrix object in format of sample id of the 
+    ''' result matrix is the gene id and the row id in matrix is 
+    ''' actually the spot xy data tag or the barcoede data
+    ''' </returns>
     Public Function ReadST_spacerangerH5Matrix(h5ad As String) As Matrix
         Dim fileId As Long = H5F.open(h5ad, H5F.ACC_RDONLY)
         Dim shape As Integer() = ReadData.Read_dataset(fileId, "/matrix/shape").GetIntegers.ToArray
