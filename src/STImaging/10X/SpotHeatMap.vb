@@ -39,6 +39,7 @@ Public Class SpotHeatMap : Inherits HeatMapPlot
         Dim raster = cells.EnumerateData.ToArray
 
         ' rendering the heatmap cells
+        ' Call g.DrawRectangle(Pens.Red, canvas.PlotRegion)
         Call PixelRender.FillRectangles(
             g:=g,
             raster:=raster,
