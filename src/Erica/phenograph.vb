@@ -114,12 +114,13 @@ Module phenograph
     ''' 1. cosine: the cosine similarity score
     ''' 2. jaccard: the jaccard similarity score
     ''' 3. pearson: the pearson correlation score(WGCNA co-expression weight actually)
+    ''' 4. spearman: the spearman correlation score(WGCNA spearman weight score)
     ''' </param>
     ''' <param name="env"></param>
     ''' <returns></returns>
     <ExportAPI("score_metric")>
     Public Function scoreMetric(<RRawVectorArgument(GetType(String))>
-                                Optional metric As Object = "cosine|jaccard|pearson",
+                                Optional metric As Object = "cosine|jaccard|pearson|spearman",
                                 Optional env As Environment = Nothing) As ScoreMetric
         Dim strs As String() = REnv.asVector(Of String)(metric)
 
@@ -130,6 +131,7 @@ Module phenograph
                 Case "cosine" : Return New Cosine
                 Case "jaccard" : Return New Jaccard
                 Case "pearson" : Return New Pearson
+                Case "spearman" : Return New Spearman
                 Case Else
                     Return Nothing
             End Select
