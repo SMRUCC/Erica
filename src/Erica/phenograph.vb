@@ -50,6 +50,7 @@ Imports Microsoft.VisualBasic.Data.visualize.Network.FileStream.Generic
 Imports Microsoft.VisualBasic.Data.visualize.Network.Graph
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
+Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
@@ -85,8 +86,8 @@ Module phenograph
                                Optional knn_cutoff As Double = 0,
                                Optional score As ScoreMetric = Nothing,
                                Optional subcomponents_filter As Integer = 0,
-                               Optional tag1 As String = "x",
-                               Optional tag2 As String = "y",
+                               Optional knn2 As Integer = 16,
+                               Optional joint_cutoff As Double = 0,
                                Optional env As Environment = Nothing) As Object
 
         Dim p1 As NetworkGraph = x.phenograph1(k, link_cutoff, knn_cutoff, score, subcomponents_filter)
@@ -99,13 +100,6 @@ Module phenograph
         Else
             p2 = y.phenograph1(k, link_cutoff, knn_cutoff, score, subcomponents_filter)
         End If
-
-        For Each link As Edge In p1.graphEdges
-            link.data(NamesOf.REFLECTION_ID_MAPPING_INTERACTION_TYPE) = tag1 & link.data(NamesOf.REFLECTION_ID_MAPPING_INTERACTION_TYPE)
-        Next
-        For Each link As Edge In p2.graphEdges
-            link.data(NamesOf.REFLECTION_ID_MAPPING_INTERACTION_TYPE) = tag2 & link.data(NamesOf.REFLECTION_ID_MAPPING_INTERACTION_TYPE)
-        Next
 
         Dim xset = x.expression.ToDictionary(Function(gene) gene.geneID)
         Dim yset = y.Project(x.sampleID).expression.ToDictionary(Function(gene) gene.geneID)
@@ -120,9 +114,9 @@ Module phenograph
 
                                                  Return (y2, cor2)
                                              End Function) _
-                                     .Where(Function(i) i.cor2 > 0) _
+                                     .Where(Function(i) i.cor2 > joint_cutoff) _
                                      .OrderByDescending(Function(i) i.cor2) _
-                                     .Take(k) _
+                                     .Take(knn2) _
                                      .ToArray
 
                         Return (x:=v.label, y:=cor)
@@ -152,7 +146,7 @@ Module phenograph
             Next
         Next
 
-        Return graph
+        Return Communities.Analysis(graph)
     End Function
 
     <Extension>
@@ -250,6 +244,33 @@ Module phenograph
                 v.data("group") = "gene"
             ElseIf v.label Like metaboliteIndex Then
                 v.data("group") = "metabolite"
+            End If
+        Next
+
+        Dim clusters = Communities.GetCommunitySet(g)
+        Dim metaboSet As i32 = 1
+        Dim geneSet As i32 = 1
+        Dim crossSet As i32 = 1
+
+        For Each cluster In clusters
+            If cluster.Value.All(Function(v) v.data("group") = "metabolite") Then
+                Dim tag As String = $"metaboSet_{++metaboSet}"
+
+                For Each v In cluster.Value
+                    v.data(NamesOf.REFLECTION_ID_MAPPING_NODETYPE) = tag
+                Next
+            ElseIf cluster.Value.All(Function(v) v.data("group") = "gene") Then
+                Dim tag As String = $"geneSet_{++geneSet}"
+
+                For Each v In cluster.Value
+                    v.data(NamesOf.REFLECTION_ID_MAPPING_NODETYPE) = tag
+                Next
+            Else
+                Dim tag As String = $"crossSet_{++crossSet}"
+
+                For Each v In cluster.Value
+                    v.data(NamesOf.REFLECTION_ID_MAPPING_NODETYPE) = tag
+                Next
             End If
         Next
 
