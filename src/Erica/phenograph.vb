@@ -40,6 +40,7 @@
 #End Region
 
 Imports System.Drawing
+Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.ComponentModel.DataStructures
@@ -49,10 +50,12 @@ Imports Microsoft.VisualBasic.Data.visualize.Network.FileStream.Generic
 Imports Microsoft.VisualBasic.Data.visualize.Network.Graph
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
+Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports SMRUCC.genomics.Analysis.SingleCell.PhenoGraph
+Imports SMRUCC.Rsharp.Runtime
 Imports SMRUCC.Rsharp.Runtime.Interop
 Imports REnv = SMRUCC.Rsharp.Runtime
 
@@ -67,7 +70,7 @@ Module phenograph
     ''' <summary>
     ''' PhenoGraph algorithm
     ''' </summary>
-    ''' <param name="matrix"></param>
+    ''' <param name="x"></param>
     ''' <param name="k"></param>
     ''' <param name="link_cutoff"></param>
     ''' <param name="subcomponents_filter">
@@ -75,15 +78,87 @@ Module phenograph
     ''' </param>
     ''' <returns></returns>
     <ExportAPI("phenograph")>
-    Public Function phenograph(matrix As Matrix,
+    <RApiReturn(GetType(NetworkGraph))>
+    Public Function phenograph(x As Matrix,
+                               Optional y As Matrix = Nothing,
                                Optional k As Integer = 30,
                                Optional link_cutoff As Double = 0,
                                Optional knn_cutoff As Double = 0,
                                Optional score As ScoreMetric = Nothing,
-                               Optional subcomponents_filter As Integer = 0) As NetworkGraph
+                               Optional subcomponents_filter As Integer = 0,
+                               Optional knn2 As Integer = 16,
+                               Optional joint_cutoff As Double = 0,
+                               Optional env As Environment = Nothing) As Object
 
-        Dim sampleId = matrix.sampleID.SeqIterator.ToArray
-        Dim dataset As DataSet() = matrix.expression _
+        Dim p1 As NetworkGraph = x.phenograph1(k, link_cutoff, knn_cutoff, score, subcomponents_filter)
+        Dim p2 As NetworkGraph
+
+        If y Is Nothing Then
+            Return p1
+        ElseIf score Is Nothing Then
+            Return Internal.debug.stop("analysis of two expression data matrix required of the 'score' metric not null!", env)
+        Else
+            p2 = y.phenograph1(k, link_cutoff, knn_cutoff, score, subcomponents_filter)
+        End If
+
+        Dim xset = x.expression.ToDictionary(Function(gene) gene.geneID)
+        Dim yset = y.Project(x.sampleID).expression.ToDictionary(Function(gene) gene.geneID)
+        Dim p2v = p2.vertex.Select(Function(v) v.label).ToArray
+        Dim knn = p1.vertex _
+            .AsParallel _
+            .Select(Function(v)
+                        Dim xv = xset(v.label)
+                        Dim cor = p2v.Select(Function(y2)
+                                                 Dim yv = yset(y2)
+                                                 Dim cor2 = score.eval(xv.experiments, yv.experiments)
+
+                                                 Return (y2, cor2)
+                                             End Function) _
+                                     .Where(Function(i) i.cor2 > joint_cutoff) _
+                                     .OrderByDescending(Function(i) i.cor2) _
+                                     .Take(knn2) _
+                                     .ToArray
+
+                        Return (x:=v.label, y:=cor)
+                    End Function) _
+            .ToArray
+
+        Dim graph As New NetworkGraph
+
+        For Each v In p1.vertex.JoinIterates(p2.vertex)
+            Call graph.CreateNode(v.label, v.data)
+        Next
+        For Each link In p1.graphEdges.JoinIterates(p2.graphEdges)
+            Call graph.CreateEdge(
+                u:=graph.GetElementByID(link.U.label),
+                v:=graph.GetElementByID(link.V.label),
+                weight:=link.weight,
+                data:=link.data
+            )
+        Next
+        For Each cross In knn
+            For Each hit In cross.y
+                Call graph.CreateEdge(
+                    u:=graph.GetElementByID(cross.x),
+                    v:=graph.GetElementByID(hit.y2),
+                    weight:=hit.cor2
+                )
+            Next
+        Next
+
+        Return Communities.Analysis(graph)
+    End Function
+
+    <Extension>
+    Private Function phenograph1(x As Matrix,
+                                 k As Integer,
+                                 link_cutoff As Double,
+                                 knn_cutoff As Double,
+                                 score As ScoreMetric,
+                                 subcomponents_filter As Integer) As NetworkGraph
+
+        Dim sampleId = x.sampleID.SeqIterator.ToArray
+        Dim dataset As DataSet() = x.expression _
             .Select(Function(gene)
                         Return New DataSet With {
                             .ID = gene.geneID,
@@ -114,12 +189,13 @@ Module phenograph
     ''' 1. cosine: the cosine similarity score
     ''' 2. jaccard: the jaccard similarity score
     ''' 3. pearson: the pearson correlation score(WGCNA co-expression weight actually)
+    ''' 4. spearman: the spearman correlation score(WGCNA spearman weight score)
     ''' </param>
     ''' <param name="env"></param>
     ''' <returns></returns>
     <ExportAPI("score_metric")>
     Public Function scoreMetric(<RRawVectorArgument(GetType(String))>
-                                Optional metric As Object = "cosine|jaccard|pearson",
+                                Optional metric As Object = "cosine|jaccard|pearson|spearman",
                                 Optional env As Environment = Nothing) As ScoreMetric
         Dim strs As String() = REnv.asVector(Of String)(metric)
 
@@ -130,6 +206,7 @@ Module phenograph
                 Case "cosine" : Return New Cosine
                 Case "jaccard" : Return New Jaccard
                 Case "pearson" : Return New Pearson
+                Case "spearman" : Return New Spearman
                 Case Else
                     Return Nothing
             End Select
@@ -167,6 +244,33 @@ Module phenograph
                 v.data("group") = "gene"
             ElseIf v.label Like metaboliteIndex Then
                 v.data("group") = "metabolite"
+            End If
+        Next
+
+        Dim clusters = Communities.GetCommunitySet(g)
+        Dim metaboSet As i32 = 1
+        Dim geneSet As i32 = 1
+        Dim crossSet As i32 = 1
+
+        For Each cluster In clusters
+            If cluster.Value.All(Function(v) v.data("group") = "metabolite") Then
+                Dim tag As String = $"metaboSet_{++metaboSet}"
+
+                For Each v In cluster.Value
+                    v.data(NamesOf.REFLECTION_ID_MAPPING_NODETYPE) = tag
+                Next
+            ElseIf cluster.Value.All(Function(v) v.data("group") = "gene") Then
+                Dim tag As String = $"geneSet_{++geneSet}"
+
+                For Each v In cluster.Value
+                    v.data(NamesOf.REFLECTION_ID_MAPPING_NODETYPE) = tag
+                Next
+            Else
+                Dim tag As String = $"crossSet_{++crossSet}"
+
+                For Each v In cluster.Value
+                    v.data(NamesOf.REFLECTION_ID_MAPPING_NODETYPE) = tag
+                Next
             End If
         Next
 

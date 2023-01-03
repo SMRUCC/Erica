@@ -3,8 +3,8 @@
 .SH NAME
 score_metric \- create a new score metric for KNN method in phenograph algorithm
 .SH SYNOPSIS
-\fIscore_metric(\fBmetric\fR as any = ["cosine","jaccard","pearson"], 
-\fBenv\fR as <generic> Environment = \fB<NULL>\fR);\fR
+\fIscore_metric(\fBmetric\fR as any = ["cosine","jaccard","pearson","spearman"], 
+[\fB<Environment>\fR]);\fR
 .SH DESCRIPTION
 .PP
 create a new score metric for KNN method in phenograph algorithm
@@ -15,6 +15,7 @@ create a new score metric for KNN method in phenograph algorithm
  1. cosine: the cosine similarity score
  2. jaccard: the jaccard similarity score
  3. pearson: the pearson correlation score(WGCNA co-expression weight actually)
+ 4. spearman: the spearman correlation score(WGCNA spearman weight score)
 . 
 .PP
 .PP

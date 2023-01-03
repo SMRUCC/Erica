@@ -154,7 +154,7 @@ Public Module CommunityGraph
         cat("DONE ~", (t1 = App.ElapsedMilliseconds - CDbl(t1)) / 1000, "s\n", " Compute jaccard coefficient between nearest-neighbor sets...")
         ' t2 <- system.time(links <- jaccard_coeff(neighborMatrix))
         Dim t2 As Value(Of Double) = App.ElapsedMilliseconds
-        Dim links As GeneralMatrix = jaccard_coeff(neighborMatrix, symmetrize:=False)
+        Dim links As GeneralMatrix = jaccard_coeff_parallel(neighborMatrix, symmetrize:=False)
         cat("DONE ~", (t2 = App.ElapsedMilliseconds - CDbl(t2)) / 1000, "s\n", " Build undirected graph from the weighted links...")
 
         ' take rows

@@ -3,19 +3,23 @@
 .SH NAME
 phenograph \- PhenoGraph algorithm
 .SH SYNOPSIS
-\fIphenograph(\fBmatrix\fR as <generic> Matrix, 
+\fIphenograph(\fBx\fR as <generic> Matrix, 
+\fBy\fR as <generic> Matrix = \fB<NULL>\fR, 
 \fBk\fR as integer = 30, 
 \fBlink_cutoff\fR as double = 0, 
 \fBknn_cutoff\fR as double = 0, 
 \fBscore\fR as <generic> ScoreMetric = \fB<NULL>\fR, 
-\fBsubcomponents_filter\fR as integer = 0);\fR
+\fBsubcomponents_filter\fR as integer = 0, 
+\fBknn2\fR as integer = 16, 
+\fBjoint_cutoff\fR as double = 0, 
+[\fB<Environment>\fR]);\fR
 .SH DESCRIPTION
 .PP
 PhenoGraph algorithm
 .PP
 .SH OPTIONS
 .PP
-\fBmatrix\fB \fR\- -. 
+\fBx\fB \fR\- -. 
 .PP
 .PP
 \fBk\fB \fR\- -. 
