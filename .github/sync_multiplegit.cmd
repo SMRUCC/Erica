@@ -1,5 +1,8 @@
 @echo off
 
+git pull gitlink HEAD
+git push gitlink HEAD
+
 git pull local HEAD
 REM git pull gitee HEAD
 
