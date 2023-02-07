@@ -1,5 +1,6 @@
 ﻿Imports System.Drawing
 Imports System.IO
+Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualBasic.DataStorage.HDSPack.FileSystem
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 
@@ -45,8 +46,7 @@ Public Class STRaid
         Dim geneids As String() = raid.matrix.sampleID
 
 
-
-        Call pack.Flush()
+        Call DirectCast(pack, IFileSystemEnvironment).Flush()
         Return True
     End Function
 
