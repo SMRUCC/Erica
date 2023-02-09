@@ -45,7 +45,6 @@ Public Class STRaid
         Dim barcodes As String() = raid.matrix.rownames
         Dim geneids As String() = raid.matrix.sampleID
 
-
         Call DirectCast(pack, IFileSystemEnvironment).Flush()
         Return True
     End Function
