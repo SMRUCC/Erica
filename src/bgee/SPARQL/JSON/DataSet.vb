@@ -11,7 +11,7 @@ Public Class ResultSet
 
     Public Property distinct As Boolean
     Public Property ordered As Boolean
-    Public Property bindings As Dictionary(Of String, DataValue)()
+    Public Property bindings As Dictionary(Of String, EntityProperty)()
 
 End Class
 
