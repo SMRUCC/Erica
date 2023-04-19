@@ -1,5 +1,7 @@
 @echo off
 
+REM git remote add local http://192.168.0.232:8848/xieguigang/Erica.git 
+
 git pull gitlink HEAD
 git push gitlink HEAD
 
