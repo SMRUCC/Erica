@@ -6,7 +6,7 @@ declare namespace Erica {
    /**
    */
    function UniProtKeywords(): object;
-   module  {
+   module _ {
       /**
       */
       function onLoad(): object;
