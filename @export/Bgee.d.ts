@@ -8,6 +8,9 @@
 */
 declare namespace Bgee {
    /**
+   */
+   function anatomicalIDs(bgee:object): object;
+   /**
     * 
     * 
      * @param bgee -
@@ -29,10 +32,11 @@ declare namespace Bgee {
    function development_stage(bgee:object): object;
    /**
    */
-   function anatomicalIDs(bgee:object): object;
-   /**
-   */
    function geneIDs(bgee:object): object;
+   /**
+     * @param env default value Is ``null``.
+   */
+   function metabolomicsMapping(uniprot:object, geneExpressions:object, env?:object): object;
    /**
      * @param advance default value Is ``false``.
      * @param quality default value Is ``'*'``.
@@ -40,6 +44,11 @@ declare namespace Bgee {
      * @param env default value Is ``null``.
    */
    function parseTsv(file:string, advance?:boolean, quality?:string, pip_stream?:boolean, env?:object): object;
+   module read {
+      /**
+      */
+      function backgroundPack(file:string): object;
+   }
    /**
     * create tissue and cell background based on bgee database
     * 
@@ -55,13 +64,4 @@ declare namespace Bgee {
       */
       function backgroundPack(background:any, file:string, env?:object): boolean;
    }
-   module read {
-      /**
-      */
-      function backgroundPack(file:string): object;
-   }
-   /**
-     * @param env default value Is ``null``.
-   */
-   function metabolomicsMapping(uniprot:object, geneExpressions:object, env?:object): object;
 }

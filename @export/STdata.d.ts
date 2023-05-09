@@ -7,7 +7,23 @@
  * 
 */
 declare namespace STdata {
+   module as {
+      /**
+      */
+      function STmatrix(h5Matrix:object, spots:object): object;
+      /**
+      */
+      function STRaid(h5Matrix:object, spots:object): object;
+   }
    module read {
+      /**
+       * load the spatial mapping data of the spot barcode 
+       *  associated with the spot spaital information
+       * 
+       * 
+        * @param file -
+      */
+      function spatial_spots(file:string): object;
       /**
        * load the raw expression matrix which is associated
        *  with the barcode
@@ -21,27 +37,6 @@ declare namespace STdata {
         *  actually the spot xy data tag or the barcoede data
       */
       function ST_spacerangerH5Matrix(h5ad:string): object;
-      /**
-       * load the spatial mapping data of the spot barcode 
-       *  associated with the spot spaital information
-       * 
-       * 
-        * @param file -
-      */
-      function spatial_spots(file:string): object;
-   }
-   module as {
-      /**
-      */
-      function STRaid(h5Matrix:object, spots:object): object;
-      /**
-      */
-      function STmatrix(h5Matrix:object, spots:object): object;
-   }
-   module write {
-      /**
-      */
-      function straid(straid:object, file:string): any;
    }
    /**
     * 
@@ -52,4 +47,9 @@ declare namespace STdata {
      * + default value Is ``32``.
    */
    function sampling(matrix:object, nsamples?:object): object;
+   module write {
+      /**
+      */
+      function straid(straid:object, file:string): any;
+   }
 }

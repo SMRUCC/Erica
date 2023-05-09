@@ -3,12 +3,12 @@
 // package_source=Erica
 
 declare namespace Erica {
-   /**
-   */
-   function UniProtKeywords(): object;
    module _ {
       /**
       */
       function onLoad(): object;
    }
+   /**
+   */
+   function UniProtKeywords(): object;
 }

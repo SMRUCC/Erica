@@ -8,6 +8,10 @@
 */
 declare namespace singleCell {
    /**
+     * @param q default value Is ``0.2``.
+   */
+   function expression_list(raw:object, q?:number): object;
+   /**
     * extract the raw expression data matrix from the h5ad object
     * 
     * 
@@ -17,6 +21,9 @@ declare namespace singleCell {
      * + default value Is ``null``.
    */
    function HTS_matrix(h5ad:any, env?:object): object;
+   /**
+   */
+   function pca_annotation(h5ad:object): object;
    module read {
       /**
        * read h5ad object from a specific hdf5 file
@@ -41,12 +48,5 @@ declare namespace singleCell {
    function spatialMap(h5ad:object, useCellAnnotation?:boolean): object;
    /**
    */
-   function pca_annotation(h5ad:object): object;
-   /**
-   */
    function umap_annotation(h5ad:object): object;
-   /**
-     * @param q default value Is ``0.2``.
-   */
-   function expression_list(raw:object, q?:number): object;
 }
