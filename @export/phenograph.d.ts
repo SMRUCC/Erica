@@ -36,7 +36,7 @@ declare namespace phenograph {
      * @param env 
      * + default value Is ``null``.
    */
-   function phenograph(x:object, y?:object, k?:object, link_cutoff?:number, knn_cutoff?:number, score?:object, subcomponents_filter?:object, knn2?:object, joint_cutoff?:number, env?:object): object;
+   function phenograph(x: object, y?: object, k?: object, link_cutoff?: number, knn_cutoff?: number, score?: object, subcomponents_filter?: object, knn2?: object, joint_cutoff?: number, env?: object): object;
    /**
     * create a new score metric for KNN method in phenograph algorithm
     * 
@@ -51,10 +51,10 @@ declare namespace phenograph {
      * 
      * + default value Is ``null``.
    */
-   function score_metric(metric?:any, env?:object): object;
+   function score_metric(metric?: any, env?: object): object;
    /**
    */
-   function setInteraction(g:object, geneIds:string, metaboliteIds:string): object;
+   function setInteraction(g: object, geneIds: string, metaboliteIds: string): object;
    /**
     * set cluster colors of the phenograph result
     * 
@@ -67,5 +67,5 @@ declare namespace phenograph {
      * 
      * + default value Is ``null``.
    */
-   function cluster_colors(g:object, colorSet?:any, env?:object): any;
+   function cluster_colors(g: object, colorSet?: any, env?: object): any;
 }

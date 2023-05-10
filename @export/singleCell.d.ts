@@ -16,7 +16,7 @@ declare namespace singleCell {
      * 
      * + default value Is ``null``.
    */
-   function HTS_matrix(h5ad:any, env?:object): object;
+   function HTS_matrix(h5ad: any, env?: object): object;
    module read {
       /**
        * read h5ad object from a specific hdf5 file
@@ -27,7 +27,7 @@ declare namespace singleCell {
         * 
         * + default value Is ``true``.
       */
-      function h5ad(h5adfile:string, loadExpr0?:boolean): object;
+      function h5ad(h5adfile: string, loadExpr0?: boolean): object;
    }
    /**
     * export the spatial maps data
@@ -38,15 +38,15 @@ declare namespace singleCell {
      * 
      * + default value Is ``null``.
    */
-   function spatialMap(h5ad:object, useCellAnnotation?:boolean): object;
+   function spatialMap(h5ad: object, useCellAnnotation?: boolean): object;
    /**
    */
-   function pca_annotation(h5ad:object): object;
+   function pca_annotation(h5ad: object): object;
    /**
    */
-   function umap_annotation(h5ad:object): object;
+   function umap_annotation(h5ad: object): object;
    /**
      * @param q default value Is ``0.2``.
    */
-   function expression_list(raw:object, q?:number): object;
+   function expression_list(raw: object, q?: number): object;
 }

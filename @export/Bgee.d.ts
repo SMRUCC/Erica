@@ -23,23 +23,23 @@ declare namespace Bgee {
      *  + for default value, a list that contains enrichment 
      *    result for each development_stage will be returned
    */
-   function bgee_calls(bgee:object, geneSet:string, development_stage?:string): object;
+   function bgee_calls(bgee: object, geneSet: string, development_stage?: string): object;
    /**
    */
-   function development_stage(bgee:object): object;
+   function development_stage(bgee: object): object;
    /**
    */
-   function anatomicalIDs(bgee:object): object;
+   function anatomicalIDs(bgee: object): object;
    /**
    */
-   function geneIDs(bgee:object): object;
+   function geneIDs(bgee: object): object;
    /**
      * @param advance default value Is ``false``.
      * @param quality default value Is ``'*'``.
      * @param pip_stream default value Is ``false``.
      * @param env default value Is ``null``.
    */
-   function parseTsv(file:string, advance?:boolean, quality?:string, pip_stream?:boolean, env?:object): object;
+   function parseTsv(file: string, advance?: boolean, quality?: string, pip_stream?: boolean, env?: object): object;
    /**
     * create tissue and cell background based on bgee database
     * 
@@ -48,20 +48,20 @@ declare namespace Bgee {
      * @param env 
      * + default value Is ``null``.
    */
-   function tissue_background(bgee:object, env?:object): object;
+   function tissue_background(bgee: object, env?: object): object;
    module write {
       /**
         * @param env default value Is ``null``.
       */
-      function backgroundPack(background:any, file:string, env?:object): boolean;
+      function backgroundPack(background: any, file: string, env?: object): boolean;
    }
    module read {
       /**
       */
-      function backgroundPack(file:string): object;
+      function backgroundPack(file: string): object;
    }
    /**
      * @param env default value Is ``null``.
    */
-   function metabolomicsMapping(uniprot:object, geneExpressions:object, env?:object): object;
+   function metabolomicsMapping(uniprot: object, geneExpressions: object, env?: object): object;
 }
