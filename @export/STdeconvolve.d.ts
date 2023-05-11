@@ -8,27 +8,6 @@
 */
 declare namespace STdeconvolve {
    /**
-    * Create document vector for run LDA mdelling
-    * 
-    * 
-     * @param matrix row is pixels and column is gene features. each 
-     *  pixel row is a document sample in LDA model
-     * @param min -
-     * 
-     * + default value Is ``0.05``.
-     * @param max -
-     * 
-     * + default value Is ``0.95``.
-     * @param unify -
-     * 
-     * + default value Is ``10``.
-     * @param logNorm -
-     * 
-     * + default value Is ``true``.
-     * @return document model for run LDA modelling
-   */
-   function STCorpus(matrix: object, min?: number, max?: number, unify?: object, logNorm?: boolean): object;
-   /**
     * run LDA modelling
     * 
     * > Fit the optimal number of cell-types K for the LDA model
@@ -67,4 +46,25 @@ declare namespace STdeconvolve {
      *    Each row is the cell-type composition for a given pixel.
    */
    function getBetaTheta(LDA: object, corpus: object, topGenes?: object): object;
+   /**
+    * Create document vector for run LDA mdelling
+    * 
+    * 
+     * @param matrix row is pixels and column is gene features. each 
+     *  pixel row is a document sample in LDA model
+     * @param min -
+     * 
+     * + default value Is ``0.05``.
+     * @param max -
+     * 
+     * + default value Is ``0.95``.
+     * @param unify -
+     * 
+     * + default value Is ``10``.
+     * @param logNorm -
+     * 
+     * + default value Is ``true``.
+     * @return document model for run LDA modelling
+   */
+   function STCorpus(matrix: object, min?: number, max?: number, unify?: object, logNorm?: boolean): object;
 }

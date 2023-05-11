@@ -7,11 +7,6 @@
  * 
 */
 declare namespace st-imaging {
-   /**
-    * 
-    * 
-   */
-   function new_render(h5ad: object): object;
    module as {
       /**
        * 
@@ -38,11 +33,10 @@ declare namespace st-imaging {
    */
    function imaging(render: object, geneId: string): any;
    /**
-     * @param size default value Is ``'3000,3000'``.
-     * @param colorMaps default value Is ``null``.
-     * @param env default value Is ``null``.
+    * 
+    * 
    */
-   function spot_heatmap(spots: object, size?: any, colorMaps?: object, env?: object): any;
+   function new_render(h5ad: object): object;
    /**
      * @param size default value Is ``'3000,3000'``.
      * @param spot_radius default value Is ``13``.
@@ -50,4 +44,10 @@ declare namespace st-imaging {
      * @param env default value Is ``null``.
    */
    function plot_spots(spots: object, matrix: any, geneId: string, size?: any, spot_radius?: number, colorMaps?: object, env?: object): any;
+   /**
+     * @param size default value Is ``'3000,3000'``.
+     * @param colorMaps default value Is ``null``.
+     * @param env default value Is ``null``.
+   */
+   function spot_heatmap(spots: object, size?: any, colorMaps?: object, env?: object): any;
 }
