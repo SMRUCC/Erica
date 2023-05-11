@@ -10,6 +10,19 @@
 */
 declare namespace phenograph {
    /**
+    * set cluster colors of the phenograph result
+    * 
+    * 
+     * @param g -
+     * @param colorSet -
+     * 
+     * + default value Is ``'viridis:turbo'``.
+     * @param env -
+     * 
+     * + default value Is ``null``.
+   */
+   function cluster_colors(g: object, colorSet?: any, env?: object): any;
+   /**
     * PhenoGraph algorithm
     * 
     * 
@@ -55,17 +68,4 @@ declare namespace phenograph {
    /**
    */
    function setInteraction(g: object, geneIds: string, metaboliteIds: string): object;
-   /**
-    * set cluster colors of the phenograph result
-    * 
-    * 
-     * @param g -
-     * @param colorSet -
-     * 
-     * + default value Is ``'viridis:turbo'``.
-     * @param env -
-     * 
-     * + default value Is ``null``.
-   */
-   function cluster_colors(g: object, colorSet?: any, env?: object): any;
 }
