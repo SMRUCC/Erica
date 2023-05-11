@@ -19,7 +19,7 @@ declare namespace STdeconvolve {
      * @param beta 
      * + default value Is ``0.5``.
    */
-   function fitLDA(spatialDoc:object, k:object, alpha?:number, beta?:number): object;
+   function fitLDA(spatialDoc: object, k: object, alpha?: number, beta?: number): object;
    /**
     * ### get deconvolve result matrix
     *  
@@ -45,7 +45,7 @@ declare namespace STdeconvolve {
      *  + theta: pixel (rows) by cell-types (columns) distribution matrix.
      *    Each row is the cell-type composition for a given pixel.
    */
-   function getBetaTheta(LDA:object, corpus:object, topGenes?:object): object;
+   function getBetaTheta(LDA: object, corpus: object, topGenes?: object): object;
    /**
     * Create document vector for run LDA mdelling
     * 
@@ -66,5 +66,5 @@ declare namespace STdeconvolve {
      * + default value Is ``true``.
      * @return document model for run LDA modelling
    */
-   function STCorpus(matrix:object, min?:number, max?:number, unify?:object, logNorm?:boolean): object;
+   function STCorpus(matrix: object, min?: number, max?: number, unify?: object, logNorm?: boolean): object;
 }
