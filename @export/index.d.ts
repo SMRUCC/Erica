@@ -8,6 +8,12 @@ declare namespace Erica {
       */
       function onLoad(): object;
    }
+   module human_genes {
+      /**
+        * @param index default value Is ``Bgee``.
+      */
+      function annotations(index?: string): object;
+   }
    module load {
       /**
       */
