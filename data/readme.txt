@@ -1,0 +1,1 @@
+https://rest.uniprot.org/uniprotkb/stream?fields=accession%2Cid%2Cprotein_name%2Cgene_names%2Cgene_synonym%2Cxref_bgee%2Cxref_ensembl%2Cxref_geneid%2Cxref_ko%2Cxref_kegg%2Cec&format=tsv&query=%28Human%29
