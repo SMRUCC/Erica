@@ -8,6 +8,11 @@ declare namespace Erica {
       */
       function onLoad(): object;
    }
+   module load {
+      /**
+      */
+      function human_genes(): object;
+   }
    /**
    */
    function UniProtKeywords(): object;
