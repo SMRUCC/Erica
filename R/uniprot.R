@@ -7,8 +7,14 @@ const load.human_genes = function() {
     ;
 }
 
-const human_genes.annotations = function(index = "Bgee") {
-    let df = load.human_genes();
+const human_genes.annotations = function(human_genes = NULL, index = "Bgee") {
+    let df = {
+        if (is.null(human_genes)) {
+            load.human_genes();
+        } else {
+            human_genes
+        }
+    };
     let geneIDs = unique(df[, index]);
     let i = geneIDs != "";
 

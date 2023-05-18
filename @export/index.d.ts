@@ -10,9 +10,10 @@ declare namespace Erica {
    }
    module human_genes {
       /**
+        * @param human_genes default value Is ``null``.
         * @param index default value Is ``Bgee``.
       */
-      function annotations(index?: string): object;
+      function annotations(human_genes?: any, index?: string): object;
    }
    module load {
       /**
