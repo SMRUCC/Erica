@@ -30,8 +30,9 @@ const human_genes.annotations = function(human_genes = NULL, index = "Bgee") {
     print("create gene annotation json...");
 
     for(gene in annos) {
-        geneIDs = strsplit(gene[[index]], ";");
+        geneIDs = strsplit(gene[[index]], "\s*;\s*");
         gene$"Gene Names (synonym)" = strsplit(gene$"Gene Names (synonym)");
+        gene$"Gene Names" = strsplit(gene$"Gene Names");
 
         for(id in geneIDs) {
             annoData[[id]] = gene;
