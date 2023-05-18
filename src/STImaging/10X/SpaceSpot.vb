@@ -4,6 +4,11 @@ Imports System.Drawing
 Public Class SpaceSpot
 
     Public Property barcode As String
+
+    ''' <summary>
+    ''' Stdata spot is sample data when this flag value greater than zero
+    ''' </summary>
+    ''' <returns></returns>
     Public Property flag As Integer
 
 #Region "spot xy"
