@@ -57,7 +57,7 @@ Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports SMRUCC.genomics.Analysis.SingleCell.PhenoGraph
 Imports SMRUCC.Rsharp.Runtime
 Imports SMRUCC.Rsharp.Runtime.Interop
-Imports REnv = SMRUCC.Rsharp.Runtime
+Imports SMRUCC.Rsharp.Runtime.Vectorization
 
 ''' <summary>
 ''' PhenoGraph algorithm
@@ -197,7 +197,8 @@ Module phenograph
     Public Function scoreMetric(<RRawVectorArgument(GetType(String))>
                                 Optional metric As Object = "cosine|jaccard|pearson|spearman",
                                 Optional env As Environment = Nothing) As ScoreMetric
-        Dim strs As String() = REnv.asVector(Of String)(metric)
+
+        Dim strs As String() = CLRVector.asCharacter(metric)
 
         If strs.IsNullOrEmpty Then
             Return Nothing
@@ -294,10 +295,12 @@ Module phenograph
         Dim groupDesc = Communities.GetCommunitySet(g) _
             .OrderByDescending(Function(v) v.Value.Length) _
             .ToArray
+#Disable Warning
         Dim colors As LoopArray(Of SolidBrush) = Designer _
             .GetColors(palette, n:=groupDesc.Where(Function(c) c.Value.Length > 4).Count) _
             .Select(Function(c) New SolidBrush(c)) _
             .ToArray
+#Enable Warning
 
         For Each group In groupDesc
             Dim color As Brush = ++colors

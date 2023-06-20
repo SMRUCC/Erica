@@ -10,6 +10,9 @@ Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 ''' 
 ''' spatial variable genes, svg
 ''' </summary>
+''' <remarks>
+''' https://github.com/aristoteleo/spateo-release
+''' </remarks>
 Public Module MoransI
 
     Public Function I(X As Matrix, Optional W As GeneralMatrix = Nothing) As Double()
