@@ -4,22 +4,24 @@ Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports SMRUCC.genomics.Analysis.SingleCell.STdeconvolve
 
 Module Program
-    Sub Main(args As String())
-        Call dumpMatrix()
 
-        Dim STdataset As Matrix = Matrix.LoadData("E:\GCModeller\src\GCModeller\analysis\SingleCell\demo\HR2MSI mouse urinary bladder S096_top3.csv")
+    Const deconv_out = "G:\Erica\src\SingleCell\STdeconvolve\demo\HR2MSI mouse urinary bladder S096_top3.json"
+
+    Sub Main(args As String())
+        Dim STdataset As Matrix = Matrix.LoadData("G:\Erica\src\SingleCell\demo\HR2MSI mouse urinary bladder S096_top3.csv")
         Dim corpus As STCorpus = STdataset.CreateSpatialDocuments
         Dim result = corpus.LDAModelling(13).Deconvolve(corpus)
 
-        Call result.GetJson.SaveTo("E:\GCModeller\src\GCModeller\analysis\SingleCell\STdeconvolve\demo\HR2MSI mouse urinary bladder S096_top3.json")
+        Call result.GetJson.SaveTo(deconv_out)
+        Call dumpMatrix()
 
         Pause()
     End Sub
 
     Sub dumpMatrix()
-        Dim data = "E:\GCModeller\src\GCModeller\analysis\SingleCell\STdeconvolve\demo\HR2MSI mouse urinary bladder S096_top3.json".LoadJSON(Of Deconvolve)
+        Dim data = deconv_out.LoadJSON(Of Deconvolve)
 
-        Call data.theta.SaveMatrix("E:\GCModeller\src\GCModeller\analysis\SingleCell\STdeconvolve\demo\HR2MSI mouse urinary bladder S096_Deconvolve.csv")
+        Call data.theta.SaveMatrix(deconv_out.ChangeSuffix("csv"))
         Call Pause()
     End Sub
 End Module
