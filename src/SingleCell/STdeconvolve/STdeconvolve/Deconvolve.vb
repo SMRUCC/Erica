@@ -1,4 +1,7 @@
-﻿Imports SMRUCC.genomics.Analysis.HTS.DataFrame
+﻿Imports Microsoft.VisualBasic.ComponentModel.Collection
+Imports Microsoft.VisualBasic.Language
+Imports Microsoft.VisualBasic.Math.LinearAlgebra
+Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 
 Public Class Deconvolve
 
@@ -30,7 +33,43 @@ Public Class Deconvolve
     ''' <param name="raw"></param>
     ''' <returns></returns>
     Public Function GetSingleCellExpressionMatrix(raw As Matrix) As Matrix
+        Dim expressions As New List(Of DataFrameRow)
+        Dim newIds As New List(Of String)
+        Dim i As i32 = 1
+        Dim rawIds As Index(Of String) = raw.sampleID.Indexing
+        Dim dist As New List(Of (p As Vector, subset As String()))
 
+        For Each topic In topicMap
+            Dim idprefix As String = $"topic_{++i}"
+            Dim newIdset = topic.Keys _
+                .Select(Function(g) $"{idprefix}.{g}") _
+                .ToArray
+
+            Call dist.Add((topic.Values.AsVector, topic.Keys.ToArray))
+            Call newIds.AddRange(newIdset)
+        Next
+
+        For Each spot As DataFrameRow In raw.expression
+            Dim v As New List(Of Double)
+
+            For Each topic In dist
+                Dim gi As Integer() = rawIds(topic.subset)
+                Dim vi As Vector = spot(gi)
+
+                Call v.AddRange(vi * topic.p)
+            Next
+
+            Call expressions.Add(New DataFrameRow With {
+                .geneID = spot.geneID,
+                .experiments = v.ToArray
+            })
+        Next
+
+        Return New Matrix With {
+            .expression = expressions.ToArray,
+            .sampleID = newIds.ToArray,
+            .tag = $"GetSingleCellExpressionMatrix({raw.tag})"
+        }
     End Function
 
 End Class
