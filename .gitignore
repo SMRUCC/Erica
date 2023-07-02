@@ -375,3 +375,6 @@ test/h5ad/bgee/1.csv
 test/h5ad/bgee/0.csv
 test/bgee/Homo_sapiens_expr_simple_all_conditions.tsv
 test/bgee/hsa.bgee
+src/SingleCell/demo/HR2MSI mouse urinary bladder S096_top3-cell_layers.csv
+src/SingleCell/demo/HR2MSI mouse urinary bladder S096_top3-STdeconvolve.csv
+src/SingleCell/demo/HR2MSI mouse urinary bladder S096_top3-STdeconvolve.json
