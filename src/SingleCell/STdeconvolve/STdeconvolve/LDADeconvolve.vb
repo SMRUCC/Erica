@@ -131,8 +131,8 @@ Public Module LDADeconvolve
             .theta = New Matrix With {
                 .expression = t,
                 .sampleID = Enumerable _
-                    .Range(1, 10) _
-                    .Select(Function(i) $"topic_{i}") _
+                    .Range(1, LDA.K) _
+                    .Select(Function(i) $"class_{i}") _
                     .ToArray,
                 .tag = "theta"
             }
