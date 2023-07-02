@@ -1,14 +1,14 @@
 require(ggplot);
 
 options(strict = FALSE);
+setwd(@dir);
 
-deconv = read.csv(file = `${@dir}/HR2MSI mouse urinary bladder S096_Deconvolve.csv`, row.names = 1);
-topics = as.list(deconv, byrow = TRUE);
-topics = sapply(topics, r -> which.max(r));
+let deconv = read.csv(file = "./HR2MSI mouse urinary bladder S096_top3.csv", row.names = 1, check.names = FALSE);
+let topics = as.list(deconv, byrow = TRUE) |> sapply(r -> which.max(r));
 
 bitmap(file = `${@dir}/UMAP2d.png`, size = [2400, 2000]) {
     
-	data = read.csv(`${@dir}/UMAP2D.csv`, row.names = 1);
+	let data = read.csv(`${@dir}/UMAP2D.csv`, row.names = 1);
 	data[, "class"] = `class_${topics}`;
 	
 	# create ggplot layers and tweaks via ggplot style options

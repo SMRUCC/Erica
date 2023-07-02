@@ -1,8 +1,9 @@
 require(JSON);
 
 options(strict = FALSE);
+setwd(@dir);
 
-data = json_decode(readText(`${@dir}/HR2MSI mouse urinary bladder S096_top3.json`));
+let data = json_decode(readText("HR2MSI mouse urinary bladder S096_top3.json"));
 
 str(data);
 
