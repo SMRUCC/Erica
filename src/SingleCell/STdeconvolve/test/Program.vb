@@ -10,7 +10,7 @@ Module Program
     Sub Main(args As String())
         Dim STdataset As Matrix = Matrix.LoadData("\Erica\src\SingleCell\demo\HR2MSI mouse urinary bladder S096_top3.csv")
         Dim corpus As STCorpus = STdataset.CreateSpatialDocuments
-        Dim result = corpus.LDAModelling(4).Deconvolve(corpus)
+        Dim result = corpus.LDAModelling(4, iterations:=120).Deconvolve(corpus)
 
         Call result.GetJson.SaveTo(deconv_out)
         Call dumpMatrix()
