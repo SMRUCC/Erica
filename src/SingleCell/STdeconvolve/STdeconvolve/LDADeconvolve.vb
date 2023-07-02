@@ -69,11 +69,19 @@ Public Module LDADeconvolve
     ''' </summary>
     ''' <param name="spatialDoc"></param>
     ''' <param name="k"></param>
+    ''' <param name="iterations">number of total iterations </param>
+    ''' <param name="burnIn">number of burn-in iterations </param>
+    ''' <param name="thinInterval">update statistics interval </param>
+    ''' <param name="sampleLag">sample interval (-1 for just one sample at the end) </param>
     ''' <returns></returns>
     <Extension>
     Public Function LDAModelling(spatialDoc As STCorpus, k As Integer,
                                  Optional alpha# = 2.0,
                                  Optional beta# = 0.5,
+                                 Optional iterations As Integer = 500,
+                                 Optional burnIn As Integer = 100,
+                                 Optional thinInterval As Integer = 20,
+                                 Optional sampleLag As Integer = 10,
                                  Optional println As Action(Of Object) = Nothing) As LdaGibbsSampler
         ' 2. Create a LDA sampler
         Dim ldaGibbsSampler As New LdaGibbsSampler(
@@ -83,7 +91,9 @@ Public Module LDADeconvolve
         )
 
         ' 3. Train LDA model via gibbs sampling
-        Call ldaGibbsSampler.gibbs(k, alpha, beta)
+        Call ldaGibbsSampler _
+            .configure(iterations, burnIn, thinInterval, sampleLag) _
+            .gibbs(k, alpha, beta)
 
         Return ldaGibbsSampler
     End Function
