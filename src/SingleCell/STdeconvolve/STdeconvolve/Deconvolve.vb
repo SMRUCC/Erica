@@ -8,6 +8,9 @@ Public Class Deconvolve
     ''' probabilities
     ''' </summary>
     ''' <returns></returns>
+    ''' <remarks>
+    ''' single cell class definition at here
+    ''' </remarks>
     Public Property theta As Matrix
 
     ''' <summary>
@@ -15,6 +18,19 @@ Public Class Deconvolve
     ''' over the genes (𝛽) present in the ST dataset.
     ''' </summary>
     ''' <returns></returns>
+    ''' <remarks>
+    ''' apply of this distribution for generates the deconv expression matrix
+    ''' </remarks>
     Public Property topicMap As Dictionary(Of String, Double)()
+
+    ''' <summary>
+    ''' multiply the <paramref name="raw"/> <see cref="Matrix"/> with the 
+    ''' <see cref="topicMap"/> percentage distribution.
+    ''' </summary>
+    ''' <param name="raw"></param>
+    ''' <returns></returns>
+    Public Function GetSingleCellExpressionMatrix(raw As Matrix) As Matrix
+
+    End Function
 
 End Class
