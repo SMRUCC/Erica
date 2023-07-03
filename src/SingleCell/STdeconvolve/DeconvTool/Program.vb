@@ -12,6 +12,7 @@ Module Program
     Private Function runOnMatrix(file As String, args As CommandLine) As Integer
         Dim exports_json As String = file.TrimSuffix & "-STdeconvolve.json"
         Dim deconv_csv As String = file.TrimSuffix & "-STdeconvolve.csv"
+        Dim deconv_csv2 As String = file.TrimSuffix & "-STdeconvolve2.csv"
         Dim deconv_layers As String = file.TrimSuffix & "-cell_layers.csv"
         Dim iteration As Integer = args("--iteration") Or 150
         Dim layers As Integer = args("--layers") Or 4
@@ -20,9 +21,11 @@ Module Program
         Dim corpus As STCorpus = STdataset.CreateSpatialDocuments
         Dim result = corpus.LDAModelling(layers, iterations:=iteration).Deconvolve(corpus, topGenes:=top_genes)
         Dim deconv = result.GetSingleCellExpressionMatrix(STdataset)
+        Dim deconv2 = result.GetExpressionMatrix(STdataset)
 
         Call result.GetJson.SaveTo(exports_json)
         Call deconv.SaveMatrix(deconv_csv, "spot_xy")
+        Call deconv2.SaveMatrix(deconv_csv2, "spot_xy")
         Call result.theta.SaveMatrix(deconv_layers)
 
         Return 0
