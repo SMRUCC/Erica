@@ -6,7 +6,17 @@ Imports SMRUCC.genomics.Analysis.SingleCell.STdeconvolve
 Module Program
 
     Public Function Main(args As String()) As Integer
-        Return GetType(Program).RunCLI(App.CommandLine, executeFile:=AddressOf runOnMatrix)
+        Return GetType(Program).RunCLI(App.CommandLine, executeFile:=AddressOf runOnMatrix, executeEmpty:=AddressOf help)
+    End Function
+
+    Private Function help() As Integer
+        Console.WriteLine($"{GetType(Program).Assembly.Location.BaseName} <spot_expression.csv> [--iteration <default=150> --layers <default=4> --top_genes <default=1000>]")
+        Console.WriteLine($"")
+        Console.WriteLine($"spot_expression.csv should be a table file in format of:")
+        Console.WriteLine($"features in column and,")
+        Console.WriteLine($"spot vector in rows")
+
+        Return 0
     End Function
 
     Private Function runOnMatrix(file As String, args As CommandLine) As Integer
