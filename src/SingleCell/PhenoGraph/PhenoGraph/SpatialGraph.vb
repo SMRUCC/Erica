@@ -1,11 +1,10 @@
 ﻿Imports System.Runtime.CompilerServices
-Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.DataMining.BinaryTree
 Imports Microsoft.VisualBasic.Linq
+Imports Microsoft.VisualBasic.Math
 Imports Microsoft.VisualBasic.Math.LinearAlgebra
 Imports Microsoft.VisualBasic.Math.LinearAlgebra.Matrix
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
-Imports Microsoft.VisualBasic.Math
 
 ''' <summary>
 ''' Build a spatial graph via the grap clustering
