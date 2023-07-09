@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <RootNamespace>test</RootNamespace>
+    <RootNamespace>DeconvTool</RootNamespace>
     <TargetFramework>net6.0</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
-    <AssemblyName>DeconvTool</AssemblyName>
+    <AssemblyName>deconv</AssemblyName>
     <UseApplicationFramework>True</UseApplicationFramework>
     <OutputPath>../../../../tools/</OutputPath>
   </PropertyGroup>
