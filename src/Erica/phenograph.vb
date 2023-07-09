@@ -312,4 +312,9 @@ Module phenograph
 
         Return g
     End Function
+
+    <ExportAPI("graph_tree")>
+    Public Function GraphTree(x As Matrix, Optional eq As Double = 0.85, Optional gt As Double = 0) As Object
+        Return x.CreateGraph(eq, gt)
+    End Function
 End Module
