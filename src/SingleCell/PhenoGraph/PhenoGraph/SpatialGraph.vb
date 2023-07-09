@@ -19,4 +19,8 @@ Public Module SpatialGraph
 
         Return tree
     End Function
+
+    Public Function CorrelationGraph(x As Matrix, y As Matrix, Optional eq As Double = 0.85, Optional gt As Double = 0) As Object
+
+    End Function
 End Module

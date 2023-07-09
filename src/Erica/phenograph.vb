@@ -314,7 +314,12 @@ Module phenograph
     End Function
 
     <ExportAPI("graph_tree")>
-    Public Function GraphTree(x As Matrix, Optional eq As Double = 0.85, Optional gt As Double = 0) As Object
+    Public Function GraphTree(x As Matrix, Optional eq As Double = 0.5, Optional gt As Double = 0) As Object
         Return x.CreateGraph(eq, gt)
+    End Function
+
+    <ExportAPI("correlation_graph")>
+    Public Function CorrelationGraph(x As Matrix, y As Matrix, Optional eq As Double = 0.85, Optional gt As Double = 0) As Object
+        Return SpatialGraph.CorrelationGraph(x, y, eq, gt)
     End Function
 End Module
