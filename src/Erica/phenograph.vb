@@ -320,8 +320,8 @@ Module phenograph
     End Function
 
     <ExportAPI("correlation_graph")>
-    Public Function CorrelationGraph(x As Matrix, y As Matrix, Optional eq As Double = 0.85, Optional gt As Double = 0) As Object
-        Dim spatialMapping = SpatialGraph.CorrelationGraph(x, y, eq, gt).ToArray
+    Public Function CorrelationGraph(x As Matrix, y As Matrix, Optional eq As Double = 0.85) As Object
+        Dim spatialMapping = SpatialGraph.CorrelationGraph(x, y, eq).ToArray
         Dim mapList As New list With {.slots = New Dictionary(Of String, Object)}
         Dim i As i32 = 1
 

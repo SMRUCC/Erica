@@ -17,7 +17,7 @@ Public Module SpatialGraph
         Dim cos As AlignmentComparison = AlignmentComparison.FromMatrix(x.expression, eq, gt)
 
         For Each gene As DataFrameRow In x.AsEnumerable
-            Call ClusterTree.Add(tree, gene.geneID, cos, eq)
+            Call ClusterTree.Add(tree, gene.geneID, cos, eq, ds:=eq / 2)
         Next
 
         Return tree
@@ -38,10 +38,9 @@ Public Module SpatialGraph
 
     Public Iterator Function CorrelationGraph(x As Matrix,
                                               y As Matrix,
-                                              Optional eq As Double = 0.85,
-                                              Optional gt As Double = 0) As IEnumerable(Of (spotX As String(), spotY As String()))
-        Dim treeX = x.CreateGraph(eq, gt)
-        Dim treeY = y.CreateGraph(eq, gt)
+                                              Optional eq As Double = 0.85) As IEnumerable(Of (spotX As String(), spotY As String()))
+        Dim treeX = x.CreateGraph(eq, 0)
+        Dim treeY = y.CreateGraph(eq, 0)
         Dim clusterX = ClusterTree.GetClusters(treeX).ToArray
         Dim clusterY = ClusterTree.GetClusters(treeY) _
             .Select(Function(yi)
