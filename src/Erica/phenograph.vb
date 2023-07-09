@@ -56,6 +56,7 @@ Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports SMRUCC.genomics.Analysis.SingleCell.PhenoGraph
 Imports SMRUCC.Rsharp.Runtime
+Imports SMRUCC.Rsharp.Runtime.Internal.Object
 Imports SMRUCC.Rsharp.Runtime.Interop
 Imports SMRUCC.Rsharp.Runtime.Vectorization
 
@@ -320,6 +321,20 @@ Module phenograph
 
     <ExportAPI("correlation_graph")>
     Public Function CorrelationGraph(x As Matrix, y As Matrix, Optional eq As Double = 0.85, Optional gt As Double = 0) As Object
-        Return SpatialGraph.CorrelationGraph(x, y, eq, gt)
+        Dim spatialMapping = SpatialGraph.CorrelationGraph(x, y, eq, gt).ToArray
+        Dim mapList As New list With {.slots = New Dictionary(Of String, Object)}
+        Dim i As i32 = 1
+
+        For Each mapping As (spotX As String(), spotY As String()) In spatialMapping
+            Call mapList.slots.Add($"X_{++i}",
+                New list With {
+                    .slots = New Dictionary(Of String, Object) From {
+                        {"x", mapping.spotX},
+                        {"y", mapping.spotY}
+                    }
+                })
+        Next
+
+        Return mapList
     End Function
 End Module
