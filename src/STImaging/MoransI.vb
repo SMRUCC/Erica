@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.Imaging.Math2D
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Math.LinearAlgebra
@@ -15,10 +16,21 @@ Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 ''' </remarks>
 Public Module MoransI
 
+    <Extension>
+    Private Function PopulateDimensionPoints(x As Matrix) As IEnumerable(Of PointF)
+        Return x.sampleID _
+            .Select(Function(si)
+                        Return si.Split(","c).Select(Function(ti) Integer.Parse(ti)).ToArray
+                    End Function) _
+            .Select(Function(ints)
+                        Return New PointF(ints(0), ints(1))
+                    End Function)
+    End Function
+
     Public Function I(X As Matrix, Optional W As GeneralMatrix = Nothing) As Double()
         ' N is the total number of spot samples
         Dim N As Integer = X.sampleID.Length
-        Dim dims As New Polygon2D(X.sampleID.Select(Function(si) si.Split(","c).Select(Function(ti) Integer.Parse(ti)).ToArray).Select(Function(ints) New PointF(ints(0), ints(1))).ToArray)
+        Dim dims As New Polygon2D(X.PopulateDimensionPoints.ToArray)
 
         If W Is Nothing Then
             W = NumericMatrix.One(dims.width, dims.height)
@@ -27,7 +39,9 @@ Public Module MoransI
         ' W_sum is the sum of matrix W
         Dim W_sum As Double = Aggregate r In W.RowVectors Into Sum(r.Sum)
         ' Xu is the mean expression of the gene
-        Dim Xu As Double = Aggregate r In X.expression Into Average(r.experiments.Average)
+        Dim Xu As Double = Aggregate r As DataFrameRow
+                           In X.expression
+                           Into Average(r.experiments.Average)
         Dim Ia As New Vector(ia_jobParallel(X, W, Xu))
         Dim Ib As New Vector(From gene As DataFrameRow In X.expression Select ((gene - Xu) ^ 2).Sum)
         Dim moransI = (N / W_sum) * (Ia / Ib)
