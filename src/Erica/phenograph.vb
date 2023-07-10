@@ -324,15 +324,22 @@ Module phenograph
         Dim spatialMapping = SpatialGraph.CorrelationGraph(x, y, eq).ToArray
         Dim mapList As New list With {.slots = New Dictionary(Of String, Object)}
         Dim i As i32 = 1
+        Dim uniq As String
+        Dim maps As list
 
         For Each mapping As (spotX As String(), spotY As String()) In spatialMapping
-            Call mapList.slots.Add($"X_{++i}",
-                New list With {
-                    .slots = New Dictionary(Of String, Object) From {
-                        {"x", mapping.spotX},
-                        {"y", mapping.spotY}
-                    }
-                })
+            uniq = mapping.spotX _
+                .JoinIterates(mapping.spotY) _
+                .JoinBy("+") _
+                .MD5
+            maps = New list With {
+                .slots = New Dictionary(Of String, Object) From {
+                    {"x", mapping.spotX},
+                    {"y", mapping.spotY}
+                }
+            }
+
+            Call mapList.slots.Add(uniq, maps)
         Next
 
         Return mapList
