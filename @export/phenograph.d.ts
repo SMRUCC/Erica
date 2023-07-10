@@ -25,6 +25,15 @@ declare namespace phenograph {
    */
    function cluster_colors(g: object, colorSet?: any, env?: object): any;
    /**
+     * @param eq default value Is ``0.85``.
+   */
+   function correlation_graph(x: object, y: object, eq?: number): any;
+   /**
+     * @param eq default value Is ``0.5``.
+     * @param gt default value Is ``0``.
+   */
+   function graph_tree(x: object, eq?: number, gt?: number): any;
+   /**
     * PhenoGraph algorithm
     * 
     * 
@@ -70,4 +79,17 @@ declare namespace phenograph {
    /**
    */
    function setInteraction(g: object, geneIds: string, metaboliteIds: string): object;
+   /**
+    * 
+    * 
+     * @param x -
+     * @param mapping the spatial spot mapping result which is evaluated from the ``correlation_graph`` function.
+     * @param axis -
+     * 
+     * + default value Is ``["x","y"]``.
+     * @param env -
+     * 
+     * + default value Is ``null``.
+   */
+   function slice_matrix(x: object, mapping: object, axis?: any, env?: object): any;
 }

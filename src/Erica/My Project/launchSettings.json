@@ -6,7 +6,7 @@
     "run_dll": {
       "commandName": "Executable",
       "executablePath": "G:\\GCModeller\\src\\R-sharp\\App\\net6.0\\R#.exe",
-      "commandLineArgs": "G:\\test\\tree.R --attach \"G:\\Erica\""
+      "commandLineArgs": "G:\\test\\slice_matrix.R --attach \"G:\\Erica\" --debug"
     }
   }
 }
