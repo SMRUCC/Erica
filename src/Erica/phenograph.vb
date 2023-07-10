@@ -52,6 +52,7 @@ Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
 Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Linq
+Imports Microsoft.VisualBasic.Math.LinearAlgebra
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports SMRUCC.genomics.Analysis.SingleCell.PhenoGraph
@@ -321,19 +322,12 @@ Module phenograph
     End Function
 
     <ExportAPI("correlation_graph")>
-    <RApiReturn("spatial_maps", "expr_X", "expr_Y")>
     Public Function CorrelationGraph(x As Matrix, y As Matrix, Optional eq As Double = 0.85) As Object
         Dim spatialMapping = SpatialGraph.CorrelationGraph(x, y, eq).ToArray
         Dim mapList As New list With {.slots = New Dictionary(Of String, Object)}
         Dim i As i32 = 1
         Dim uniq As String
         Dim maps As list
-        Dim mapX As New List(Of DataFrameRow)
-        Dim mapY As New List(Of DataFrameRow)
-        Dim xIndex = x.expression.ToDictionary(Function(g) g.geneID)
-        Dim yIndex = y.expression.ToDictionary(Function(g) g.geneID)
-        Dim xWidth = x.sampleID.Length
-        Dim yWidth = y.sampleID.Length
 
         For Each mapping As (spotX As String(), spotY As String()) In spatialMapping
             uniq = mapping.spotX _
@@ -347,18 +341,60 @@ Module phenograph
                 }
             }
 
-            Dim deltaX = mapping.spotX.Select(Function(pid) xIndex(pid).CreateVector).Sum(width:=xWidth)
-            Dim deltaY
-
             Call mapList.slots.Add(uniq, maps)
         Next
 
-        Return New list With {
-            .slots = New Dictionary(Of String, Object) From {
-                {"spatial_maps", mapList},
-                {"expr_X", New Matrix With {.expression = mapX.ToArray, .sampleID = x.sampleID}},
-                {"expr_Y", New Matrix With {.expression = mapY.ToArray, .sampleID = y.sampleID}}
+        Return mapList
+    End Function
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="x"></param>
+    ''' <param name="mapping">
+    ''' the spatial spot mapping result which is evaluated from the ``correlation_graph`` function.
+    ''' </param>
+    ''' <param name="axis"></param>
+    ''' <param name="env"></param>
+    ''' <returns></returns>
+    <ExportAPI("slice_matrix")>
+    Public Function SliceMatrix(x As Matrix, mapping As list,
+                                <RRawVectorArgument(GetType(String))>
+                                Optional axis As Object = "x|y",
+                                Optional env As Environment = Nothing) As Object
+
+        Dim axis_i As String = CLRVector.asCharacter(axis).FirstOrDefault("x")
+
+        If Not (axis_i = "x" OrElse axis_i = "y") Then
+            Return Internal.debug.stop("the axis value for the mapping should be value x or y!", env)
+        End If
+
+        Dim spots As New List(Of DataFrameRow)
+        Dim spotIndex = x.expression.ToDictionary(Function(i) i.geneID)
+        Dim w As Integer = x.sampleID.Length
+
+        For Each guid As String In mapping.getNames
+            Dim maps As list = mapping.getByName(guid)
+            Dim spotId As String()
+
+            If axis_i = "x" Then
+                spotId = CLRVector.asCharacter(maps!x)
+            Else
+                spotId = CLRVector.asCharacter(maps!y)
+            End If
+
+            Dim v = spotId.Select(Function(id) spotIndex(id).CreateVector).Sum(width:=w)
+            Dim slice As New DataFrameRow With {
+                .geneID = guid,
+                .experiments = v.ToArray
             }
+
+            Call spots.Add(slice)
+        Next
+
+        Return New Matrix With {
+            .expression = spots.ToArray,
+            .sampleID = x.sampleID
         }
     End Function
 End Module
