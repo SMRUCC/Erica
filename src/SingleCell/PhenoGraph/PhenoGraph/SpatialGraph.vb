@@ -24,7 +24,7 @@ Public Module SpatialGraph
     End Function
 
     <Extension>
-    Private Function Sum(m As IEnumerable(Of Vector), width As Integer) As Vector
+    Public Function Sum(m As IEnumerable(Of Vector), width As Integer) As Vector
         Dim v As Vector = Vector.Zero([Dim]:=width)
         Dim i As Integer = 0
 

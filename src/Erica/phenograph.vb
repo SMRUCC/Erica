@@ -53,6 +53,7 @@ Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
 Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Scripting.MetaData
+Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports SMRUCC.genomics.Analysis.SingleCell.PhenoGraph
 Imports SMRUCC.Rsharp.Runtime
 Imports SMRUCC.Rsharp.Runtime.Internal.Object
@@ -320,12 +321,19 @@ Module phenograph
     End Function
 
     <ExportAPI("correlation_graph")>
+    <RApiReturn("spatial_maps", "expr_X", "expr_Y")>
     Public Function CorrelationGraph(x As Matrix, y As Matrix, Optional eq As Double = 0.85) As Object
         Dim spatialMapping = SpatialGraph.CorrelationGraph(x, y, eq).ToArray
         Dim mapList As New list With {.slots = New Dictionary(Of String, Object)}
         Dim i As i32 = 1
         Dim uniq As String
         Dim maps As list
+        Dim mapX As New List(Of DataFrameRow)
+        Dim mapY As New List(Of DataFrameRow)
+        Dim xIndex = x.expression.ToDictionary(Function(g) g.geneID)
+        Dim yIndex = y.expression.ToDictionary(Function(g) g.geneID)
+        Dim xWidth = x.sampleID.Length
+        Dim yWidth = y.sampleID.Length
 
         For Each mapping As (spotX As String(), spotY As String()) In spatialMapping
             uniq = mapping.spotX _
@@ -339,9 +347,18 @@ Module phenograph
                 }
             }
 
+            Dim deltaX = mapping.spotX.Select(Function(pid) xIndex(pid).CreateVector).Sum(width:=xWidth)
+            Dim deltaY
+
             Call mapList.slots.Add(uniq, maps)
         Next
 
-        Return mapList
+        Return New list With {
+            .slots = New Dictionary(Of String, Object) From {
+                {"spatial_maps", mapList},
+                {"expr_X", New Matrix With {.expression = mapX.ToArray, .sampleID = x.sampleID}},
+                {"expr_Y", New Matrix With {.expression = mapY.ToArray, .sampleID = y.sampleID}}
+            }
+        }
     End Function
 End Module
