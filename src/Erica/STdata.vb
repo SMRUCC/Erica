@@ -43,7 +43,7 @@ Public Module STdata
     ''' <param name="file"></param>
     ''' <returns></returns>
     <ExportAPI("read.spatial_spots")>
-    Public Function ReadSpatialSpots(file As String) As SpaceSpot()
+    Public Function ReadSpatialSpots(file As String) As SpatialSpot()
         Return ST_spaceranger _
             .LoadTissueSpots(file.SolveStream.LineTokens) _
             .ToArray

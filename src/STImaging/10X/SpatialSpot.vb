@@ -4,7 +4,7 @@ Imports System.Drawing
 ''' <summary>
 ''' A spatial spot reference information
 ''' </summary>
-Public Class SpaceSpot
+Public Class SpatialSpot
 
     ''' <summary>
     ''' the unique reference id of current spot point
@@ -44,6 +44,10 @@ Public Class SpaceSpot
     Public Property y As Integer
 #End Region
 
+    ''' <summary>
+    ''' get the spatial 2D point information of current spot
+    ''' </summary>
+    ''' <returns></returns>
     Public Function GetSpotPoint() As Point
         Return New Point(px, py)
     End Function
