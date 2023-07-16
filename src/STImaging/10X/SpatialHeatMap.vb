@@ -44,6 +44,7 @@ Public Class SpatialHeatMap
         Dim y As Integer() = layer.spots.Select(Function(i) i.Y).ToArray
         Dim scale As Double() = layer.spots.Select(Function(i) i.Scale).ToArray
         Dim spot_size As New Dimension With {.name = "spot_size", .size = scale.Length}
+        Dim barcode As String() = layer.spots.Select(Function(i) i.Barcode).ToArray
 
         Using buf As New CDFWriter(file)
             Call buf.GlobalAttributes(New attribute With {.name = "scan_x", .type = CDFDataTypes.INT, .value = layer.dimension_size.Width})
@@ -55,6 +56,7 @@ Public Class SpatialHeatMap
             Call buf.AddVariable("x", New integers(x), spot_size)
             Call buf.AddVariable("y", New integers(y), spot_size)
             Call buf.AddVector("heatmap", scale, spot_size)
+            Call buf.AddVariable("barcode", New chars(barcode), spot_size)
         End Using
     End Sub
 
@@ -68,6 +70,7 @@ Public Class SpatialHeatMap
             Dim x As Integer() = DirectCast(read.getDataVariable("x"), integers)
             Dim y As Integer() = DirectCast(read.getDataVariable("y"), integers)
             Dim scale As Double() = DirectCast(read.getDataVariable("heatmap"), doubles)
+            Dim barcode As String() = DirectCast(read.getDataVariable("barcode"), chars).LoadJSON(Of String())
 
             Return New SpatialHeatMap With {
                 .dimension_size = New Size(scan_x, scan_y),
@@ -76,7 +79,8 @@ Public Class SpatialHeatMap
                                 Return New SpotCell With {
                                     .Scale = scale(i),
                                     .X = xi,
-                                    .Y = y(i)
+                                    .Y = y(i),
+                                    .Barcode = barcode(i)
                                 }
                             End Function) _
                     .ToArray,
