@@ -57,31 +57,21 @@ Public Class STRaid
         Dim geneids As String() = raid.matrix.sampleID
 
         Using data As Stream = pack.OpenFile("/spatial/x", FileMode.OpenOrCreate, FileAccess.Write)
-            Using buf As New BinaryDataWriter(data) With {.ByteOrder = ByteOrder.BigEndian}
-                Call buf.Write(x)
-            End Using
+            Call New BinaryDataWriter(data) With {.ByteOrder = ByteOrder.BigEndian}.Write(x)
         End Using
         Using data As Stream = pack.OpenFile("/spatial/y", FileMode.OpenOrCreate, FileAccess.Write)
-            Using buf As New BinaryDataWriter(data) With {.ByteOrder = ByteOrder.BigEndian}
-                Call buf.Write(y)
-            End Using
+            Call New BinaryDataWriter(data) With {.ByteOrder = ByteOrder.BigEndian}.Write(y)
         End Using
         Using data As Stream = pack.OpenFile("/spatial/barcodes.txt", FileMode.OpenOrCreate, FileAccess.Write)
-            Using buf As New BinaryDataWriter(data)
-                Call buf.Write(barcodes.JoinBy(vbCrLf))
-            End Using
+            Call New BinaryDataWriter(data).Write(barcodes.JoinBy(vbCrLf))
         End Using
         Using data As Stream = pack.OpenFile("/expression/features.txt", FileMode.OpenOrCreate, FileAccess.Write)
-            Using buf As New BinaryDataWriter(data)
-                Call buf.Write(geneids.JoinBy(vbCrLf))
-            End Using
+            Call New BinaryDataWriter(data).Write(geneids.JoinBy(vbCrLf))
         End Using
 
         For Each row In raid.matrix.expression
             Using data As Stream = pack.OpenFile($"/expression/matrix/{row.geneID}.vec")
-                Using buf As New BinaryDataWriter(data) With {.ByteOrder = ByteOrder.BigEndian}
-                    Call buf.Write(row.experiments)
-                End Using
+                Call New BinaryDataWriter(data) With {.ByteOrder = ByteOrder.BigEndian}.Write(row.experiments)
             End Using
         Next
 

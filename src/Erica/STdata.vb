@@ -76,7 +76,7 @@ Public Module STdata
         Return CombineSTRaid(h5Matrix, spots).GetSpatialMatrix
     End Function
 
-    <ExportAPI("write.straid")>
+    <ExportAPI("write.STRaid")>
     Public Function WriteMatrix(straid As STRaid.STRaid, file As String) As Object
         Using buffer As Stream = file.Open(FileMode.OpenOrCreate, doClear:=True, [readOnly]:=False)
             Return Global.STRaid.STRaid.Write(straid, file:=buffer)
