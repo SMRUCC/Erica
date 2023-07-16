@@ -56,7 +56,7 @@ Public Module STdata
     ''' <param name="spots">the spatial spot information</param>
     ''' <returns></returns>
     <ExportAPI("as.STRaid")>
-    Public Function CombineSTRaid(h5Matrix As Matrix, spots As SpaceSpot()) As STRaid.STRaid
+    Public Function CombineSTRaid(h5Matrix As Matrix, spots As SpatialSpot()) As STRaid.STRaid
         Dim spotIndex As New Dictionary(Of String, Point)
 
         For i As Integer = 0 To spots.Length - 1
@@ -72,7 +72,7 @@ Public Module STdata
     End Function
 
     <ExportAPI("as.STmatrix")>
-    Public Function CreateSpatialMatrix(h5Matrix As Matrix, spots As SpaceSpot()) As Matrix
+    Public Function CreateSpatialMatrix(h5Matrix As Matrix, spots As SpatialSpot()) As Matrix
         Return CombineSTRaid(h5Matrix, spots).GetSpatialMatrix
     End Function
 

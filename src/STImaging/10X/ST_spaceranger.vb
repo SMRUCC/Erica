@@ -4,7 +4,7 @@ Imports Microsoft.VisualBasic.Imaging.Drawing2D.HeatMap
 ''' <summary>
 ''' parse the spot table file
 ''' </summary>
-Public Module ST_spaceranger
+Public Module SpaceRanger
 
     <Extension>
     Public Iterator Function GetPixels(spots As IEnumerable(Of SpatialSpot)) As IEnumerable(Of PixelData)
