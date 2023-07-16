@@ -4,11 +4,16 @@ Imports Microsoft.VisualBasic.DataStorage.netCDF
 Imports Microsoft.VisualBasic.DataStorage.netCDF.Components
 Imports Microsoft.VisualBasic.DataStorage.netCDF.Data
 Imports Microsoft.VisualBasic.DataStorage.netCDF.DataVector
+Imports STData = STRaid.STRaid
 
 Public Class SpatialHeatMap
 
     Public Property spots As SpotCell()
     Public Property dimension_size As Size
+
+    Public Shared Function TotalSum(ST As STData) As SpatialHeatMap
+
+    End Function
 
     Public Shared Sub WriteCDF(layer As SpatialHeatMap, file As Stream)
         Dim x As Integer() = layer.spots.Select(Function(i) i.X).ToArray

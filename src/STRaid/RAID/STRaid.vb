@@ -7,9 +7,15 @@ Imports Microsoft.VisualBasic.DataStorage.HDSPack.FileSystem
 Imports Microsoft.VisualBasic.Linq
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 
+''' <summary>
+''' Data structure for unify the data storage of the spatial data
+''' </summary>
 Public Class STRaid
 
-    ' spatial data
+    ''' <summary>
+    ''' the spatial expression data, gene features in columns and spatial spots in rows
+    ''' </summary>
+    ''' <returns></returns>
     Public Property matrix As Matrix
     ''' <summary>
     ''' the spatial index of each row in <see cref="matrix"/>
