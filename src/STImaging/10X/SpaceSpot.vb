@@ -1,8 +1,15 @@
 ﻿
 Imports System.Drawing
 
+''' <summary>
+''' A spatial spot reference information
+''' </summary>
 Public Class SpaceSpot
 
+    ''' <summary>
+    ''' the unique reference id of current spot point
+    ''' </summary>
+    ''' <returns></returns>
     Public Property barcode As String
 
     ''' <summary>

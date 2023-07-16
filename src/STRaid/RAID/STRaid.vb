@@ -2,7 +2,9 @@
 Imports System.IO
 Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualBasic.Data.IO
+Imports Microsoft.VisualBasic.DataStorage.HDSPack
 Imports Microsoft.VisualBasic.DataStorage.HDSPack.FileSystem
+Imports Microsoft.VisualBasic.Linq
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 
 Public Class STRaid
@@ -39,6 +41,8 @@ Public Class STRaid
         Return stMatrix
     End Function
 
+    Const meta_size_MB As Long = 16 * 1024 * 1024
+
     ''' <summary>
     ''' Write the spatial matrix data to file
     ''' </summary>
@@ -46,7 +50,7 @@ Public Class STRaid
     ''' <param name="file"></param>
     ''' <returns></returns>
     Public Shared Function Write(raid As STRaid, file As Stream) As Boolean
-        Dim pack As New StreamPack(file, meta_size:=8 * 1024 * 1024)
+        Dim pack As New StreamPack(file, meta_size:=meta_size_MB)
         Dim x As Integer() = raid.spots.Select(Function(p) p.X).ToArray
         Dim y As Integer() = raid.spots.Select(Function(p) p.Y).ToArray
         Dim barcodes As String() = raid.matrix.rownames
@@ -62,7 +66,7 @@ Public Class STRaid
                 Call buf.Write(y)
             End Using
         End Using
-        Using data As Stream = pack.OpenFile("/spatial/barcodes", FileMode.OpenOrCreate, FileAccess.Write)
+        Using data As Stream = pack.OpenFile("/spatial/barcodes.txt", FileMode.OpenOrCreate, FileAccess.Write)
             Using buf As New BinaryDataWriter(data)
                 Call buf.Write(barcodes.JoinBy(vbCrLf))
             End Using
@@ -81,13 +85,43 @@ Public Class STRaid
             End Using
         Next
 
+        Call pack.WriteText(barcodes.Length, "/expression/dim_h")
+        Call pack.WriteText(geneids.Length, "/expression/dim_w")
+
         Call DirectCast(pack, IFileSystemEnvironment).Flush()
 
         Return True
     End Function
 
     Public Shared Function Load(file As Stream) As STRaid
+        Dim pack As New StreamPack(file, meta_size:=meta_size_MB, [readonly]:=True)
+        Dim barcode_size As Integer = pack.ReadText("/expression/dim_h").TrimNewLine.Trim.DoCall(AddressOf Integer.Parse)
+        Dim geneSet_size As Integer = pack.ReadText("/expression/dim_w").TrimNewLine.Trim.DoCall(AddressOf Integer.Parse)
+        Dim x As Integer() = New BinaryDataReader(pack.OpenFile("/spatial/x"), byteOrder:=ByteOrder.BigEndian).ReadInt32s(barcode_size)
+        Dim y As Integer() = New BinaryDataReader(pack.OpenFile("/spatial/y"), byteOrder:=ByteOrder.BigEndian).ReadInt32s(geneSet_size)
+        Dim barcodes As String() = pack.ReadText("/spatial/barcodes.txt").Trim.LineTokens
+        Dim geneids As String() = pack.ReadText("/expression/features.txt").Trim.LineTokens
+        Dim expressions As New List(Of DataFrameRow)
+        Dim spatial As Point() = x.Select(Function(xi, i) New Point(xi, y(i))).ToArray
 
+        For Each id As String In barcodes
+            Dim path As String = $"/expression/matrix/{id}.vec"
+            Dim v As Double() = New BinaryDataReader(pack.OpenFile(path), byteOrder:=ByteOrder.BigEndian).ReadDoubles(geneSet_size)
+            Dim spot As New DataFrameRow With {
+                .geneID = id,
+                .experiments = v
+            }
+
+            Call expressions.Add(spot)
+        Next
+
+        Return New STRaid With {
+            .spots = spatial,
+            .matrix = New Matrix With {
+                .sampleID = geneids,
+                .expression = expressions.ToArray
+            }
+        }
     End Function
 
 End Class

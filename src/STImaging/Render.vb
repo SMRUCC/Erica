@@ -54,7 +54,7 @@ Public Class Render
     ''' </param>
     ''' <param name="spots"></param>
     ''' <param name="colorMaps"></param>
-    Sub New(matrix As MatrixViewer, spots As SpaceSpot(), Optional colorMaps As ScalerPalette = ScalerPalette.turbo)
+    Sub New(matrix As MatrixViewer, spots As SpatialSpot(), Optional colorMaps As ScalerPalette = ScalerPalette.turbo)
         Dim spotIndex = spots.ToDictionary(Function(a) a.barcode)
 
         Me.matrix = matrix

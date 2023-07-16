@@ -34,7 +34,7 @@ Module stImaging
     ''' <param name="spots"></param>
     ''' <returns></returns>
     <ExportAPI("as.STrender")>
-    Public Function createRender(raw As Matrix, spots As SpaceSpot()) As Render
+    Public Function createRender(raw As Matrix, spots As SpatialSpot()) As Render
         Return New Render(New HTSMatrixViewer(raw), spots)
     End Function
 
@@ -81,7 +81,7 @@ Module stImaging
     End Function
 
     <ExportAPI("plot_spots")>
-    Public Function SpotPlot(spots As SpaceSpot(), matrix As Object, geneId As String,
+    Public Function SpotPlot(spots As SpatialSpot(), matrix As Object, geneId As String,
                              <RRawVectorArgument>
                              Optional size As Object = "3000,3000",
                              Optional spot_radius As Double = 13,

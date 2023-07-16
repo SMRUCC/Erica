@@ -49,6 +49,12 @@ Public Module STdata
             .ToArray
     End Function
 
+    ''' <summary>
+    ''' combine the expression matrix with the spatial spot information
+    ''' </summary>
+    ''' <param name="h5Matrix">the spatial expression matrix object</param>
+    ''' <param name="spots">the spatial spot information</param>
+    ''' <returns></returns>
     <ExportAPI("as.STRaid")>
     Public Function CombineSTRaid(h5Matrix As Matrix, spots As SpaceSpot()) As STRaid.STRaid
         Dim spotIndex As New Dictionary(Of String, Point)
