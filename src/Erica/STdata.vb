@@ -76,6 +76,11 @@ Public Module STdata
         Return SpatialHeatMap.TotalSum(st)
     End Function
 
+    <ExportAPI("max_layer")>
+    Public Function MaxLayer(st As STRaid.STRaid) As SpatialHeatMap
+        Return SpatialHeatMap.Max(st)
+    End Function
+
     <ExportAPI("write.ST_layer")>
     Public Function writeLayer(layer As SpatialHeatMap, file As String) As Boolean
         Call SpatialHeatMap.WriteCDF(layer, file.Open(FileMode.OpenOrCreate, doClear:=True))

@@ -1,5 +1,6 @@
 ﻿Imports System.Drawing
 Imports System.IO
+Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.DataStorage.netCDF
 Imports Microsoft.VisualBasic.DataStorage.netCDF.Components
 Imports Microsoft.VisualBasic.DataStorage.netCDF.Data
@@ -14,13 +15,18 @@ Public Class SpatialHeatMap
     Public Property dimension_size As Size
     Public Property offset As Point
 
-    Public Shared Function TotalSum(ST As STData) As SpatialHeatMap
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
+    Public Shared Function Max(ST As STData) As SpatialHeatMap
+        Return Aggregate(ST, f:=Function(x) x.Max)
+    End Function
+
+    Public Shared Function Aggregate(ST As STData, f As Func(Of DataFrameRow, Double)) As SpatialHeatMap
         Dim shape As New Polygon2D(ST.spots)
         Dim cells As New List(Of SpotCell)
 
         For i As Integer = 0 To ST.spots.Length - 1
             Dim x As DataFrameRow = ST.matrix.expression(i)
-            Dim d As Double = x.Sum
+            Dim d As Double = f(x)
             Dim xy = ST.spots(i)
             Dim spot As New SpotCell With {
                 .Scale = d,
@@ -37,6 +43,11 @@ Public Class SpatialHeatMap
             .dimension_size = shape.GetDimension,
             .offset = New Point(shape.xpoints.Min, shape.ypoints.Min)
         }
+    End Function
+
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
+    Public Shared Function TotalSum(ST As STData) As SpatialHeatMap
+        Return Aggregate(ST, f:=Function(x) x.Sum)
     End Function
 
     Public Shared Sub WriteCDF(layer As SpatialHeatMap, file As Stream)
