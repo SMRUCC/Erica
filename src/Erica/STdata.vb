@@ -31,7 +31,7 @@ Public Module STdata
     ''' the expressin data just associated with the barcode, 
     ''' no spot spatial information.
     ''' </remarks>
-    <ExportAPI("read.ST_spacerangerH5Matrix")>
+    <ExportAPI("read.ST_h5ad")>
     Public Function ReadST_spacerangerH5Matrix(h5ad As String) As Matrix
         Return LoadDisk.ReadST_spacerangerH5Matrix(h5ad)
     End Function
