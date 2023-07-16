@@ -71,6 +71,22 @@ Public Module STdata
         }
     End Function
 
+    <ExportAPI("sum_layer")>
+    Public Function SumLayer(st As STRaid.STRaid) As SpatialHeatMap
+        Return SpatialHeatMap.TotalSum(st)
+    End Function
+
+    <ExportAPI("write.ST_layer")>
+    Public Function writeLayer(layer As SpatialHeatMap, file As String) As Boolean
+        Call SpatialHeatMap.WriteCDF(layer, file.Open(FileMode.OpenOrCreate, doClear:=True))
+        Return True
+    End Function
+
+    <ExportAPI("read.ST_layer")>
+    Public Function readLayer(file As String) As SpatialHeatMap
+        Return SpatialHeatMap.LoadCDF(file.Open(FileMode.Open, doClear:=False, [readOnly]:=True))
+    End Function
+
     <ExportAPI("as.STmatrix")>
     Public Function CreateSpatialMatrix(h5Matrix As Matrix, spots As SpatialSpot()) As Matrix
         Return CombineSTRaid(h5Matrix, spots).GetSpatialMatrix
@@ -84,7 +100,7 @@ Public Module STdata
     End Function
 
     ''' <summary>
-    ''' 
+    ''' Create n expression samples
     ''' </summary>
     ''' <param name="matrix">
     ''' should be a transposed matrix of the output from ``as.STmatrix``. 
