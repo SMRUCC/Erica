@@ -1,6 +1,7 @@
 ﻿Imports System.Drawing
 Imports System.IO
 Imports Microsoft.VisualBasic.ApplicationServices
+Imports Microsoft.VisualBasic.Data.IO
 Imports Microsoft.VisualBasic.DataStorage.HDSPack.FileSystem
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 
@@ -38,6 +39,12 @@ Public Class STRaid
         Return stMatrix
     End Function
 
+    ''' <summary>
+    ''' Write the spatial matrix data to file
+    ''' </summary>
+    ''' <param name="raid"></param>
+    ''' <param name="file"></param>
+    ''' <returns></returns>
     Public Shared Function Write(raid As STRaid, file As Stream) As Boolean
         Dim pack As New StreamPack(file, meta_size:=8 * 1024 * 1024)
         Dim x As Integer() = raid.spots.Select(Function(p) p.X).ToArray
@@ -45,7 +52,37 @@ Public Class STRaid
         Dim barcodes As String() = raid.matrix.rownames
         Dim geneids As String() = raid.matrix.sampleID
 
+        Using data As Stream = pack.OpenFile("/spatial/x", FileMode.OpenOrCreate, FileAccess.Write)
+            Using buf As New BinaryDataWriter(data) With {.ByteOrder = ByteOrder.BigEndian}
+                Call buf.Write(x)
+            End Using
+        End Using
+        Using data As Stream = pack.OpenFile("/spatial/y", FileMode.OpenOrCreate, FileAccess.Write)
+            Using buf As New BinaryDataWriter(data) With {.ByteOrder = ByteOrder.BigEndian}
+                Call buf.Write(y)
+            End Using
+        End Using
+        Using data As Stream = pack.OpenFile("/spatial/barcodes", FileMode.OpenOrCreate, FileAccess.Write)
+            Using buf As New BinaryDataWriter(data)
+                Call buf.Write(barcodes.JoinBy(vbCrLf))
+            End Using
+        End Using
+        Using data As Stream = pack.OpenFile("/expression/features.txt", FileMode.OpenOrCreate, FileAccess.Write)
+            Using buf As New BinaryDataWriter(data)
+                Call buf.Write(geneids.JoinBy(vbCrLf))
+            End Using
+        End Using
+
+        For Each row In raid.matrix.expression
+            Using data As Stream = pack.OpenFile($"/expression/matrix/{row.geneID}.vec")
+                Using buf As New BinaryDataWriter(data) With {.ByteOrder = ByteOrder.BigEndian}
+                    Call buf.Write(row.experiments)
+                End Using
+            End Using
+        Next
+
         Call DirectCast(pack, IFileSystemEnvironment).Flush()
+
         Return True
     End Function
 
