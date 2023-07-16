@@ -7,11 +7,26 @@ Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.Drawing2D
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.HeatMap
 
+''' <summary>
+''' A spatial spot data that contains [x,y], expression data and barcode tag data
+''' </summary>
 Public Class SpotCell : Implements Pixel
 
     Public Property X As Integer Implements Pixel.X
     Public Property Y As Integer Implements Pixel.Y
     Public Property Scale As Double Implements Pixel.Scale
+    Public Property Barcode As String
+
+    Public Function ToSpot() As SpatialSpot
+        Return New SpatialSpot With {
+            .barcode = Barcode,
+            .flag = 1,
+            .px = X,
+            .py = Y,
+            .x = X,
+            .y = Y
+        }
+    End Function
 
 End Class
 
