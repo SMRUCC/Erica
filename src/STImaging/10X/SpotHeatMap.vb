@@ -7,19 +7,19 @@ Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.Drawing2D
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.HeatMap
 
+Public Class SpotCell : Implements Pixel
+
+    Public Property X As Integer Implements Pixel.X
+    Public Property Y As Integer Implements Pixel.Y
+    Public Property Scale As Double Implements Pixel.Scale
+
+End Class
+
 Public Class SpotHeatMap : Inherits HeatMapPlot
 
     ReadOnly spots As PixelData()
     ReadOnly dimension_size As Size
     ReadOnly spotSize As SizeF
-
-    Private Class SpotCell : Implements Pixel
-
-        Public Property X As Integer Implements Pixel.X
-        Public Property Y As Integer Implements Pixel.Y
-        Public Property Scale As Double Implements Pixel.Scale
-
-    End Class
 
     Public Sub New(layer As PixelData(), dimension_size As Size, theme As Theme)
         MyBase.New(theme)
