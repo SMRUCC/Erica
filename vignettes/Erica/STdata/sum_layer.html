@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Create n expression samples</title>
+    <title>sum_layer</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <style rel="stylesheet" type="text/css">
@@ -143,35 +143,27 @@
 
         <table style="width: 100%;">
             <tr>
-                <td>sampling {STdata}</td>
+                <td>sum_layer {STdata}</td>
                 <td style="text-align: right;">R Documentation</td>
             </tr>
         </table>
 
-        <h2>Create n expression samples</h2>
+        <h2>sum_layer</h2>
 
         <h3>Description</h3>
 
-        
+        sum_layer
 
         <h3>Usage</h3>
 
         <div style="width: 100%; padding-left: 3%; color: black;">
-            <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>sampling</strong>(<i>matrix</i>,
-    <i>nsamples</i> = 32);</code></pre>
+            <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>sum_layer</strong>(<i>st</i>);</code></pre>
         </div>
 
         <h3>Arguments</h3>
 
         <table>
             
-<dt>matrix</dt>
-<dd><p><p>should be a transposed matrix of the output from <code>as.STmatrix</code>. </p></p></dd>
-
-
-<dt>nsamples</dt>
-<dd><p><p>-</p></p></dd>
-
         </table>
 
 
@@ -182,7 +174,7 @@
 
         <h3>Value</h3>
 
-        this function returns data object of type list. the list data also has some specificied data fields: <code>sampleinfo, matrix</code>.
+        this function returns data object of type <a href="/clr/STImaging/SpatialHeatMap.html">SpatialHeatMap</a>.
 
         <hr />
         <div style="text-align: center;">[Package <em>STdata</em> version 1.0.0.0 <a

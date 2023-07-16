@@ -22,6 +22,9 @@ declare namespace STdata {
       */
       function STRaid(h5Matrix: object, spots: object): object;
    }
+   /**
+   */
+   function max_layer(st: object): object;
    module read {
       /**
        * load the spatial mapping data of the spot barcode 
@@ -44,8 +47,12 @@ declare namespace STdata {
         *  actually the spot xy data tag or the barcoede data
       */
       function ST_h5ad(h5ad: string): object;
+      /**
+      */
+      function ST_layer(file: string): object;
    }
    /**
+    * Create n expression samples
     * 
     * 
      * @param matrix should be a transposed matrix of the output from ``as.STmatrix``.
@@ -54,9 +61,15 @@ declare namespace STdata {
      * + default value Is ``32``.
    */
    function sampling(matrix: object, nsamples?: object): object;
+   /**
+   */
+   function sum_layer(st: object): object;
    module write {
       /**
       */
-      function straid(straid: object, file: string): any;
+      function ST_layer(layer: object, file: string): boolean;
+      /**
+      */
+      function STRaid(straid: object, file: string): any;
    }
 }
