@@ -14,6 +14,11 @@ declare namespace STdata {
       */
       function STmatrix(h5Matrix: object, spots: object): object;
       /**
+       * combine the expression matrix with the spatial spot information
+       * 
+       * 
+        * @param h5Matrix the spatial expression matrix object
+        * @param spots the spatial spot information
       */
       function STRaid(h5Matrix: object, spots: object): object;
    }
@@ -38,7 +43,7 @@ declare namespace STdata {
         *  result matrix is the gene id and the row id in matrix is 
         *  actually the spot xy data tag or the barcoede data
       */
-      function ST_spacerangerH5Matrix(h5ad: string): object;
+      function ST_h5ad(h5ad: string): object;
    }
    /**
     * 
