@@ -60,7 +60,7 @@ Public Module STdata
         Dim spotIndex As New Dictionary(Of String, Point)
 
         For i As Integer = 0 To spots.Length - 1
-            Call spotIndex.Add(spots(i).barcode, spots(i).GetPoint)
+            Call spotIndex.Add(spots(i).barcode, spots(i).GetSpotPoint)
         Next
 
         Return New STRaid.STRaid With {
