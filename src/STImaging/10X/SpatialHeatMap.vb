@@ -5,6 +5,7 @@ Imports Microsoft.VisualBasic.DataStorage.netCDF.Components
 Imports Microsoft.VisualBasic.DataStorage.netCDF.Data
 Imports Microsoft.VisualBasic.DataStorage.netCDF.DataVector
 Imports Microsoft.VisualBasic.Imaging.Math2D
+Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports STData = STRaid.STRaid
 
 Public Class SpatialHeatMap
@@ -18,12 +19,14 @@ Public Class SpatialHeatMap
         Dim cells As New List(Of SpotCell)
 
         For i As Integer = 0 To ST.spots.Length - 1
-            Dim d As Double = ST.matrix.expression(i).Sum
+            Dim x As DataFrameRow = ST.matrix.expression(i)
+            Dim d As Double = x.Sum
             Dim xy = ST.spots(i)
             Dim spot As New SpotCell With {
                 .Scale = d,
                 .X = xy.X,
-                .Y = xy.Y
+                .Y = xy.Y,
+                .Barcode = x.geneID
             }
 
             Call cells.Add(spot)
