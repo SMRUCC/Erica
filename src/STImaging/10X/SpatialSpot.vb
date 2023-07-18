@@ -23,12 +23,12 @@ Public Class SpatialSpot
     ''' the spot x
     ''' </summary>
     ''' <returns></returns>
-    Public Property px As Integer
+    Public Property px As Double
     ''' <summary>
     ''' the spot y
     ''' </summary>
     ''' <returns></returns>
-    Public Property py As Integer
+    Public Property py As Double
 #End Region
 
 #Region "slice physical xy"
