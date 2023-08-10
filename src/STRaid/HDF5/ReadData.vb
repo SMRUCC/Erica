@@ -2,7 +2,10 @@ Imports System.Runtime.InteropServices
 Imports System.Text
 Imports HDF.PInvoke
 
-Friend Class ReadData
+''' <summary>
+''' A helper module for read data from h5 file
+''' </summary>
+Public Class ReadData
 
     Friend dims As ULong()
     Friend bytearray_elements As Integer
@@ -64,7 +67,7 @@ Friend Class ReadData
         Return exists
     End Function
 
-    Friend Shared Function Read_dataset(hdf5file As Long, dsname As String) As ReadData
+    Public Shared Function Read_dataset(hdf5file As Long, dsname As String) As ReadData
         Dim dsID = H5D.open(hdf5file, dsname, H5P.DEFAULT)
 
         If dsID < 0 Then
