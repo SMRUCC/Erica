@@ -67,6 +67,12 @@ Public Class ReadData
         Return exists
     End Function
 
+    ''' <summary>
+    ''' used for read small dataset
+    ''' </summary>
+    ''' <param name="hdf5file"></param>
+    ''' <param name="dsname"></param>
+    ''' <returns></returns>
     Public Shared Function Read_dataset(hdf5file As Long, dsname As String) As ReadData
         Dim dsID = H5D.open(hdf5file, dsname, H5P.DEFAULT)
 
