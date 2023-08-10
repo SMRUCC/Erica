@@ -93,16 +93,17 @@ Public Class ReadData
         For i = 0 To dims.Length - 1
             bytearray_elements *= dims(i)
         Next
-
+        Dim offsets As ULong() = {1}
         Dim chunk_bytes As Long = 0
-        Dim rect = H5D.get_chunk_storage_size(dsID, dims, chunk_bytes)
+        Dim rect = H5D.get_chunk_storage_size(dsID, offsets, chunk_bytes)
         Dim readBuf As Byte() = New Byte(chunk_bytes - 1) {}
         Dim pt_readbuf As GCHandle = GCHandle.Alloc(readBuf, GCHandleType.Pinned)
         Dim read_filter_mask As UInteger = 0
-        Dim offset As UInteger = 0
+        Dim offset As ULong = 1
 
-        Do While H5D.read_chunk(dsID, H5P.DEFAULT, offset, read_filter_mask, pt_readbuf) > 0
+        Do While H5D.read_chunk(dsID, H5P.DEFAULT, offset, read_filter_mask, pt_readbuf.AddrOfPinnedObject) >= 0
             Yield readBuf
+            offset += readBuf.Length
         Loop
     End Function
 
