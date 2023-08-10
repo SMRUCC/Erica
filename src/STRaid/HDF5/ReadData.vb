@@ -1,6 +1,7 @@
 Imports System.Runtime.InteropServices
 Imports System.Text
 Imports HDF.PInvoke
+Imports Microsoft.VisualBasic.Serialization
 
 ''' <summary>
 ''' A helper module for read data from h5 file
@@ -51,7 +52,11 @@ Public Class ReadData
         Next
     End Function
 
-    Public Iterator Function GetDoubles() As IEnumerable(Of Double)
+    Public Function GetDoubles() As IEnumerable(Of Double)
+        Return GetDoubles(dataBytes, byte_size)
+    End Function
+
+    Public Shared Iterator Function GetDoubles(dataBytes As Byte(), Optional byte_size As Integer = RawStream.DblFloat) As IEnumerable(Of Double)
         Dim buf As Byte() = New Byte(byte_size - 1) {}
 
         For i As Integer = 0 To dataBytes.Length - 1 Step byte_size
@@ -65,6 +70,40 @@ Public Class ReadData
         Dim exists = dsID > 0
 
         Return exists
+    End Function
+
+    Public Shared Iterator Function Read_chunkset(hdf5file As Long, dsname As String) As IEnumerable(Of Byte())
+        Dim dsID = H5D.open(hdf5file, dsname, H5P.DEFAULT)
+
+        If dsID < 0 Then
+            ' missing dataset
+            Return
+        End If
+
+        Dim spaceID = H5D.get_space(dsID)
+        Dim typeID = H5D.get_type(dsID)
+        Dim classID = H5T.get_class(typeID)
+        Dim rank = H5S.get_simple_extent_ndims(spaceID)
+        Dim dims(rank - 1) As ULong
+        Dim maxDims(rank - 1) As ULong
+        H5S.get_simple_extent_dims(spaceID, dims, maxDims)
+        Dim sizeData = H5T.get_size(typeID)
+        Dim size = sizeData.ToInt32()
+        Dim bytearray_elements = 1
+        For i = 0 To dims.Length - 1
+            bytearray_elements *= dims(i)
+        Next
+
+        Dim chunk_bytes As Long = 0
+        Dim rect = H5D.get_chunk_storage_size(dsID, dims, chunk_bytes)
+        Dim readBuf As Byte() = New Byte(chunk_bytes - 1) {}
+        Dim pt_readbuf As GCHandle = GCHandle.Alloc(readBuf, GCHandleType.Pinned)
+        Dim read_filter_mask As UInteger = 0
+        Dim offset As UInteger = 0
+
+        Do While H5D.read_chunk(dsID, H5P.DEFAULT, offset, read_filter_mask, pt_readbuf) > 0
+            Yield readBuf
+        Loop
     End Function
 
     ''' <summary>
