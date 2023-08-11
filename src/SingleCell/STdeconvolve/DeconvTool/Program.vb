@@ -29,7 +29,7 @@ Module Program
         Dim top_genes As Integer = args("--top_genes") Or 1000
         Dim STdataset As Matrix = Matrix.LoadData(file)
         Dim corpus As STCorpus = STdataset.CreateSpatialDocuments
-        Dim result = corpus.LDAModelling(layers, iterations:=iteration).Deconvolve(corpus, topGenes:=top_genes)
+        Dim result As Deconvolve = corpus.LDAModelling(layers, iterations:=iteration).Deconvolve(corpus, topGenes:=top_genes)
         Dim deconv = result.GetSingleCellExpressionMatrix(STdataset)
         Dim deconv2 = result.GetExpressionMatrix(STdataset)
 

@@ -3,6 +3,8 @@ Imports Microsoft.VisualBasic.Data.NLP.LDA
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports SMRUCC.genomics.Analysis.SingleCell.STdeconvolve
+Imports SMRUCC.Rsharp.Runtime
+Imports SMRUCC.Rsharp.Runtime.Internal.Invokes
 
 ''' <summary>
 ''' Reference-free cell-type deconvolution of pixel-resolution spatially resolved transcriptomics data
@@ -48,9 +50,15 @@ Module STdeconvolve
     <ExportAPI("fitLDA")>
     Public Function LdaGibbsSampler(spatialDoc As STCorpus, k As Integer,
                                     Optional alpha# = 2.0,
-                                    Optional beta# = 0.5) As LdaGibbsSampler
+                                    Optional beta# = 0.5,
+                                    Optional loops As Integer = 200,
+                                    Optional env As Environment = Nothing) As LdaGibbsSampler
 
-        Return spatialDoc.LDAModelling(k, alpha, beta)
+        Return spatialDoc.LDAModelling(
+            k, alpha, beta,
+            iterations:=loops,
+            println:=env.WriteLineHandler
+        )
     End Function
 
     ''' <summary>
