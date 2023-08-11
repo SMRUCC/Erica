@@ -2,7 +2,7 @@
 
 the bgee database toolkit
 
-+ [bgee_calls](Bgee/bgee_calls.1) 
++ [bgee_calls](Bgee/bgee_calls.1) Do bgee enrichment
 + [development_stage](Bgee/development_stage.1) 
 + [anatomicalIDs](Bgee/anatomicalIDs.1) 
 + [geneIDs](Bgee/geneIDs.1) 

@@ -14,7 +14,7 @@ Imports SMRUCC.Rsharp.Runtime.Interop
 Public Module Bgee
 
     ''' <summary>
-    ''' 
+    ''' Do bgee enrichment
     ''' </summary>
     ''' <param name="bgee"></param>
     ''' <param name="geneSet"></param>
@@ -31,6 +31,15 @@ Public Module Bgee
     '''   result for each development_stage will be returned
     '''   
     ''' </returns>
+    ''' <example>
+    ''' let model = read.backgroundPack("./demo.dat");
+    ''' let gene_ids = ["gene_a","gene_b","gene_c","gene_d"];
+    ''' let enrich = as.data.frame(bgee_calls(geneSet = gene_ids));
+    ''' 
+    ''' print(enrich);
+    ''' 
+    ''' write.csv(enrich, file = "./bgee_calls.csv");
+    ''' </example>
     <ExportAPI("bgee_calls")>
     <RApiReturn(GetType(EnrichmentResult))>
     Public Function bgeeCalls(bgee As BgeeDiskReader, geneSet As String(), Optional development_stage As String = "*") As Object
@@ -161,6 +170,14 @@ Public Module Bgee
         Return True
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="file"></param>
+    ''' <returns></returns>
+    ''' <example>
+    ''' read.backgroundPack("./demo.dat");
+    ''' </example>
     <ExportAPI("read.backgroundPack")>
     Public Function readBackgroundPack(file As String) As BgeeDiskReader
         Return New BgeeDiskReader(file)

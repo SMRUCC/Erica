@@ -13,6 +13,7 @@ declare namespace Bgee {
    */
    function anatomicalIDs(bgee: object): object;
    /**
+    * Do bgee enrichment
     * 
     * 
      * @param bgee -
@@ -48,6 +49,9 @@ declare namespace Bgee {
    function parseTsv(file: string, advance?: boolean, quality?: string, pip_stream?: boolean, env?: object): object;
    module read {
       /**
+       * 
+       * 
+        * @param file -
       */
       function backgroundPack(file: string): object;
    }
