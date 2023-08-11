@@ -34,13 +34,13 @@ declare namespace phenograph {
    */
    function graph_tree(x: object, eq?: number, gt?: number): any;
    /**
-    * PhenoGraph algorithm
+    * Run PhenoGraph algorithm
     * 
     * 
-     * @param x -
+     * @param x This parameter should be an expression matrix data object
      * @param y 
      * + default value Is ``null``.
-     * @param k -
+     * @param k The KNN parameter for the phenograph analysis on the input matrix **`x`**
      * 
      * + default value Is ``30``.
      * @param link_cutoff -

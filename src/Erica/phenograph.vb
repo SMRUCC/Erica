@@ -71,15 +71,24 @@ Imports Matrix = SMRUCC.genomics.Analysis.HTS.DataFrame.Matrix
 Module phenograph
 
     ''' <summary>
-    ''' PhenoGraph algorithm
+    ''' Run PhenoGraph algorithm
     ''' </summary>
-    ''' <param name="x"></param>
-    ''' <param name="k"></param>
+    ''' <param name="x">This parameter should be an expression matrix data object</param>
+    ''' <param name="k">The KNN parameter for the phenograph analysis on the input matrix <paramref name="x"/></param>
     ''' <param name="link_cutoff"></param>
     ''' <param name="subcomponents_filter">
     ''' removes small subnetwork
     ''' </param>
     ''' <returns></returns>
+    ''' <example>
+    ''' require(GCModeller);
+    ''' 
+    ''' imports "geneExpression" from "phenotype_kit";
+    ''' 
+    ''' let expr_mat = load.expr(file = "./expr.csv");
+    ''' let clusters = phenograph(expr_mat, k = 16);
+    ''' 
+    ''' </example>
     <ExportAPI("phenograph")>
     <RApiReturn(GetType(NetworkGraph))>
     Public Function phenograph(x As Matrix,
