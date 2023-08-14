@@ -29,8 +29,13 @@
         code {
             color: rgb(194, 42, 42);
             background: inherit;
-            font-style:italic;
+            font-style: italic;
             font-weight: bold;
+        }
+
+        pre code {
+            color: rgb(54, 54, 54);
+            font-style: normal;
         }
 
         body {
@@ -158,14 +163,14 @@
 
         <div style="width: 100%; padding-left: 3%; color: black;">
             <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>phenograph</strong>(<i>x</i>,
-    <i>y</i> = <span style='color: blue;'>NULL</span>,
-    <i>k</i> = 30,
-    <i>link.cutoff</i> = 0,
-    <i>knn.cutoff</i> = 0,
-    <i>score</i> = <span style='color: blue;'>NULL</span>,
-    <i>subcomponents.filter</i> = 0,
-    <i>knn2</i> = 16,
-    <i>joint.cutoff</i> = 0);</code></pre>
+    <i>y</i> = <span style='color: blue !important;'>NULL</span>,
+    <i>k</i> = <span style='color: green;'>30</span>,
+    <i>link.cutoff</i> = <span style='color: green;'>0</span>,
+    <i>knn.cutoff</i> = <span style='color: green;'>0</span>,
+    <i>score</i> = <span style='color: blue !important;'>NULL</span>,
+    <i>subcomponents.filter</i> = <span style='color: green;'>0</span>,
+    <i>knn2</i> = <span style='color: green;'>16</span>,
+    <i>joint.cutoff</i> = <span style='color: green;'>0</span>);</code></pre>
         </div>
 
         <h3>Arguments</h3>
@@ -201,12 +206,12 @@
 
         <h3 style="display: block;">Examples</h3>
 
-        require(GCModeller);
+        <pre><code>require(GCModeller);
  
  imports "geneExpression" from "phenotype_kit";
  
  let expr_mat = load.expr(file = "./expr.csv");
- let clusters = phenograph(expr_mat, k = 16);
+ let clusters = phenograph(expr_mat, k = 16);</code></pre>
 
         <hr />
         <div style="text-align: center;">[Package <em>phenograph</em> version 1.0.0.0 <a

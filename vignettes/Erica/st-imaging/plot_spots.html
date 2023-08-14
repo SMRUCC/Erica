@@ -29,8 +29,13 @@
         code {
             color: rgb(194, 42, 42);
             background: inherit;
-            font-style:italic;
+            font-style: italic;
             font-weight: bold;
+        }
+
+        pre code {
+            color: rgb(54, 54, 54);
+            font-style: normal;
         }
 
         body {
@@ -159,7 +164,7 @@
         <div style="width: 100%; padding-left: 3%; color: black;">
             <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>plot_spots</strong>(<i>spots</i>, <i>matrix</i>, <i>geneId</i>,
     <i>size</i> = <span style='color: brown;'><strong>"3000,3000"</strong></span>,
-    <i>spot.radius</i> = 13,
+    <i>spot.radius</i> = <span style='color: green;'>13</span>,
     <i>colorMaps</i> = turbo);</code></pre>
         </div>
 
