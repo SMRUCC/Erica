@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Run PhenoGraph algorithm</title>
+    <title>deconvolve</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <style rel="stylesheet" type="text/css">
@@ -148,50 +148,27 @@
 
         <table style="width: 100%;">
             <tr>
-                <td>phenograph {phenograph}</td>
+                <td>deconvolve {STdeconvolve}</td>
                 <td style="text-align: right;">R Documentation</td>
             </tr>
         </table>
 
-        <h2>Run PhenoGraph algorithm</h2>
+        <h2>deconvolve</h2>
 
         <h3>Description</h3>
 
-        
+        deconvolve
 
         <h3>Usage</h3>
 
         <div style="width: 100%; padding-left: 3%; color: black;">
-            <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>phenograph</strong>(<i>x</i>,
-    <i>y</i> = <span style='color: blue !important;'>NULL</span>,
-    <i>k</i> = <span style='color: green;'>30</span>,
-    <i>link.cutoff</i> = <span style='color: green;'>0</span>,
-    <i>knn.cutoff</i> = <span style='color: green;'>0</span>,
-    <i>score</i> = <span style='color: blue !important;'>NULL</span>,
-    <i>subcomponents.filter</i> = <span style='color: green;'>0</span>,
-    <i>knn2</i> = <span style='color: green;'>16</span>,
-    <i>joint.cutoff</i> = <span style='color: green;'>0</span>);</code></pre>
+            <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>deconvolve</strong>(<i>deconv</i>, <i>expr</i>);</code></pre>
         </div>
 
         <h3>Arguments</h3>
 
         <table>
             
-<dt>x</dt>
-<dd><p><p>This parameter should be an expression matrix data object</p></p></dd>
-
-
-<dt>k</dt>
-<dd><p><p>The KNN parameter for the phenograph analysis on the input matrix <strong><code>x</code></strong></p></p></dd>
-
-
-<dt>link.cutoff</dt>
-<dd><p><p>-</p></p></dd>
-
-
-<dt>subcomponents.filter</dt>
-<dd><p><p>removes small subnetwork</p></p></dd>
-
         </table>
 
 
@@ -202,26 +179,15 @@
 
         <h3>Value</h3>
 
-        this function returns data object of type <a href="/clr/Microsoft/VisualBasic/Data/visualize/Network/Graph/NetworkGraph.html">NetworkGraph</a>.
+        this function returns data object of type <a href="/clr/SMRUCC/genomics/Analysis/HTS/DataFrame/Matrix.html">Matrix</a>.
 
-        <h3 style="display: block;">Examples</h3>
+        <h3 style="display: none;">Examples</h3>
 
-        <pre><code>require(GCModeller);
- 
- imports "geneExpression" from "phenotype_kit";
- 
- let expr_mat = load.expr(file = "./expr.csv");
- let clusters = phenograph(expr_mat, k = 16);
- 
- require(igraph);
- 
- # get the cluster result
- print(as.data.frame(V(clusters)));
- print(as.data.frame(E(clusters)));</code></pre>
+        
 
         <hr />
-        <div style="text-align: center;">[Package <em>phenograph</em> version 1.0.0.0 <a
-                href="../phenograph.html">Index</a>]
+        <div style="text-align: center;">[Package <em>STdeconvolve</em> version 1.0.0.0 <a
+                href="../STdeconvolve.html">Index</a>]
         </div>
     </div>
 </body>

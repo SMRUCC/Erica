@@ -205,9 +205,19 @@
 
         <p>document model for run LDA modelling</p>
 
-        <h3 style="display: none;">Examples</h3>
+        <h3 style="display: block;">Examples</h3>
 
-        
+        <pre><code>require(GCModeller);
+ 
+ imports "geneExpression" from "phenotype_kit";
+ 
+ let expr_mat = load.expr(file = "./expr.csv");
+ let corpus = STCorpus(expr_mat);
+ let LDA = fitLDA(corpus, k = 6);
+ let deconv = getBetaTheta(LDA, corpus, top.genes = 1000);
+ 
+ let matrix1 = singlecells(deconv, expr_mat);
+ let matrix2 = deconvolve(deconv, expr_mat);</code></pre>
 
         <hr />
         <div style="text-align: center;">[Package <em>STdeconvolve</em> version 1.0.0.0 <a

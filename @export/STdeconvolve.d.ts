@@ -10,6 +10,9 @@
 */
 declare namespace STdeconvolve {
    /**
+   */
+   function deconvolve(deconv: object, expr: object): object;
+   /**
     * run LDA modelling
     * 
     * > Fit the optimal number of cell-types K for the LDA model
@@ -40,7 +43,7 @@ declare namespace STdeconvolve {
      *  the model was fitted to. Otherwise, compute deconvolved topics from this
      *  new corpus. Needs to be pixels x genes and nonnegative integer counts. 
      *  Each row needs at least 1 nonzero entry (default: NULL)
-     * @param topGenes -
+     * @param top_genes -
      * 
      * + default value Is ``25``.
      * @return A Deconvolve object that contains
@@ -51,7 +54,10 @@ declare namespace STdeconvolve {
      *  + theta: pixel (rows) by cell-types (columns) distribution matrix.
      *    Each row is the cell-type composition for a given pixel.
    */
-   function getBetaTheta(LDA: object, corpus: object, topGenes?: object): object;
+   function getBetaTheta(LDA: object, corpus: object, top_genes?: object): object;
+   /**
+   */
+   function singlecells(deconv: object, expr: object): object;
    /**
     * Create document vector for run LDA mdelling
     * 
