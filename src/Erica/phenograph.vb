@@ -88,6 +88,11 @@ Module phenograph
     ''' let expr_mat = load.expr(file = "./expr.csv");
     ''' let clusters = phenograph(expr_mat, k = 16);
     ''' 
+    ''' require(igraph);
+    ''' 
+    ''' # get the cluster result
+    ''' print(as.data.frame(V(clusters)));
+    ''' print(as.data.frame(E(clusters)));
     ''' </example>
     <ExportAPI("phenograph")>
     <RApiReturn(GetType(NetworkGraph))>

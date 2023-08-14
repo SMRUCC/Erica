@@ -4,7 +4,6 @@ Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports SMRUCC.genomics.Analysis.SingleCell.STdeconvolve
 Imports SMRUCC.Rsharp.Runtime
-Imports SMRUCC.Rsharp.Runtime.Internal.Invokes
 
 ''' <summary>
 ''' Reference-free cell-type deconvolution of pixel-resolution spatially resolved transcriptomics data
