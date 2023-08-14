@@ -11,6 +11,8 @@ Imports SMRUCC.Rsharp.Runtime
 <Package("STdeconvolve")>
 Module STdeconvolve
 
+
+
     ''' <summary>
     ''' Create document vector for run LDA mdelling
     ''' </summary>
@@ -25,6 +27,19 @@ Module STdeconvolve
     ''' <returns>
     ''' document model for run LDA modelling
     ''' </returns>
+    ''' <example>
+    ''' require(GCModeller);
+    ''' 
+    ''' imports "geneExpression" from "phenotype_kit";
+    ''' 
+    ''' let expr_mat = load.expr(file = "./expr.csv");
+    ''' let corpus = STCorpus(expr_mat);
+    ''' let LDA = fitLDA(corpus, k = 6);
+    ''' let deconv = getBetaTheta(LDA, corpus, top.genes = 1000);
+    ''' 
+    ''' let matrix1 = singlecells(deconv, expr_mat);
+    ''' let matrix2 = deconvolve(deconv, expr_mat);
+    ''' </example>
     <ExportAPI("STCorpus")>
     Public Function STCorpus(matrix As Matrix,
                              Optional min As Double = 0.05,
@@ -77,7 +92,7 @@ Module STdeconvolve
     ''' new corpus. Needs to be pixels x genes and nonnegative integer counts. 
     ''' Each row needs at least 1 nonzero entry (default: NULL)
     ''' </param>
-    ''' <param name="topGenes"></param>
+    ''' <param name="top_genes"></param>
     ''' <returns>
     ''' A Deconvolve object that contains
     '''
@@ -88,7 +103,17 @@ Module STdeconvolve
     '''   Each row is the cell-type composition for a given pixel.
     ''' </returns>
     <ExportAPI("getBetaTheta")>
-    Public Function Deconvolve(LDA As LdaGibbsSampler, corpus As STCorpus, Optional topGenes As Integer = 25) As Deconvolve
-        Return LDA.Deconvolve(corpus, topGenes)
+    Public Function Deconvolve(LDA As LdaGibbsSampler, corpus As STCorpus, Optional top_genes As Integer = 25) As Deconvolve
+        Return LDA.Deconvolve(corpus, top_genes)
+    End Function
+
+    <ExportAPI("singlecells")>
+    Public Function singleCellMatrix(deconv As Deconvolve, expr As Matrix) As Matrix
+        Return deconv.GetSingleCellExpressionMatrix(expr)
+    End Function
+
+    <ExportAPI("deconvolve")>
+    Public Function deconvMatrix(deconv As Deconvolve, expr As Matrix) As Matrix
+        Return deconv.GetExpressionMatrix(expr)
     End Function
 End Module
