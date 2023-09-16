@@ -57,10 +57,12 @@ declare namespace phenograph {
      * + default value Is ``16``.
      * @param joint_cutoff 
      * + default value Is ``0``.
+     * @param n_threads 
+     * + default value Is ``32``.
      * @param env 
      * + default value Is ``null``.
    */
-   function phenograph(x: object, y?: object, k?: object, link_cutoff?: number, knn_cutoff?: number, score?: object, subcomponents_filter?: object, knn2?: object, joint_cutoff?: number, env?: object): object;
+   function phenograph(x: object, y?: object, k?: object, link_cutoff?: number, knn_cutoff?: number, score?: object, subcomponents_filter?: object, knn2?: object, joint_cutoff?: number, n_threads?: object, env?: object): object;
    /**
     * create a new score metric for KNN method in phenograph algorithm
     * 
