@@ -53,6 +53,7 @@ Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
 Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Math.LinearAlgebra
+Imports Microsoft.VisualBasic.Parallel
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports SMRUCC.genomics.Analysis.SingleCell.PhenoGraph
@@ -105,7 +106,10 @@ Module phenograph
                                Optional subcomponents_filter As Integer = 0,
                                Optional knn2 As Integer = 16,
                                Optional joint_cutoff As Double = 0,
+                               Optional n_threads As Integer = 32,
                                Optional env As Environment = Nothing) As Object
+
+        VectorTask.n_threads = n_threads
 
         Dim p1 As NetworkGraph = x.phenograph1(k, link_cutoff, knn_cutoff, score, subcomponents_filter)
         Dim p2 As NetworkGraph
