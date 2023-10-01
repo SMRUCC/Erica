@@ -2,6 +2,7 @@
 Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.Data.NLP.LDA
 Imports Microsoft.VisualBasic.Math.LinearAlgebra
+Imports Microsoft.VisualBasic.Parallel
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports stdNum = System.Math
 
@@ -82,6 +83,7 @@ Public Module LDADeconvolve
                                  Optional burnIn As Integer = 100,
                                  Optional thinInterval As Integer = 20,
                                  Optional sampleLag As Integer = 10,
+                                 Optional n_threads As Integer = 4,
                                  Optional println As Action(Of Object) = Nothing) As LdaGibbsSampler
         ' 2. Create a LDA sampler
         Dim ldaGibbsSampler As New LdaGibbsSampler(
@@ -89,6 +91,8 @@ Public Module LDADeconvolve
             V:=spatialDoc.VocabularySize(),
             log:=println
         )
+
+        VectorTask.n_threads = n_threads
 
         ' 3. Train LDA model via gibbs sampling
         Call ldaGibbsSampler _
