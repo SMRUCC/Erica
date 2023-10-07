@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DeconvTool": {
+      "commandName": "Project",
+      "commandLineArgs": "\"X:\\AP-SMALDI-SingleCells-0.1um\\test\\研发数据（小鼠睾丸空代原始数据）-AP SMALDI\\cluster_result-20231001-1\\phenograph\\.sampling_conv_temp.csv\" --layers 8"
+    }
+  }
+}

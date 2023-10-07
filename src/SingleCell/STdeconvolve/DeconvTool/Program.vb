@@ -10,7 +10,7 @@ Module Program
     End Function
 
     Private Function help() As Integer
-        Console.WriteLine($"{GetType(Program).Assembly.Location.BaseName} <spot_expression.csv> [--iteration <default=150> --layers <default=4> --top_genes <default=1000>]")
+        Console.WriteLine($"{GetType(Program).Assembly.Location.BaseName} <spot_expression.csv> [--iteration <default=150> --layers <default=4> --top_genes <default=1000> --n_threads <default=8>]")
         Console.WriteLine($"")
         Console.WriteLine($"spot_expression.csv should be a table file in format of:")
         Console.WriteLine($"features in column and,")
@@ -27,9 +27,10 @@ Module Program
         Dim iteration As Integer = args("--iteration") Or 150
         Dim layers As Integer = args("--layers") Or 4
         Dim top_genes As Integer = args("--top_genes") Or 1000
+        Dim n_threads As Integer = args("--n_threads") Or 8
         Dim STdataset As Matrix = Matrix.LoadData(file)
         Dim corpus As STCorpus = STdataset.CreateSpatialDocuments
-        Dim result As Deconvolve = corpus.LDAModelling(layers, iterations:=iteration).Deconvolve(corpus, topGenes:=top_genes)
+        Dim result As Deconvolve = corpus.LDAModelling(layers, iterations:=iteration, n_threads:=n_threads).Deconvolve(corpus, topGenes:=top_genes)
         Dim deconv = result.GetSingleCellExpressionMatrix(STdataset)
         Dim deconv2 = result.GetExpressionMatrix(STdataset)
 

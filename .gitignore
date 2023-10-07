@@ -378,3 +378,15 @@ test/bgee/hsa.bgee
 src/SingleCell/demo/HR2MSI mouse urinary bladder S096_top3-cell_layers.csv
 src/SingleCell/demo/HR2MSI mouse urinary bladder S096_top3-STdeconvolve.csv
 src/SingleCell/demo/HR2MSI mouse urinary bladder S096_top3-STdeconvolve.json
+tools/deconv.exe
+tools/deconv.runtimeconfig.json
+tools/deconv.xml
+tools/Microsoft.VisualBasic.Data.NLP.xml
+tools/Microsoft.VisualBasic.Math.Core.dll.config
+tools/Microsoft.VisualBasic.Math.Core.xml
+tools/Microsoft.VisualBasic.Math.Statistics.xml
+tools/Microsoft.VisualBasic.Runtime.dll.config
+tools/Microsoft.VisualBasic.Runtime.xml
+tools/SMRUCC.genomics.Analysis.HTS.DataFrame.xml
+tools/SMRUCC.genomics.Analysis.SingleCell.STdeconvolve.xml
+tools/SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.xml

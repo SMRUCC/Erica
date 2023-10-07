@@ -5,6 +5,9 @@ Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Math.LinearAlgebra
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 
+''' <summary>
+''' The spatial deconvolution result
+''' </summary>
 Public Class Deconvolve
 
     ''' <summary>
