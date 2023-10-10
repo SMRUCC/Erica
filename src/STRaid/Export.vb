@@ -5,14 +5,24 @@ Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 
 Public Module Export
 
+    ''' <summary>
+    ''' Export the spatial h5ad raw data as the GCModeller expression matrix object
+    ''' </summary>
+    ''' <param name="raw"></param>
+    ''' <returns></returns>
     <Extension>
     Public Function ExportExpression(raw As AnnData) As Matrix
         Dim spatial = raw.obsm.spatial _
             .Select(Function(i) $"{i.X},{i.Y}") _
             .ToArray
+        Dim idset As String() = If(
+            raw.var.gene_ids.IsNullOrEmpty,
+            raw.var.gene_short_name,
+            raw.var.gene_ids
+        )
         Dim mat As Matrix = raw.X.ExportExpression(
             spotId:=spatial,
-            geneID:=raw.var.gene_ids,
+            geneID:=idset,
             source:=raw.source
         )
 
