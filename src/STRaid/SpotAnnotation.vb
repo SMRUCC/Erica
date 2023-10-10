@@ -1,7 +1,14 @@
-﻿Public Class SpotAnnotation
+﻿Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel.SchemaMaps
 
-    Public Property X As Double
-    Public Property Y As Double
+''' <summary>
+''' The erica spatial table
+''' </summary>
+Public Class SpotAnnotation
+
+    Public Property x As Double
+    Public Property y As Double
+
+    <Column("class")>
     Public Property label As String
     Public Property color As String
 
