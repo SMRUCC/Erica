@@ -11,8 +11,6 @@ Imports SMRUCC.Rsharp.Runtime
 <Package("STdeconvolve")>
 Module STdeconvolve
 
-
-
     ''' <summary>
     ''' Create document vector for run LDA mdelling
     ''' </summary>
