@@ -105,11 +105,23 @@ Module STdeconvolve
         Return LDA.Deconvolve(corpus, top_genes)
     End Function
 
+    ''' <summary>
+    ''' get the single cell expression matrix
+    ''' </summary>
+    ''' <param name="deconv"></param>
+    ''' <param name="expr"></param>
+    ''' <returns></returns>
     <ExportAPI("singlecells")>
     Public Function singleCellMatrix(deconv As Deconvolve, expr As Matrix) As Matrix
         Return deconv.GetSingleCellExpressionMatrix(expr)
     End Function
 
+    ''' <summary>
+    ''' get the spatial expression matrix
+    ''' </summary>
+    ''' <param name="deconv"></param>
+    ''' <param name="expr"></param>
+    ''' <returns></returns>
     <ExportAPI("deconvolve")>
     Public Function deconvMatrix(deconv As Deconvolve, expr As Matrix) As Matrix
         Return deconv.GetExpressionMatrix(expr)
