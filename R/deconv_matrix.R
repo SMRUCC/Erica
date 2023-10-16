@@ -21,7 +21,8 @@ imports "STdeconvolve" from "Erica";
 #' 
 const deconv_spatial = function(expr_mat, n_layers = 4, top_genes = 1000, alpha = 2.0, 
                                 beta = 0.5,
-                                iteration = 150) {
+                                iteration = 150,
+                                prefix = "class") {
 
     if (is.character(expr_mat)) {
         # read the matrix file
@@ -38,7 +39,7 @@ const deconv_spatial = function(expr_mat, n_layers = 4, top_genes = 1000, alpha 
             loops = iteration);
     let deconv = getBetaTheta(LDA, corpus, top.genes = top_genes);
 
-    let matrix1 = singlecells(deconv, expr_mat);
+    let matrix1 = singlecells(deconv, expr_mat, prefix = prefix);
     let matrix2 = deconvolve(deconv, expr_mat);
     let matrix3 = [deconv]::theta;
 
@@ -46,6 +47,6 @@ const deconv_spatial = function(expr_mat, n_layers = 4, top_genes = 1000, alpha 
         single_cells: matrix1,
         deconv_spatial: matrix2,
         cell_layers: matrix3
-        gibbs_LDA: [deconv]::topicMap
+        gibbs_LDA: lapply([deconv]::topicMap, l -> as.list(l), names = `${prefix}_${1:length([deconv]::topicMap)}`)
     }
 }

@@ -37,7 +37,7 @@ Public Class Deconvolve
     ''' </summary>
     ''' <param name="raw"></param>
     ''' <returns></returns>
-    Public Function GetSingleCellExpressionMatrix(raw As Matrix) As Matrix
+    Public Function GetSingleCellExpressionMatrix(raw As Matrix, Optional prefix As String = "topic") As Matrix
         Dim expressions As New List(Of DataFrameRow)
         Dim newIds As New List(Of String)
         Dim i As i32 = 1
@@ -45,7 +45,7 @@ Public Class Deconvolve
         Dim dist As New List(Of (p As Vector, subset As String()))
 
         For Each topic In topicMap
-            Dim idprefix As String = $"topic_{++i}"
+            Dim idprefix As String = $"{prefix}_{++i}"
             Dim newIdset = topic.Keys _
                 .Select(Function(g) $"{idprefix}.{g}") _
                 .ToArray
