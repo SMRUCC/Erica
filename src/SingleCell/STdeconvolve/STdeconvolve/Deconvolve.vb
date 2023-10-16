@@ -37,6 +37,10 @@ Public Class Deconvolve
     ''' </summary>
     ''' <param name="raw"></param>
     ''' <returns></returns>
+    ''' <remarks>
+    ''' the single cell data will extends the gene features set with 
+    ''' mutlipel cell layer id prefix.
+    ''' </remarks>
     Public Function GetSingleCellExpressionMatrix(raw As Matrix, Optional prefix As String = "topic") As Matrix
         Dim expressions As New List(Of DataFrameRow)
         Dim newIds As New List(Of String)

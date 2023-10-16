@@ -390,3 +390,5 @@ tools/Microsoft.VisualBasic.Runtime.xml
 tools/SMRUCC.genomics.Analysis.HTS.DataFrame.xml
 tools/SMRUCC.genomics.Analysis.SingleCell.STdeconvolve.xml
 tools/SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.xml
+test/deconv/single_cells.csv
+test/deconv/deconv_spatial.csv

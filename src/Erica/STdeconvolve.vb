@@ -110,7 +110,10 @@ Module STdeconvolve
     ''' </summary>
     ''' <param name="deconv"></param>
     ''' <param name="expr"></param>
-    ''' <returns></returns>
+    ''' <returns>
+    ''' An expression data matrix object that extends the gene feature 
+    ''' sets with the multiple cell layers prefix
+    ''' </returns>
     <ExportAPI("singlecells")>
     Public Function singleCellMatrix(deconv As Deconvolve, expr As Matrix, Optional prefix As String = "class") As Matrix
         Return deconv.GetSingleCellExpressionMatrix(expr, prefix)
