@@ -88,13 +88,17 @@ Namespace HDF5
             Dim rank = H5S.get_simple_extent_ndims(spaceID)
             Dim dims(rank - 1) As ULong
             Dim maxDims(rank - 1) As ULong
-            H5S.get_simple_extent_dims(spaceID, dims, maxDims)
+
+            Call H5S.get_simple_extent_dims(spaceID, dims, maxDims)
+
             Dim sizeData = H5T.get_size(typeID)
             Dim size = sizeData.ToInt32()
             Dim bytearray_elements = 1
+
             For i = 0 To dims.Length - 1
                 bytearray_elements *= dims(i)
             Next
+
             Dim offsets As ULong() = {1}
             Dim chunk_bytes As Long = 0
             Dim rect = H5D.get_chunk_storage_size(dsID, offsets, chunk_bytes)
@@ -121,11 +125,11 @@ Namespace HDF5
             If dsID < 0 Then
                 ' missing dataset
                 Return New ReadData With {
-                .bytearray_elements = 0,
-                .byte_size = 0,
-                .dataBytes = {},
-                .dims = {0}
-            }
+                    .bytearray_elements = 0,
+                    .byte_size = 0,
+                    .dataBytes = {},
+                    .dims = {0}
+                }
             End If
 
             Dim spaceID = H5D.get_space(dsID)
@@ -142,19 +146,18 @@ Namespace HDF5
                 bytearray_elements *= dims(i)
             Next
             Dim dataBytes As Byte() = New Byte(bytearray_elements * CULng(size) - 1) {}
-
             Dim pinnedArray As GCHandle = GCHandle.Alloc(dataBytes, GCHandleType.Pinned)
 
             H5D.read(dsID, typeID, H5S.ALL, H5S.ALL, H5P.DEFAULT, pinnedArray.AddrOfPinnedObject())
             pinnedArray.Free()
 
             Return New ReadData With {
-            .bytearray_elements = bytearray_elements,
-            .byte_size = size,
-            .dataBytes = dataBytes,
-            .dims = dims,
-            .classID = classID
-        }
+                .bytearray_elements = bytearray_elements,
+                .byte_size = size,
+                .dataBytes = dataBytes,
+                .dims = dims,
+                .classID = classID
+            }
         End Function
 
         Friend Shared Function Read_strings(fileId As Long, dsname As String) As String()
@@ -180,12 +183,13 @@ Namespace HDF5
             H5D.read(dataID, typeId, H5S.ALL, H5S.ALL, H5P.DEFAULT, handle.AddrOfPinnedObject())
 
             Dim attrStrings = New List(Of String)()
-            Dim i = 0
+            Dim i As Integer = 0
 
             While i < dest.Length
                 Dim attrLength = 0
+
                 While Marshal.ReadByte(dest(i), attrLength) <> 0
-                    Threading.Interlocked.Increment(attrLength)
+                    attrLength += 1
                 End While
 
                 Dim buffer = New Byte(attrLength - 1) {}
@@ -195,7 +199,7 @@ Namespace HDF5
                 attrStrings.Add(stringPart)
 
                 H5.free_memory(dest(i))
-                Threading.Interlocked.Increment(i)
+                i += 1
             End While
 
             handle.Free()
@@ -203,5 +207,4 @@ Namespace HDF5
             Return attrStrings.ToArray
         End Function
     End Class
-
 End Namespace

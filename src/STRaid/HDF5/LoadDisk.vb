@@ -9,38 +9,18 @@ Namespace HDF5
 
     Public Module LoadDisk
 
-        ''' <summary>
-        ''' load the raw expression matrix which is associated with the barcode
-        ''' </summary>
-        ''' <param name="h5ad"></param>
-        ''' <returns>
-        ''' the result matrix object in format of sample id of the 
-        ''' result matrix is the gene id and the row id in matrix is 
-        ''' actually the spot xy data tag or the barcoede data
-        ''' </returns>
-        Public Function ReadST_spacerangerH5Matrix(h5ad As String) As Matrix
-            Dim fileId As Long = H5F.open(h5ad, H5F.ACC_RDONLY)
-            Dim shape As Integer() = ReadData.Read_dataset(fileId, "/matrix/shape").GetIntegers.ToArray
-            Dim matrix As X = loadX(Of Integer)(fileId, "/matrix", shape(0))
-            Dim barcodes As String() = ReadData.Read_dataset(fileId, "/matrix/barcodes").GetFixedLenStrings.ToArray
-            Dim geneID As String() = ReadData.Read_dataset(fileId, "/matrix/features/id").GetFixedLenStrings.ToArray
-            Dim pull As Matrix = matrix.ExportExpression(barcodes, geneID, source:=h5ad.BaseName)
-
-            Return pull
-        End Function
-
         Public Function LoadRawExpressionMatrix(h5ad As String) As Matrix
             Dim fileId = H5F.open(h5ad, H5F.ACC_RDONLY)
             Dim anno = LoadDiskMemory(h5ad, loadExpr0:=False)
             Dim geneIDs = If(
-            anno.var.gene_ids.IsNullOrEmpty,
-            anno.var.gene_short_name,
-            anno.var.gene_ids
-        )
+                anno.var.gene_ids.IsNullOrEmpty,
+                anno.var.gene_short_name,
+                anno.var.gene_ids
+            )
             Dim spotIDs = SpotAnnotation _
-            .LoadAnnotations(anno, useCellAnnotation:=Nothing) _
-            .Select(Function(a) a.ToString) _
-            .ToArray
+                .LoadAnnotations(anno, useCellAnnotation:=Nothing) _
+                .Select(Function(a) a.ToString) _
+                .ToArray
 
             If spotIDs.IsNullOrEmpty Then
                 spotIDs = anno.obs._index
@@ -55,10 +35,10 @@ Namespace HDF5
             Next
 
             Return New Matrix With {
-            .expression = m.ToArray,
-            .sampleID = geneIDs,
-            .tag = h5ad.FileName
-        }
+                .expression = m.ToArray,
+                .sampleID = geneIDs,
+                .tag = h5ad.FileName
+            }
         End Function
 
         Public Function LoadDiskMemory(h5ad As String, Optional loadExpr0 As Boolean = True) As AnnData
@@ -80,13 +60,13 @@ Namespace HDF5
             End If
 
             Return New AnnData With {
-            .X = x,
-            .var = var,
-            .obsm = obsm,
-            .obs = obs,
-            .uns = uns,
-            .source = h5ad.BaseName
-        }
+                .X = x,
+                .var = var,
+                .obsm = obsm,
+                .obs = obs,
+                .uns = uns,
+                .source = h5ad.BaseName
+            }
         End Function
 
         Private Function loadUns(fileId As Long) As Uns
@@ -94,9 +74,9 @@ Namespace HDF5
             Dim annotations As String() = ReadData.Read_strings(fileId, "/uns/annotation_colors")
 
             Return New Uns With {
-            .clusters_colors = colors,
-            .annotation_colors = annotations
-        }
+                .clusters_colors = colors,
+                .annotation_colors = annotations
+            }
         End Function
 
         Private Function loadObs(fileId As Long) As Obs
@@ -107,23 +87,23 @@ Namespace HDF5
 
             If ReadData.HasDataSet(fileId, "/obs/clusters") Then
                 clusters = ReadData.Read_dataset(fileId, "/obs/clusters") _
-                .dataBytes _
-                .Select(Function(b) CInt(b)) _
-                .ToArray
+                    .dataBytes _
+                    .Select(Function(b) CInt(b)) _
+                    .ToArray
                 labels = ReadData.Read_strings(fileId, "/obs/__categories/clusters")
             Else
                 clusters = ReadData.Read_dataset(fileId, "/obs/annotation") _
-                .dataBytes _
-                .Select(Function(b) CInt(b)) _
-                .ToArray
+                    .dataBytes _
+                    .Select(Function(b) CInt(b)) _
+                    .ToArray
                 labels = ReadData.Read_strings(fileId, "/obs/__categories/annotation")
             End If
 
             Return New Obs With {
-            .clusters = clusters,
-            .class_labels = labels,
-            ._index = index
-        }
+                .clusters = clusters,
+                .class_labels = labels,
+                ._index = index
+            }
         End Function
 
         Private Function readPCA(fileId As Long) As Single()()
@@ -138,24 +118,24 @@ Namespace HDF5
 
             If raw.classID = H5T.class_t.INTEGER Then
                 Return raw.GetLongs _
-                .Split(2) _
-                .Select(Function(t) New PointF(t(0), t(1))) _
-                .ToArray
+                    .Split(2) _
+                    .Select(Function(t) New PointF(t(0), t(1))) _
+                    .ToArray
             Else
                 Return raw.GetDoubles _
-                .Split(2) _
-                .Select(Function(t) New PointF(t(0), t(1))) _
-                .ToArray
+                    .Split(2) _
+                    .Select(Function(t) New PointF(t(0), t(1))) _
+                    .ToArray
             End If
         End Function
 
         Private Function loadObsm(fileId As Long) As Obsm
             Dim spatial = loadSpatialMap(fileId)
             Dim xumap = ReadData.Read_dataset(fileId, "/obsm/X_umap") _
-            .GetSingles _
-            .Split(2) _
-            .Select(Function(t) New PointF(t(0), t(1))) _
-            .ToArray
+                .GetSingles _
+                .Split(2) _
+                .Select(Function(t) New PointF(t(0), t(1))) _
+                .ToArray
             Dim pca_result As Single()() = Nothing
 
             If ReadData.HasDataSet(fileId, "/obsm/X_pca") Then
@@ -163,10 +143,10 @@ Namespace HDF5
             End If
 
             Return New Obsm With {
-            .spatial = spatial,
-            .X_pca = pca_result,
-            .X_umap = xumap
-        }
+                .spatial = spatial,
+                .X_pca = pca_result,
+                .X_umap = xumap
+            }
         End Function
 
         Private Function getGeneSymbols(fileId As Long) As String()
@@ -187,18 +167,18 @@ Namespace HDF5
             Dim var_geneNames = ReadData.Read_strings(fileId, "/var/gene_short_name")
 
             Return New Var With {
-            .gene_ids = var_geneids,
-            .n_cells_by_counts = cell_counts,
-            .gene_short_name = var_geneNames
-        }
+                .gene_ids = var_geneids,
+                .n_cells_by_counts = cell_counts,
+                .gene_short_name = var_geneNames
+            }
         End Function
 
         <MethodImpl(MethodImplOptions.AggressiveInlining)>
-        Private Function loadX(fileId As Long, maxColumns As Integer) As X
+        Friend Function loadX(fileId As Long, maxColumns As Integer) As X
             Return loadX(Of Single)(fileId, "/X/", maxColumns)
         End Function
 
-        Private Function loadX(Of T)(fileId As Long, folder As String, maxColumns As Integer) As X
+        Friend Function loadX(Of T)(fileId As Long, folder As String, maxColumns As Integer) As X
             Dim xdata As Single()
             Dim xdata_ptr As ReadData = ReadData.Read_dataset(fileId, $"/{folder}/data")
 
