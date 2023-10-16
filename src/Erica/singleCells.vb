@@ -1,6 +1,7 @@
 ﻿Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
+Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors.Scaler
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis
@@ -222,8 +223,32 @@ Public Module singleCells
             .ToArray
         End If
 
-        If colorSet.Length <> labels.Length Then
+        Dim spots As New List(Of SpotAnnotation)
 
+        If colorSet.Length <> labels.Length Then
+            ' category mapping
+            Dim mapper As New CategoryColorProfile(labels, colorSet)
+
+            For i As Integer = 0 To labels.Length - 1
+                Call spots.Add(New SpotAnnotation With {
+                    .color = mapper.GetColor(labels(i)).ToHtmlColor,
+                    .label = labels(i),
+                    .x = px(i),
+                    .y = py(i)
+                })
+            Next
+        Else
+            ' sequence mapping
+            For i As Integer = 0 To labels.Length - 1
+                Call spots.Add(New SpotAnnotation With {
+                    .color = colorSet(i),
+                    .label = labels(i),
+                    .x = px(i),
+                    .y = py(i)
+                })
+            Next
         End If
+
+        Return spots.ToArray
     End Function
 End Module
