@@ -35,8 +35,10 @@ declare namespace Erica {
    }
    /**
      * @param colors default value Is ``paper``.
+     * @param title default value Is ``Spatial Spot Class``.
+     * @param padding default value Is ``padding: 150px 350px 200px 200px;``.
    */
-   function plot_class(spots_class: any, colors?: any): object;
+   function plot_class(spots_class: any, colors?: any, title?: any, padding?: any): object;
    /**
    */
    function plot_pie(cell_layers: any): object;
