@@ -8,6 +8,15 @@ declare namespace Erica {
       */
       function onLoad(): object;
    }
+   /**
+     * @param n_layers default value Is ``4``.
+     * @param top_genes default value Is ``1000``.
+     * @param alpha default value Is ``2``.
+     * @param beta default value Is ``0.5``.
+     * @param iteration default value Is ``150``.
+     * @param prefix default value Is ``class``.
+   */
+   function deconv_spatial(expr_mat: any, n_layers?: any, top_genes?: any, alpha?: any, beta?: any, iteration?: any, prefix?: any): object;
    module human_genes {
       /**
         * @param human_genes default value Is ``null``.

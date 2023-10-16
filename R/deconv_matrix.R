@@ -49,7 +49,7 @@ const deconv_spatial = function(expr_mat, n_layers = 4, top_genes = 1000, alpha 
     {
         single_cells: matrix1,
         deconv_spatial: matrix2,
-        cell_layers: matrix3
+        cell_layers: matrix3,
         gibbs_LDA: lapply(lda, l -> as.list(l), names = `${prefix}_${1:length(lda)}`)
     }
 }

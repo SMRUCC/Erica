@@ -1,0 +1,49 @@
+﻿.TH DECONV_SPATIAL 1 2023-Oct "" "Make spatial matrix deconvolution Reference-free cell-type deconvolution of pixel-resolution spatially resolved transcriptomics data"
+.SH NAME
+deconv_spatial \- deconv_spatial(expr.mat,
+    <i>n.layers</i> = <span style='color: green;'>4</span>,
+    <i>top.genes</i> = <span style='color: green;'>1000</span>,
+    <i>alpha</i> = <span style='color: green;'>2</span>,
+    <i>beta</i> = <span style='color: green;'>0.5</span>,
+    <i>iteration</i> = <span style='color: green;'>150</span>,
+    <i>prefix</i> = class)
+.SH SYNOPSIS
+\fIdeconv_spatial(expr.mat,
+    <i>n.layers</i> = <span style='color: green;'>4</span>,
+    <i>top.genes</i> = <span style='color: green;'>1000</span>,
+    <i>alpha</i> = <span style='color: green;'>2</span>,
+    <i>beta</i> = <span style='color: green;'>0.5</span>,
+    <i>iteration</i> = <span style='color: green;'>150</span>,
+    <i>prefix</i> = class)\fR
+.SH OPTIONS
+.PP
+\fBexpr.mat\fB \fR\- . 
+.PP
+.PP
+\fBn.layers\fB \fR\- 4. 
+.PP
+.PP
+\fBtop.genes\fB \fR\- 1000. 
+.PP
+.PP
+\fBalpha\fB \fR\- 2. 
+.PP
+.PP
+\fBbeta\fB \fR\- 0.5. 
+.PP
+.PP
+\fBiteration\fB \fR\- 150. 
+.PP
+.PP
+\fBprefix\fB \fR\- class. 
+.PP
+.SH VALUE
+.PP
+A tuple list object that contains multiple result object inside: 1. single_cells: an expression matrix object that contains the single cell data 2. deconv_spatial: an expression matrix object that contains the cell layer deconvolution result data 3. cell_layers: the cell layer composition data 4. gibbs_LDA: the result of the LDA gibbs sampling result outputs, the top features in each cell class
+.PP
+.SH FILES
+.PP
+SMRUCC/R#.declare_function.deconv_spatial at deconv_matrix.R:line 24
+.PP
+.SH COPYRIGHT
+Copyright © xieguigang, MIT Licensed 2023

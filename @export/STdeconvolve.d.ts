@@ -10,6 +10,11 @@
 */
 declare namespace STdeconvolve {
    /**
+    * get the spatial expression matrix
+    * 
+    * 
+     * @param deconv -
+     * @param expr -
    */
    function deconvolve(deconv: object, expr: object): object;
    /**
@@ -56,8 +61,15 @@ declare namespace STdeconvolve {
    */
    function getBetaTheta(LDA: object, corpus: object, top_genes?: object): object;
    /**
+    * get the single cell expression matrix
+    * 
+    * 
+     * @param deconv -
+     * @param expr -
+     * @param prefix 
+     * + default value Is ``'class'``.
    */
-   function singlecells(deconv: object, expr: object): object;
+   function singlecells(deconv: object, expr: object, prefix?: string): object;
    /**
     * Create document vector for run LDA mdelling
     * 
