@@ -12,7 +12,7 @@ let [single_cells,
         deconv_spatial,
         cell_layers,
         spots_class,
-        gibbs_LDA] = deconv_spatial(expr_mat, n_layers = 4, top_genes = 1000, alpha = 2.0, 
+        gibbs_LDA] = deconv_spatial(expr_mat, n_layers = 6, top_genes = 1000, alpha = 2.0, 
                                 beta = 0.5,
                                 iteration = 150,
                                 prefix = "class");
