@@ -88,7 +88,8 @@ Public Module Export
     End Function
 
     ''' <summary>
-    ''' 
+    ''' Extract the gene id set with non-missing expression level
+    ''' with a given threshold value <paramref name="q"/>
     ''' </summary>
     ''' <param name="spots"></param>
     ''' <param name="geneIDs"></param>
@@ -100,7 +101,8 @@ Public Module Export
         Dim list As New List(Of String)
 
         For i As Integer = 0 To geneIDs.Length - 1
-            Dim v = spots.Select(Function(s) s.experiments(i)).AsVector
+            Dim idx As Integer = i
+            Dim v As Vector = spots.Select(Function(s) s.experiments(idx)).AsVector
             Dim non_zero = v(v > 0.0).Length
             Dim p As Double = non_zero / v.Length
 

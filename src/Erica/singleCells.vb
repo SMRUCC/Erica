@@ -19,6 +19,17 @@ Public Module singleCells
     ''' <param name="h5ad"></param>
     ''' <param name="env"></param>
     ''' <returns></returns>
+    ''' <example>
+    ''' require(GCModeller);
+    ''' 
+    ''' imports "STdata" from "Erica";
+    ''' imports "geneExpression" from "phenotype_kit";
+    ''' 
+    ''' let stRaid = read.h5ad("/path/to/expr_mat.h5ad");
+    ''' let exp_mat = singleCell::HTS_matrix(stRaid);
+    ''' 
+    ''' geneExpression::write.expr_matrix(exp_mat, file = "/path/to/save.csv");
+    ''' </example>
     <ExportAPI("HTS_matrix")>
     <RApiReturn(GetType(HTS.DataFrame.Matrix))>
     Public Function HTS_matrix(h5ad As Object, Optional env As Environment = Nothing) As Object
@@ -74,6 +85,11 @@ Public Module singleCells
         }
     End Function
 
+    ''' <summary>
+    ''' Extract the PCA matrix from h5ad
+    ''' </summary>
+    ''' <param name="h5ad"></param>
+    ''' <returns></returns>
     <ExportAPI("pca_annotation")>
     Public Function exportPCA(h5ad As AnnData) As dataframe
         Dim pca = h5ad.obsm.X_pca.MatrixTranspose.ToArray
@@ -101,6 +117,11 @@ Public Module singleCells
         Return pca_matrix
     End Function
 
+    ''' <summary>
+    ''' Extract the UMAP matrix from h5ad
+    ''' </summary>
+    ''' <param name="h5ad"></param>
+    ''' <returns></returns>
     <ExportAPI("umap_annotation")>
     Public Function exportUMAP(h5ad As AnnData) As dataframe
         Dim umap = h5ad.obsm.X_umap
@@ -126,6 +147,15 @@ Public Module singleCells
         }
     End Function
 
+    ''' <summary>
+    ''' Extract the gene id set with non-missing expression status under 
+    ''' the given threshold value <paramref name="q"/>.
+    ''' </summary>
+    ''' <param name="raw"></param>
+    ''' <param name="q">
+    ''' the percentage threshold value for assign a gene a missing feature
+    ''' </param>
+    ''' <returns></returns>
     <ExportAPI("expression_list")>
     Public Function ExpressionList(raw As AnnData, Optional q As Double = 0.2) As Dictionary(Of String, String())
         Return raw.ExpressionList(q)
