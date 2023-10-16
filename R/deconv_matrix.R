@@ -63,6 +63,8 @@ const deconv_spatial = function(expr_mat, n_layers = 4, top_genes = 1000, alpha 
 const __spot_class = function(cell_layers, color = "paper") {
     let spatial = NULL;
 
+    print("extract the spatial spot information...");
+
     cell_layers = as.data.frame(cell_layers);
     spatial = rownames(cell_layers);
     spatial = strsplit(spatial, ",");
@@ -72,6 +74,8 @@ const __spot_class = function(cell_layers, color = "paper") {
     let y = sapply(xy, i -> i[2]);
     let labels = colnames(cell_layers);
 
+    print("extract the cell labels for each spatial spots...");
+
     labels = cell_layers 
     |> as.list(byrow = TRUE) 
     |> sapply(function(r) {
@@ -80,6 +84,8 @@ const __spot_class = function(cell_layers, color = "paper") {
     
     print("cell labels for each spatial spot:");
     print(labels);
+
+    print("generates the spatial spots annotation outputs...");
 
     spatial_annotations(
         x = as.numeric(x),
