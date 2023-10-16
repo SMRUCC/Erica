@@ -10,6 +10,7 @@
     <Authors>xie.guigang@gcmodeller.org</Authors>
     <Company>SMRUCC genomics institute</Company>
     <Product>Erica</Product>
+    <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
   </PropertyGroup>
 
   <ItemGroup>
