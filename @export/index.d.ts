@@ -34,6 +34,13 @@ declare namespace Erica {
       function human_genes(): object;
    }
    /**
+     * @param colors default value Is ``paper``.
+   */
+   function plot_class(spots_class: any, colors?: any): object;
+   /**
+   */
+   function plot_pie(cell_layers: any): object;
+   /**
    */
    function UniProtKeywords(): object;
 }
