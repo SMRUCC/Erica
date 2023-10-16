@@ -51,9 +51,12 @@ Public Module singleCells
     ''' <summary>
     ''' read h5ad object from a specific hdf5 file
     ''' </summary>
-    ''' <param name="h5adfile"></param>
+    ''' <param name="h5adfile">The file path to the h5ad rawdata file</param>
     ''' <param name="loadExpr0"></param>
     ''' <returns></returns>
+    ''' <remarks>
+    ''' this function only works on Windows platform.
+    ''' </remarks>
     <ExportAPI("read.h5ad")>
     Public Function readH5ad(h5adfile As String, Optional loadExpr0 As Boolean = True) As AnnData
         Return LoadDisk.LoadDiskMemory(h5adfile, loadExpr0)
@@ -65,6 +68,12 @@ Public Module singleCells
     ''' <param name="h5ad"></param>
     ''' <param name="useCellAnnotation"></param>
     ''' <returns></returns>
+    ''' <example>
+    ''' let stRaid = read.h5ad("/path/to/expr_mat.h5ad");
+    ''' let spatial = spatialMap(stRaid);
+    ''' 
+    ''' str(spatial);
+    ''' </example>
     <ExportAPI("spatialMap")>
     Public Function spatialMap(h5ad As AnnData, Optional useCellAnnotation As Boolean? = Nothing) As dataframe
         Dim annos As SpotAnnotation() = SpotAnnotation _
