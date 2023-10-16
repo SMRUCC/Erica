@@ -21,6 +21,9 @@ imports "STdeconvolve" from "Erica";
 #'     4. gibbs_LDA: the result of the LDA gibbs sampling result outputs, the top
 #'           features in each cell class
 #' 
+#' @details the generated expression matrix object could be save as csv matrix by use
+#'     the function ``geneExpression::write.expr_matrix`` from the GCModeller package. 
+#' 
 const deconv_spatial = function(expr_mat, n_layers = 4, top_genes = 1000, alpha = 2.0, 
                                 beta = 0.5,
                                 iteration = 150,
