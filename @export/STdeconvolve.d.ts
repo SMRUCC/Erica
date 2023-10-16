@@ -68,6 +68,8 @@ declare namespace STdeconvolve {
      * @param expr -
      * @param prefix 
      * + default value Is ``'class'``.
+     * @return An expression data matrix object that extends the gene feature 
+     *  sets with the multiple cell layers prefix
    */
    function singlecells(deconv: object, expr: object, prefix?: string): object;
    /**

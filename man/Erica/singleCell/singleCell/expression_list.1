@@ -1,10 +1,24 @@
 .\" man page create by R# package system.
 .TH SINGLECELL 1 2000-Jan "expression_list" "expression_list"
 .SH NAME
-expression_list \- 
+expression_list \- Extract the gene id set with non-missing expression status under
 .SH SYNOPSIS
 \fIexpression_list(\fBraw\fR as <generic> AnnData, 
 \fBq\fR as double = 0.2);\fR
+.SH DESCRIPTION
+.PP
+Extract the gene id set with non-missing expression status under 
+ the given threshold value **`q`**.
+.PP
+.SH OPTIONS
+.PP
+\fBraw\fB \fR\- -. 
+.PP
+.PP
+\fBq\fB \fR\- 
+ the percentage threshold value for assign a gene a missing feature
+. 
+.PP
 .SH SEE ALSO
 singleCell
 .SH FILES

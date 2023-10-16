@@ -188,9 +188,17 @@
 
         this function returns data object of type <a href="/clr/SMRUCC/genomics/Analysis/HTS/DataFrame/Matrix.html">Matrix</a>.
 
-        <h3 style="display: none;">Examples</h3>
+        <h3 style="display: block;">Examples</h3>
 
-        
+        <pre><code>require(GCModeller);
+ 
+ imports "STdata" from "Erica";
+ imports "geneExpression" from "phenotype_kit";
+ 
+ let stRaid = read.h5ad("/path/to/expr_mat.h5ad");
+ let exp_mat = singleCell::HTS_matrix(stRaid);
+ 
+ geneExpression::write.expr_matrix(exp_mat, file = "/path/to/save.csv");</code></pre>
 
         <hr />
         <div style="text-align: center;">[Package <em>singleCell</em> version 1.0.0.0 <a
