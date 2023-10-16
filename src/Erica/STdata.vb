@@ -8,7 +8,7 @@ Imports SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner
 Imports SMRUCC.Rsharp.Runtime.Internal.[Object]
 Imports SMRUCC.Rsharp.Runtime.Interop
 Imports STImaging
-Imports STRaid
+Imports STRaid.HDF5
 Imports Matrix = SMRUCC.genomics.Analysis.HTS.DataFrame.Matrix
 
 ''' <summary>
@@ -33,7 +33,7 @@ Public Module STdata
     ''' </remarks>
     <ExportAPI("read.ST_h5ad")>
     Public Function ReadST_spacerangerH5Matrix(h5ad As String) As Matrix
-        Return LoadDisk.ReadST_spacerangerH5Matrix(h5ad)
+        Return STRaid.HDF5.SpaceRanger.ReadST_spacerangerH5Matrix(h5ad)
     End Function
 
     ''' <summary>
@@ -44,7 +44,7 @@ Public Module STdata
     ''' <returns></returns>
     <ExportAPI("read.spatial_spots")>
     Public Function ReadSpatialSpots(file As String) As SpatialSpot()
-        Return SpaceRanger _
+        Return Global.STImaging.SpaceRanger _
             .LoadTissueSpots(file.SolveStream.LineTokens) _
             .ToArray
     End Function

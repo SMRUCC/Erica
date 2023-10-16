@@ -168,6 +168,7 @@ Public Class Render
                     End Function) _
             .ToArray
 
+#Disable Warning
         Dim img As Bitmap
 
         If layer.Length = 0 Then
@@ -186,6 +187,7 @@ Public Class Render
         For level As Integer = 0 To 10
             img = GaussBlur.GaussBlur(img)
         Next
+#Enable Warning
 
         Return img
     End Function

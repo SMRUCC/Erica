@@ -1,4 +1,6 @@
-﻿Public Class AnnData
+﻿Imports STRaid.H5ad_data
+
+Public Class AnnData
 
     ''' <summary>
     ''' X contains the expression matrix.

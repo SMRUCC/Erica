@@ -4,6 +4,7 @@ Imports HDF.PInvoke
 Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Math.LinearAlgebra
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
+Imports STRaid.H5ad_data
 
 Namespace HDF5
 

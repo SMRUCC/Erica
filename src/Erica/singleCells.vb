@@ -6,6 +6,7 @@ Imports SMRUCC.Rsharp.Runtime
 Imports SMRUCC.Rsharp.Runtime.Internal.Object
 Imports SMRUCC.Rsharp.Runtime.Interop
 Imports STRaid
+Imports STRaid.HDF5
 
 ''' <summary>
 ''' single cell data toolkit
@@ -79,8 +80,8 @@ Public Module singleCells
         Dim annos As SpotAnnotation() = SpotAnnotation _
             .LoadAnnotations(h5ad, useCellAnnotation) _
             .ToArray
-        Dim x = annos.Select(Function(a) a.X).ToArray
-        Dim y = annos.Select(Function(a) a.Y).ToArray
+        Dim x = annos.Select(Function(a) a.x).ToArray
+        Dim y = annos.Select(Function(a) a.y).ToArray
         Dim colors = annos.Select(Function(a) a.color).ToArray
         Dim clusters = annos.Select(Function(a) a.label).ToArray
 
