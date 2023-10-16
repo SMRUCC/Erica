@@ -41,9 +41,13 @@ deconv_spatial \- deconv_spatial(expr.mat,
 .PP
 A tuple list object that contains multiple result object inside: 1. single_cells: an expression matrix object that contains the single cell data 2. deconv_spatial: an expression matrix object that contains the cell layer deconvolution result data 3. cell_layers: the cell layer composition data 4. gibbs_LDA: the result of the LDA gibbs sampling result outputs, the top features in each cell class
 .PP
+.SH DETAILS
+.PP
+the generated expression matrix object could be save as csv matrix by use the function ``geneExpression::write.expr_matrix`` from the GCModeller package.
+.PP
 .SH FILES
 .PP
-SMRUCC/R#.declare_function.deconv_spatial at deconv_matrix.R:line 24
+SMRUCC/R#.declare_function.deconv_spatial at deconv_matrix.R:line 27
 .PP
 .SH COPYRIGHT
 Copyright © xieguigang, MIT Licensed 2023

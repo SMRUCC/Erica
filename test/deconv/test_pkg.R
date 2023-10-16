@@ -22,6 +22,8 @@ geneExpression::write.expr_matrix(single_cells, file = "./single_cells.csv");
 geneExpression::write.expr_matrix(deconv_spatial, file = "./deconv_spatial.csv");
 geneExpression::write.expr_matrix(cell_layers, file = "./cell_layers.csv");
 
+str(gibbs_LDA);
+
 gibbs_LDA
 |> JSON::json_encode()
 |> writeLines(
