@@ -3,6 +3,8 @@ imports "STdeconvolve" from "Erica";
 
 #' Make spatial matrix deconvolution
 #' 
+#' Reference-free cell-type deconvolution of pixel-resolution spatially resolved transcriptomics data
+#' 
 #' @param m a dataframe object or a GCModeller expression matrix object, the matrix
 #'    object should be in format of spatial spot in rows and the gene features in
 #'    columns.
