@@ -228,8 +228,10 @@ Public Module singleCells
                 .ToArray
         End If
         If colorSet.Length <> labels.Length Then
-            colorSet = Designer.Colors(
-                col:=colorSet.Select(Function(c) c.TranslateColor).ToArray,
+            colorSet = Designer.CubicSpline(
+                colors:=colorSet _
+                    .Select(Function(c) c.TranslateColor) _
+                    .ToArray,
                 n:=labels.Distinct.Count
             ) _
             .Select(Function(a) a.ToHtmlColor) _
