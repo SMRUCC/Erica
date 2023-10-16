@@ -53,7 +53,38 @@ const deconv_spatial = function(expr_mat, n_layers = 4, top_genes = 1000, alpha 
         single_cells: matrix1,
         deconv_spatial: matrix2,
         cell_layers: matrix3,
+        spots: __spot_class(cell_layers = matrix3),
         gibbs_LDA: lapply(lda, l -> as.list(l), names = `${prefix}_${1:length(lda)}`)
     }
 }
 
+#' Create spot class annotation
+#' 
+const __spot_class = function(cell_layers, color = "paper") {
+    let spatial = NULL;
+
+    cell_layers = as.data.frame(cell_layers);
+    spatial = rownames(cell_layers);
+    spatial = strsplit(spatial, ",");
+
+    let xy = lapply(spatial, si -> as.numeric(si));
+    let x = sapply(xy, i -> i[1]);
+    let y = sapply(xy, i -> i[2]);
+    let labels = colnames(cell_layers);
+
+    labels = cell_layers 
+    |> as.list(byrow = TRUE) 
+    |> sapply(function(r) {
+        which.max(as.numeric(unlist(r)));
+    });
+    
+    print("cell labels for each spatial spot:");
+    print(labels);
+
+    spatial_annotations(
+        x = as.numeric(x),
+        y = as.numeric(y),
+        label = colnames(cell_layers)[labels],
+        colors = color
+    );
+}
