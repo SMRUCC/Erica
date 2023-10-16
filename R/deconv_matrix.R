@@ -42,11 +42,12 @@ const deconv_spatial = function(expr_mat, n_layers = 4, top_genes = 1000, alpha 
     let matrix1 = singlecells(deconv, expr_mat, prefix = prefix);
     let matrix2 = deconvolve(deconv, expr_mat);
     let matrix3 = [deconv]::theta;
+    let lda = [deconv]::topicMap; 
 
     {
         single_cells: matrix1,
         deconv_spatial: matrix2,
         cell_layers: matrix3
-        gibbs_LDA: lapply([deconv]::topicMap, l -> as.list(l), names = `${prefix}_${1:length([deconv]::topicMap)}`)
+        gibbs_LDA: lapply(lda, l -> as.list(l), names = `${prefix}_${1:length(lda}`)
     }
 }
