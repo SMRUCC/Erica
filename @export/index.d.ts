@@ -9,6 +9,10 @@ declare namespace Erica {
       function onLoad(): object;
    }
    /**
+     * @param color default value Is ``paper``.
+   */
+   function __spot_class(cell_layers: any, color?: any): object;
+   /**
      * @param n_layers default value Is ``4``.
      * @param top_genes default value Is ``1000``.
      * @param alpha default value Is ``2``.

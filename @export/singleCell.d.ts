@@ -51,6 +51,25 @@ declare namespace singleCell {
       function h5ad(h5adfile: string, loadExpr0?: boolean): object;
    }
    /**
+    * Create spatial annotations data set for each spot data
+    * 
+    * 
+     * @param x X of the spot dataset, a numeric vector
+     * @param y Y of the spot dataset, a numeric vector
+     * @param label A character vector that assign the class label of each
+     *  spatial spot, the vector size of this parameter must be equals to the 
+     *  vector size of x and y.
+     * @param colors A character value of the spatial class color 
+     *  palette name or a vector of color code character for assign each 
+     *  spatial spot.
+     * 
+     * + default value Is ``'paper'``.
+     * @param env -
+     * 
+     * + default value Is ``null``.
+   */
+   function spatial_annotations(x: any, y: any, label: any, colors?: any, env?: object): object;
+   /**
     * export the spatial maps data
     * 
     * 

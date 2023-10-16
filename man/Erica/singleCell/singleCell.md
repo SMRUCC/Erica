@@ -8,3 +8,4 @@ single cell data toolkit
 + [pca_annotation](singleCell/pca_annotation.1) Extract the PCA matrix from h5ad
 + [umap_annotation](singleCell/umap_annotation.1) Extract the UMAP matrix from h5ad
 + [expression_list](singleCell/expression_list.1) Extract the gene id set with non-missing expression status under 
++ [spatial_annotations](singleCell/spatial_annotations.1) Create spatial annotations data set for each spot data

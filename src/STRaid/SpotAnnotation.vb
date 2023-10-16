@@ -3,6 +3,9 @@
 ''' <summary>
 ''' The erica spatial table
 ''' </summary>
+''' <remarks>
+''' [x, y, class, color]
+''' </remarks>
 Public Class SpotAnnotation
 
     Public Property x As Double

@@ -18,6 +18,26 @@ Imports STRaid.HDF5
 <Package("singleCell")>
 Public Module singleCells
 
+    Sub Main()
+        Call Internal.Object.Converts.addHandler(GetType(SpotAnnotation()), AddressOf SpotAnnotationMatrix)
+    End Sub
+
+    Private Function SpotAnnotationMatrix(spots As SpotAnnotation(), args As list, env As Environment) As dataframe
+        Dim x = spots.Select(Function(a) a.x).ToArray
+        Dim y = spots.Select(Function(a) a.y).ToArray
+        Dim colors = spots.Select(Function(a) a.color).ToArray
+        Dim clusters = spots.Select(Function(a) a.label).ToArray
+
+        Return New dataframe With {
+            .columns = New Dictionary(Of String, Array) From {
+                {"x", x},
+                {"y", y},
+                {"class", clusters},
+                {"color", colors}
+            }
+        }
+    End Function
+
     ''' <summary>
     ''' extract the raw expression data matrix from the h5ad object
     ''' </summary>
@@ -80,23 +100,16 @@ Public Module singleCells
     ''' str(spatial);
     ''' </example>
     <ExportAPI("spatialMap")>
-    Public Function spatialMap(h5ad As AnnData, Optional useCellAnnotation As Boolean? = Nothing) As dataframe
+    Public Function spatialMap(h5ad As AnnData,
+                               Optional useCellAnnotation As Boolean? = Nothing,
+                               Optional env As Environment = Nothing) As dataframe
+
         Dim annos As SpotAnnotation() = SpotAnnotation _
             .LoadAnnotations(h5ad, useCellAnnotation) _
             .ToArray
-        Dim x = annos.Select(Function(a) a.x).ToArray
-        Dim y = annos.Select(Function(a) a.y).ToArray
-        Dim colors = annos.Select(Function(a) a.color).ToArray
-        Dim clusters = annos.Select(Function(a) a.label).ToArray
+        Dim spatial_df As dataframe = SpotAnnotationMatrix(annos, New list, env)
 
-        Return New dataframe With {
-            .columns = New Dictionary(Of String, Array) From {
-                {"x", x},
-                {"y", y},
-                {"class", clusters},
-                {"color", colors}
-            }
-        }
+        Return spatial_df
     End Function
 
     ''' <summary>
