@@ -1,12 +1,15 @@
 ﻿Imports System.Drawing
 
-''' <summary>
-''' obsm contains the embeddings data.
-''' </summary>
-Public Class Obsm
+Namespace H5ad_data
 
-    Public Property X_pca As Single()()
-    Public Property X_umap As PointF()
-    Public Property spatial As PointF()
+    ''' <summary>
+    ''' obsm contains the embeddings data.
+    ''' </summary>
+    Public Class Obsm
 
-End Class
+        Public Property X_pca As Single()()
+        Public Property X_umap As PointF()
+        Public Property spatial As PointF()
+
+    End Class
+End Namespace

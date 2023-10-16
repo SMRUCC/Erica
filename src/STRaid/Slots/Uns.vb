@@ -1,6 +1,9 @@
-﻿Public Class Uns
+﻿Namespace H5ad_data
 
-    Public Property clusters_colors As String()
-    Public Property annotation_colors As String()
+    Public Class Uns
 
-End Class
+        Public Property clusters_colors As String()
+        Public Property annotation_colors As String()
+
+    End Class
+End Namespace

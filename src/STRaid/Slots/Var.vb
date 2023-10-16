@@ -1,10 +1,13 @@
-﻿''' <summary>
-''' var contains the gene metadata.
-''' </summary>
-Public Class Var
+﻿Namespace H5ad_data
 
-    Public Property gene_ids As String()
-    Public Property gene_short_name As String()
-    Public Property n_cells_by_counts As Long()
+    ''' <summary>
+    ''' var contains the gene metadata.
+    ''' </summary>
+    Public Class Var
 
-End Class
+        Public Property gene_ids As String()
+        Public Property gene_short_name As String()
+        Public Property n_cells_by_counts As Long()
+
+    End Class
+End Namespace
