@@ -11,6 +11,7 @@ let expr_mat = "/Erica/src/SingleCell/demo/HR2MSI mouse urinary bladder S096_top
 let [single_cells, 
         deconv_spatial,
         cell_layers,
+        spots_class,
         gibbs_LDA] = deconv_spatial(expr_mat, n_layers = 4, top_genes = 1000, alpha = 2.0, 
                                 beta = 0.5,
                                 iteration = 150,
@@ -21,6 +22,11 @@ setwd(@dir);
 geneExpression::write.expr_matrix(single_cells, file = "./single_cells.csv");
 geneExpression::write.expr_matrix(deconv_spatial, file = "./deconv_spatial.csv");
 geneExpression::write.expr_matrix(cell_layers, file = "./cell_layers.csv");
+
+spots_class 
+|> as.data.frame()
+|> write.csv(file = "./spots_class.csv", row.names = FALSE)
+;
 
 str(gibbs_LDA);
 
