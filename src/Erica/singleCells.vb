@@ -1,10 +1,13 @@
 ﻿Imports Microsoft.VisualBasic.CommandLine.Reflection
+Imports Microsoft.VisualBasic.Imaging
+Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis
 Imports SMRUCC.Rsharp.Runtime
 Imports SMRUCC.Rsharp.Runtime.Internal.Object
 Imports SMRUCC.Rsharp.Runtime.Interop
+Imports SMRUCC.Rsharp.Runtime.Vectorization
 Imports STRaid
 Imports STRaid.HDF5
 
@@ -169,5 +172,58 @@ Public Module singleCells
     <ExportAPI("expression_list")>
     Public Function ExpressionList(raw As AnnData, Optional q As Double = 0.2) As Dictionary(Of String, String())
         Return raw.ExpressionList(q)
+    End Function
+
+    ''' <summary>
+    ''' Create spatial annotations data set for each spot data
+    ''' </summary>
+    ''' <param name="x">X of the spot dataset, a numeric vector</param>
+    ''' <param name="y">Y of the spot dataset, a numeric vector</param>
+    ''' <param name="label">A character vector that assign the class label of each
+    ''' spatial spot, the vector size of this parameter must be equals to the 
+    ''' vector size of x and y.</param>
+    ''' <param name="colors">A character value of the spatial class color 
+    ''' palette name or a vector of color code character for assign each 
+    ''' spatial spot.</param>
+    ''' <param name="env"></param>
+    ''' <returns></returns>
+    <ExportAPI("spatial_annotations")>
+    <RApiReturn(GetType(SpotAnnotation))>
+    Public Function spatial_annotations(<RRawVectorArgument> x As Object,
+                                        <RRawVectorArgument> y As Object,
+                                        <RRawVectorArgument> label As Object,
+                                        <RRawVectorArgument>
+                                        Optional colors As Object = "paper",
+                                        Optional env As Environment = Nothing) As Object
+
+        Dim px As Double() = CLRVector.asNumeric(x)
+        Dim py As Double() = CLRVector.asNumeric(y)
+        Dim labels As String() = CLRVector.asCharacter(label)
+        Dim colorSet As String() = CLRVector.asCharacter(colors)
+
+        If px.Length <> py.Length Then
+            Return Internal.debug.stop($"the vector size of the spatial information x({px.Length}) should be matched with y({py.Length})!", env)
+        End If
+        If labels.Length <> px.Length AndAlso labels.Length > 1 Then
+            Return Internal.debug.stop($"the class label information({labels.Length}) is not matched with the spatial information [x,y]({px.Length})!", env)
+        End If
+
+        If colorSet.Length = 1 Then
+            colorSet = Designer.GetColors(colorSet(0), labels.Distinct.Count) _
+                .Select(Function(a) a.ToHtmlColor) _
+                .ToArray
+        End If
+        If colorSet.Length <> labels.Length Then
+            colorSet = Designer.Colors(
+                col:=colorSet.Select(Function(c) c.TranslateColor).ToArray,
+                n:=labels.Distinct.Count
+            ) _
+            .Select(Function(a) a.ToHtmlColor) _
+            .ToArray
+        End If
+
+        If colorSet.Length <> labels.Length Then
+
+        End If
     End Function
 End Module
