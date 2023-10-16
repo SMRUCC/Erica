@@ -16,7 +16,8 @@ imports "STdeconvolve" from "Erica";
 #'     2. deconv_spatial: an expression matrix object that contains the cell 
 #'           layer deconvolution result data
 #'     3. cell_layers: the cell layer composition data
-#'     4. gibbs_LDA: the result of the LDA gibbs sampling result outputs
+#'     4. gibbs_LDA: the result of the LDA gibbs sampling result outputs, the top
+#'           features in each cell class
 #' 
 const deconv_spatial = function(expr_mat, n_layers = 4, top_genes = 1000, alpha = 2.0, 
                                 beta = 0.5,
@@ -45,6 +46,6 @@ const deconv_spatial = function(expr_mat, n_layers = 4, top_genes = 1000, alpha 
         single_cells: matrix1,
         deconv_spatial: matrix2,
         cell_layers: matrix3
-        gibbs_LDA: deconv
+        gibbs_LDA: [deconv]::topicMap
     }
 }
