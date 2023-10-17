@@ -6,7 +6,9 @@ imports "charts" from "graphics";
 #'    annotation data or a dataframe object that contains the 
 #'    spot annotation data.
 #' 
-const plot_class = function(spots_class, colors = "paper", title = "Spatial Spot Class", padding = "padding: 150px 350px 200px 200px;") {
+const plot_class = function(spots_class, colors = "paper", 
+                            title = "Spatial Spot Class", 
+                            padding = "padding: 150px 350px 200px 200px;") {
     # [x,y,class,color]
     spots_class = as.data.frame(spots_class);
 
