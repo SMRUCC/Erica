@@ -5,11 +5,12 @@
     <RootNamespace>DeconvTool</RootNamespace>
     <TargetFramework>net6.0</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
-    <AssemblyName>deconv</AssemblyName>
+    <AssemblyName>gibbs_deconv</AssemblyName>
     <UseApplicationFramework>True</UseApplicationFramework>
     <OutputPath>../../../../tools/</OutputPath>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
 	  <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	  <Configurations>Debug;Release;mzkit_win32</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -28,10 +29,25 @@
     <DebugType>full</DebugType>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='mzkit_win32|AnyCPU'">
+    <RemoveIntegerChecks>True</RemoveIntegerChecks>
+    <Optimize>False</Optimize>
+    <DebugType>full</DebugType>
+    <DefineTrace>True</DefineTrace>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <RemoveIntegerChecks>True</RemoveIntegerChecks>
     <Optimize>False</Optimize>
     <DebugType>full</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='mzkit_win32|x64'">
+    <RemoveIntegerChecks>True</RemoveIntegerChecks>
+    <Optimize>False</Optimize>
+    <DebugType>full</DebugType>
+    <OutputPath>../../../../../mzkit/dist/bin/plugins/erica/</OutputPath>
+    <DefineTrace>True</DefineTrace>
   </PropertyGroup>
 
   <ItemGroup>
