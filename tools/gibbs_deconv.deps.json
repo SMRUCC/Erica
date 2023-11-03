@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "deconv/1.0.0": {
+      "gibbs_deconv/1.0.0": {
         "dependencies": {
           "Microsoft.VisualBasic.Data.NLP": "1.0.0",
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
@@ -23,7 +23,7 @@
           "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.Reference": "1.0.0.0"
         },
         "runtime": {
-          "deconv.dll": {}
+          "gibbs_deconv.dll": {}
         }
       },
       "Microsoft.NETCore.Platforms/1.1.1": {},
@@ -888,7 +888,7 @@
     }
   },
   "libraries": {
-    "deconv/1.0.0": {
+    "gibbs_deconv/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
