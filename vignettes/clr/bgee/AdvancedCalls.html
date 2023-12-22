@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>bgee.AdvancedCalls</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <link rel="stylesheet" type="text/css" href="../../_assets/page.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <table style="width: 100%;">
+            <tr>
+                <td>AdvancedCalls {bgee}</td>
+                <td style="text-align: right;">.NET clr documentation</td>
+            </tr>
+        </table>
+
+        <h2>AdvancedCalls</h2>
+
+        <h3>Description</h3>
+
+        
+
+        <h3>Declare</h3>        
+
+        <pre>
+            <code id="clr_ts">
+# namespace bgee
+export class AdvancedCalls {
+   # Unique identifier of the gene
+   geneID: string;
+   # Name of the gene defined by Gene ID (column 1)
+   gene_name: string;
+   # Anatomical entity ID, Unique identifier of the 
+   #  anatomical entity, from the Uberon ontology.
+   anatomicalID: string;
+   # Anatomical entity name, Name of the anatomical entity 
+   #  defined by Anatomical entity ID (column 3)
+   anatomicalName: string;
+   # Developmental stage ID *, Unique identifier of the 
+   #  developmental stage, from the Uberon ontology.
+   developmental_stageID: string;
+   # Developmental stage name *, Name of the developmental 
+   #  stage defined by Developmental stage ID (column 5)
+   developmental_stage: string;
+   # Call generated from all data types for the selected 
+   #  combination of condition parameters (anatomical or 
+   #  all conditions). Permitted values: 
+   #  
+   #  1. present
+   #  2. absent
+   expression: string;
+   # Call quality from all data types for the selected 
+   #  combination of condition parameters (anatomical or 
+   #  all conditions). Permitted values: 
+   #  
+   #  1. gold quality, 
+   #  2. silver quality.
+   call_quality: string;
+   # Rank score associated to the call. Rank scores of
+   #  expression calls are normalized across genes, 
+   #  conditions and species.
+   #  
+   #  A low score means that the gene Is highly expressed 
+   #  In the condition.
+   expression_rank: double;
+   # Permitted value: yes
+   #  
+   #  Only calls which were actually seen In experimental 
+   #  data, at least once, are In this file.
+   including_observed_data: string;
+   affymetrix: <a href="/vignettes/clr/bgee/GeneExpression.html">GeneExpression</a>;
+   EST_data: <a href="/vignettes/clr/bgee/GeneExpression.html">GeneExpression</a>;
+   In_Situ: <a href="/vignettes/clr/bgee/GeneExpression.html">GeneExpression</a>;
+   RNASeq: <a href="/vignettes/clr/bgee/GeneExpression.html">GeneExpression</a>;
+}
+</code>
+        </pre>
+
+        <hr />
+        <div style="text-align: center;">[Package <em>{$package}</em> version {$version} <a
+                href="../{$package}.html">Index</a>]
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript" src="../../_assets/R_syntax.js"></script>
+<script type="text/javascript" src="../../_assets/highlights.js"></script>
+<script type="text/javascript">r_highlights("clr_ts");</script>
+
+</html>
