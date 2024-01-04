@@ -49,27 +49,31 @@ export class AdvancedCalls {
    # Call generated from all data types for the selected 
    #  combination of condition parameters (anatomical or 
    #  all conditions). Permitted values: 
-   #  
-   #  1. present
-   #  2. absent
+   # 
+   # <ol>
+   # <li>present</li>
+   # <li>absent</li>
+   # </ol>
    expression: string;
    # Call quality from all data types for the selected 
    #  combination of condition parameters (anatomical or 
    #  all conditions). Permitted values: 
-   #  
-   #  1. gold quality, 
-   #  2. silver quality.
+   # 
+   # <ol>
+   # <li>gold quality, </li>
+   # <li>silver quality.</li>
+   # </ol>
    call_quality: string;
    # Rank score associated to the call. Rank scores of
    #  expression calls are normalized across genes, 
    #  conditions and species.
-   #  
-   #  A low score means that the gene Is highly expressed 
+   # 
+   # A low score means that the gene Is highly expressed 
    #  In the condition.
    expression_rank: double;
    # Permitted value: yes
-   #  
-   #  Only calls which were actually seen In experimental 
+   # 
+   # Only calls which were actually seen In experimental 
    #  data, at least once, are In this file.
    including_observed_data: string;
    affymetrix: <a href="/vignettes/clr/bgee/GeneExpression.html">GeneExpression</a>;

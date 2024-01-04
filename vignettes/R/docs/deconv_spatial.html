@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><p>Make spatial matrix deconvolution Reference-free cell-type deconvolution of pixel-resolution spatially resolved transcriptomics data</p></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <link rel="stylesheet" type="text/css" href="../../_assets/page.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <table style="width: 100%;">
+            <tr>
+                <td>deconv_spatial {Erica}</td>
+                <td style="text-align: right;">R Documentation</td>
+            </tr>
+        </table>
+
+        <h2><p>Make spatial matrix deconvolution Reference-free cell-type deconvolution of pixel-resolution spatially resolved transcriptomics data</p></h2>
+
+        <h3>Description</h3>
+
+        
+
+        <h3>Usage</h3>
+
+        <div style="width: 100%; padding-left: 3%; color: black;">
+            <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>deconv_spatial</strong>(<i>expr.mat</i>,
+    <i>n.layers</i> = <span style='color: green;'>4</span>,
+    <i>top.genes</i> = <span style='color: green;'>1000</span>,
+    <i>alpha</i> = <span style='color: green;'>2</span>,
+    <i>beta</i> = <span style='color: green;'>0.5</span>,
+    <i>iteration</i> = <span style='color: green;'>150</span>,
+    <i>prefix</i> = class);</code></pre>
+        </div>
+
+        <h3>Arguments</h3>
+
+        <table>
+            
+<dt>m</dt>
+<dd><p><p>a dataframe object or a GCModeller expression matrix object, the matrix object should be in format of spatial spot in rows and the gene features in columns.</p></p></dd>
+
+
+<dt>n.layers</dt>
+<dd><p><p>an integer value for specific the cell layer class number</p></p></dd>
+
+
+<dt>top.genes</dt>
+<dd><p><p>set the number of top genes when export the expression matrix in each cell layers</p></p></dd>
+
+        </table>
+
+
+        <h3 style="display: block;">Details</h3>
+
+        <p>the generated expression matrix object could be save as csv matrix by use the function <code>geneExpression::write.expr_matrix</code> from the GCModeller package.</p>
+
+
+        <h3>Value</h3>
+
+        <p>A tuple list object that contains multiple result object inside: 1. single_cells: an expression matrix object that contains the single cell data 2. deconv_spatial: an expression matrix object that contains the cell layer deconvolution result data 3. cell_layers: the cell layer composition data 4. gibbs_LDA: the result of the LDA gibbs sampling result outputs, the top features in each cell class</p>
+
+        <h3 style="display: none;">Examples</h3>
+
+        
+
+        <hr />
+        <div style="text-align: center;">[Package <em>Erica</em> version 0.1.0 <a
+                href="../Erica.html">Index</a>]
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript" src="../../_assets/R_syntax.js"></script>
+<script type="text/javascript" src="../../_assets/highlights.js"></script>
+<script type="text/javascript">r_highlights("example_r");</script>
+
+</html>
