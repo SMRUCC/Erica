@@ -122,7 +122,6 @@
           "System.Threading.Tasks": "4.3.0"
         }
       },
-      "System.ComponentModel.Annotations/6.0.0-preview.4.21253.7": {},
       "System.Composition/6.0.0": {
         "dependencies": {
           "System.Composition.AttributedModel": "6.0.0",
@@ -773,7 +772,6 @@
       },
       "Microsoft.VisualBasic.Runtime/5.0.1.2389": {
         "dependencies": {
-          "System.ComponentModel.Annotations": "6.0.0-preview.4.21253.7",
           "System.Composition": "6.0.0",
           "System.Data.DataSetExtensions": "4.6.0-preview3.19128.7",
           "System.Drawing.Common": "6.0.0",
@@ -1046,13 +1044,6 @@
       "sha512": "sha512-ztl69Xp0Y/UXCL+3v3tEU+lIy+bvjKNUmopn1wep/a291pVPK7dxBd6T7WnlQqRog+d1a/hSsgRsmFnIBKTPLQ==",
       "path": "system.collections.concurrent/4.3.0",
       "hashPath": "system.collections.concurrent.4.3.0.nupkg.sha512"
-    },
-    "System.ComponentModel.Annotations/6.0.0-preview.4.21253.7": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-h0eWBYUk1rLI31AAmLMgmVzy6UBMUBvRfAqB9VH+O8pMT5GBFpBJoTEIdhBfzcn7VS+aPPDzpLlASHXdjt2qXQ==",
-      "path": "system.componentmodel.annotations/6.0.0-preview.4.21253.7",
-      "hashPath": "system.componentmodel.annotations.6.0.0-preview.4.21253.7.nupkg.sha512"
     },
     "System.Composition/6.0.0": {
       "type": "package",
