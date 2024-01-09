@@ -10,7 +10,7 @@ Module Program
     End Function
 
     Private Function help() As Integer
-        Console.WriteLine($"{GetType(Program).Assembly.Location.BaseName} <spot_expression.csv> [--iteration <default=150> --layers <default=4> --top_genes <default=1000> --n_threads <default=8>]")
+        Console.WriteLine($"{GetType(Program).Assembly.Location.BaseName} <spot_expression.csv> [--iteration <default=150> --layers <default=4> --top_genes <default=1000> --n_threads <default=8> --export <outputdir>]")
         Console.WriteLine($"")
         Console.WriteLine($"spot_expression.csv should be a table file in format of:")
         Console.WriteLine($"features in column and,")
@@ -20,10 +20,19 @@ Module Program
     End Function
 
     Private Function runOnMatrix(file As String, args As CommandLine) As Integer
+        Dim outputdir As String = args("--export")
         Dim exports_json As String = file.TrimSuffix & "-STdeconvolve.json"
         Dim deconv_csv As String = file.TrimSuffix & "-STdeconvolve.csv"
         Dim deconv_csv2 As String = file.TrimSuffix & "-STdeconvolve2.csv"
         Dim deconv_layers As String = file.TrimSuffix & "-cell_layers.csv"
+
+        If Not outputdir.StringEmpty Then
+            exports_json = outputdir & "/" & file.BaseName & "-STdeconvolve.json"
+            deconv_csv = outputdir & "/" & file.BaseName & "-STdeconvolve.csv"
+            deconv_csv2 = outputdir & "/" & file.BaseName & "-STdeconvolve2.csv"
+            deconv_layers = outputdir & "/" & file.BaseName & "-cell_layers.csv"
+        End If
+
         Dim iteration As Integer = args("--iteration") Or 150
         Dim layers As Integer = args("--layers") Or 4
         Dim top_genes As Integer = args("--top_genes") Or 1000
