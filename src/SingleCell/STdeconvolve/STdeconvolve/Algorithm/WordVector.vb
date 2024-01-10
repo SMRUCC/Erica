@@ -75,6 +75,13 @@ Public Module WordVector
         Dim unifyFactor As New DoubleRange(1, unify)
         Dim v As Vector
 
+        ' make a copy of the new matrix
+        matrix = New Matrix With {
+            .expression = matrix.expression.ToArray,
+            .sampleID = matrix.sampleID.ToArray,
+            .tag = matrix.tag
+        }
+
         For i As Integer = 0 To matrix.sampleID.Length - 1
             v = matrix.sample(i)
 
