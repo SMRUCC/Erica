@@ -25,6 +25,7 @@ Module Program
         Dim deconv_csv As String = file.TrimSuffix & "-STdeconvolve.csv"
         Dim deconv_csv2 As String = file.TrimSuffix & "-STdeconvolve2.csv"
         Dim deconv_layers As String = file.TrimSuffix & "-cell_layers.csv"
+        Dim make_filter As Boolean = Not args("--disable-gene-filters")
 
         If Not outputdir.StringEmpty Then
             exports_json = outputdir & "/" & file.BaseName & "-STdeconvolve.json"
@@ -38,7 +39,7 @@ Module Program
         Dim top_genes As Integer = args("--top_genes") Or 1000
         Dim n_threads As Integer = args("--n_threads") Or 8
         Dim STdataset As Matrix = Matrix.LoadData(file)
-        Dim corpus As STCorpus = STdataset.CreateSpatialDocuments
+        Dim corpus As STCorpus = STdataset.CreateSpatialDocuments(make_gene_filters:=make_filter)
         Dim result As Deconvolve = corpus.LDAModelling(layers, iterations:=iteration, n_threads:=n_threads).Deconvolve(corpus, topGenes:=top_genes)
         Dim deconv = result.GetSingleCellExpressionMatrix(STdataset)
         Dim deconv2 = result.GetExpressionMatrix(STdataset)

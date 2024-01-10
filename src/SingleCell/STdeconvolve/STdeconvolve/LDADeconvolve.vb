@@ -54,13 +54,16 @@ Public Module LDADeconvolve
                                            Optional min As Double = 0.05,
                                            Optional max As Double = 0.95,
                                            Optional unify As Integer = 10,
+                                           Optional make_gene_filters As Boolean = True,
                                            Optional logNorm As Boolean = True) As STCorpus
+        If make_gene_filters Then
+            ' reduce the gene features in pixels [5% ~ 95%]
+            matrix = matrix.Project(
+                sampleNames:=matrix.sampleID - matrix.GeneFilter(min, max))
+        End If
 
-        Dim filter As Index(Of String) = matrix.GeneFilter(min, max)
-
-        matrix = matrix _
-            .Project(matrix.sampleID - filter) _  ' reduce the gene features in pixels [5% ~ 95%]
-            .UnifyMatrix(unify, logNorm)          ' and then unify the count matrix via log scale and a given unify levels
+        ' and then unify the count matrix via log scale and a given unify levels
+        matrix = matrix.UnifyMatrix(unify, logNorm)
 
         Return matrix.Documentaries
     End Function
