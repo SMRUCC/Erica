@@ -77,7 +77,9 @@ Public Module WordVector
 
         ' make a copy of the new matrix
         matrix = New Matrix With {
-            .expression = matrix.expression.ToArray,
+            .expression = matrix.expression _
+                .Select(Function(gi) New DataFrameRow(gi)) _
+                .ToArray,
             .sampleID = matrix.sampleID.ToArray,
             .tag = matrix.tag
         }
