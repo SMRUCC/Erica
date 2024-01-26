@@ -23,7 +23,7 @@ Friend Class KNN
     ''' <param name="data"></param>
     ''' <param name="k"></param>
     ''' <returns></returns>
-    Public Iterator Function FindNeighbors(data As GeneralMatrix, Optional k As Integer = 30) As IEnumerable(Of (size As Integer, indices As Integer(), weights As Double()))
+    Public Iterator Function FindNeighbors(data As GeneralMatrix, Optional k As Integer = 30) As IEnumerable(Of KNeighbors)
         Dim matrix = data.PopulateVectors.ToArray
         Dim knnQuery = matrix _
             .AsParallel _
@@ -34,7 +34,7 @@ Friend Class KNN
             Dim index As Integer() = nn2.Select(Function(xi) xi.Item1.index).ToArray
             Dim weights As Double() = nn2.Select(Function(xi) xi.w).ToArray
 
-            Yield (index.Length, index, weights)
+            Yield New KNeighbors(index.Length, index, weights)
         Next
     End Function
 
