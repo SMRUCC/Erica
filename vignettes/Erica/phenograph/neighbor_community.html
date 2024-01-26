@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>set cluster colors of the phenograph result</title>
+    <title>build phenograph from knn search result</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <link rel="stylesheet" type="text/css" href="../../_assets/page.css">
@@ -13,12 +13,12 @@
 
         <table style="width: 100%;">
             <tr>
-                <td>cluster_colors {phenograph}</td>
+                <td>neighbor_community {phenograph}</td>
                 <td style="text-align: right;">R Documentation</td>
             </tr>
         </table>
 
-        <h2>set cluster colors of the phenograph result</h2>
+        <h2>build phenograph from knn search result</h2>
 
         <h3>Description</h3>
 
@@ -27,23 +27,24 @@
         <h3>Usage</h3>
 
         <div style="width: 100%; padding-left: 3%; color: black;">
-            <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>cluster_colors</strong>(<i>g</i>,
-    <i>colorSet</i> = <span style='color: brown;'><strong>"viridis:turbo"</strong></span>);</code></pre>
+            <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>neighbor_community</strong>(<i>neighborMatrix</i>,
+    <i>link.cutoff</i> = <span style='color: green;'>0</span>,
+    <i>subcomponents.filter</i> = <span style='color: green;'>0</span>);</code></pre>
         </div>
 
         <h3>Arguments</h3>
 
         <table>
             
-<dt>g</dt>
+<dt>neighborMatrix</dt>
+<dd><p><p>should be a collection of the KNN search result: <a href="/vignettes/clr/Microsoft/VisualBasic/Data/GraphTheory/KdTree/ApproximateNearNeighbor/KNeighbors.html">KNeighbors</a>.</p></p></dd>
+
+
+<dt>link.cutoff</dt>
 <dd><p><p>-</p></p></dd>
 
 
-<dt>colorSet</dt>
-<dd><p><p>-</p></p></dd>
-
-
-<dt>env</dt>
+<dt>subcomponents.filter</dt>
 <dd><p><p>-</p></p></dd>
 
         </table>

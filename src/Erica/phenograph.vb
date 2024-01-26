@@ -209,7 +209,7 @@ Module phenograph
     ''' <summary>
     ''' build phenograph from knn search result
     ''' </summary>
-    ''' <param name="neighborMatrix">should be a collection of the KNN search result <see cref="KNeighbors"/>.</param>
+    ''' <param name="neighborMatrix">should be a collection of the KNN search result: <see cref="KNeighbors"/>.</param>
     ''' <param name="link_cutoff"></param>
     ''' <param name="subcomponents_filter"></param>
     ''' <returns></returns>

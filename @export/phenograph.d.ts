@@ -23,7 +23,7 @@ declare namespace phenograph {
      * 
      * + default value Is ``null``.
    */
-   function cluster_colors(g: object, colorSet?: any, env?: object): any;
+   function cluster_colors(g: object, colorSet?: any, env?: object): object;
    /**
      * @param eq default value Is ``0.85``.
    */
@@ -32,7 +32,22 @@ declare namespace phenograph {
      * @param eq default value Is ``0.5``.
      * @param gt default value Is ``0``.
    */
-   function graph_tree(x: object, eq?: number, gt?: number): any;
+   function graph_tree(x: object, eq?: number, gt?: number): object;
+   /**
+    * build phenograph from knn search result
+    * 
+    * 
+     * @param neighborMatrix should be a collection of the KNN search result: @``T:Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor.KNeighbors``.
+     * @param link_cutoff -
+     * 
+     * + default value Is ``0``.
+     * @param subcomponents_filter -
+     * 
+     * + default value Is ``0``.
+     * @param env 
+     * + default value Is ``null``.
+   */
+   function neighbor_community(neighborMatrix: any, link_cutoff?: number, subcomponents_filter?: object, env?: object): object;
    /**
     * Run PhenoGraph algorithm
     * 
@@ -93,5 +108,5 @@ declare namespace phenograph {
      * 
      * + default value Is ``null``.
    */
-   function slice_matrix(x: object, mapping: object, axis?: any, env?: object): any;
+   function slice_matrix(x: object, mapping: object, axis?: any, env?: object): object;
 }
