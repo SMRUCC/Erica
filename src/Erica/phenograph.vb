@@ -45,6 +45,7 @@ Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.ComponentModel.DataStructures
 Imports Microsoft.VisualBasic.Data.csv.IO
+Imports Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor
 Imports Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors
 Imports Microsoft.VisualBasic.Data.visualize.Network.Analysis
 Imports Microsoft.VisualBasic.Data.visualize.Network.FileStream.Generic
@@ -203,6 +204,33 @@ Module phenograph
         )
 
         Return graph
+    End Function
+
+    ''' <summary>
+    ''' build phenograph from knn search result
+    ''' </summary>
+    ''' <param name="neighborMatrix">should be a collection of the KNN search result <see cref="KNeighbors"/>.</param>
+    ''' <param name="link_cutoff"></param>
+    ''' <param name="subcomponents_filter"></param>
+    ''' <returns></returns>
+    <ExportAPI("neighbor_community")>
+    <RApiReturn(GetType(NetworkGraph))>
+    Public Function NeighborCommunity(<RRawVectorArgument> neighborMatrix As Object,
+                                      Optional link_cutoff As Double = 0,
+                                      Optional subcomponents_filter As Integer = 0,
+                                      Optional env As Environment = Nothing) As Object
+
+        Dim pull As pipeline = pipeline.TryCreatePipeline(Of KNeighbors)(neighborMatrix, env)
+
+        If pull.isError Then
+            Return pull.getError
+        End If
+
+        Return pull _
+            .populates(Of KNeighbors)(env) _
+            .Select(Function(r) r.indices) _
+            .ToArray _
+            .NeighborCommunity(link_cutoff, subcomponents_filter)
     End Function
 
     ''' <summary>
