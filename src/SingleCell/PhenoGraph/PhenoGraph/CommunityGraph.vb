@@ -151,11 +151,23 @@ Public Module CommunityGraph
                 .ToArray
         End If
 
-        cat("DONE ~", (t1 = App.ElapsedMilliseconds - CDbl(t1)) / 1000, "s\n", " Compute jaccard coefficient between nearest-neighbor sets...")
+        cat("DONE ~", (t1 = App.ElapsedMilliseconds - CDbl(t1)) / 1000, "s\n")
+
+        Return neighborMatrix.NeighborCommunity(link_cutoff, subcomponents_filter)
+    End Function
+
+    <Extension>
+    Public Function NeighborCommunity(neighborMatrix As Integer()(),
+                                      Optional link_cutoff As Double = 0,
+                                      Optional subcomponents_filter As Integer = 0) As NetworkGraph
+
+        cat(" Compute jaccard coefficient between nearest-neighbor sets...")
         ' t2 <- system.time(links <- jaccard_coeff(neighborMatrix))
         Dim t2 As Value(Of Double) = App.ElapsedMilliseconds
         Dim links As GeneralMatrix = jaccard_coeff_parallel(neighborMatrix, symmetrize:=False)
-        cat("DONE ~", (t2 = App.ElapsedMilliseconds - CDbl(t2)) / 1000, "s\n", " Build undirected graph from the weighted links...")
+        cat("DONE ~", (t2 = App.ElapsedMilliseconds - CDbl(t2)) / 1000, "s\n")
+
+        cat(" Build undirected graph from the weighted links...")
 
         ' take rows
         ' colnames(relations)<- c("from","to","weight")
@@ -165,7 +177,10 @@ Public Module CommunityGraph
 
         Dim t3 As Value(Of Double) = App.ElapsedMilliseconds
         Dim g = DirectCast(links, NumericMatrix).AsGraph(subcomponents_filter)
-        cat("DONE ~", (t3 = App.ElapsedMilliseconds - CDbl(t3)) / 1000, "s\n", " Run louvain clustering on the graph ...")
+
+        cat("DONE ~", (t3 = App.ElapsedMilliseconds - CDbl(t3)) / 1000, "s\n")
+        cat(" Run louvain clustering on the graph ...")
+
         Dim t4 As Value(Of Double) = App.ElapsedMilliseconds
 
         ' Other community detection algorithms: 
@@ -177,7 +192,8 @@ Public Module CommunityGraph
 
         cat("DONE ~", (t4 = App.ElapsedMilliseconds - CDbl(t4)) / 1000, "s\n")
 
-        message("Run Rphenograph DONE, totally takes ", {CDbl(t1), CDbl(t2), CDbl(t3), CDbl(t4)}.Sum / 1000, "s.", "\n")
+        message("Run Rphenograph DONE, totally takes ", {CDbl(t2), CDbl(t3), CDbl(t4)}.Sum / 1000, "s.", "\n")
+
         cat("  Return a community class\n  -Modularity value:", Communities.Modularity(community, qsub), "\n")
         cat("  -Number of clusters:", Communities.Community(g).Values.Distinct.Count, "\n")
         cat("  -Modularity of each clusters: ", qsub.GetJson, "\n")

@@ -49,6 +49,7 @@ Imports Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors
 Imports Microsoft.VisualBasic.Data.visualize.Network.Analysis
 Imports Microsoft.VisualBasic.Data.visualize.Network.FileStream.Generic
 Imports Microsoft.VisualBasic.Data.visualize.Network.Graph
+Imports Microsoft.VisualBasic.DataMining.BinaryTree
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
 Imports Microsoft.VisualBasic.Language
@@ -308,6 +309,7 @@ Module phenograph
     ''' <param name="env"></param>
     ''' <returns></returns>
     <ExportAPI("cluster_colors")>
+    <RApiReturn(GetType(NetworkGraph))>
     Public Function ClusterColors(g As NetworkGraph,
                                   <RRawVectorArgument>
                                   Optional colorSet As Object = "viridis:turbo",
@@ -336,6 +338,7 @@ Module phenograph
     End Function
 
     <ExportAPI("graph_tree")>
+    <RApiReturn(GetType(ClusterTree))>
     Public Function GraphTree(x As Matrix, Optional eq As Double = 0.5, Optional gt As Double = 0) As Object
         Return x.CreateGraph(eq, gt)
     End Function
@@ -377,6 +380,7 @@ Module phenograph
     ''' <param name="env"></param>
     ''' <returns></returns>
     <ExportAPI("slice_matrix")>
+    <RApiReturn(GetType(Matrix))>
     Public Function SliceMatrix(x As Matrix, mapping As list,
                                 <RRawVectorArgument(GetType(String))>
                                 Optional axis As Object = "x|y",
