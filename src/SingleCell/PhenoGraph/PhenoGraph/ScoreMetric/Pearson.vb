@@ -1,4 +1,5 @@
-﻿Imports Microsoft.VisualBasic.Math.Correlations
+﻿Imports Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors
+Imports Microsoft.VisualBasic.Math.Correlations
 
 ''' <summary>
 ''' WGCNA pearson weight score

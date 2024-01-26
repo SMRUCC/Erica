@@ -1,4 +1,5 @@
-﻿Imports Microsoft.VisualBasic.Math
+﻿Imports Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors
+Imports Microsoft.VisualBasic.Math
 Imports Microsoft.VisualBasic.Math.Correlations
 
 ''' <summary>

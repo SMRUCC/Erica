@@ -1,4 +1,6 @@
-﻿Public Class Jaccard : Inherits ScoreMetric
+﻿Imports Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors
+
+Public Class Jaccard : Inherits ScoreMetric
 
     Public Overrides Function eval(x() As Double, y() As Double) As Double
         Dim j As Integer
