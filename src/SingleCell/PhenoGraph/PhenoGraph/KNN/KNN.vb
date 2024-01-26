@@ -1,4 +1,4 @@
-﻿Imports Microsoft.VisualBasic.Data.GraphTheory.KdTree
+﻿Imports Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor
 Imports Microsoft.VisualBasic.Math.LinearAlgebra.Matrix
 
 ''' <summary>
