@@ -58,11 +58,11 @@ Public Class SpatialHeatMap
         Dim barcode As String() = layer.spots.Select(Function(i) i.Barcode).ToArray
 
         Using buf As New CDFWriter(file)
-            Call buf.GlobalAttributes(New attribute With {.name = "scan_x", .type = CDFDataTypes.INT, .value = layer.dimension_size.Width})
-            Call buf.GlobalAttributes(New attribute With {.name = "scan_y", .type = CDFDataTypes.INT, .value = layer.dimension_size.Height})
-            Call buf.GlobalAttributes(New attribute With {.name = "offset_x", .type = CDFDataTypes.INT, .value = layer.offset.X})
-            Call buf.GlobalAttributes(New attribute With {.name = "offset_y", .type = CDFDataTypes.INT, .value = layer.offset.Y})
-            Call buf.GlobalAttributes(New attribute With {.name = "spots", .type = CDFDataTypes.INT, .value = layer.spots.Length})
+            Call buf.GlobalAttributes(New attribute With {.name = "scan_x", .type = CDFDataTypes.NC_INT, .value = layer.dimension_size.Width})
+            Call buf.GlobalAttributes(New attribute With {.name = "scan_y", .type = CDFDataTypes.NC_INT, .value = layer.dimension_size.Height})
+            Call buf.GlobalAttributes(New attribute With {.name = "offset_x", .type = CDFDataTypes.NC_INT, .value = layer.offset.X})
+            Call buf.GlobalAttributes(New attribute With {.name = "offset_y", .type = CDFDataTypes.NC_INT, .value = layer.offset.Y})
+            Call buf.GlobalAttributes(New attribute With {.name = "spots", .type = CDFDataTypes.NC_INT, .value = layer.spots.Length})
 
             Call buf.AddVariable("x", New integers(x), spot_size)
             Call buf.AddVariable("y", New integers(y), spot_size)
