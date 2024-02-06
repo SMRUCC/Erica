@@ -30,13 +30,6 @@
             <code id="clr_ts">
 # namespace bgee
 export class GeneExpression {
-   data: string;
-   # experiment count showing expression of this gene in 
-   #  this condition or in sub-conditions with a high quality
-   expression_high_quality: integer;
-   # experiment count showing expression of this gene in 
-   #  this condition or in sub-conditions with a low quality
-   expression_low_quality: integer;
    # experiment count showing absence of expression of this 
    #  gene in this condition or valid parent conditions with 
    #  a high quality
@@ -45,6 +38,13 @@ export class GeneExpression {
    #  gene in this condition or valid parent conditions with 
    #  a low quality
    absence_low_quality: integer;
+   data: string;
+   # experiment count showing expression of this gene in 
+   #  this condition or in sub-conditions with a high quality
+   expression_high_quality: integer;
+   # experiment count showing expression of this gene in 
+   #  this condition or in sub-conditions with a low quality
+   expression_low_quality: integer;
    observed_data: string;
 }
 </code>
