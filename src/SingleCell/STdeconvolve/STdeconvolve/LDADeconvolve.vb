@@ -95,7 +95,11 @@ Public Module LDADeconvolve
             log:=println
         )
 
-        VectorTask.n_threads = n_threads
+        If n_threads <= 1 Then
+            VectorTask.n_threads = 1
+        Else
+            VectorTask.n_threads = n_threads
+        End If
 
         ' 3. Train LDA model via gibbs sampling
         Call ldaGibbsSampler _
