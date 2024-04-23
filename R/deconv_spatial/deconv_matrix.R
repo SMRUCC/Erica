@@ -27,7 +27,8 @@ imports "STdeconvolve" from "Erica";
 const deconv_spatial = function(expr_mat, n_layers = 4, top_genes = 1000, alpha = 2.0, 
                                 beta = 0.5,
                                 iteration = 150,
-                                prefix = "class") {
+                                prefix = "class",
+                                make_gene_filters = TRUE) {
 
     if (is.character(expr_mat)) {
         # read the matrix file
@@ -38,7 +39,7 @@ const deconv_spatial = function(expr_mat, n_layers = 4, top_genes = 1000, alpha 
         expr_mat = geneExpression::load.expr(expr_mat);
     }
 
-    let corpus = STCorpus(expr_mat);
+    let corpus = STCorpus(expr_mat, make_gene_filters = make_gene_filters);
     let LDA = fitLDA(corpus, k = n_layers, alpha = alpha,
             beta = beta,
             loops = iteration);

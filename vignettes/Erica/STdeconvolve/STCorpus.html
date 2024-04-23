@@ -30,6 +30,7 @@
             <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>STCorpus</strong>(<i>matrix</i>,
     <i>min</i> = <span style='color: green;'>0.05</span>,
     <i>max</i> = <span style='color: green;'>0.95</span>,
+    <i>make.gene.filters</i> = <span style='color: blue !important;'>TRUE</span>,
     <i>unify</i> = <span style='color: green;'>10</span>,
     <i>logNorm</i> = <span style='color: blue !important;'>TRUE</span>);</code></pre>
         </div>
@@ -57,6 +58,12 @@
 
 <dt>logNorm</dt>
 <dd><p>[as boolean]</p></dd>
+
+
+<dt>make.gene.filters</dt>
+<dd><p>if your matrix contains no missing values, then you should set this parameter value to FALSE, 
+ otherwise all features will be removes: due to the reason of no missing value case the ratio
+ greater than the default <strong>`max`</strong> filter threshold value. [as boolean]</p></dd>
 
         </table>
 

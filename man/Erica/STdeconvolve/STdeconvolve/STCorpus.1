@@ -6,6 +6,7 @@ STCorpus \- Create document vector for run LDA mdelling
 \fISTCorpus(\fBmatrix\fR as <generic> Matrix, 
 \fBmin\fR as double = 0.05, 
 \fBmax\fR as double = 0.95, 
+\fBmake_gene_filters\fR as boolean = TRUE, 
 \fBunify\fR as integer = 10, 
 \fBlogNorm\fR as boolean = TRUE);\fR
 .SH DESCRIPTION
@@ -30,6 +31,13 @@ Create document vector for run LDA mdelling
 .PP
 .PP
 \fBlogNorm\fB \fR\- -. 
+.PP
+.PP
+\fBmake_gene_filters\fB \fR\- 
+ if your matrix contains no missing values, then you should set this parameter value to FALSE, 
+ otherwise all features will be removes: due to the reason of no missing value case the ratio
+ greater than the default **`max`** filter threshold value.
+. 
 .PP
 .SH VALUE
 .PP
