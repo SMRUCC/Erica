@@ -22,6 +22,11 @@ Module STdeconvolve
     ''' <param name="max"></param>
     ''' <param name="unify"></param>
     ''' <param name="logNorm"></param>
+    ''' <param name="make_gene_filters">
+    ''' if your matrix contains no missing values, then you should set this parameter value to FALSE, 
+    ''' otherwise all features will be removes: due to the reason of no missing value case the ratio
+    ''' greater than the default <paramref name="max"/> filter threshold value.
+    ''' </param>
     ''' <returns>
     ''' document model for run LDA modelling
     ''' </returns>
@@ -42,10 +47,14 @@ Module STdeconvolve
     Public Function STCorpus(matrix As Matrix,
                              Optional min As Double = 0.05,
                              Optional max As Double = 0.95,
+                             Optional make_gene_filters As Boolean = True,
                              Optional unify As Integer = 10,
                              Optional logNorm As Boolean = True) As STCorpus
 
-        Return matrix.CreateSpatialDocuments(min, max, unify, logNorm)
+        Return matrix.CreateSpatialDocuments(min, max,
+                                             unify:=unify,
+                                             logNorm:=logNorm,
+                                             make_gene_filters:=make_gene_filters)
     End Function
 
     ''' <summary>
