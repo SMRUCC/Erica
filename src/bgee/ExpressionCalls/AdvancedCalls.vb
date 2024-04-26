@@ -71,6 +71,7 @@ Public Class AdvancedCalls
     ''' </summary>
     ''' <returns></returns>
     Public Property expression_rank As Double
+    Public Property expression_score As Double
     ''' <summary>
     ''' Permitted value: yes
     ''' 
