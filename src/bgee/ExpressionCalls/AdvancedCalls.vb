@@ -71,6 +71,7 @@ Public Class AdvancedCalls
     ''' </summary>
     ''' <returns></returns>
     Public Property expression_rank As Double
+    Public Property expression_score As Double
     ''' <summary>
     ''' Permitted value: yes
     ''' 
@@ -131,7 +132,8 @@ Public Class AdvancedCalls
             .developmental_stage = Strings.Trim(tsv(5)).Trim(""""c),
             .expression = tsv(8),
             .call_quality = tsv(9),
-            .expression_rank = Double.Parse(tsv(12))
+            .expression_rank = Double.Parse(tsv(12)),
+            .expression_score = Double.Parse(tsv(11))
         }
     End Function
 
