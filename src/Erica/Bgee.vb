@@ -56,6 +56,11 @@ Public Module Bgee
         End If
     End Function
 
+    ''' <summary>
+    ''' get all development stage information from the bgee dataset
+    ''' </summary>
+    ''' <param name="bgee"></param>
+    ''' <returns></returns>
     <ExportAPI("development_stage")>
     Public Function development_stage(bgee As BgeeDiskReader) As dataframe
         Dim id As String() = bgee.developmentalIDs
@@ -73,6 +78,11 @@ Public Module Bgee
         }
     End Function
 
+    ''' <summary>
+    ''' get all anatomical ID from the bgee dataset
+    ''' </summary>
+    ''' <param name="bgee"></param>
+    ''' <returns></returns>
     <ExportAPI("anatomicalIDs")>
     Public Function anatomicalIDs(bgee As BgeeDiskReader) As dataframe
         Dim id As String() = bgee.anatomicalIDs
@@ -90,6 +100,11 @@ Public Module Bgee
         }
     End Function
 
+    ''' <summary>
+    ''' get all gene ids from the bgee dataset
+    ''' </summary>
+    ''' <param name="bgee"></param>
+    ''' <returns></returns>
     <ExportAPI("geneIDs")>
     Public Function geneIDList(bgee As BgeeDiskReader) As dataframe
         Dim geneIDs = bgee.GetAllgeneIDs
@@ -108,6 +123,15 @@ Public Module Bgee
         Return maps
     End Function
 
+    ''' <summary>
+    ''' parse the bgee tsv table file for load the gene expression ranking data
+    ''' </summary>
+    ''' <param name="file"></param>
+    ''' <param name="advance"></param>
+    ''' <param name="quality"></param>
+    ''' <param name="pip_stream"></param>
+    ''' <param name="env"></param>
+    ''' <returns></returns>
     <ExportAPI("parseTsv")>
     <RApiReturn(GetType(AdvancedCalls))>
     Public Function parseTsv(file As String,
