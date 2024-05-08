@@ -10,6 +10,10 @@
 */
 declare namespace Bgee {
    /**
+    * get all anatomical ID from the bgee dataset
+    * 
+    * 
+     * @param bgee -
    */
    function anatomicalIDs(bgee: object): object;
    /**
@@ -31,9 +35,17 @@ declare namespace Bgee {
    */
    function bgee_calls(bgee: object, geneSet: string, development_stage?: string): object;
    /**
+    * get all development stage information from the bgee dataset
+    * 
+    * 
+     * @param bgee -
    */
    function development_stage(bgee: object): object;
    /**
+    * get all gene ids from the bgee dataset
+    * 
+    * 
+     * @param bgee -
    */
    function geneIDs(bgee: object): object;
    /**
@@ -41,10 +53,22 @@ declare namespace Bgee {
    */
    function metabolomicsMapping(uniprot: object, geneExpressions: object, env?: object): object;
    /**
-     * @param advance default value Is ``false``.
-     * @param quality default value Is ``'*'``.
-     * @param pip_stream default value Is ``false``.
-     * @param env default value Is ``null``.
+    * parse the bgee tsv table file for load the gene expression ranking data
+    * 
+    * 
+     * @param file -
+     * @param advance -
+     * 
+     * + default value Is ``false``.
+     * @param quality -
+     * 
+     * + default value Is ``'*'``.
+     * @param pip_stream -
+     * 
+     * + default value Is ``false``.
+     * @param env -
+     * 
+     * + default value Is ``null``.
    */
    function parseTsv(file: string, advance?: boolean, quality?: string, pip_stream?: boolean, env?: object): object;
    module read {
