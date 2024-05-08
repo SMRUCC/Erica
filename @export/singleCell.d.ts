@@ -80,7 +80,7 @@ declare namespace singleCell {
      * @param env 
      * + default value Is ``null``.
    */
-   function spatialMap(h5ad: object, useCellAnnotation?: boolean, env?: object): object;
+   function spatialMap(h5ad: object, useCellAnnotation?: object, env?: object): object;
    /**
     * Extract the UMAP matrix from h5ad
     * 
