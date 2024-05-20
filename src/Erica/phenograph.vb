@@ -173,6 +173,18 @@ Module phenograph
         Return Communities.Analysis(graph)
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="x"></param>
+    ''' <param name="k"></param>
+    ''' <param name="link_cutoff"></param>
+    ''' <param name="knn_cutoff"></param>
+    ''' <param name="score"></param>
+    ''' <param name="subcomponents_filter"></param>
+    ''' <returns>
+    ''' a network graph object with node class value has been assigned.
+    ''' </returns>
     <Extension>
     Private Function phenograph1(x As Matrix,
                                  k As Integer,
