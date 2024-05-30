@@ -32,6 +32,16 @@ the return data value is depends on the parameter
  + for default value, a list that contains enrichment 
    result for each development_stage will be returned
 .PP
+.SH EXAMPLES
+.PP
+let model = read.backgroundPack("./demo.dat");
+ let gene_ids = ["gene_a","gene_b","gene_c","gene_d"];
+ let enrich = as.data.frame(bgee_calls(geneSet = gene_ids));
+ 
+ print(enrich);
+ 
+ write.csv(enrich, file = "./bgee_calls.csv");
+.PP
 .SH SEE ALSO
 Bgee
 .SH FILES

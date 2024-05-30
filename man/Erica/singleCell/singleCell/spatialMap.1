@@ -17,6 +17,13 @@ export the spatial maps data
 .PP
 \fBuseCellAnnotation\fB \fR\- -. 
 .PP
+.SH EXAMPLES
+.PP
+let stRaid = read.h5ad("/path/to/expr_mat.h5ad");
+ let spatial = spatialMap(stRaid);
+ 
+ str(spatial);
+.PP
 .SH SEE ALSO
 singleCell
 .SH FILES

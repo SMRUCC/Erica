@@ -33,6 +33,21 @@ Run PhenoGraph algorithm
  removes small subnetwork
 . 
 .PP
+.SH EXAMPLES
+.PP
+require(GCModeller);
+ 
+ imports "geneExpression" from "phenotype_kit";
+ 
+ let expr_mat = load.expr(file = "./expr.csv");
+ let clusters = phenograph(expr_mat, k = 16);
+ 
+ require(igraph);
+ 
+ # get the cluster result
+ print(as.data.frame(V(clusters)));
+ print(as.data.frame(E(clusters)));
+.PP
 .SH SEE ALSO
 phenograph
 .SH FILES

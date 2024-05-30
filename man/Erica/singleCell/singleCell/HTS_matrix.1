@@ -16,6 +16,18 @@ extract the raw expression data matrix from the h5ad object
 .PP
 \fBenv\fB \fR\- -. 
 .PP
+.SH EXAMPLES
+.PP
+require(GCModeller);
+ 
+ imports "STdata" from "Erica";
+ imports "geneExpression" from "phenotype_kit";
+ 
+ let stRaid = read.h5ad("/path/to/expr_mat.h5ad");
+ let exp_mat = singleCell::HTS_matrix(stRaid);
+ 
+ geneExpression::write.expr_matrix(exp_mat, file = "/path/to/save.csv");
+.PP
 .SH SEE ALSO
 singleCell
 .SH FILES

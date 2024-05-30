@@ -43,6 +43,20 @@ Create document vector for run LDA mdelling
 .PP
 document model for run LDA modelling
 .PP
+.SH EXAMPLES
+.PP
+require(GCModeller);
+ 
+ imports "geneExpression" from "phenotype_kit";
+ 
+ let expr_mat = load.expr(file = "./expr.csv");
+ let corpus = STCorpus(expr_mat);
+ let LDA = fitLDA(corpus, k = 6);
+ let deconv = getBetaTheta(LDA, corpus, top.genes = 1000);
+ 
+ let matrix1 = singlecells(deconv, expr_mat);
+ let matrix2 = deconvolve(deconv, expr_mat);
+.PP
 .SH SEE ALSO
 STdeconvolve
 .SH FILES
