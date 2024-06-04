@@ -164,7 +164,7 @@ Public Module STdata
     <ExportAPI("read.seurat")>
     <RApiReturn(GetType(SeuratObject))>
     Public Function readSeuratObject(<RRawVectorArgument> file As Object, Optional env As Environment = Nothing) As Object
-        Dim is_filepath As String = Nothing
+        Dim is_filepath As Boolean = Nothing
         Dim s = SMRUCC.Rsharp.GetFileStream(file, FileAccess.Read, env, is_filepath:=is_filepath)
 
         If s Like GetType(Message) Then
