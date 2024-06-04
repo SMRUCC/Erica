@@ -5,10 +5,13 @@ Imports Microsoft.VisualBasic.Math.Distributions
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner
+Imports SMRUCC.Rsharp.RDataSet.Struct
+Imports SMRUCC.Rsharp.Runtime
+Imports SMRUCC.Rsharp.Runtime.Components
 Imports SMRUCC.Rsharp.Runtime.Internal.[Object]
 Imports SMRUCC.Rsharp.Runtime.Interop
 Imports STImaging
-Imports STRaid.HDF5
+Imports STRaid
 Imports Matrix = SMRUCC.genomics.Analysis.HTS.DataFrame.Matrix
 
 ''' <summary>
@@ -156,5 +159,24 @@ Public Module STdata
                 {"matrix", matrix}
             }
         }
+    End Function
+
+    <ExportAPI("read.seurat")>
+    <RApiReturn(GetType(SeuratObject))>
+    Public Function readSeuratObject(<RRawVectorArgument> file As Object, Optional env As Environment = Nothing) As Object
+        Dim is_filepath As String = Nothing
+        Dim s = SMRUCC.Rsharp.GetFileStream(file, FileAccess.Read, env, is_filepath:=is_filepath)
+
+        If s Like GetType(Message) Then
+            Return s.TryCast(Of Message)
+        End If
+
+        Dim rawdata As RData = SMRUCC.Rsharp.RDataSet.Reader.ParseData(s.TryCast(Of Stream))
+
+        If is_filepath Then
+            Call s.TryCast(Of Stream).Close()
+        End If
+
+
     End Function
 End Module
