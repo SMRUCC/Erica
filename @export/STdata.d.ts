@@ -27,6 +27,10 @@ declare namespace STdata {
    function max_layer(st: object): object;
    module read {
       /**
+        * @param env default value Is ``null``.
+      */
+      function seurat(file: any, env?: object): object;
+      /**
        * load the spatial mapping data of the spot barcode 
        *  associated with the spot spaital information
        * 

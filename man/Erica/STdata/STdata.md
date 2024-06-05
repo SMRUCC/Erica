@@ -12,3 +12,4 @@ spatial transcriptomics data toolkit
 + [as.STmatrix](STdata/as.STmatrix.1) 
 + [write.STRaid](STdata/write.STRaid.1) 
 + [sampling](STdata/sampling.1) Create n expression samples
++ [read.seurat](STdata/read.seurat.1) 
