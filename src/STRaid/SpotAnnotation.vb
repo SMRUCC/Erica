@@ -15,6 +15,8 @@ Public Class SpotAnnotation
     Public Property label As String
     Public Property color As String
 
+    Public Property barcode As String
+
     Public Overrides Function ToString() As String
         Return $"{label}[{CInt(X)},{CInt(Y)}]"
     End Function

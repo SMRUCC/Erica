@@ -199,6 +199,9 @@ Public Module singleCells
     ''' <param name="colors">A character value of the spatial class color 
     ''' palette name or a vector of color code character for assign each 
     ''' spatial spot.</param>
+    ''' <param name="barcode">
+    ''' the raw reference barcode to the spots
+    ''' </param>
     ''' <param name="env"></param>
     ''' <returns></returns>
     <ExportAPI("spatial_annotations")>
@@ -208,18 +211,24 @@ Public Module singleCells
                                         <RRawVectorArgument> label As Object,
                                         <RRawVectorArgument>
                                         Optional colors As Object = "paper",
+                                        <RRawVectorArgument>
+                                        Optional barcode As Object = Nothing,
                                         Optional env As Environment = Nothing) As Object
 
         Dim px As Double() = CLRVector.asNumeric(x)
         Dim py As Double() = CLRVector.asNumeric(y)
         Dim labels As String() = CLRVector.asCharacter(label)
         Dim colorSet As String() = CLRVector.asCharacter(colors)
+        Dim barcodes As String() = CLRVector.asCharacter(barcode)
 
         If px.Length <> py.Length Then
             Return Internal.debug.stop($"the vector size of the spatial information x({px.Length}) should be matched with y({py.Length})!", env)
         End If
         If labels.Length <> px.Length AndAlso labels.Length > 1 Then
             Return Internal.debug.stop($"the class label information({labels.Length}) is not matched with the spatial information [x,y]({px.Length})!", env)
+        End If
+        If Not barcodes.IsNullOrEmpty AndAlso barcodes.Length <> px.Length Then
+            Return Internal.debug.stop($"the vector size of the spatial information x,y({px.Length}) should be matched with the spot barcodes({barcodes.Length})!", env)
         End If
 
         If colorSet.Length = 1 Then
@@ -249,7 +258,8 @@ Public Module singleCells
                     .color = mapper.GetColor(labels(i)).ToHtmlColor,
                     .label = labels(i),
                     .x = px(i),
-                    .y = py(i)
+                    .y = py(i),
+                    .barcode = barcodes.ElementAtOrNull(i)
                 })
             Next
         Else
@@ -259,7 +269,8 @@ Public Module singleCells
                     .color = colorSet(i),
                     .label = labels(i),
                     .x = px(i),
-                    .y = py(i)
+                    .y = py(i),
+                    .barcode = barcodes.ElementAtOrNull(i)
                 })
             Next
         End If
