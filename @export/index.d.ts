@@ -20,8 +20,11 @@ declare namespace Erica {
      * @param iteration default value Is ``150``.
      * @param prefix default value Is ``class``.
      * @param make_gene_filters default value Is ``true``.
+     * @param filter_range default value Is ``[0.05, 0.95]``.
+     * @param unify_scale default value Is ``10``.
+     * @param log_norm default value Is ``true``.
    */
-   function deconv_spatial(expr_mat: any, n_layers?: any, top_genes?: any, alpha?: any, beta?: any, iteration?: any, prefix?: any, make_gene_filters?: any): object;
+   function deconv_spatial(expr_mat: any, n_layers?: any, top_genes?: any, alpha?: any, beta?: any, iteration?: any, prefix?: any, make_gene_filters?: any, filter_range?: any, unify_scale?: any, log_norm?: any): object;
    module human_genes {
       /**
         * @param human_genes default value Is ``null``.

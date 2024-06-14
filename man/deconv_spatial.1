@@ -7,7 +7,10 @@ deconv_spatial \- deconv_spatial(expr.mat,
     <i>beta</i> = <span style='color: green;'>0.5</span>,
     <i>iteration</i> = <span style='color: green;'>150</span>,
     <i>prefix</i> = <span style='color: brown;'><strong>'class'</strong></span>,
-    <i>make.gene.filters</i> = <span style='color: blue !important;'>TRUE</span>)
+    <i>make.gene.filters</i> = <span style='color: blue !important;'>TRUE</span>,
+    <i>filter.range</i> = [<span style='color: green;'>0.95</span>],
+    <i>unify.scale</i> = <span style='color: green;'>10</span>,
+    <i>log.norm</i> = <span style='color: blue !important;'>TRUE</span>)
 .SH SYNOPSIS
 \fIdeconv_spatial(expr.mat,
     <i>n.layers</i> = <span style='color: green;'>4</span>,
@@ -16,7 +19,10 @@ deconv_spatial \- deconv_spatial(expr.mat,
     <i>beta</i> = <span style='color: green;'>0.5</span>,
     <i>iteration</i> = <span style='color: green;'>150</span>,
     <i>prefix</i> = <span style='color: brown;'><strong>'class'</strong></span>,
-    <i>make.gene.filters</i> = <span style='color: blue !important;'>TRUE</span>)\fR
+    <i>make.gene.filters</i> = <span style='color: blue !important;'>TRUE</span>,
+    <i>filter.range</i> = [<span style='color: green;'>0.95</span>],
+    <i>unify.scale</i> = <span style='color: green;'>10</span>,
+    <i>log.norm</i> = <span style='color: blue !important;'>TRUE</span>)\fR
 .SH OPTIONS
 .PP
 \fBexpr.mat\fB \fR\- . 
@@ -41,6 +47,15 @@ deconv_spatial \- deconv_spatial(expr.mat,
 .PP
 .PP
 \fBmake.gene.filters\fB \fR\- TRUE. 
+.PP
+.PP
+\fBfilter.range\fB \fR\- [0.05, 0.95]. 
+.PP
+.PP
+\fBunify.scale\fB \fR\- 10. 
+.PP
+.PP
+\fBlog.norm\fB \fR\- TRUE. 
 .PP
 .SH VALUE
 .PP

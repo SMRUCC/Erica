@@ -64,11 +64,14 @@ declare namespace singleCell {
      *  spatial spot.
      * 
      * + default value Is ``'paper'``.
+     * @param barcode the raw reference barcode to the spots
+     * 
+     * + default value Is ``null``.
      * @param env -
      * 
      * + default value Is ``null``.
    */
-   function spatial_annotations(x: any, y: any, label: any, colors?: any, env?: object): object;
+   function spatial_annotations(x: any, y: any, label: any, colors?: any, barcode?: any, env?: object): object;
    /**
     * export the spatial maps data
     * 

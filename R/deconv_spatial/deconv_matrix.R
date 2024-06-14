@@ -28,7 +28,10 @@ const deconv_spatial = function(expr_mat, n_layers = 4, top_genes = 1000, alpha 
                                 beta = 0.5,
                                 iteration = 150,
                                 prefix = "class",
-                                make_gene_filters = TRUE) {
+                                make_gene_filters = TRUE, 
+                                filter_range = [0.05, 0.95],
+                                unify_scale = 10,
+                                log_norm = TRUE) {
 
     if (is.character(expr_mat)) {
         # read the matrix file
@@ -39,7 +42,11 @@ const deconv_spatial = function(expr_mat, n_layers = 4, top_genes = 1000, alpha 
         expr_mat = geneExpression::load.expr(expr_mat);
     }
 
-    let corpus = STCorpus(expr_mat, make_gene_filters = make_gene_filters);
+    let corpus = expr_mat |> STCorpus(make_gene_filters = make_gene_filters, 
+        min = filter_range[1], 
+        max = filter_range[2],
+        unify = unify_scale, logNorm = log_norm
+    );
     let LDA = fitLDA(corpus, k = n_layers, alpha = alpha,
             beta = beta,
             loops = iteration);
