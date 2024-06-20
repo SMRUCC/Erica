@@ -44,8 +44,10 @@ declare namespace Erica {
    */
    function plot_class(spots_class: any, colors?: any, title?: any, padding?: any): object;
    /**
+     * @param x default value Is ``null``.
+     * @param y default value Is ``null``.
    */
-   function plot_pie(cell_layers: any): object;
+   function plot_pie(cell_layers: any, x?: any, y?: any): object;
    /**
    */
    function UniProtKeywords(): object;

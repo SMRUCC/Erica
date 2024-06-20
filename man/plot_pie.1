@@ -1,15 +1,29 @@
-﻿.TH PLOT_PIE 1 2024-Jun "" "Plot the scatter pie data Display the cell distribution"
+﻿.TH PLOT_PIE 1 2024-Jun "" "Plot the scatter pie data"
 .SH NAME
-plot_pie \- plot_pie(cell.layers)
+plot_pie \- plot_pie(cell.layers,
+    <i>x</i> = <span style='color: blue !important;'>NULL</span>,
+    <i>y</i> = <span style='color: blue !important;'>NULL</span>)
 .SH SYNOPSIS
-\fIplot_pie(cell.layers)\fR
+\fIplot_pie(cell.layers,
+    <i>x</i> = <span style='color: blue !important;'>NULL</span>,
+    <i>y</i> = <span style='color: blue !important;'>NULL</span>)\fR
 .SH OPTIONS
 .PP
 \fBcell.layers\fB \fR\- . 
 .PP
+.PP
+\fBx\fB \fR\- NULL. the x axis for draw a pie, could be x scan location of the spatial data or x dimension of the single cells umap embedding result.
+.PP
+.PP
+\fBy\fB \fR\- NULL. the y axis for draw a pie, could be y scan location of the spatial data or y dimension of the single cells umap embedding result.
+.PP
+.SH DETAILS
+.PP
+Display the cell/spot class distribution
+.PP
 .SH FILES
 .PP
-SMRUCC/R#.declare_function.plot_pie at pie.R:line 7
+SMRUCC/R#.declare_function.plot_pie at pie.R:line 11
 .PP
 .SH COPYRIGHT
 Copyright © xieguigang, MIT Licensed 2024
