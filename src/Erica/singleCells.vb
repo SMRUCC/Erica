@@ -27,6 +27,14 @@ Public Module singleCells
         Dim y = spots.Select(Function(a) a.y).ToArray
         Dim colors = spots.Select(Function(a) a.color).ToArray
         Dim clusters = spots.Select(Function(a) a.label).ToArray
+        Dim hasBarcode As Boolean = spots.Any(Function(c) Not c.barcode.StringEmpty(, True))
+        Dim cell_labels As String() = Nothing
+
+        If hasBarcode Then
+            cell_labels = spots _
+                .Select(Function(c) c.barcode) _
+                .ToArray
+        End If
 
         Return New dataframe With {
             .columns = New Dictionary(Of String, Array) From {
@@ -34,7 +42,8 @@ Public Module singleCells
                 {"y", y},
                 {"class", clusters},
                 {"color", colors}
-            }
+            },
+            .rownames = cell_labels
         }
     End Function
 
