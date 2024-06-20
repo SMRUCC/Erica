@@ -68,11 +68,14 @@ const deconv_spatial = function(expr_mat, n_layers = 4, top_genes = 1000, alpha 
 
 #' Create spot class annotation
 #' 
+#' @details use the max value column index as the cell class label
+#' 
 const __spot_class = function(cell_layers, color = "paper") {
     let spatial = NULL;
 
     print("extract the spatial spot information...");
 
+    # the row names is the single cell labels or spatial coordination x,y
     cell_layers = as.data.frame(cell_layers);
     spatial = rownames(cell_layers);
     spatial = strsplit(spatial, ",");
@@ -83,14 +86,17 @@ const __spot_class = function(cell_layers, color = "paper") {
     let labels = colnames(cell_layers);
 
     print("extract the cell labels for each spatial spots...");
+    print(cell_layers, max.print = 13);
 
+    # gets the class label index
     labels = cell_layers 
     |> as.list(byrow = TRUE) 
-    |> sapply(function(r) {
-        which.max(as.numeric(unlist(r)));
-    });
+    # each row in the cell layers dataframe is the probability of the cell spot
+    # was assigned to the column class
+    # use the max probability column index as the cell spot row its class label
+    |> sapply(r -> which.max(as.numeric(unlist(r))));
     
-    print("cell labels for each spatial spot:");
+    print("cell class index for each spatial spot:");
     print(labels);
 
     print("generates the spatial spots annotation outputs...");
@@ -98,7 +104,11 @@ const __spot_class = function(cell_layers, color = "paper") {
     spatial_annotations(
         x = as.numeric(x),
         y = as.numeric(y),
+        # colnames is the class id
         label = colnames(cell_layers)[labels],
-        colors = color
+        colors = color,
+        # rownames is the unique reference label of each 
+        # cell spot data
+        barcode = rownames(cell_layers)
     );
 }
