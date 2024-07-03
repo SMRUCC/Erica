@@ -49,5 +49,16 @@
 const single_nmf = function(x, dims = 9, max_iters = 1000, n_threads = 8) {
     options(n_threads = n_threads);
 
+    let labels = `N_${rownames(x)}`;
+    let embedding = nmf(x, rank = dims,  max_iterations = max_iters);  
 
+    # embedding result
+    let w = as.data.frame(embedding$W);
+    let h = as.data.frame(embedding$H);
+
+    rownames(w) <- labels;
+    rownames(h) <- `x${1:ncol(w)}`;
+
+    list(embedding = w, features = h, 
+        cost = embedding$cost);
 }
