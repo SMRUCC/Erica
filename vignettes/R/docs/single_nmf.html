@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><p>Non-negative Matrix Factorization (NMF) on single cells data</p></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <link rel="stylesheet" type="text/css" href="../../_assets/page.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <table style="width: 100%;">
+            <tr>
+                <td>single_nmf {Erica}</td>
+                <td style="text-align: right;">R Documentation</td>
+            </tr>
+        </table>
+
+        <h2><p>Non-negative Matrix Factorization (NMF) on single cells data</p></h2>
+
+        <h3>Description</h3>
+
+        
+
+        <h3>Usage</h3>
+
+        <div style="width: 100%; padding-left: 3%; color: black;">
+            <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>single_nmf</strong>(<i>x</i>,
+    <i>dims</i> = <span style='color: green;'>9</span>,
+    <i>max.iters</i> = <span style='color: green;'>1000</span>,
+    <i>n.threads</i> = <span style='color: green;'>8</span>);</code></pre>
+        </div>
+
+        <h3>Arguments</h3>
+
+        <table>
+            
+        </table>
+
+
+        <h3 style="display: block;">Details</h3>
+
+        <p>NMF has become a powerful tool in the analysis of single-cell genomics data due to its ability to decompose high-dimensional data into a lower-dimensional representation that captures biologically meaningful patterns. In the context of single-cell transcriptomics, for example, NMF can be used to identify distinct cell types or states by clustering the gene expression profiles of individual cells. Here's how NMF is applied in single-cell genomics data analysis: 1. <strong>Data Representation<em></em>: Single-cell transcriptomic data is typically presented as a matrix, where rows represent genes and columns represent individual cells. The matrix entries denote the expression levels of genes in cells, often in the form of counts or normalized expression values. 2. <em></em>Dimensionality Reduction<em></em>: Due to the high dimensionality of single-cell data (tens of thousands of genes per cell), dimensionality reduction techniques like NMF are essential to extract relevant information. NMF reduces the gene expression matrix to a lower-dimensional space by factorizing it into two non-negative matrices: W (basis matrix) and H (coefficients matrix). The basis matrix W represents underlying features (potential cell types or states), while the coefficient matrix H captures the membership strength of each cell to these features. 3. <em></em>Biological Interpretation<em></em>: The non-negative nature of NMF ensures that the identified features (rows in W) and the cell memberships (columns in H) are composed of non-negative combinations of genes and cells, respectively. This property makes the results more interpretable in a biological context, as the features often correspond to distinct biological states or pathways. 4. <em></em>Clustering and Subtyping<em></em>: NMF can be used to cluster cells based on their expression profiles. The columns of the coefficient matrix H can be treated as cluster assignments, with each column representing a cell's membership in the discovered features. This allows researchers to identify and annotate different cell types or states present in the dataset. 5. <em></em>Differential Expression Analysis<em></em>: By comparing the basis matrices obtained from NMF applied to different conditions or treatments, researchers can identify differentially expressed genes that are associated with specific cell states or transitions. 6. <em></em>Imputation and Noise Reduction<em></em>: NMF can also be used to impute missing values in single-cell data and reduce noise, improving the overall quality of the dataset. 7. <em></em>Integration and Alignment</strong>: NMF can be applied to integrate data from different samples or experiments, aligning them to a common feature space and facilitating comparison across conditions. In summary, NMF is a versatile method for the analysis of single-cell genomics data, providing a means to uncover biologically relevant patterns, reduce noise, and integrate information across different samples or conditions. Its non-negative constraints make it particularly suitable for gene expression data, where the interpretation of the factors corresponds to underlying biological processes.</p>
+
+        <h3 style="display: block">Authors</h3>
+
+        xieguigang
+
+        <h3>Value</h3>
+
+        This function has no value returns.
+
+        <h3 style="display: none;">Examples</h3>
+
+        
+
+        <hr />
+        <div style="text-align: center;">[Package <em>Erica</em> version 0.1.0 <a
+                href="../Erica.html">Index</a>]
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript" src="../../_assets/R_syntax.js"></script>
+<script type="text/javascript" src="../../_assets/highlights.js"></script>
+<script type="text/javascript">r_highlights("example_r");</script>
+
+</html>

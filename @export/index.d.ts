@@ -49,6 +49,18 @@ declare namespace Erica {
    */
    function plot_pie(cell_layers: any, x?: any, y?: any): object;
    /**
+     * @param dims default value Is ``9``.
+     * @param max_iters default value Is ``1000``.
+     * @param n_threads default value Is ``8``.
+   */
+   function single_nmf(x: any, dims?: any, max_iters?: any, n_threads?: any): object;
+   /**
    */
    function UniProtKeywords(): object;
+   /**
+     * @param dims default value Is ``9``.
+     * @param batch_size default value Is ``100``.
+     * @param iterations default value Is ``1000``.
+   */
+   function vae_embedding(x: any, dims?: any, batch_size?: any, iterations?: any): object;
 }
