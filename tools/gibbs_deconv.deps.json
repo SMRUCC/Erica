@@ -750,7 +750,10 @@
           "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
         },
         "runtime": {
-          "Microsoft.VisualBasic.Data.NLP.dll": {}
+          "Microsoft.VisualBasic.Data.NLP.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": ""
+          }
         }
       },
       "Microsoft.VisualBasic.Math.Core/5.0.1.2389": {
@@ -758,7 +761,10 @@
           "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
         },
         "runtime": {
-          "Microsoft.VisualBasic.Math.Core.dll": {}
+          "Microsoft.VisualBasic.Math.Core.dll": {
+            "assemblyVersion": "5.0.1.2389",
+            "fileVersion": ""
+          }
         }
       },
       "Microsoft.VisualBasic.Math.Statistics/1.0.0": {
@@ -767,7 +773,10 @@
           "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
         },
         "runtime": {
-          "Microsoft.VisualBasic.Math.Statistics.dll": {}
+          "Microsoft.VisualBasic.Math.Statistics.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": ""
+          }
         }
       },
       "Microsoft.VisualBasic.Runtime/5.0.1.2389": {
@@ -788,7 +797,10 @@
           "System.Text.Encodings.Web": "6.0.0"
         },
         "runtime": {
-          "Microsoft.VisualBasic.Runtime.dll": {}
+          "Microsoft.VisualBasic.Runtime.dll": {
+            "assemblyVersion": "5.0.1.2389",
+            "fileVersion": ""
+          }
         }
       },
       "SMRUCC.genomics.Analysis.HTS.DataFrame/1.0.0": {
@@ -801,7 +813,10 @@
           "System.Drawing.Primitives": "4.3.0"
         },
         "runtime": {
-          "SMRUCC.genomics.Analysis.HTS.DataFrame.dll": {}
+          "SMRUCC.genomics.Analysis.HTS.DataFrame.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": ""
+          }
         }
       },
       "SMRUCC.genomics.Analysis.SingleCell.STdeconvolve/1.0.0": {
@@ -814,7 +829,10 @@
           "System.Configuration.ConfigurationManager": "6.0.1"
         },
         "runtime": {
-          "SMRUCC.genomics.Analysis.SingleCell.STdeconvolve.dll": {}
+          "SMRUCC.genomics.Analysis.SingleCell.STdeconvolve.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": ""
+          }
         }
       },
       "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner/1.0.0": {
@@ -824,7 +842,10 @@
           "System.Drawing.Primitives": "4.3.0"
         },
         "runtime": {
-          "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.dll": {}
+          "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": ""
+          }
         }
       },
       "Microsoft.VisualBasic.Data.NLP.Reference/1.0.0.0": {
