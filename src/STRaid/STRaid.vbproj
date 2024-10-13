@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <RootNamespace>STRaid</RootNamespace>
-    <TargetFrameworks>net6.0-windows;net6.0;net48</TargetFrameworks>
+    <TargetFrameworks>net8.0-windows;net8.0;net48</TargetFrameworks>
     <Title>Spatial transcriptomics h5ad data reader</Title>
     <Platforms>AnyCPU;x64</Platforms>
     <Configurations>Debug;Release;Rsharp_app_release</Configurations>
