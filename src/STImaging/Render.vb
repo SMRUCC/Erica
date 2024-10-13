@@ -8,6 +8,34 @@ Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Math
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports STRaid
+Imports Microsoft.VisualBasic.Imaging.Driver
+
+
+#If NET48 Then
+Imports Pen = System.Drawing.Pen
+Imports Pens = System.Drawing.Pens
+Imports Brush = System.Drawing.Brush
+Imports Font = System.Drawing.Font
+Imports Brushes = System.Drawing.Brushes
+Imports SolidBrush = System.Drawing.SolidBrush
+Imports DashStyle = System.Drawing.Drawing2D.DashStyle
+Imports Image = System.Drawing.Image
+Imports Bitmap = System.Drawing.Bitmap
+Imports GraphicsPath = System.Drawing.Drawing2D.GraphicsPath
+Imports FontStyle = System.Drawing.FontStyle
+#Else
+Imports Pen = Microsoft.VisualBasic.Imaging.Pen
+Imports Pens = Microsoft.VisualBasic.Imaging.Pens
+Imports Brush = Microsoft.VisualBasic.Imaging.Brush
+Imports Font = Microsoft.VisualBasic.Imaging.Font
+Imports Brushes = Microsoft.VisualBasic.Imaging.Brushes
+Imports SolidBrush = Microsoft.VisualBasic.Imaging.SolidBrush
+Imports DashStyle = Microsoft.VisualBasic.Imaging.DashStyle
+Imports Image = Microsoft.VisualBasic.Imaging.Image
+Imports Bitmap = Microsoft.VisualBasic.Imaging.Bitmap
+Imports GraphicsPath = Microsoft.VisualBasic.Imaging.GraphicsPath
+Imports FontStyle = Microsoft.VisualBasic.Imaging.FontStyle
+#End If
 
 Public Class Render
 
@@ -177,12 +205,12 @@ Public Class Render
             img = render.RenderRasterImage(layer, Me.dimension)
         End If
 
-        Dim canvas = New Size(img.Width * 5, img.Height * 5).CreateGDIDevice(filled:=Color.Black)
+        Dim canvas = DriverLoad.CreateGraphicsDevice(New Size(img.Width * 5, img.Height * 5), Color.Black)
 
         Call canvas.DrawImage(img, 0, 0, canvas.Width, canvas.Height)
         Call canvas.Flush()
 
-        img = canvas.ImageResource
+        img = DirectCast(canvas, GdiRasterGraphics).ImageResource
 
         For level As Integer = 0 To 10
             img = GaussBlur.GaussBlur(img)

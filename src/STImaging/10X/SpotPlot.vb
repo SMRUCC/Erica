@@ -7,6 +7,34 @@ Imports Microsoft.VisualBasic.Imaging.Drawing2D
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.HeatMap
 Imports Microsoft.VisualBasic.Imaging.Math2D
+Imports Microsoft.VisualBasic.Imaging.Driver
+
+
+#If NET48 Then
+Imports Pen = System.Drawing.Pen
+Imports Pens = System.Drawing.Pens
+Imports Brush = System.Drawing.Brush
+Imports Font = System.Drawing.Font
+Imports Brushes = System.Drawing.Brushes
+Imports SolidBrush = System.Drawing.SolidBrush
+Imports DashStyle = System.Drawing.Drawing2D.DashStyle
+Imports Image = System.Drawing.Image
+Imports Bitmap = System.Drawing.Bitmap
+Imports GraphicsPath = System.Drawing.Drawing2D.GraphicsPath
+Imports FontStyle = System.Drawing.FontStyle
+#Else
+Imports Pen = Microsoft.VisualBasic.Imaging.Pen
+Imports Pens = Microsoft.VisualBasic.Imaging.Pens
+Imports Brush = Microsoft.VisualBasic.Imaging.Brush
+Imports Font = Microsoft.VisualBasic.Imaging.Font
+Imports Brushes = Microsoft.VisualBasic.Imaging.Brushes
+Imports SolidBrush = Microsoft.VisualBasic.Imaging.SolidBrush
+Imports DashStyle = Microsoft.VisualBasic.Imaging.DashStyle
+Imports Image = Microsoft.VisualBasic.Imaging.Image
+Imports Bitmap = Microsoft.VisualBasic.Imaging.Bitmap
+Imports GraphicsPath = Microsoft.VisualBasic.Imaging.GraphicsPath
+Imports FontStyle = Microsoft.VisualBasic.Imaging.FontStyle
+#End If
 
 Public Class SpotPlot : Inherits Plot
 
@@ -24,7 +52,7 @@ Public Class SpotPlot : Inherits Plot
 
     Protected Overrides Sub PlotInternal(ByRef g As IGraphics, canvas As GraphicsRegion)
         Dim size As New SizeF(theme.pointSize, theme.pointSize)
-        Dim image As Graphics2D = dimension_size.Scale(theme.pointSize).CreateGDIDevice(filled:=Color.Transparent)
+        Dim image As IGraphics = DriverLoad.CreateGraphicsDevice(dimension_size.Scale(theme.pointSize), Color.Transparent)
         Dim expr0 As New DoubleRange(From spot As PixelData In spots Select spot.Scale)
         Dim index As New DoubleRange(0, mapLevels - 1)
         Dim colors As SolidBrush() = Designer.GetBrushes(theme.colorSet, mapLevels)
@@ -39,6 +67,6 @@ Public Class SpotPlot : Inherits Plot
         Next
 
         Call image.Flush()
-        Call g.DrawImage(image.ImageResource, canvas.PlotRegion)
+        Call g.DrawImage(DirectCast(image, GdiRasterGraphics).ImageResource, canvas.PlotRegion)
     End Sub
 End Class
