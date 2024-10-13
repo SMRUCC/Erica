@@ -11,6 +11,33 @@ Imports SMRUCC.Rsharp.Runtime.Interop
 Imports SMRUCC.Rsharp.Runtime.Vectorization
 Imports STRaid
 Imports STRaid.HDF5
+Imports RInternal = SMRUCC.Rsharp.Runtime.Internal
+
+#If NET48 Then
+Imports Pen = System.Drawing.Pen
+Imports Pens = System.Drawing.Pens
+Imports Brush = System.Drawing.Brush
+Imports Font = System.Drawing.Font
+Imports Brushes = System.Drawing.Brushes
+Imports SolidBrush = System.Drawing.SolidBrush
+Imports DashStyle = System.Drawing.Drawing2D.DashStyle
+Imports Image = System.Drawing.Image
+Imports Bitmap = System.Drawing.Bitmap
+Imports GraphicsPath = System.Drawing.Drawing2D.GraphicsPath
+Imports FontStyle = System.Drawing.FontStyle
+#Else
+Imports Pen = Microsoft.VisualBasic.Imaging.Pen
+Imports Pens = Microsoft.VisualBasic.Imaging.Pens
+Imports Brush = Microsoft.VisualBasic.Imaging.Brush
+Imports Font = Microsoft.VisualBasic.Imaging.Font
+Imports Brushes = Microsoft.VisualBasic.Imaging.Brushes
+Imports SolidBrush = Microsoft.VisualBasic.Imaging.SolidBrush
+Imports DashStyle = Microsoft.VisualBasic.Imaging.DashStyle
+Imports Image = Microsoft.VisualBasic.Imaging.Image
+Imports Bitmap = Microsoft.VisualBasic.Imaging.Bitmap
+Imports GraphicsPath = Microsoft.VisualBasic.Imaging.GraphicsPath
+Imports FontStyle = Microsoft.VisualBasic.Imaging.FontStyle
+#End If
 
 ''' <summary>
 ''' single cell data toolkit
@@ -19,7 +46,7 @@ Imports STRaid.HDF5
 Public Module singleCells
 
     Sub Main()
-        Call Internal.Object.Converts.addHandler(GetType(SpotAnnotation()), AddressOf SpotAnnotationMatrix)
+        Call RInternal.Object.Converts.addHandler(GetType(SpotAnnotation()), AddressOf SpotAnnotationMatrix)
     End Sub
 
     Private Function SpotAnnotationMatrix(spots As SpotAnnotation(), args As list, env As Environment) As dataframe
@@ -75,7 +102,7 @@ Public Module singleCells
         ElseIf TypeOf h5ad Is String Then
             Return DirectCast(h5ad, String).DoCall(AddressOf LoadDisk.LoadRawExpressionMatrix)
         Else
-            Return Internal.debug.stop({
+            Return RInternal.debug.stop({
                 $"A file path or h5ad anndata is required!",
                 $"given: {h5ad.GetType.FullName}"
             }, env)
@@ -231,13 +258,13 @@ Public Module singleCells
         Dim barcodes As String() = CLRVector.asCharacter(barcode)
 
         If px.Length <> py.Length Then
-            Return Internal.debug.stop($"the vector size of the spatial information x({px.Length}) should be matched with y({py.Length})!", env)
+            Return RInternal.debug.stop($"the vector size of the spatial information x({px.Length}) should be matched with y({py.Length})!", env)
         End If
         If labels.Length <> px.Length AndAlso labels.Length > 1 Then
-            Return Internal.debug.stop($"the class label information({labels.Length}) is not matched with the spatial information [x,y]({px.Length})!", env)
+            Return RInternal.debug.stop($"the class label information({labels.Length}) is not matched with the spatial information [x,y]({px.Length})!", env)
         End If
         If Not barcodes.IsNullOrEmpty AndAlso barcodes.Length <> px.Length Then
-            Return Internal.debug.stop($"the vector size of the spatial information x,y({px.Length}) should be matched with the spot barcodes({barcodes.Length})!", env)
+            Return RInternal.debug.stop($"the vector size of the spatial information x,y({px.Length}) should be matched with the spot barcodes({barcodes.Length})!", env)
         End If
 
         If colorSet.Length = 1 Then

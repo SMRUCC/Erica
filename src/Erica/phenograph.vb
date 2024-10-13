@@ -65,6 +65,33 @@ Imports SMRUCC.Rsharp.Runtime.Internal.Object
 Imports SMRUCC.Rsharp.Runtime.Interop
 Imports SMRUCC.Rsharp.Runtime.Vectorization
 Imports Matrix = SMRUCC.genomics.Analysis.HTS.DataFrame.Matrix
+Imports RInternal = SMRUCC.Rsharp.Runtime.Internal
+
+#If NET48 Then
+Imports Pen = System.Drawing.Pen
+Imports Pens = System.Drawing.Pens
+Imports Brush = System.Drawing.Brush
+Imports Font = System.Drawing.Font
+Imports Brushes = System.Drawing.Brushes
+Imports SolidBrush = System.Drawing.SolidBrush
+Imports DashStyle = System.Drawing.Drawing2D.DashStyle
+Imports Image = System.Drawing.Image
+Imports Bitmap = System.Drawing.Bitmap
+Imports GraphicsPath = System.Drawing.Drawing2D.GraphicsPath
+Imports FontStyle = System.Drawing.FontStyle
+#Else
+Imports Pen = Microsoft.VisualBasic.Imaging.Pen
+Imports Pens = Microsoft.VisualBasic.Imaging.Pens
+Imports Brush = Microsoft.VisualBasic.Imaging.Brush
+Imports Font = Microsoft.VisualBasic.Imaging.Font
+Imports Brushes = Microsoft.VisualBasic.Imaging.Brushes
+Imports SolidBrush = Microsoft.VisualBasic.Imaging.SolidBrush
+Imports DashStyle = Microsoft.VisualBasic.Imaging.DashStyle
+Imports Image = Microsoft.VisualBasic.Imaging.Image
+Imports Bitmap = Microsoft.VisualBasic.Imaging.Bitmap
+Imports GraphicsPath = Microsoft.VisualBasic.Imaging.GraphicsPath
+Imports FontStyle = Microsoft.VisualBasic.Imaging.FontStyle
+#End If
 
 ''' <summary>
 ''' PhenoGraph algorithm
@@ -120,7 +147,7 @@ Module phenograph
         If y Is Nothing Then
             Return p1
         ElseIf score Is Nothing Then
-            Return Internal.debug.stop("analysis of two expression data matrix required of the 'score' metric not null!", env)
+            Return RInternal.debug.stop("analysis of two expression data matrix required of the 'score' metric not null!", env)
         Else
             p2 = y.phenograph1(k, link_cutoff, knn_cutoff, score, subcomponents_filter)
         End If
@@ -429,7 +456,7 @@ Module phenograph
         Dim axis_i As String = CLRVector.asCharacter(axis).FirstOrDefault("x")
 
         If Not (axis_i = "x" OrElse axis_i = "y") Then
-            Return Internal.debug.stop("the axis value for the mapping should be value x or y!", env)
+            Return RInternal.debug.stop("the axis value for the mapping should be value x or y!", env)
         End If
 
         Dim spots As New List(Of DataFrameRow)
