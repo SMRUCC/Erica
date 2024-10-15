@@ -6,6 +6,8 @@ Imports Microsoft.VisualBasic.Data.GraphTheory.GridGraph
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.Drawing2D
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.HeatMap
+Imports Microsoft.VisualBasic.MIME.Html.CSS
+Imports Microsoft.VisualBasic.MIME.Html.Render
 
 ''' <summary>
 ''' A spatial spot data that contains [x,y], expression data and barcode tag data
@@ -47,7 +49,8 @@ Public Class SpotHeatMap : Inherits HeatMapPlot
     Protected Overrides Sub PlotInternal(ByRef g As IGraphics, canvas As GraphicsRegion)
         Dim ncellsWidth As Integer = dimension_size.Width / spotSize.Width
         Dim ncellsHeight As Integer = dimension_size.Height / spotSize.Height
-        Dim rect As Rectangle = canvas.PlotRegion
+        Dim css As CSSEnvirnment = g.LoadEnvironment
+        Dim rect As Rectangle = canvas.PlotRegion(css)
         Dim physicalCellWidth As Double = rect.Width / ncellsWidth
         Dim physicalCellHeight As Double = rect.Height / ncellsHeight
         Dim physicalCell As New Size(physicalCellWidth, physicalCellHeight)

@@ -8,6 +8,10 @@ Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.HeatMap
 Imports Microsoft.VisualBasic.Imaging.Math2D
 Imports Microsoft.VisualBasic.Imaging.Driver
+Imports Microsoft.VisualBasic.MIME.Html.CSS
+Imports Microsoft.VisualBasic.MIME.Html.Render
+
+
 
 
 #If NET48 Then
@@ -56,6 +60,7 @@ Public Class SpotPlot : Inherits Plot
         Dim expr0 As New DoubleRange(From spot As PixelData In spots Select spot.Scale)
         Dim index As New DoubleRange(0, mapLevels - 1)
         Dim colors As SolidBrush() = Designer.GetBrushes(theme.colorSet, mapLevels)
+        Dim css As CSSEnvirnment = g.LoadEnvironment
 
         For Each spot As PixelData In spots
             Dim pos As New PointF(spot.X * theme.pointSize, spot.Y * theme.pointSize)
@@ -67,6 +72,6 @@ Public Class SpotPlot : Inherits Plot
         Next
 
         Call image.Flush()
-        Call g.DrawImage(DirectCast(image, GdiRasterGraphics).ImageResource, canvas.PlotRegion)
+        Call g.DrawImage(DirectCast(image, GdiRasterGraphics).ImageResource, canvas.PlotRegion(css))
     End Sub
 End Class
