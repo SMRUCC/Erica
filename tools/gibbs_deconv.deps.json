@@ -194,7 +194,6 @@
           }
         }
       },
-      "System.Data.DataSetExtensions/4.6.0-preview3.19128.7": {},
       "System.Diagnostics.Debug/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.1",
@@ -742,7 +741,6 @@
       "Microsoft.VisualBasic.Runtime/5.0.1.2389": {
         "dependencies": {
           "System.Composition": "8.0.0",
-          "System.Data.DataSetExtensions": "4.6.0-preview3.19128.7",
           "System.Drawing.Primitives": "4.3.0",
           "System.IO.Compression": "4.3.0",
           "System.Linq.Queryable": "4.3.0",
@@ -1073,13 +1071,6 @@
       "sha512": "sha512-gPYFPDyohW2gXNhdQRSjtmeS6FymL2crg4Sral1wtvEJ7DUqFCDWDVbbLobASbzxfic8U1hQEdC7hmg9LHncMw==",
       "path": "system.configuration.configurationmanager/8.0.1",
       "hashPath": "system.configuration.configurationmanager.8.0.1.nupkg.sha512"
-    },
-    "System.Data.DataSetExtensions/4.6.0-preview3.19128.7": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-ZFJYYi41Wf4xlFKuuRUblw8yThgzBTYeZTs7eGU7sDiu+X+BmeIdT3pstCrmLpDyflDIBuKX1VYmBCGKo14h6w==",
-      "path": "system.data.datasetextensions/4.6.0-preview3.19128.7",
-      "hashPath": "system.data.datasetextensions.4.6.0-preview3.19128.7.nupkg.sha512"
     },
     "System.Diagnostics.Debug/4.3.0": {
       "type": "package",
