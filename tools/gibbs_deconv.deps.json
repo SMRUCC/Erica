@@ -677,7 +677,8 @@
       "Microsoft.VisualBasic.Data.NLP/1.0.0": {
         "dependencies": {
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
+          "Microsoft.VisualBasic.Runtime": "5.0.1.2389",
+          "System.Numerics.Vectors": "4.6.0"
         },
         "runtime": {
           "Microsoft.VisualBasic.Data.NLP.dll": {
@@ -766,7 +767,8 @@
           "Microsoft.VisualBasic.Runtime": "5.0.1.2389",
           "SMRUCC.genomics.Analysis.HTS.DataFrame": "1.0.0",
           "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner": "1.0.0",
-          "System.Configuration.ConfigurationManager": "8.0.1"
+          "System.Configuration.ConfigurationManager": "8.0.1",
+          "System.Numerics.Vectors": "4.6.0"
         },
         "runtime": {
           "SMRUCC.genomics.Analysis.SingleCell.STdeconvolve.dll": {
