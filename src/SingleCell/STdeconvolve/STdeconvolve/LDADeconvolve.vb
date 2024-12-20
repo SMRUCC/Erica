@@ -132,11 +132,7 @@ Public Module LDADeconvolve
                         ' probabilities
                         Return New DataFrameRow With {
                             .geneID = corpus.m_pixels(i),
-                            .experiments = dist _
-                                .Select(Function(d)
-                                            Return If(d < 0, 0, std.Sqrt(d))
-                                        End Function) _
-                                .ToArray
+                            .experiments = dist
                         }
                     End Function) _
             .ToArray
