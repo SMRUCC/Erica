@@ -60,6 +60,8 @@ Public Module LDADeconvolve
             ' reduce the gene features in pixels [5% ~ 95%]
             matrix = matrix.Project(
                 sampleNames:=matrix.sampleID - matrix.GeneFilter(min, max))
+        Else
+            Call VBDebugger.EchoLine($"[make_gene_filters off] no features will be filter out!")
         End If
 
         ' and then unify the count matrix via log scale and a given unify levels

@@ -1,10 +1,11 @@
 ﻿Imports System.Runtime.CompilerServices
+Imports Microsoft.VisualBasic.ApplicationServices.Terminal.ProgressBar.Tqdm
 Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.ComponentModel.Ranges.Model
 Imports Microsoft.VisualBasic.Language
 Imports Microsoft.VisualBasic.Math.LinearAlgebra
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
-Imports stdNum = System.Math
+Imports std = System.Math
 
 Public Module WordVector
 
@@ -50,6 +51,8 @@ Public Module WordVector
         Dim totalGenes As Integer = matrix.sampleID.Length
         Dim totalPixels As Integer = matrix.size
 
+        Call VBDebugger.EchoLine($"filter out features that less than {pmin * 100}% or greater than {pmax * 100}%...")
+
         For i As Integer = 0 To totalGenes - 1
             Dim v As Vector = matrix.sample(i)
             Dim zero As Integer = (v <= 0.0).Sum
@@ -60,6 +63,8 @@ Public Module WordVector
                 geneIds += matrix.sampleID(i)
             End If
         Next
+
+        Call VBDebugger.EchoLine($"   - get {geneIds.Count} features to removes!")
 
         Return geneIds.Indexing
     End Function
@@ -84,14 +89,14 @@ Public Module WordVector
             .tag = matrix.tag
         }
 
-        For i As Integer = 0 To matrix.sampleID.Length - 1
+        For Each i As Integer In TqdmWrapper.Range(0, matrix.sampleID.Length)
             v = matrix.sample(i)
 
             If log Then
                 ' avoid negative value in count matrix unify procedure
                 v = (From x As Double
                      In v
-                     Let ln As Double = If(x <= 1, 0, stdNum.Log(x))
+                     Let ln As Double = If(x <= 1, 0, std.Log(x))
                      Select ln).AsVector
             End If
 
