@@ -4,7 +4,7 @@ Imports Microsoft.VisualBasic.Data.NLP.LDA
 Imports Microsoft.VisualBasic.Math.LinearAlgebra
 Imports Microsoft.VisualBasic.Parallel
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
-Imports stdNum = System.Math
+Imports std = System.Math
 
 ''' <summary>
 ''' ## Reference-free cell-type deconvolution of multi-cellular pixel-resolution spatially resolved transcriptomics data
@@ -123,7 +123,7 @@ Public Module LDADeconvolve
         Dim topicMap = LdaInterpreter.translate(
             phi:=phi,
             vocabulary:=corpus.Vocabulary,
-            limit:=stdNum.Min(topGenes, corpus.VocabularySize)
+            limit:=std.Min(topGenes, corpus.VocabularySize)
         )
         Dim t As DataFrameRow() = LDA.Theta _
             .Select(Function(dist, i)
@@ -132,7 +132,11 @@ Public Module LDADeconvolve
                         ' probabilities
                         Return New DataFrameRow With {
                             .geneID = corpus.m_pixels(i),
-                            .experiments = dist
+                            .experiments = dist _
+                                .Select(Function(d)
+                                            Return If(d < 0, 0, std.Sqrt(d))
+                                        End Function) _
+                                .ToArray
                         }
                     End Function) _
             .ToArray

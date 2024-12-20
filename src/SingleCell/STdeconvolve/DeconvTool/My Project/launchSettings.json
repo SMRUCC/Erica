@@ -2,8 +2,7 @@
   "profiles": {
     "DeconvTool": {
       "commandName": "Project",
-      "commandLineArgs": " ./test_msdata.csv --iteration 500 --layers 10 --top_genes 100000 --export ../gibbs_devonvolution --disable-gene-filters",
-      "workingDirectory": "E:\\biodeep\\component_deconvolution\\data\\mock"
+      "commandLineArgs": "\"E:\\Erica\\src\\SingleCell\\demo\\HR2MSI mouse urinary bladder S096_top3.csv\" --export \"E:\\Erica\\test\\deconv\"   --layers 10 --n_threads 12"
     }
   }
 }
