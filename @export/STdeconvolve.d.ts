@@ -30,10 +30,12 @@ declare namespace STdeconvolve {
      * + default value Is ``0.5``.
      * @param loops 
      * + default value Is ``200``.
+     * @param n_threads 
+     * + default value Is ``null``.
      * @param env 
      * + default value Is ``null``.
    */
-   function fitLDA(spatialDoc: object, k: object, alpha?: number, beta?: number, loops?: object, env?: object): object;
+   function fitLDA(spatialDoc: object, k: object, alpha?: number, beta?: number, loops?: object, n_threads?: object, env?: object): object;
    /**
     * ### get deconvolve result matrix
     *  
