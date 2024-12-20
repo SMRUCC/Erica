@@ -22,7 +22,9 @@ Public Module WordVector
         Dim sample As New STCorpus
         Dim document As New List(Of String)
 
-        For Each pixel As DataFrameRow In matrix.expression
+        Call VBDebugger.EchoLine("make gene expression matrix documentaries...")
+
+        For Each pixel As DataFrameRow In TqdmWrapper.Wrap(matrix.expression)
             For i As Integer = 0 To geneIds.Length - 1
                 If pixel(i) > 0 Then
                     ' convert the unify levels as
