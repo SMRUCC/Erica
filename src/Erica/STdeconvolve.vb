@@ -73,12 +73,18 @@ Module STdeconvolve
                                     Optional alpha# = 2.0,
                                     Optional beta# = 0.5,
                                     Optional loops As Integer = 200,
+                                    Optional n_threads As Integer? = Nothing,
                                     Optional env As Environment = Nothing) As LdaGibbsSampler
+
+        If n_threads Is Nothing OrElse CInt(n_threads) < 1 Then
+            n_threads = env.globalEnvironment.options.getOption("n_threads", [default]:=32)
+        End If
 
         Return spatialDoc.LDAModelling(
             k, alpha, beta,
             iterations:=loops,
-            println:=env.WriteLineHandler
+            println:=env.WriteLineHandler,
+            n_threads:=n_threads
         )
     End Function
 
