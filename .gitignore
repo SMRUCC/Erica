@@ -393,3 +393,7 @@ tools/SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.xml
 test/deconv/single_cells.csv
 test/deconv/deconv_spatial.csv
 tools/gibbs_deconv.exe
+test/deconv/HR2MSI mouse urinary bladder S096_top3-STdeconvolve2.csv
+test/deconv/HR2MSI mouse urinary bladder S096_top3-STdeconvolve.csv
+test/deconv/parallel/HR2MSI mouse urinary bladder S096_top3-STdeconvolve2.csv
+test/deconv/parallel/HR2MSI mouse urinary bladder S096_top3-STdeconvolve.csv

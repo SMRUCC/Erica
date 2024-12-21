@@ -4,7 +4,7 @@ Imports Microsoft.VisualBasic.Data.NLP.LDA
 Imports Microsoft.VisualBasic.Math.LinearAlgebra
 Imports Microsoft.VisualBasic.Parallel
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
-Imports stdNum = System.Math
+Imports std = System.Math
 
 ''' <summary>
 ''' ## Reference-free cell-type deconvolution of multi-cellular pixel-resolution spatially resolved transcriptomics data
@@ -60,6 +60,8 @@ Public Module LDADeconvolve
             ' reduce the gene features in pixels [5% ~ 95%]
             matrix = matrix.Project(
                 sampleNames:=matrix.sampleID - matrix.GeneFilter(min, max))
+        Else
+            Call VBDebugger.EchoLine($"[make_gene_filters off] no features will be filter out!")
         End If
 
         ' and then unify the count matrix via log scale and a given unify levels
@@ -123,7 +125,7 @@ Public Module LDADeconvolve
         Dim topicMap = LdaInterpreter.translate(
             phi:=phi,
             vocabulary:=corpus.Vocabulary,
-            limit:=stdNum.Min(topGenes, corpus.VocabularySize)
+            limit:=std.Min(topGenes, corpus.VocabularySize)
         )
         Dim t As DataFrameRow() = LDA.Theta _
             .Select(Function(dist, i)
