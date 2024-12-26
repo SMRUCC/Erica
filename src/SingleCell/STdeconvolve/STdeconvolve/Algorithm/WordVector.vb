@@ -56,6 +56,7 @@ Public Module WordVector
         Call VBDebugger.EchoLine($"filter out features that less than {pmin * 100}% or greater than {pmax * 100}%...")
 
         For i As Integer = 0 To totalGenes - 1
+            ' each row is gene features
             Dim v As Vector = matrix.sample(i)
             Dim zero As Integer = (v <= 0.0).Sum
 
@@ -74,7 +75,9 @@ Public Module WordVector
     ''' <summary>
     ''' unify matrix by each feature columns
     ''' </summary>
-    ''' <param name="matrix"></param>
+    ''' <param name="matrix">
+    ''' spot should be in rows and gene features in columns
+    ''' </param>
     ''' <param name="unify"></param>
     ''' <returns></returns>
     <Extension>
@@ -91,6 +94,9 @@ Public Module WordVector
             .tag = matrix.tag
         }
 
+        ' 20241226 due to the reason of matrix data of single cells/spatial omics 
+        ' data analysis is spot in rows and features in columns
+        ' so we do scale on columns data
         For Each i As Integer In TqdmWrapper.Range(0, matrix.sampleID.Length)
             v = matrix.sample(i)
 
