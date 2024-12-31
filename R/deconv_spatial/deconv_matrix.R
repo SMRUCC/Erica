@@ -11,6 +11,8 @@ imports "STdeconvolve" from "Erica";
 #' @param n_layers an integer value for specific the cell layer class number
 #' @param top_genes set the number of top genes when export the expression matrix 
 #'    in each cell layers
+#' @param n_threads default null means controls the thread number for parallel sampling via
+#'    the r environment config: ``getOption("n_threads")``.
 #' 
 #' @return A tuple list object that contains multiple result object inside:
 #' 
@@ -31,7 +33,8 @@ const deconv_spatial = function(expr_mat, n_layers = 4, top_genes = 1000, alpha 
                                 make_gene_filters = TRUE, 
                                 filter_range = [0.05, 0.95],
                                 unify_scale = 10,
-                                log_norm = TRUE) {
+                                log_norm = TRUE,
+                                n_threads = NULL) {
 
     if (is.character(expr_mat)) {
         # read the matrix file
@@ -49,6 +52,7 @@ const deconv_spatial = function(expr_mat, n_layers = 4, top_genes = 1000, alpha 
     );
     let LDA = fitLDA(corpus, k = n_layers, alpha = alpha,
             beta = beta,
+            n_threads = n_threads,
             loops = iteration);
     let deconv = getBetaTheta(LDA, corpus, top.genes = top_genes);
 
