@@ -90,7 +90,12 @@ Public Class Deconvolve
         Dim expressions As New List(Of NamedValue(Of Dictionary(Of String, Double)))
         Dim rawIds As Index(Of String) = raw.sampleID.Indexing
         Dim dist As New List(Of (p As Vector, subset As String()))
-        Dim layers As Dictionary(Of String, DataFrameRow) = theta.expression.ToDictionary(Function(g) g.geneID)
+        Dim layers As Dictionary(Of String, DataFrameRow) = theta.expression _
+            .GroupBy(Function(a) a.geneID) _
+            .ToDictionary(Function(g) g.Key,
+                          Function(a)
+                              Return a.First
+                          End Function)
 
         For Each topic In topicMap
             Call dist.Add((topic.Values.AsVector, topic.Keys.ToArray))
