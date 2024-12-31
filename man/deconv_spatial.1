@@ -10,7 +10,8 @@ deconv_spatial \- deconv_spatial(expr.mat,
     <i>make.gene.filters</i> = <span style='color: blue !important;'>TRUE</span>,
     <i>filter.range</i> = [<span style='color: green;'>0.95</span>],
     <i>unify.scale</i> = <span style='color: green;'>10</span>,
-    <i>log.norm</i> = <span style='color: blue !important;'>TRUE</span>)
+    <i>log.norm</i> = <span style='color: blue !important;'>TRUE</span>,
+    <i>n.threads</i> = <span style='color: blue !important;'>NULL</span>)
 .SH SYNOPSIS
 \fIdeconv_spatial(expr.mat,
     <i>n.layers</i> = <span style='color: green;'>4</span>,
@@ -22,7 +23,8 @@ deconv_spatial \- deconv_spatial(expr.mat,
     <i>make.gene.filters</i> = <span style='color: blue !important;'>TRUE</span>,
     <i>filter.range</i> = [<span style='color: green;'>0.95</span>],
     <i>unify.scale</i> = <span style='color: green;'>10</span>,
-    <i>log.norm</i> = <span style='color: blue !important;'>TRUE</span>)\fR
+    <i>log.norm</i> = <span style='color: blue !important;'>TRUE</span>,
+    <i>n.threads</i> = <span style='color: blue !important;'>NULL</span>)\fR
 .SH OPTIONS
 .PP
 \fBexpr.mat\fB \fR\- . 
@@ -57,6 +59,9 @@ deconv_spatial \- deconv_spatial(expr.mat,
 .PP
 \fBlog.norm\fB \fR\- TRUE. 
 .PP
+.PP
+\fBn.threads\fB \fR\- NULL. 
+.PP
 .SH VALUE
 .PP
 A tuple list object that contains multiple result object inside: 1. single_cells: an expression matrix object that contains the single cell data 2. deconv_spatial: an expression matrix object that contains the cell layer deconvolution result data 3. cell_layers: the cell layer composition data 4. gibbs_LDA: the result of the LDA gibbs sampling result outputs, the top features in each cell class
@@ -67,7 +72,7 @@ the generated expression matrix object could be save as csv matrix by use the fu
 .PP
 .SH FILES
 .PP
-SMRUCC/R#.declare_function.deconv_spatial at deconv_matrix.R:line 27
+SMRUCC/R#.declare_function.deconv_spatial at deconv_matrix.R:line 29
 .PP
 .SH COPYRIGHT
 Copyright © xieguigang, MIT Licensed 2024
