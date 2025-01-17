@@ -24,7 +24,7 @@ Public Module WordVector
 
         Call VBDebugger.EchoLine("make gene expression matrix documentaries...")
 
-        For Each pixel As DataFrameRow In TqdmWrapper.Wrap(matrix.expression)
+        For Each pixel As DataFrameRow In TqdmWrapper.Wrap(matrix.expression, wrap_console:=App.EnableTqdm)
             For i As Integer = 0 To geneIds.Length - 1
                 If pixel(i) > 0 Then
                     ' convert the unify levels as
