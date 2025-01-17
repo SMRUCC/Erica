@@ -97,7 +97,7 @@ Public Module WordVector
         ' 20241226 due to the reason of matrix data of single cells/spatial omics 
         ' data analysis is spot in rows and features in columns
         ' so we do scale on columns data
-        For Each i As Integer In TqdmWrapper.Range(0, matrix.sampleID.Length)
+        For Each i As Integer In TqdmWrapper.Range(0, matrix.sampleID.Length, wrap_console:=App.EnableTqdm)
             v = matrix.sample(i)
 
             If log Then
