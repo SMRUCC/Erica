@@ -39,12 +39,11 @@
 
 #End Region
 
-Imports System.Drawing
 Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.ComponentModel.DataStructures
-Imports Microsoft.VisualBasic.Data.csv.IO
+Imports Microsoft.VisualBasic.Data.Framework.IO
 Imports Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor
 Imports Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors
 Imports Microsoft.VisualBasic.Data.visualize.Network.Analysis
@@ -80,17 +79,8 @@ Imports Bitmap = System.Drawing.Bitmap
 Imports GraphicsPath = System.Drawing.Drawing2D.GraphicsPath
 Imports FontStyle = System.Drawing.FontStyle
 #Else
-Imports Pen = Microsoft.VisualBasic.Imaging.Pen
-Imports Pens = Microsoft.VisualBasic.Imaging.Pens
 Imports Brush = Microsoft.VisualBasic.Imaging.Brush
-Imports Font = Microsoft.VisualBasic.Imaging.Font
-Imports Brushes = Microsoft.VisualBasic.Imaging.Brushes
 Imports SolidBrush = Microsoft.VisualBasic.Imaging.SolidBrush
-Imports DashStyle = Microsoft.VisualBasic.Imaging.DashStyle
-Imports Image = Microsoft.VisualBasic.Imaging.Image
-Imports Bitmap = Microsoft.VisualBasic.Imaging.Bitmap
-Imports GraphicsPath = Microsoft.VisualBasic.Imaging.GraphicsPath
-Imports FontStyle = Microsoft.VisualBasic.Imaging.FontStyle
 #End If
 
 ''' <summary>
