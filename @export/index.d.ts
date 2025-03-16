@@ -50,6 +50,9 @@ declare namespace Erica {
    */
    function plot_pie(cell_layers: any, x?: any, y?: any): object;
    /**
+   */
+   function plot_velocity(x: any, y: any, vx: any, vy: any, class: any): object;
+   /**
      * @param dims default value Is ``9``.
      * @param max_iters default value Is ``1000``.
      * @param n_threads default value Is ``8``.
