@@ -3,6 +3,7 @@
   <PropertyGroup>
     <RootNamespace>SingleExpression</RootNamespace>
     <TargetFrameworks>net8.0;net8.0-windows;net48</TargetFrameworks>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
 </Project>
