@@ -30,11 +30,15 @@
             <code id="clr_ts">
 # namespace STRaid
 export class AnnData {
+   # obs contains the cell metadata.
    obs: <a href="/vignettes/clr/STRaid/H5ad_data/Obs.html">Obs</a>;
+   # obsm contains the embeddings data.
    obsm: <a href="/vignettes/clr/STRaid/H5ad_data/Obsm.html">Obsm</a>;
    source: string;
    uns: <a href="/vignettes/clr/STRaid/H5ad_data/Uns.html">Uns</a>;
+   # var contains the gene metadata.
    var: <a href="/vignettes/clr/STRaid/H5ad_data/Var.html">Var</a>;
+   # X contains the expression matrix.
    X: <a href="/vignettes/clr/STRaid/H5ad_data/X.html">X</a>;
 }
 </code>
