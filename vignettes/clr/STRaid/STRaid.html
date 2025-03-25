@@ -22,7 +22,7 @@
 
         <h3>Description</h3>
 
-        
+        <p>Data structure for unify the data storage of the spatial data</p>
 
         <h3>Declare</h3>        
 
@@ -30,7 +30,9 @@
             <code id="clr_ts">
 # namespace STRaid
 export class STRaid {
+   # the spatial expression data, gene features in columns and spatial spots in rows
    matrix: <a href="/vignettes/clr/SMRUCC/genomics/Analysis/HTS/DataFrame/Matrix.html">Matrix</a>;
+   # the spatial index of each row in <a href="/vignettes/clr/STRaid/STRaid.html">STRaid</a>.<a href="/vignettes/clr/SMRUCC/genomics/Analysis/HTS/DataFrame/Matrix.html">matrix</a>
    spots: <a href="/vignettes/clr/System/Drawing/Point.html">Point[]</a>;
 }
 </code>
