@@ -5,12 +5,12 @@ Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors.Scaler
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis
+Imports SMRUCC.genomics.Analysis.Spatial.RAID
+Imports SMRUCC.genomics.Analysis.Spatial.RAID.HDF5
 Imports SMRUCC.Rsharp.Runtime
 Imports SMRUCC.Rsharp.Runtime.Internal.Object
 Imports SMRUCC.Rsharp.Runtime.Interop
 Imports SMRUCC.Rsharp.Runtime.Vectorization
-Imports STRaid
-Imports STRaid.HDF5
 Imports RInternal = SMRUCC.Rsharp.Runtime.Internal
 
 #If NET48 Then
@@ -26,17 +26,6 @@ Imports Bitmap = System.Drawing.Bitmap
 Imports GraphicsPath = System.Drawing.Drawing2D.GraphicsPath
 Imports FontStyle = System.Drawing.FontStyle
 #Else
-Imports Pen = Microsoft.VisualBasic.Imaging.Pen
-Imports Pens = Microsoft.VisualBasic.Imaging.Pens
-Imports Brush = Microsoft.VisualBasic.Imaging.Brush
-Imports Font = Microsoft.VisualBasic.Imaging.Font
-Imports Brushes = Microsoft.VisualBasic.Imaging.Brushes
-Imports SolidBrush = Microsoft.VisualBasic.Imaging.SolidBrush
-Imports DashStyle = Microsoft.VisualBasic.Imaging.DashStyle
-Imports Image = Microsoft.VisualBasic.Imaging.Image
-Imports Bitmap = Microsoft.VisualBasic.Imaging.Bitmap
-Imports GraphicsPath = Microsoft.VisualBasic.Imaging.GraphicsPath
-Imports FontStyle = Microsoft.VisualBasic.Imaging.FontStyle
 #End If
 
 ''' <summary>
