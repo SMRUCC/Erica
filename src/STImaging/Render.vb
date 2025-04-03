@@ -8,7 +8,7 @@ Imports Microsoft.VisualBasic.Imaging.Filters
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Math
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
-Imports STRaid
+Imports SMRUCC.genomics.Analysis.Spatial.RAID
 
 #If NET48 Then
 Imports Pen = System.Drawing.Pen
