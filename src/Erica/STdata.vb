@@ -4,14 +4,14 @@ Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Math.Distributions
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
+Imports SMRUCC.genomics.Analysis.Spatial.Imaging
+Imports SMRUCC.genomics.Analysis.Spatial.RAID
 Imports SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner
 Imports SMRUCC.Rsharp.RDataSet.Struct
 Imports SMRUCC.Rsharp.Runtime
 Imports SMRUCC.Rsharp.Runtime.Components
 Imports SMRUCC.Rsharp.Runtime.Internal.[Object]
 Imports SMRUCC.Rsharp.Runtime.Interop
-Imports STImaging
-Imports STRaid
 Imports Matrix = SMRUCC.genomics.Analysis.HTS.DataFrame.Matrix
 
 ''' <summary>
@@ -36,7 +36,7 @@ Public Module STdata
     ''' </remarks>
     <ExportAPI("read.ST_h5ad")>
     Public Function ReadST_spacerangerH5Matrix(h5ad As String) As Matrix
-        Return STRaid.HDF5.SpaceRanger.ReadST_spacerangerH5Matrix(h5ad)
+        Return HDF5.SpaceRanger.ReadST_spacerangerH5Matrix(h5ad)
     End Function
 
     ''' <summary>
@@ -47,7 +47,7 @@ Public Module STdata
     ''' <returns></returns>
     <ExportAPI("read.spatial_spots")>
     Public Function ReadSpatialSpots(file As String) As SpatialSpot()
-        Return Global.STImaging.SpaceRanger _
+        Return SpaceRanger _
             .LoadTissueSpots(file.SolveStream.LineTokens) _
             .ToArray
     End Function
@@ -59,14 +59,14 @@ Public Module STdata
     ''' <param name="spots">the spatial spot information</param>
     ''' <returns></returns>
     <ExportAPI("as.STRaid")>
-    Public Function CombineSTRaid(h5Matrix As Matrix, spots As SpatialSpot()) As STRaid.STRaid
+    Public Function CombineSTRaid(h5Matrix As Matrix, spots As SpatialSpot()) As STRaid
         Dim spotIndex As New Dictionary(Of String, Point)
 
         For i As Integer = 0 To spots.Length - 1
             Call spotIndex.Add(spots(i).barcode, spots(i).GetSpotPoint)
         Next
 
-        Return New STRaid.STRaid With {
+        Return New STRaid With {
             .matrix = h5Matrix,
             .spots = h5Matrix.expression _
                 .Select(Function(r) spotIndex(r.geneID)) _
@@ -75,12 +75,12 @@ Public Module STdata
     End Function
 
     <ExportAPI("sum_layer")>
-    Public Function SumLayer(st As STRaid.STRaid) As SpatialHeatMap
+    Public Function SumLayer(st As STRaid) As SpatialHeatMap
         Return SpatialHeatMap.TotalSum(st)
     End Function
 
     <ExportAPI("max_layer")>
-    Public Function MaxLayer(st As STRaid.STRaid) As SpatialHeatMap
+    Public Function MaxLayer(st As STRaid) As SpatialHeatMap
         Return SpatialHeatMap.Max(st)
     End Function
 
@@ -101,9 +101,9 @@ Public Module STdata
     End Function
 
     <ExportAPI("write.STRaid")>
-    Public Function WriteMatrix(straid As STRaid.STRaid, file As String) As Object
+    Public Function WriteMatrix(straid As STRaid, file As String) As Object
         Using buffer As Stream = file.Open(FileMode.OpenOrCreate, doClear:=True, [readOnly]:=False)
-            Return Global.STRaid.STRaid.Write(straid, file:=buffer)
+            Return STRaid.Write(straid, file:=buffer)
         End Using
     End Function
 
