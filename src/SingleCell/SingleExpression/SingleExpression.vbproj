@@ -1,10 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>SingleExpression</RootNamespace>
+    <RootNamespace>SMRUCC.genomics.Analysis.SingleCell</RootNamespace>
     <TargetFrameworks>net8.0;net8.0-windows;net48</TargetFrameworks>
     <Platforms>AnyCPU;x64</Platforms>
     <Configurations>Debug;Release;Rsharp_app_release</Configurations>
+    <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
+    <AssemblyName>SMRUCC.genomics.Analysis.SingleCell.Expression</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

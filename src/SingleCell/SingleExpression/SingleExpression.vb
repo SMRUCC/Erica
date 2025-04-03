@@ -1,5 +1,8 @@
 Imports System.Drawing
 
+''' <summary>
+''' Single cell/spot expression data
+''' </summary>
 Public Class SingleExpression : Implements IEmbeddingScatter
 
     ''' <summary>

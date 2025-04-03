@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>STRaid</RootNamespace>
+    <RootNamespace>SMRUCC.genomics.Analysis.Spatial.RAID</RootNamespace>
     <TargetFrameworks>net8.0-windows;net8.0;net48</TargetFrameworks>
     <Title>Spatial transcriptomics h5ad data reader</Title>
     <Platforms>AnyCPU;x64</Platforms>
@@ -12,6 +12,7 @@
     <Product>Erica</Product>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <AssemblyName>SMRUCC.genomics.Analysis.Spatial.RAID</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-windows|AnyCPU'">

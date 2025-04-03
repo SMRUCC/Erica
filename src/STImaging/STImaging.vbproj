@@ -1,10 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>STImaging</RootNamespace>
+    <RootNamespace>SMRUCC.genomics.Analysis.Spatial.Imaging</RootNamespace>
     <TargetFrameworks>net8.0-windows;net8.0;net48</TargetFrameworks>
     <Platforms>AnyCPU;x64</Platforms>
     <Configurations>Debug;Release;Rsharp_app_release</Configurations>
+    <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
+    <AssemblyName>SMRUCC.genomics.Analysis.Spatial.Imaging</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
