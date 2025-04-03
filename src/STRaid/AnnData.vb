@@ -1,4 +1,4 @@
-﻿Imports STRaid.H5ad_data
+﻿Imports SMRUCC.genomics.Analysis.Spatial.RAID.H5ad_data
 
 Public Class AnnData
 
