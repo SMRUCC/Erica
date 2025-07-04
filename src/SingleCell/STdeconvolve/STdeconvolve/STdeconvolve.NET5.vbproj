@@ -11,6 +11,8 @@
     <AssemblyName>SMRUCC.genomics.Analysis.SingleCell.STdeconvolve</AssemblyName>
     <Configurations>Debug;Release;Rsharp_app_release</Configurations>
     <Title>Reference-free cell-type deconvolution of pixel-resolution spatially resolved transcriptomics data</Title>
+    <Product>Erica Comprehensive Omics</Product>
+    <Company>SMRUCC genomics institute</Company>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

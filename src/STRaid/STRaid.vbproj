@@ -9,7 +9,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>xie.guigang@gcmodeller.org</Authors>
     <Company>SMRUCC genomics institute</Company>
-    <Product>Erica</Product>
+    <Product>Erica Comprehensive Omics</Product>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <AssemblyName>SMRUCC.genomics.Analysis.Spatial.RAID</AssemblyName>

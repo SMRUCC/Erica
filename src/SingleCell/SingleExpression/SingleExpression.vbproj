@@ -7,6 +7,9 @@
     <Configurations>Debug;Release;Rsharp_app_release</Configurations>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
     <AssemblyName>SMRUCC.genomics.Analysis.SingleCell.Expression</AssemblyName>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Product>Erica Comprehensive Omics</Product>
+    <Company>SMRUCC genomics institute</Company>
   </PropertyGroup>
 
   <ItemGroup>
