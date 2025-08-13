@@ -29,6 +29,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DensityQuery.NET5", "..\..\
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "linear-netcore5", "..\..\..\GCModeller\src\runtime\sciBASIC#\Data_science\Mathematica\Math\DataFittings\linear-netcore5.vbproj", "{4FEFC557-C9CE-F082-1301-57AC5DF9C188}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "test", "test\test.vbproj", "{3AACD49A-88DA-44A6-81F4-481BF8FA8076}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -183,6 +185,18 @@ Global
 		{4FEFC557-C9CE-F082-1301-57AC5DF9C188}.Rsharp_app_release|Any CPU.Build.0 = Rsharp_app_release|Any CPU
 		{4FEFC557-C9CE-F082-1301-57AC5DF9C188}.Rsharp_app_release|x64.ActiveCfg = Rsharp_app_release|x64
 		{4FEFC557-C9CE-F082-1301-57AC5DF9C188}.Rsharp_app_release|x64.Build.0 = Rsharp_app_release|x64
+		{3AACD49A-88DA-44A6-81F4-481BF8FA8076}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AACD49A-88DA-44A6-81F4-481BF8FA8076}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AACD49A-88DA-44A6-81F4-481BF8FA8076}.Debug|x64.ActiveCfg = Debug|x64
+		{3AACD49A-88DA-44A6-81F4-481BF8FA8076}.Debug|x64.Build.0 = Debug|x64
+		{3AACD49A-88DA-44A6-81F4-481BF8FA8076}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AACD49A-88DA-44A6-81F4-481BF8FA8076}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AACD49A-88DA-44A6-81F4-481BF8FA8076}.Release|x64.ActiveCfg = Release|Any CPU
+		{3AACD49A-88DA-44A6-81F4-481BF8FA8076}.Release|x64.Build.0 = Release|Any CPU
+		{3AACD49A-88DA-44A6-81F4-481BF8FA8076}.Rsharp_app_release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AACD49A-88DA-44A6-81F4-481BF8FA8076}.Rsharp_app_release|Any CPU.Build.0 = Release|Any CPU
+		{3AACD49A-88DA-44A6-81F4-481BF8FA8076}.Rsharp_app_release|x64.ActiveCfg = Release|Any CPU
+		{3AACD49A-88DA-44A6-81F4-481BF8FA8076}.Rsharp_app_release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
