@@ -1,4 +1,5 @@
 Imports System.Drawing
+Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.BitmapImage
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Math2D.ConcaveHull
 Imports Microsoft.VisualBasic.Imaging.Filters
@@ -6,16 +7,20 @@ Imports Microsoft.VisualBasic.Imaging.Math2D
 Imports Microsoft.VisualBasic.Math.MachineVision.CCL
 Imports std = System.Math
 
-Public Class CellScan
+Public Class CellScan : Implements Layout2D
 
-    Public Property x As Single
-    Public Property y As Single
+    Public Property x As Double Implements Layout2D.X
+    Public Property y As Double Implements Layout2D.Y
     Public Property physical As PointF
     Public Property area As Double
     Public Property ratio As Double
     Public Property scan_x As Double()
     Public Property scan_y As Double()
     Public Property moranI As Double
+    Public Property pvalue As Double
+    Public Property points As Integer
+    Public Property width As Double
+    Public Property height As Double
 
     Public Shared Iterator Function CellLookups(grid As BitmapBuffer, Optional offset As Point = Nothing, Optional binary_processing As Boolean = True) As IEnumerable(Of CellScan)
         Dim bin As BitmapBuffer = If(binary_processing, grid.ostuFilter(flip:=False), grid)
@@ -24,6 +29,10 @@ Public Class CellScan
         For Each shape As Polygon2D In CELLS
             Dim rect As RectangleF = shape.GetRectangle
 
+            If rect.Width = 0.0 OrElse rect.Height = 0.0 Then
+                Continue For
+            End If
+
             Yield New CellScan With {
                 .area = rect.Width * rect.Height,
                 .ratio = std.Max(rect.Width, rect.Height) / std.Min(rect.Width, rect.Height),
@@ -31,7 +40,10 @@ Public Class CellScan
                 .scan_y = shape.ypoints,
                 .x = rect.X,
                 .y = rect.Y,
-                .physical = New PointF(.x + offset.X, .y + offset.Y)
+                .physical = New PointF(.x + offset.X, .y + offset.Y),
+                .points = shape.length,
+                .height = rect.Height,
+                .width = rect.Width
             }
         Next
     End Function

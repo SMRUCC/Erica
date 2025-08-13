@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36401.2 d17.14
+VisualStudioVersion = 17.14.36401.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "HEView", "HEView.vbproj", "{AFFC6293-D2E6-52C6-F21B-8C8DD208B979}"
 EndProject
@@ -30,6 +30,10 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "linear-netcore5", "..\..\..\GCModeller\src\runtime\sciBASIC#\Data_science\Mathematica\Math\DataFittings\linear-netcore5.vbproj", "{4FEFC557-C9CE-F082-1301-57AC5DF9C188}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "test", "test\test.vbproj", "{3AACD49A-88DA-44A6-81F4-481BF8FA8076}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Microsoft.VisualBasic.Drawing", "..\..\..\Microsoft.VisualBasic.Drawing\src\Microsoft.VisualBasic.Drawing\Microsoft.VisualBasic.Drawing.vbproj", "{A240E65C-9AB8-05B4-EEB0-CC68B805C697}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "physics-netcore5", "..\..\..\GCModeller\src\runtime\sciBASIC#\gr\physics\physics-netcore5.vbproj", "{ABD6D543-A872-60A2-B228-2724F3ED0D2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -197,6 +201,30 @@ Global
 		{3AACD49A-88DA-44A6-81F4-481BF8FA8076}.Rsharp_app_release|Any CPU.Build.0 = Release|Any CPU
 		{3AACD49A-88DA-44A6-81F4-481BF8FA8076}.Rsharp_app_release|x64.ActiveCfg = Release|Any CPU
 		{3AACD49A-88DA-44A6-81F4-481BF8FA8076}.Rsharp_app_release|x64.Build.0 = Release|Any CPU
+		{A240E65C-9AB8-05B4-EEB0-CC68B805C697}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A240E65C-9AB8-05B4-EEB0-CC68B805C697}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A240E65C-9AB8-05B4-EEB0-CC68B805C697}.Debug|x64.ActiveCfg = Debug|x64
+		{A240E65C-9AB8-05B4-EEB0-CC68B805C697}.Debug|x64.Build.0 = Debug|x64
+		{A240E65C-9AB8-05B4-EEB0-CC68B805C697}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A240E65C-9AB8-05B4-EEB0-CC68B805C697}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A240E65C-9AB8-05B4-EEB0-CC68B805C697}.Release|x64.ActiveCfg = Release|x64
+		{A240E65C-9AB8-05B4-EEB0-CC68B805C697}.Release|x64.Build.0 = Release|x64
+		{A240E65C-9AB8-05B4-EEB0-CC68B805C697}.Rsharp_app_release|Any CPU.ActiveCfg = Release|Any CPU
+		{A240E65C-9AB8-05B4-EEB0-CC68B805C697}.Rsharp_app_release|Any CPU.Build.0 = Release|Any CPU
+		{A240E65C-9AB8-05B4-EEB0-CC68B805C697}.Rsharp_app_release|x64.ActiveCfg = Release|x64
+		{A240E65C-9AB8-05B4-EEB0-CC68B805C697}.Rsharp_app_release|x64.Build.0 = Release|x64
+		{ABD6D543-A872-60A2-B228-2724F3ED0D2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABD6D543-A872-60A2-B228-2724F3ED0D2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABD6D543-A872-60A2-B228-2724F3ED0D2D}.Debug|x64.ActiveCfg = Debug|x64
+		{ABD6D543-A872-60A2-B228-2724F3ED0D2D}.Debug|x64.Build.0 = Debug|x64
+		{ABD6D543-A872-60A2-B228-2724F3ED0D2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABD6D543-A872-60A2-B228-2724F3ED0D2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABD6D543-A872-60A2-B228-2724F3ED0D2D}.Release|x64.ActiveCfg = Release|x64
+		{ABD6D543-A872-60A2-B228-2724F3ED0D2D}.Release|x64.Build.0 = Release|x64
+		{ABD6D543-A872-60A2-B228-2724F3ED0D2D}.Rsharp_app_release|Any CPU.ActiveCfg = Rsharp_app_release|Any CPU
+		{ABD6D543-A872-60A2-B228-2724F3ED0D2D}.Rsharp_app_release|Any CPU.Build.0 = Rsharp_app_release|Any CPU
+		{ABD6D543-A872-60A2-B228-2724F3ED0D2D}.Rsharp_app_release|x64.ActiveCfg = Rsharp_app_release|x64
+		{ABD6D543-A872-60A2-B228-2724F3ED0D2D}.Rsharp_app_release|x64.Build.0 = Rsharp_app_release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -213,6 +241,8 @@ Global
 		{839AF0E1-A5A0-0A21-3FC9-224723C35A48} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{C0132C5B-E6BD-9F36-3C1D-73607854FD6A} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{4FEFC557-C9CE-F082-1301-57AC5DF9C188} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{A240E65C-9AB8-05B4-EEB0-CC68B805C697} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{ABD6D543-A872-60A2-B228-2724F3ED0D2D} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D2988DB9-E685-4387-8FD8-A8BE0EB4673E}
