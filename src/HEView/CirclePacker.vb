@@ -20,15 +20,17 @@ Public Class CirclePacker
     Public Iterator Function PackCircles() As IEnumerable(Of Polygon2D)
         Dim rect As RectangleF = shape.GetRectangle
         Dim maxSize = std.Max(rect.Width, rect.Height)
-        Dim dist = PoissonDiskGenerator.Generate((radius.Min + radius.Max) / 2, maxSize)
+        Dim dist = PoissonDiskGenerator.Generate(radius.Max, maxSize)
         Dim voronoi As New Voronoi(dist, New Rectf(0, 0, maxSize, maxSize))
-        Dim cells = voronoi.Regions.ToArray
+        Dim cells As Polygon2D() = voronoi.Regions.ToArray
+        Dim offsetX = rect.X
+        Dim offsetY = rect.Y
 
         For Each cell As Polygon2D In cells
-            Dim center As New PointF(cell.xpoints.Average, cell.ypoints.Average)
+            Dim center As New PointF(cell.xpoints.Average + offsetX, cell.ypoints.Average + offsetY)
 
             If shape.inside(center) Then
-                Yield cell
+                Yield cell + New PointF(offsetX, offsetY)
             End If
         Next
     End Function

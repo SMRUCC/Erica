@@ -6,6 +6,7 @@ Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.Math2D
 Imports Microsoft.VisualBasic.Imaging.Physics
 Imports Microsoft.VisualBasic.Math.Distributions
+Imports Microsoft.VisualBasic.Math.Quantile
 Imports std = System.Math
 
 Public Module Math
@@ -44,8 +45,19 @@ Public Module Math
             End If
 
             target.density = data.Length / knn
-            target.moranI = If(moranVal.observed.IsNaNImaginary, -100, moranVal.observed)
+            target.moranI = moranVal.observed
             target.pvalue = pv
+        Next
+
+        Dim minVal As Double = Aggregate cell As CellScan
+                               In all
+                               Where Not cell.moranI.IsNaNImaginary
+                               Into Min(cell.moranI)
+
+        For i As Integer = 0 To all.Length - 1
+            If all(i).moranI.IsNaNImaginary Then
+                all(i).moranI = minVal
+            End If
         Next
 
         Return all
@@ -59,6 +71,7 @@ Public Module Math
     <Extension>
     Public Iterator Function Split(cells As IEnumerable(Of CellScan)) As IEnumerable(Of CellScan)
         Dim all As CellScan() = cells.OrderByDescending(Function(c) c.points).ToArray
+        Dim q As QuantileEstimationGK = all.Select(Function(c) c.points).GKQuantile
         Dim averagePt As Double = Aggregate cell As CellScan In all Into Average(cell.points)
         Dim maxR As Double = Aggregate cell As CellScan In all Into Average((cell.width + cell.height) / 2)
         Dim minR As Double = Aggregate cell As CellScan In all.Skip(all.Length / 3) Into Average((cell.width + cell.height) / 2)
@@ -78,7 +91,7 @@ Public Module Math
             Dim offset_y = cell.physical.Y - cell.y
 
             For Each center As Polygon2D In centers
-                Dim shape As PointF() = CalculateCirclePoints(center.X, center.Y, maxR).ToArray
+                Dim shape As PointF() = center.GetFillPoints.ToArray
                 Dim cx As Double = center.xpoints.Average
                 Dim cy As Double = center.ypoints.Average
 
