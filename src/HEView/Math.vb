@@ -40,7 +40,8 @@ Public Module Math
                 pv = 1
             End If
 
-            target.moranI = moranVal.observed
+            target.density = data.Length / knn
+            target.moranI = If(moranVal.observed.IsNaNImaginary, -100, moranVal.observed)
             target.pvalue = pv
         Next
 

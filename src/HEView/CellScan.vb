@@ -21,6 +21,7 @@ Public Class CellScan : Implements Layout2D
     Public Property points As Integer
     Public Property width As Double
     Public Property height As Double
+    Public Property density As Double
 
     Public Shared Iterator Function CellLookups(grid As BitmapBuffer, Optional offset As Point = Nothing, Optional binary_processing As Boolean = True) As IEnumerable(Of CellScan)
         Dim bin As BitmapBuffer = If(binary_processing, grid.ostuFilter(flip:=False), grid)
