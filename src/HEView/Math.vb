@@ -77,16 +77,18 @@ Public Module Math
             Dim offset_x = cell.physical.X - cell.x
             Dim offset_y = cell.physical.Y - cell.y
 
-            For Each center As PointF In centers
+            For Each center As Polygon2D In centers
                 Dim shape As PointF() = CalculateCirclePoints(center.X, center.Y, maxR).ToArray
+                Dim cx As Double = center.xpoints.Average
+                Dim cy As Double = center.ypoints.Average
 
                 Yield New CellScan With {
                     .height = maxR,
                     .points = shape.Length,
                     .width = maxR,
                     .area = .width * .height,
-                    .x = center.X,
-                    .y = center.Y,
+                    .x = cx,
+                    .y = cy,
                     .scan_x = shape.Select(Function(p) CDbl(p.X)).ToArray,
                     .scan_y = shape.Select(Function(p) CDbl(p.Y)).ToArray,
                     .ratio = std.Max(.width, .height) / std.Min(.width, .height),
@@ -94,62 +96,5 @@ Public Module Math
                 }
             Next
         Next
-    End Function
-
-    Public Function CalculateCirclePoints(centerX As Single, centerY As Single, radius As Double) As List(Of PointF)
-        Dim points As New List(Of PointF)
-
-        ' 处理半径为0或负数的特殊情况
-        If radius <= 0 Then
-            points.Add(New PointF(centerX, centerY))
-            Return points
-        End If
-
-        ' 初始化中点圆算法参数
-        Dim x = radius
-        Dim y = 0
-        Dim decision = 1 - radius ' 初始决策参数
-
-        ' 第一阶段：计算八分圆边界点并填充内部
-        While x >= y
-            ' 计算当前八分圆的点，并映射到所有八个象限
-            For Each pt In GetOctantPoints(x, y, centerX, centerY)
-                points.Add(pt)
-            Next
-
-            ' 更新y坐标和决策参数
-            y += 1
-            If decision <= 0 Then
-                decision += 2 * y + 1
-            Else
-                x -= 1
-                decision += 2 * (y - x) + 1
-            End If
-        End While
-
-        ' 第二阶段：填充圆内部所有点
-        For yOffset = -radius To radius
-            ' 计算当前y对应的x范围
-            Dim xSpan = std.Sqrt(radius * radius - yOffset * yOffset)
-            For xOffset = -xSpan To xSpan
-                points.Add(New PointF(centerX + xOffset, centerY + yOffset))
-            Next
-        Next
-
-        Return points
-    End Function
-
-    ' 辅助函数：根据一个点生成八个对称点
-    Private Function GetOctantPoints(x As Single, y As Single, cx As Single, cy As Single) As IEnumerable(Of PointF)
-        Return {
-            New PointF(cx + x, cy + y), ' 第一象限
-            New PointF(cx - x, cy + y), ' 第二象限
-            New PointF(cx + x, cy - y), ' 第四象限
-            New PointF(cx - x, cy - y), ' 第三象限
-            New PointF(cx + y, cy + x), ' 八分圆对称
-            New PointF(cx - y, cy + x),
-            New PointF(cx + y, cy - x),
-            New PointF(cx - y, cy - x)
-        }
     End Function
 End Module
