@@ -69,10 +69,10 @@ Public Module Math
     ''' <param name="cells"></param>
     ''' <returns></returns>
     <Extension>
-    Public Iterator Function Split(cells As IEnumerable(Of CellScan)) As IEnumerable(Of CellScan)
+    Public Iterator Function Split(cells As IEnumerable(Of CellScan), Optional noise As Double = 0.25) As IEnumerable(Of CellScan)
         Dim all As CellScan() = cells.ToArray
         Dim q As QuantileEstimationGK = all.Select(Function(c) c.points).GKQuantile
-        Dim filter As Double = q.Query(0.25)
+        Dim filter As Double = q.Query(noise)
 
         all = all _
             .Where(Function(cell) cell.points > filter) _
