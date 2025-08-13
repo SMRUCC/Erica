@@ -1,13 +1,17 @@
-﻿Imports Microsoft.VisualBasic.CommandLine.Reflection
+﻿Imports HEView
+Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Imaging
+Imports Microsoft.VisualBasic.Imaging.BitmapImage
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors.Scaler
+Imports Microsoft.VisualBasic.Imaging.Filters
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis
 Imports SMRUCC.genomics.Analysis.Spatial.RAID
 Imports SMRUCC.genomics.Analysis.Spatial.RAID.HDF5
 Imports SMRUCC.Rsharp.Runtime
+Imports SMRUCC.Rsharp.Runtime.Components
 Imports SMRUCC.Rsharp.Runtime.Internal.Object
 Imports SMRUCC.Rsharp.Runtime.Interop
 Imports SMRUCC.Rsharp.Runtime.Vectorization
@@ -301,5 +305,36 @@ Public Module singleCells
         End If
 
         Return spots.ToArray
+    End Function
+
+    <ExportAPI("HE_cells")>
+    <RApiReturn(GetType(CellScan))>
+    Public Function HECells(HEstain As Object,
+                            Optional is_binarized As Boolean = False,
+                            Optional flip As Boolean = False,
+                            Optional ostu_factor As Double = 0.7,
+                            Optional env As Environment = Nothing) As Object
+
+        Dim data As BitmapBuffer
+
+        If HEstain Is Nothing Then
+            Return Nothing
+        End If
+
+        If TypeOf HEstain Is Image Then
+            data = CType(DirectCast(HEstain, Image), Bitmap).MemoryBuffer
+        ElseIf TypeOf HEstain Is Bitmap Then
+            data = DirectCast(HEstain, Bitmap).MemoryBuffer
+        ElseIf TypeOf HEstain Is BitmapBuffer Then
+            data = DirectCast(HEstain, BitmapBuffer)
+        Else
+            Return Message.InCompatibleType(GetType(BitmapBuffer), HEstain.GetType, env)
+        End If
+
+        If Not is_binarized Then
+            data = Thresholding.ostuFilter(data, flip, ostu_factor)
+        End If
+
+
     End Function
 End Module
