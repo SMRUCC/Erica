@@ -17,8 +17,8 @@ Public Class CellScan
     Public Property scan_y As Double()
     Public Property moranI As Double
 
-    Public Shared Iterator Function CellLookups(grid As BitmapBuffer, Optional offset As Point = Nothing) As IEnumerable(Of CellScan)
-        Dim bin As BitmapBuffer = grid.ostuFilter(flip:=False)
+    Public Shared Iterator Function CellLookups(grid As BitmapBuffer, Optional offset As Point = Nothing, Optional binary_processing As Boolean = True) As IEnumerable(Of CellScan)
+        Dim bin As BitmapBuffer = If(binary_processing, grid.ostuFilter(flip:=False), grid)
         Dim CELLS = CCLabeling.Process(bin, background:=Color.White, 0).ToArray
 
         For Each shape As Polygon2D In CELLS
