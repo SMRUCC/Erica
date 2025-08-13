@@ -10,7 +10,7 @@ Module Program
 
     Sub Main(args As String())
         Dim bin = SkiaImage.FromFile("Z:\aaa.bmp")
-        Dim cells = CellScan.CellLookups(bin.ToBitmap.MemoryBuffer, binary_processing:=False).MoranI(knn:=16).ToArray
+        Dim cells = CellScan.CellLookups(bin.ToBitmap.MemoryBuffer, binary_processing:=False).Split.MoranI(knn:=16).ToArray
         Dim result = cells.Tabular
 
         Call result.WriteCsv("Z:/cells.csv")

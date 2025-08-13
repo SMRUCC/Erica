@@ -48,4 +48,14 @@ Public Module Math
         Return all
     End Function
 
+    ''' <summary>
+    ''' split the large region as cell cluster
+    ''' </summary>
+    ''' <param name="cells"></param>
+    ''' <returns></returns>
+    <Extension>
+    Public Function Split(cells As IEnumerable(Of CellScan)) As IEnumerable(Of CellScan)
+
+    End Function
+
 End Module
