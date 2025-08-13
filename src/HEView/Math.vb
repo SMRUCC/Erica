@@ -70,8 +70,14 @@ Public Module Math
     ''' <returns></returns>
     <Extension>
     Public Iterator Function Split(cells As IEnumerable(Of CellScan)) As IEnumerable(Of CellScan)
-        Dim all As CellScan() = cells.OrderByDescending(Function(c) c.points).ToArray
+        Dim all As CellScan() = cells.ToArray
         Dim q As QuantileEstimationGK = all.Select(Function(c) c.points).GKQuantile
+        Dim filter As Double = q.Query(0.25)
+
+        all = all _
+            .Where(Function(cell) cell.points > filter) _
+            .ToArray
+
         Dim averagePt As Double = Aggregate cell As CellScan In all Into Average(cell.points)
         Dim maxR As Double = Aggregate cell As CellScan In all Into Average((cell.width + cell.height) / 2)
         Dim minR As Double = Aggregate cell As CellScan In all.Skip(all.Length / 3) Into Average((cell.width + cell.height) / 2)
