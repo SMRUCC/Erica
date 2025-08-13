@@ -1,5 +1,6 @@
 ﻿Imports System.Drawing
 Imports System.Runtime.CompilerServices
+Imports Microsoft.VisualBasic.ComponentModel.Ranges.Model
 Imports Microsoft.VisualBasic.Data.GraphTheory.GridGraph
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.Math2D
@@ -57,9 +58,10 @@ Public Module Math
     ''' <returns></returns>
     <Extension>
     Public Iterator Function Split(cells As IEnumerable(Of CellScan)) As IEnumerable(Of CellScan)
-        Dim all As CellScan() = cells.ToArray
+        Dim all As CellScan() = cells.OrderByDescending(Function(c) c.points).ToArray
         Dim averagePt As Double = Aggregate cell As CellScan In all Into Average(cell.points)
-        Dim averageR As Double = Aggregate cell As CellScan In all Into Average((cell.width + cell.height) / 2)
+        Dim maxR As Double = Aggregate cell As CellScan In all Into Average((cell.width + cell.height) / 2)
+        Dim minR As Double = Aggregate cell As CellScan In all.Skip(all.Length / 3) Into Average((cell.width + cell.height) / 2)
 
         For Each cell As CellScan In all
             If cell.points <= averagePt Then
@@ -67,18 +69,21 @@ Public Module Math
                 Continue For
             End If
 
-            Dim pack As New CirclePacker(cell.scan_x.Select(Function(xi, i) New PointF(xi, cell.scan_y(i))), averageR)
+            Dim region As PointF() = cell.scan_x _
+                .Select(Function(xi, i) New PointF(xi, cell.scan_y(i))) _
+                .ToArray
+            Dim pack As New CirclePacker(region, New DoubleRange(minR, maxR))
             Dim centers = pack.PackCircles
             Dim offset_x = cell.physical.X - cell.x
             Dim offset_y = cell.physical.Y - cell.y
 
             For Each center As PointF In centers
-                Dim shape As PointF() = CalculateCirclePoints(center.X, center.Y, averageR).ToArray
+                Dim shape As PointF() = CalculateCirclePoints(center.X, center.Y, maxR).ToArray
 
                 Yield New CellScan With {
-                    .height = averageR,
+                    .height = maxR,
                     .points = shape.Length,
-                    .width = averageR,
+                    .width = maxR,
                     .area = .width * .height,
                     .x = center.X,
                     .y = center.Y,
