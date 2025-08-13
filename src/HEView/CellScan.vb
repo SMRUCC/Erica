@@ -15,6 +15,7 @@ Public Class CellScan
     Public Property ratio As Double
     Public Property scan_x As Double()
     Public Property scan_y As Double()
+    Public Property moranI As Double
 
     Public Shared Iterator Function CellLookups(grid As BitmapBuffer, Optional offset As Point = Nothing) As IEnumerable(Of CellScan)
         Dim bin As BitmapBuffer = grid.ostuFilter(flip:=False)
