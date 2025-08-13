@@ -1,4 +1,5 @@
-﻿Imports HEView
+﻿Imports System.Drawing
+Imports HEView
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.BitmapImage
@@ -40,8 +41,34 @@ Public Module singleCells
 
     Sub Main()
         Call RInternal.Object.Converts.addHandler(GetType(SpotAnnotation()), AddressOf SpotAnnotationMatrix)
+        Call RInternal.Object.Converts.addHandler(GetType(CellScan()), AddressOf HEcellsMatrix)
     End Sub
 
+    <RGenericOverloads("as.data.frame")>
+    Private Function HEcellsMatrix(cells As CellScan(), args As list, env As Environment) As dataframe
+        Dim df As New dataframe With {
+            .rownames = cells _
+                .Select(Function(c) c.physical.ToString.MD5) _
+                .ToArray
+        }
+
+        Call df.add("x", From cell As CellScan In cells Select cell.x)
+        Call df.add("y", From cell As CellScan In cells Select cell.y)
+        Call df.add("physical_x", From cell As CellScan In cells Select cell.physical.X)
+        Call df.add("physical_y", From cell As CellScan In cells Select cell.physical.Y)
+        Call df.add("area", From cell As CellScan In cells Select cell.area)
+        Call df.add("ratio", From cell As CellScan In cells Select cell.ratio)
+        Call df.add("size", From cell As CellScan In cells Select cell.points)
+        Call df.add("r1", From cell As CellScan In cells Select cell.width)
+        Call df.add("r2", From cell As CellScan In cells Select cell.height)
+        Call df.add("density", From cell As CellScan In cells Select cell.density)
+        Call df.add("moran-I", From cell As CellScan In cells Select cell.moranI)
+        Call df.add("p-value", From cell As CellScan In cells Select cell.pvalue)
+
+        Return df
+    End Function
+
+    <RGenericOverloads("as.data.frame")>
     Private Function SpotAnnotationMatrix(spots As SpotAnnotation(), args As list, env As Environment) As dataframe
         Dim x = spots.Select(Function(a) a.x).ToArray
         Dim y = spots.Select(Function(a) a.y).ToArray
@@ -313,6 +340,10 @@ Public Module singleCells
                             Optional is_binarized As Boolean = False,
                             Optional flip As Boolean = False,
                             Optional ostu_factor As Double = 0.7,
+                            <RRawVectorArgument(TypeCodes.double)>
+                            Optional offset As Object = Nothing,
+                            Optional noise As Double = 0.25,
+                            Optional moran_knn As Integer = 32,
                             Optional env As Environment = Nothing) As Object
 
         Dim data As BitmapBuffer
@@ -335,6 +366,14 @@ Public Module singleCells
             data = Thresholding.ostuFilter(data, flip, ostu_factor)
         End If
 
+        Dim offsetVec As Double() = CLRVector.asNumeric(offset)
+        Dim offsetPt As PointF = If(offsetVec.IsNullOrEmpty, Nothing, New PointF(offsetVec(0), offsetVec(1)))
+        Dim cells = CellScan _
+            .CellLookups(data, binary_processing:=False, offset:=offset) _
+            .Split(noise) _
+            .MoranI(knn:=moran_knn) _
+            .ToArray
 
+        Return cells
     End Function
 End Module

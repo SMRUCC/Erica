@@ -23,6 +23,15 @@ Public Class CellScan : Implements Layout2D
     Public Property height As Double
     Public Property density As Double
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="grid"></param>
+    ''' <param name="offset"></param>
+    ''' <param name="binary_processing">
+    ''' make ostu binary processing of the input image in this function?
+    ''' </param>
+    ''' <returns></returns>
     Public Shared Iterator Function CellLookups(grid As BitmapBuffer,
                                                 Optional offset As Point = Nothing,
                                                 Optional binary_processing As Boolean = True) As IEnumerable(Of CellScan)
