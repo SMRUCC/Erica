@@ -5,6 +5,7 @@ Imports Microsoft.VisualBasic.Data.Framework
 Imports Microsoft.VisualBasic.Drawing
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
+Imports Microsoft.VisualBasic.Imaging.Filters
 Imports Pointf = System.Drawing.PointF
 
 Module Program
@@ -14,20 +15,23 @@ Module Program
     End Sub
 
     Sub Main(args As String())
-        Dim bin = SkiaImage.FromFile("Z:\aaa.bmp")
-        Dim cells = CellScan.CellLookups(bin.ToBitmap.MemoryBuffer, binary_processing:=False).Split.MoranI(knn:=16).ToArray
+        Dim bin = Thresholding.ostuFilter(SkiaImage.FromFile("Z:\Capture.PNG").ToBitmap.MemoryBuffer, factor:=0.8)
+
+        Call bin.Save("Z:\bin.bmp")
+
+        Dim cells = CellScan.CellLookups(bin, binary_processing:=False).Split.MoranI(knn:=32).ToArray
         Dim result = cells.Tabular
 
         Call result.WriteCsv("Z:/cells.csv")
 
-        Dim densityRange As New DoubleRange(cells.Select(Function(c) c.moranI))
+        Dim densityRange As New DoubleRange(cells.Select(Function(c) c.density))
         Dim colors As SolidBrush() = Designer.GetBrushes("jet", 30)
         Dim index As New DoubleRange(0, colors.Length - 1)
 
         Using gfx As New Graphics(bin.Size)
             For Each cell As CellScan In TqdmWrapper.Wrap(cells)
                 Dim shape As Pointf() = cell.GetShape
-                Dim i As Integer = densityRange.ScaleMapping(cell.moranI, index)
+                Dim i As Integer = densityRange.ScaleMapping(cell.density, index)
 
                 Call gfx.FillPolygon(colors(i), shape)
             Next

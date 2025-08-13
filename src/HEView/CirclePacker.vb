@@ -20,6 +20,13 @@ Public Class CirclePacker
     Public Iterator Function PackCircles() As IEnumerable(Of Polygon2D)
         Dim rect As RectangleF = shape.GetRectangle
         Dim maxSize = std.Max(rect.Width, rect.Height)
+
+        ' too small for generates the sub polygons
+        If radius.Max / maxSize > 0.4 Then
+            Yield shape
+            Return
+        End If
+
         Dim dist = PoissonDiskGenerator.Generate(radius.Max, maxSize)
         Dim voronoi As New Voronoi(dist, New Rectf(0, 0, maxSize, maxSize))
         Dim cells As Polygon2D() = voronoi.Regions.ToArray
