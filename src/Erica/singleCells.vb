@@ -1,14 +1,20 @@
 ﻿Imports System.Drawing
 Imports HEView
 Imports Microsoft.VisualBasic.CommandLine.Reflection
+Imports Microsoft.VisualBasic.Data.ChartPlots
+Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas
 Imports Microsoft.VisualBasic.Emit.Delegates
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.BitmapImage
+Imports Microsoft.VisualBasic.Imaging.Drawing2D
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors.Scaler
+Imports Microsoft.VisualBasic.Imaging.Driver
 Imports Microsoft.VisualBasic.Imaging.Filters
+Imports Microsoft.VisualBasic.Imaging.Math2D
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Scripting.MetaData
+Imports Microsoft.VisualBasic.Scripting.Runtime
 Imports SMRUCC.genomics.Analysis
 Imports SMRUCC.genomics.Analysis.Spatial.RAID
 Imports SMRUCC.genomics.Analysis.Spatial.RAID.HDF5
@@ -43,7 +49,32 @@ Public Module singleCells
     Sub Main()
         Call RInternal.Object.Converts.addHandler(GetType(SpotAnnotation()), AddressOf SpotAnnotationMatrix)
         Call RInternal.Object.Converts.addHandler(GetType(CellScan()), AddressOf HEcellsMatrix)
+
+        Call RInternal.generic.add("plot", GetType(CellScan()), AddressOf plotCellScans)
     End Sub
+
+    <RGenericOverloads("plot")>
+    Private Function plotCellScans(cells As CellScan(), args As list, env As Environment) As Object
+        Dim polygons As Polygon2D() = cells.Select(Function(cell) New Polygon2D(cell.scan_x, cell.scan_y)).ToArray
+        Dim colors = RColorPalette.getColorSet(args.getBySynonyms("colors", "colorset", "colorSet"), "paper")
+        Dim size = InteropArgumentHelper.getSize(args.getBySynonyms("size"), env)
+        Dim scatter As Boolean = CLRVector.asScalarLogical(args.getBySynonyms("scatter"))
+        Dim padding As String = InteropArgumentHelper.getPadding(args!padding, "padding: 10% 10% 15% 20%;")
+        Dim theme As New Theme With {.colorSet = colors, .padding = padding}
+        Dim driver As Drivers = env.getDriver
+
+        If polygons.IsNullOrEmpty Then
+            Return g.GraphicsPlots(
+                size.SizeParser, "padding:0px", "white",
+                plotAPI:=Sub(ByRef gfx, rect)
+
+                         End Sub,
+                driver:=driver)
+        Else
+            Dim app As New FillPolygons(polygons, scatter, theme)
+            Return app.Plot(size, driver:=driver)
+        End If
+    End Function
 
     <RGenericOverloads("as.data.frame")>
     Private Function HEcellsMatrix(cells As CellScan(), args As list, env As Environment) As dataframe
