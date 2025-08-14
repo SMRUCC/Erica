@@ -21,6 +21,16 @@ declare namespace singleCell {
    */
    function expression_list(raw: object, q?: number): object;
    /**
+     * @param is_binarized default value Is ``false``.
+     * @param flip default value Is ``false``.
+     * @param ostu_factor default value Is ``0.7``.
+     * @param offset default value Is ``null``.
+     * @param noise default value Is ``0.25``.
+     * @param moran_knn default value Is ``32``.
+     * @param env default value Is ``null``.
+   */
+   function HE_cells(HEstain: any, is_binarized?: boolean, flip?: boolean, ostu_factor?: number, offset?: any, noise?: number, moran_knn?: object, env?: object): object;
+   /**
     * extract the raw expression data matrix from the h5ad object
     * 
     * 
