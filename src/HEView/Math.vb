@@ -92,24 +92,24 @@ Public Module Math
                 .Select(Function(xi, i) New PointF(xi, cell.scan_y(i))) _
                 .ToArray
             Dim pack As New CirclePacker(region, New DoubleRange(minR, maxR))
-            Dim centers = pack.PackCircles
+            Dim centers As Polygon2D() = pack.PackCircles.ToArray
             Dim offset_x = cell.physical.X - cell.x
             Dim offset_y = cell.physical.Y - cell.y
 
             For Each center As Polygon2D In centers
-                Dim shape As PointF() = center.GetFillPoints.ToArray
+                Dim rect As RectangleF = center.GetRectangle
                 Dim cx As Double = center.xpoints.Average
                 Dim cy As Double = center.ypoints.Average
 
                 Yield New CellScan With {
-                    .height = maxR,
-                    .points = shape.Length,
-                    .width = maxR,
+                    .height = rect.Height,
+                    .points = center.length,
+                    .width = rect.Width,
                     .area = .width * .height,
                     .x = cx,
                     .y = cy,
-                    .scan_x = shape.Select(Function(p) CDbl(p.X)).ToArray,
-                    .scan_y = shape.Select(Function(p) CDbl(p.Y)).ToArray,
+                    .scan_x = center.xpoints,
+                    .scan_y = center.ypoints,
                     .ratio = std.Max(.width, .height) / std.Min(.width, .height),
                     .physical = New PointF(.x + offset_x, .y + offset_y)
                 }

@@ -50,7 +50,8 @@ Public Module singleCells
         Dim df As New dataframe With {
             .rownames = cells _
                 .Select(Function(c) c.physical.ToString.MD5) _
-                .ToArray
+                .ToArray,
+            .columns = New Dictionary(Of String, Array)
         }
 
         Call df.add("x", From cell As CellScan In cells Select cell.x)
