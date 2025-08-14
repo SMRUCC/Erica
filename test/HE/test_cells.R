@@ -6,7 +6,7 @@ let snapshot = readImage(relative_work("capture.png"));
 
 print(snapshot);
 
-let cells = singleCell::HE_cells(is.binarized = FALSE,
+let cells = snapshot |> singleCell::HE_cells(is.binarized = FALSE,
                             flip = FALSE,
                             ostu.factor = 0.7,
                             offset = NULL,

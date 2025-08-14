@@ -1,6 +1,7 @@
 ﻿Imports System.Drawing
 Imports HEView
 Imports Microsoft.VisualBasic.CommandLine.Reflection
+Imports Microsoft.VisualBasic.Emit.Delegates
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.BitmapImage
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
@@ -352,8 +353,8 @@ Public Module singleCells
             Return Nothing
         End If
 
-        If TypeOf HEstain Is Image Then
-            data = CType(DirectCast(HEstain, Image), Bitmap).MemoryBuffer
+        If TypeOf HEstain Is Image OrElse HEstain.GetType.ImplementInterface(Of IRasterMemory) Then
+            data = DirectCast(HEstain, IRasterMemory).GetMemoryBuffer
         ElseIf TypeOf HEstain Is Bitmap Then
             data = DirectCast(HEstain, Bitmap).MemoryBuffer
         ElseIf TypeOf HEstain Is BitmapBuffer Then
