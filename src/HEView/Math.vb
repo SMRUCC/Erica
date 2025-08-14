@@ -5,6 +5,7 @@ Imports Microsoft.VisualBasic.Data.GraphTheory.GridGraph
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.Math2D
 Imports Microsoft.VisualBasic.Imaging.Physics
+Imports Microsoft.VisualBasic.Math
 Imports Microsoft.VisualBasic.Math.Distributions
 Imports Microsoft.VisualBasic.Math.Quantile
 Imports std = System.Math
@@ -100,6 +101,7 @@ Public Module Math
                 Dim rect As RectangleF = center.GetRectangle
                 Dim cx As Double = center.xpoints.Average
                 Dim cy As Double = center.ypoints.Average
+                Dim shape = center.GetFillPoints.ToArray
 
                 Yield New CellScan With {
                     .height = rect.Height,
@@ -108,8 +110,8 @@ Public Module Math
                     .area = .width * .height,
                     .x = cx,
                     .y = cy,
-                    .scan_x = center.xpoints,
-                    .scan_y = center.ypoints,
+                    .scan_x = shape.X.ToArray,
+                    .scan_y = shape.Y.ToArray,
                     .ratio = std.Max(.width, .height) / std.Min(.width, .height),
                     .physical = New PointF(.x + offset_x, .y + offset_y)
                 }

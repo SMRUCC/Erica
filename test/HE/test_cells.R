@@ -3,9 +3,9 @@ require(Erica);
 imports "singleCell" from "Erica";
 imports "machineVision" from "signalKit";
 
-let snapshot = readImage(relative_work("capture.png"));
+let snapshot = readImage(relative_work("38_55.jpeg"));
 let bin = machineVision::ostu(snapshot, flip = FALSE,
-                            factor = 1);
+                            factor = 1.125);
 
 print(snapshot);
 # print(bin);
