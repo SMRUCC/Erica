@@ -22,7 +22,7 @@
 
         <h3>Description</h3>
 
-        
+        <p>Reference-free cell-type deconvolution of pixel-resolution spatially resolved transcriptomics data</p>
 
         <h3>Usage</h3>
 
@@ -46,7 +46,9 @@
         <table>
             
 <dt>expr.mat</dt>
-<dd><p><p>a dataframe object or a GCModeller expression matrix object, the matrix object should be in format of spatial spot in rows and the gene features in columns.</p></p></dd>
+<dd><p><p>a dataframe object or a GCModeller expression matrix object, the matrix
+object should be in format of spatial spot in rows and the gene features in
+columns.</p></p></dd>
 
 
 <dt>n.layers</dt>
@@ -54,18 +56,21 @@
 
 
 <dt>top.genes</dt>
-<dd><p><p>set the number of top genes when export the expression matrix in each cell layers</p></p></dd>
+<dd><p><p>set the number of top genes when export the expression matrix
+in each cell layers</p></p></dd>
 
 
 <dt>n.threads</dt>
-<dd><p><p>default null means controls the thread number for parallel sampling via the r environment config: <code>getOption("n_threads")</code>.</p></p></dd>
+<dd><p><p>default null means controls the thread number for parallel sampling via
+the r environment config: <code>getOption("n_threads")</code>.</p></p></dd>
 
         </table>
 
 
         <h3 style="display: block;">Details</h3>
 
-        <p>the generated expression matrix object could be save as csv matrix by use the function <code>geneExpression::write.expr_matrix</code> from the GCModeller package.</p>
+        <p>the generated expression matrix object could be save as csv matrix by use
+the function <code>geneExpression::write.expr_matrix</code> from the GCModeller package.</p>
 
         <h3 style="display: block">Authors</h3>
 
@@ -73,7 +78,19 @@
 
         <h3>Value</h3>
 
-        <p>A tuple list object that contains multiple result object inside: 1. single<em>cells: an expression matrix object that contains the single cell data 2. deconv</em>spatial: an expression matrix object that contains the cell layer deconvolution result data 3. cell<em>layers: the cell layer composition data 4. gibbs</em>LDA: the result of the LDA gibbs sampling result outputs, the top features in each cell class</p>
+        <p>A tuple list object that contains multiple result object inside:
+<ol>
+<li>single_cells: an expression matrix object that contains the single cell data</li>
+<li>deconv_spatial: an expression matrix object that contains the cell</li>
+</ol></p>
+
+<p>layer deconvolution result data
+<ol>
+<li>cell_layers: the cell layer composition data</li>
+<li>gibbs_LDA: the result of the LDA gibbs sampling result outputs, the top</li>
+</ol></p>
+
+<p>features in each cell class</p>
 
         <h3 style="display: none;">Examples</h3>
 

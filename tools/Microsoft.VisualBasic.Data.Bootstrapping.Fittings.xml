@@ -1,0 +1,1018 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Microsoft.VisualBasic.Data.Bootstrapping.Fittings
+</name>
+</assembly>
+<members>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.BayesianCurveFitting.#ctor(System.Double[],System.Double[],System.Int32)">
+ <summary>
+ 
+ </summary>
+ <param name="x"></param>
+ <param name="t"></param>
+ <param name="m">order of curve fitting</param>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.Evaluation">
+ <summary>
+ Data fitting result evaluation.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.Evaluation.R_square">
+ <summary>
+ 确定系数，系数是0~1之间的数，是数理上判定拟合优度的一个量
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.Evaluation.Calculate(Microsoft.VisualBasic.Math.LinearAlgebra.Vector[],System.Double[],System.Func{Microsoft.VisualBasic.Math.LinearAlgebra.Vector,System.Double},System.Boolean)">
+ <summary>
+ 
+ </summary>
+ <param name="X">The training data input</param>
+ <param name="Y">The actual Y value output for training</param>
+ <param name="fx">A function for generate Y fit prediction result from the given <paramref name="X"/> input.</param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.GaussNewtonSolver">
+ <summary>
+ least squares fitting for general curve functions
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.GaussNewtonSolver.FitFunction">
+ <summary>
+ A general curve function to fit
+ </summary>
+ <param name="x"></param>
+ <param name="args"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.GaussNewtonSolver.Fit(Microsoft.VisualBasic.Math.Scripting.DataPoint[],Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.NumericMatrix)">
+ <summary>
+ 
+ </summary>
+ <param name="data"></param>
+ <param name="beta">should be a column vector</param>
+ <returns>the function argument values</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.LASSO.LassoFit">
+ <summary>
+ This class is a container for arrays and values that
+ are computed during computation of a lasso fit. It also
+ contains the final weights of features.
+ 
+ @author Yasser Ganjisaffar (http://www.ics.uci.edu/~yganjisa/)
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.LASSO.LassoFit.numberOfLambdas">
+ <summary>
+ Number of lambda values
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.LASSO.LassoFit.intercepts">
+ <summary>
+ Intercepts
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.LASSO.LassoFit.compressedWeights">
+ <summary>
+ Compressed weights for each solution
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.LASSO.LassoFit.indices">
+ <summary>
+ Pointers to compressed weights
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.LASSO.LassoFit.numberOfWeights">
+ <summary>
+ Number of weights for each solution
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.LASSO.LassoFit.nonZeroWeights">
+ <summary>
+ Number of non-zero weights for each solution
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.LASSO.LassoFit.lambdas">
+ <summary>
+ The value of lambdas for each solution
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.LASSO.LassoFit.rsquared">
+ <summary>
+ R^2 value for each solution
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.LASSO.LassoFit.numberOfPasses">
+ <summary>
+ Total number of passes over data
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.LASSO.LassoFit.numFeatures">
+ <summary>
+ number of the data features that input from the training data
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.LASSO.LassoFitGenerator">
+ <summary>
+ This implemenation is based on: Friedman, J., Hastie, T. and Tibshirani, R.
+ (2008) Regularization Paths for Generalized Linear Models via Coordinate
+ Descent. http://www-stat.stanford.edu/~hastie/Papers/glmnet.pdf
+ 
+ @author Yasser Ganjisaffar (http://www.ics.uci.edu/~yganjisa/)
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LASSO.LassoFitGenerator.fit(System.Int32)">
+ <summary>
+ 
+ </summary>
+ <param name="maxAllowedFeaturesPerModel">
+ Generate the Lasso fit. The -1 arguments means that
+ there would be no limit on the maximum number of 
+ features per model
+ </param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.LASSO.MathUtil">
+ <summary>
+ Utility Math functions that are used by other classes.
+ 
+ @author Yasser Ganjisaffar (http://www.ics.uci.edu/~yganjisa/)
+ 
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.JamaHelper">
+ <summary>
+ Created by duy on 31/1/15.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.JamaHelper.solvePSDMatrixEq(Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.NumericMatrix,Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.NumericMatrix)">
+ <summary>
+ Solves the matrix equation A * x = b where A is assumed to be positive
+ definite by using Cholesky decomposition </summary>
+ <param name="A"> Matrix on the left-hand side of the equation </param>
+ <param name="b"> Matrix on the right-hand side of the equation </param>
+ <returns> The solution of the equation A * x = b, OR null if A is not
+         positive definite </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.JamaHelper.dotProduct(Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.NumericMatrix,Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.NumericMatrix)">
+ <summary>
+ Computes the dot product between vectors u and v </summary>
+ <param name="u"> A row or column vector </param>
+ <param name="v"> A row or column vector </param>
+ <returns> Real number which is the dot product between u and v </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmDatumError">
+ <summary>
+ LmDatumError is an interface for evaluating error, Jacobian matrix and
+ Hessian matrix of a single piece of observed data
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmDatumError.NumData">
+ <summary>
+ Gets the total number of observed data
+ </summary>
+ <returns> An integer which is the number of observed data </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmDatumError.eval(System.Int32,System.Double[])">
+ <summary>
+ Evaluates value of the error function for the k-th observed data that
+ corresponds to the parameter vector
+ </summary>
+ <param name="dataIdx"> The index of the input data </param>
+ <param name="optParams"> A vector of real values of parameters in the model
+ @return </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmDatumError.jacobian(System.Int32,System.Double[])">
+ <summary>
+ Evaluates the Jacobian vector of the error function for the k-th observed
+ data that corresponds to the parameter vector
+ </summary>
+ <param name="dataIdx"> The index of the input data </param>
+ <param name="optParams"> A vector of real values of parameters in the model
+ @return </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmDatumError.hessian(System.Int32,System.Double[],System.Boolean)">
+ <summary>
+ Evaluates the Hessian matrix of the error function for the k-th observed
+ data that corresponds to the parameter vector
+ </summary>
+ <param name="dataIdx"> The index of the input data </param>
+ <param name="optParams"> A vector of real values of parameters in the model </param>
+ <param name="approxHessianFlg"> A boolean flag to indicate whether the Hessian
+                         matrix can be approximated instead of having to be
+                         computed exactly
+ @return </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmDatumError.hessian(System.Int32,System.Double[])">
+ <summary>
+ Evaluates the Hessian matrix of the error function for the k-th observed
+ data that corresponds to the parameter vector. The Hessian matrix is
+ computed exactly
+ </summary>
+ <param name="dataIdx"> </param>
+ <param name="optParams">
+ @return </param>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmModelError">
+ <summary>
+ Created by duy on 20/1/15.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmModelError.eval(System.Double[])">
+ <summary>
+ Evaluates the error function with input optimization parameter values
+ </summary>
+ <param name="optParams"> A vector of real values of parameters used in optimizing
+                  the error function </param>
+ <returns> Double value of the error function </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmModelError.jacobian(System.Double[])">
+ <summary>
+ Computes the Jacobian vector of the error function with input
+ optimization parameter values
+ </summary>
+ <param name="optParams"> A vector of real values of parameters used in optimizing
+                  the error function </param>
+ <returns> Jacobian vector of the error function </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmModelError.hessian(System.Double[],System.Boolean)">
+ <summary>
+ Computes the Hessian matrix of the error function with input
+ optimization parameter values
+ </summary>
+ <param name="optParams"> A vector of real values of parameters used in optimizing
+                  the error function </param>
+ <param name="approxHessianFlg"> A boolean flag to indicate whether the Hessian
+                         matrix can be approximated instead of having to be
+                         computed exactly </param>
+ <returns> Hessian matrix of the error function </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmModelError.hessian(System.Double[])">
+ <summary>
+ Computes the Hessian matrix of the error function with input
+ optimization parameter values
+ </summary>
+ <param name="optParams"> A vector of real values of parameters used in optimizing
+                  the error function </param>
+ <returns> The exact Hessian matrix of the error function </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmParamHandler">
+ <summary>
+ Created by duy on 18/3/15.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmParamHandler.adjust(System.Double[])">
+ <summary>
+ Adjusts (or modifies) values of the Levenberg-Marquardt parameters
+ </summary>
+ <param name="lmParams"> Numbers which are values of Levenberg-Marquardt parameters </param>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmScalarModel">
+ <summary>
+ LmScalarModel is an interface for models (functions) whose ranges are
+ single real-valued numbers
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmScalarModel.MeasuredData">
+ <summary>
+ Gets the vector of real numbers containing measured output data,
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmScalarModel.eval(System.Int32,System.Double[])">
+ <summary>
+ Evaluates the model's estimated output for the k-th input data that
+ corresponds to the parameter vector
+ </summary>
+ <param name="dataIdx"> The index of the input data </param>
+ <param name="optParams"> A vector of real values of parameters in the model </param>
+ <returns> Estimated output value produced by the model </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmScalarModel.jacobian(System.Int32,System.Double[])">
+ <summary>
+ Computes the model's Jacobian vector for the k-th input data that
+ corresponds to the parameter vector
+ </summary>
+ <param name="dataIdx"> The index of the input data </param>
+ <param name="optParams"> A vector of real values of parameters in the model </param>
+ <returns> Jacobian vector of the model for the specified input data </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmScalarModel.hessian(System.Int32,System.Double[])">
+ <summary>
+ Computes the model's Hessian matrix for the k-th input data that
+ corresponds to the parameter vector
+ </summary>
+ <param name="dataIdx"> The index of the input data </param>
+ <param name="optParams"> A vector of real values of parameters in the model </param>
+ <returns> Hessian matrix of the model for the specified input data </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmSolver">
+ <summary>
+ levenberg-marquardt
+ 
+ A lightweight implementation of Levenberg-Marquardt algorithm
+ 
+ ### Augmented normal equation
+ 
+ ```
+ (H + uI) * h = -g
+ ```
+ 
+ where:
+ 
+ + H is the Hessian matrix of the chi-squared error function
+ + g is the gradient (Jacobian) vector of the chi-squared error function
+ + u is the damping value
+ 
+ ### Adjusting damping value
+ 
+ Damping value is adjusted at each iteration. The adjustment follows the 
+ algorithm presented in Methods for non-linear least squares problems by
+ Kaj Madsen, Hans Bruun Nielsen, Ole Tingleff. The lecture note can be 
+ downloaded [here](http://www.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf).
+ </summary>
+ <remarks>
+ https://github.com/truongduy134/levenberg-marquardt
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmSolver.solve(System.Double[],Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmParamHandler,System.Boolean)">
+ <summary>
+ Applies Levenberg-Marquadt algorithm on the input error function with the
+ input initial guess of optimization parameters
+ </summary>
+ <param name="optParams"> A vector of initial guess of values of parameters
+                  for optimization </param>
+ <param name="paramHandler"> A handler which is called to adjust values of
+                     the Levenberg-Marquadt parameters after they are
+                     updated at the end of each iteration in the algorithm.
+                     If {@code paramHandler} is null, no further adjustment
+                     to the updated parameters is performed. This is useful
+                     when Levenberg-Marquadt algorithm is performed on
+                     structures such as quaternions. Note that the
+                     way updated parameters are modified can affect
+                     correctness of the Levenberg-Marquadt algorithm </param>
+ <param name="approxHessianFlg"> A boolean flag to indicate whether the Hessian
+                         matrix used in the Levenberg-Marquadt algorithm
+                         should be approximated or computed exactly. If
+                         {@code true}, the Hessian matrix will be
+                         approximated by the Jacobian matrix </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmSolver.solve(System.Double[])">
+ <summary>
+ Applies Levenberg-Marquadt algorithm on the input error function with the
+ input initial guess of optimization parameters. Note that the Hessian
+ matrix used in the Levenberg-Marquadt will be computed exactly
+ </summary>
+ <param name="optParams"> A vector of initial guess of values of parameters
+                  for optimization </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmSolver.solve(System.Double[],System.Boolean)">
+ <summary>
+ Applies Levenberg-Marquadt algorithm on the input error function with the
+ input initial guess of optimization parameters.
+ </summary>
+ <param name="optParams"> A vector of initial guess of values of parameters
+                  for optimization </param>
+ <param name="approxHessianFlg"> A boolean flag to indicate whether the Hessian
+                         matrix used in the Levenberg-Marquadt algorithm
+                         should be approximated or computed exactly. If
+                         {@code true}, the Hessian matrix will be
+                         approximated by the Jacobian matrix </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmSolver.solve(System.Double[],Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmParamHandler)">
+ <summary>
+ Applies Levenberg-Marquadt algorithm on the input error function with the
+ input initial guess of optimization parameters. Note that the Hessian
+ matrix used in the Levenberg-Marquadt will be computed exactly
+ </summary>
+ <param name="optParams"> A vector of initial guess of values of parameters
+                  for optimization </param>
+ <param name="paramHandler"> A handler which is called to adjust values of
+                     the Levenberg-Marquadt parameters after they are
+                     updated at the end of each iteration in the algorithm.
+                     If {@code paramHandler} is null, no further adjustment
+                     to the updated parameters is performed. This is useful
+                     when Levenberg-Marquadt algorithm is performed on
+                     structures such as quaternions. Note that the
+                     way updated parameters are modified can affect
+                     correctness of the Levenberg-Marquadt algorithm </param>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmSumError">
+ <summary>
+ Created by duy on 1/4/15.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmSumError.eval(System.Double[])">
+ <summary>
+ Evaluates the error function with input optimization parameter values
+ </summary>
+ <param name="optParams"> A vector of real values of parameters used in optimizing
+                  the error function </param>
+ <returns> Double value of the error function </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmSumError.jacobian(System.Double[])">
+ <summary>
+ Computes the Jacobian vector of the error function with input
+ optimization parameter values
+ </summary>
+ <param name="optParams"> A vector of real values of parameters used in optimizing
+                  the error function </param>
+ <returns> Jacobian vector of the error function </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmSumError.hessian(System.Double[],System.Boolean)">
+ <summary>
+ Computes the Hessian matrix of the error function with input
+ optimization parameter values
+ </summary>
+ <param name="optParams"> A vector of real values of parameters used in optimizing
+                  the error function </param>
+ <param name="approxHessianFlg"> A boolean flag to indicate whether the Hessian
+                         matrix can be approximated instead of having to be
+                         computed exactly. </param>
+ <returns> Hessian matrix of the error function </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmSumSquaresError">
+ <summary>
+ Created by duy on 27/1/15.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmSumSquaresError.eval(System.Double[])">
+ <summary>
+ Evaluates the error function with input optimization parameter values
+ </summary>
+ <param name="optParams"> A vector of real values of parameters used in optimizing
+                  the error function </param>
+ <returns> Double value of the error function </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmSumSquaresError.jacobian(System.Double[])">
+ <summary>
+ Computes the Jacobian vector of the error function with input
+ optimization parameter values
+ </summary>
+ <param name="optParams"> A vector of real values of parameters used in optimizing
+                  the error function </param>
+ <returns> Jacobian vector of the error function </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmSumSquaresError.hessian(System.Double[],System.Boolean)">
+ <summary>
+ Computes the Hessian matrix of the error function with input
+ optimization parameter values
+ </summary>
+ <param name="optParams"> A vector of real values of parameters used in optimizing
+                  the error function </param>
+ <param name="approxHessianFlg"> A boolean flag to indicate whether the Hessian
+                         matrix can be approximated instead of having to be
+                         computed exactly. If {@code true}, the Hessian
+                         matrix will be approximated based on the Jacobian
+                         matrix </param>
+ <returns> Hessian matrix of the error function </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.DoubleLinear.doFilterInternal(System.Drawing.PointF[],Microsoft.VisualBasic.Language.List{System.Drawing.PointF}@,System.Boolean,Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange)">
+ <summary>
+ removes NAN points
+ </summary>
+ <param name="pointVec"></param>
+ <param name="removed"></param>
+ <param name="removesZeroY"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.DoubleLinear.AutoPointDeletion(System.Collections.Generic.IEnumerable{System.Drawing.PointF},Microsoft.VisualBasic.Data.Bootstrapping.Weights,System.Int32,Microsoft.VisualBasic.Language.List{System.Drawing.PointF}@,System.Boolean,System.Boolean,Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange)">
+ <summary>
+ 
+ </summary>
+ <param name="points"></param>
+ <param name="weighted"></param>
+ <param name="max">
+ Max number of the reference points that delete automatically by 
+ the linear modelling program.
+ 
+ + negative value means auto
+ + zero means no deletion
+ + positive means the max allowed point numbers for auto deletion by the program
+ </param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.Extensions.X(Microsoft.VisualBasic.Data.Bootstrapping.IFitted)">
+ <summary>
+ get input X
+ </summary>
+ <param name="fit"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.Extensions.Y(Microsoft.VisualBasic.Data.Bootstrapping.IFitted)">
+ <summary>
+ get input Y
+ </summary>
+ <param name="fit"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.Extensions.Yfit(Microsoft.VisualBasic.Data.Bootstrapping.IFitted)">
+ <summary>
+ get predicted Y
+ </summary>
+ <param name="fit"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.Extensions.LinearRegression(System.Drawing.PointF[],Microsoft.VisualBasic.Data.Bootstrapping.Weights)">
+ <summary>
+ 对标准曲线进行线性回归建模
+ 
+ + ``<paramref name="weighted"/> = TRUE``: <see cref="T:Microsoft.VisualBasic.Data.Bootstrapping.WeightedFit"/>
+ + ``<paramref name="weighted"/> = FALSE``: <see cref="T:Microsoft.VisualBasic.Data.Bootstrapping.FitResult"/>
+ 
+ </summary>
+ <param name="line"></param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.Extensions.CorrelationCoefficient(Microsoft.VisualBasic.Data.Bootstrapping.IFitted)">
+ <summary>
+ Sqrt of R<sup>2</sup>
+ </summary>
+ <param name="lm"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.FeatureProjection.Project(System.Collections.Generic.IEnumerable{System.Drawing.PointF},System.Int32)">
+ <summary>
+ 利用多项式线性拟合将不等长的向量投影为指定维度的向量
+ </summary>
+ <param name="points"></param>
+ <param name="dimension%"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.FitResult">
+ <summary>
+ 线性回归结果
+ </summary>
+ <remarks>
+ 在讨论模型时，所谓“线性”并不意味就是直线。回归模型相对于参数是线性的，但是相对于解释变量可以是非线性关系。
+ 比如以下这些常见形式都是线性回归模型：
+ 
+ |模型名称   |表达式                            |
+ |-----------|---------------------------------|
+ |一般线性模型|    y  = c + b*    x  +         u|
+ |线性对数模型|    y  = c + b*log(x) +         u|
+ |对数线性模型|log(y) = c + b*    x  +         u|
+ |双对数模型  |log(y) = c + b*log(x) +         u|
+ |二次回归模型|    y  = c + b*    x  + r*x^2 + u|
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.FitResult.Polynomial">
+ <summary>
+ 拟合后的方程系数，根据阶次获取拟合方程的系数，
+ 如getFactor(2)，就是获取``y = a0 + a1*x + a2*x^2 + ... + apoly_n*x^poly_n``中a2的值
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.FitResult.SSR">
+ <summary>
+ 回归平方和
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.FitResult.SSE">
+ <summary>
+ (剩余平方和)
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.FitResult.RMSE">
+ <summary>
+ RMSE均方根误差
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.FitResult.ErrorTest">
+ <summary>
+ 保存拟合后的y值，在拟合时可设置为不保存节省内存
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.FitResult.GetY(System.Double)">
+ <summary>
+ 根据x获取拟合方程的y值
+ </summary>
+ <param name="x"></param>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.FitResult.Slope">
+ <summary>
+ 获取斜率
+ </summary>
+ <returns>斜率值</returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.FitResult.Intercept">
+ <summary>
+ 获取截距
+ </summary>
+ <returns>截距值</returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.FitResult.R_square">
+ <summary>
+ 确定系数，系数是0~1之间的数，是数理上判定拟合优度的一个量
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.FitResult.AdjustR_square">
+ <summary>
+ 调整R方（Adjusted R-Square）
+ </summary>
+ <returns></returns>
+ <remarks>
+ Adjusted R-Squared 抵消样本数量对 R-Squared 的影响，做到了真正的 0~1，越大越好。
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.FitResult.FactorSize">
+ <summary>
+ 获取拟合方程系数的个数
+ </summary>
+ <returns>拟合方程系数的个数</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.FitResult.ToString">
+ <summary>
+ <see cref="P:Microsoft.VisualBasic.Math.LinearAlgebra.Formula.Factors"/>:
+ 
+ ``y = a0 + a1*x + a2*x^2 + ... + apoly_n*x^poly_n``
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.IFitted">
+ <summary>
+ a unify interface model of linear fitting result
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.IFitted.R2">
+ <summary>
+ 相关系数 R2
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.IFitted.Polynomial">
+ <summary>
+ 线性模型的多项式
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.IFitted.ErrorTest">
+ <summary>
+ 保存拟合后的y值，在拟合时可设置为不保存节省内存
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.IFitted.GetY(System.Double[])">
+ <summary>
+ f(x) or f(x1, x2, x3)
+ </summary>
+ <param name="x"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.LeastSquares">
+ <summary>
+ Linear interpolator
+ 
+ 曲线拟合类，只适用于线性拟合：
+ 
+ + ``y = a*x + b``
+ + ``y = a + a1*x + a2*x^2 + ... + an*x^n``
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LeastSquares.LinearFit(Microsoft.VisualBasic.Math.LinearAlgebra.Vector,Microsoft.VisualBasic.Math.LinearAlgebra.Vector)">
+ <summary>
+ 直线拟合-一元回归,拟合的结果可以使用getFactor获取，或者使用getSlope获取斜率，getIntercept获取截距
+ </summary>
+ <param name="x">观察值的x</param>
+ <param name="y">观察值的y</param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LeastSquares.PolyFit(Microsoft.VisualBasic.Math.LinearAlgebra.Vector,Microsoft.VisualBasic.Math.LinearAlgebra.Vector,System.Int32)">
+ <summary>
+ 多项式拟合，拟合y=a0+a1*x+a2*x^2+……+apoly_n*x^poly_n
+ </summary>
+ <param name="x">观察值的x</param>
+ <param name="y">观察值的y</param>
+ <param name="poly_n">期望拟合的阶数，若poly_n=2，则y=a0+a1*x+a2*x^2</param>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LeastSquares.PolyFit(System.Double[],System.Double[],System.Int32)">
+ <summary>
+ 多项式拟合
+ </summary>
+ <param name="x#"></param>
+ <param name="y#"></param>
+ <param name="poly_n%">最高的阶数</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LeastSquares.SeriesLength(System.Collections.Generic.IEnumerable{System.Double},System.Collections.Generic.IEnumerable{System.Double})">
+ <summary>
+ 获取两个vector的安全size
+ </summary>
+ <param name="x"></param>
+ <param name="y"></param>
+ <returns>最小的一个长度</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.Multivariate.LinearFittingAlgorithm.LinearFitting(Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.NumericMatrix,Microsoft.VisualBasic.Math.LinearAlgebra.Vector)">
+ <summary>
+ 
+ </summary>
+ <param name="x">
+ A matrix like:
+ 
+ ```
+ x1  x2  x3  x4
+  a   b   c   d
+  a   b   c   d
+  a   b   c   d 
+  a   b   c   d
+  a   b   c   d 
+ ```
+ </param>
+ <param name="f">
+ A vector like:
+ 
+ ```
+ y1
+ y2
+ y3
+ y4
+ y5
+ ```
+ </param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.Multivariate.LinearFittingAlgorithm.CurveScale(System.Collections.Generic.IEnumerable{System.Double})">
+ <summary>
+ ```
+ h(X) = a + b*x1 + c*x2^2 + d*x3^3 + ... 
+ ```
+ </summary>
+ <param name="X"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.Multivariate.MLRFit">
+ <summary>
+ Multiple linear regression.(多元线性回归)
+ 
+ Problem of predicting appropriate values of given feature set as inputvector
+ using supervised linear regression with multiple dimensional sample input 
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.Multivariate.MLRFit.N">
+ <summary>
+ 
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.Multivariate.MLRFit.p">
+ <summary>
+ number of dependent variables
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.Multivariate.MLRFit.beta">
+ <summary>
+ regression coefficients
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.Multivariate.MLRFit.SSE">
+ <summary>
+ sum of squared
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.Multivariate.MLRFit.Fx(Microsoft.VisualBasic.Math.LinearAlgebra.Vector)">
+ <summary>
+ Evaluate the regression value from a given X vector
+ 
+ ```
+ f(x) = ax1 + bx2 + cx3 + dx4 + ...
+ ```
+ </summary>
+ <param name="x"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.WeightedFit">
+ <summary>
+ 加权拟合的结果
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.WeightedFit.FisherF">
+ <summary>
+ FReg: Fisher F statistic for regression
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.WeightedFit.CorrelationCoefficient">
+ <summary>
+ RYSQ: Multiple correlation coefficient (R2，相关系数)
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.WeightedFit.StandardDeviation">
+ <summary>
+ SDV: Standard deviation of errors
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.WeightedFit.Residuals">
+ <summary>
+ DY: Residual values of Y
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.WeightedFit.CoefficientsStandardError">
+ <summary>
+ SEC: Std Error of coefficients
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.WeightedFit.VarianceMatrix">
+ <summary>
+ V: Least squares and var/covar matrix
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.WeightedFit.Polynomial">
+ <summary>
+ 一元多项式的数据模型
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.WeightedFit.ErrorTest">
+ <summary>
+ Ycalc: Calculated values of Y.(根据所拟合的公式所计算出来的预测值)
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.WeightedLinearRegression">
+ <summary>
+ ## An Algorithm for Weighted Linear Regression
+ 
+ > https://www.codeproject.com/Articles/25335/An-Algorithm-for-Weighted-Linear-Regression
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.WeightedLinearRegression.XVector(System.Double[0:,0:])">
+ <summary>
+ 
+ </summary>
+ <param name="M">
+ i=1: X vector
+ </param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.WeightedLinearRegression.Regress(System.Double[],System.Double[0:,0:],System.Double[])">
+ <summary>
+ 
+ </summary>
+ <param name="Y">Y[j]   = j-th observed data point</param>
+ <param name="X">X[i,j] = j-th value of the i-th independent varialble</param>
+ <param name="W">W[j]   = j-th weight value</param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.LMA">
+ <summary>
+ ### Levenberg–Marquardt algorithm
+ 
+ In mathematics and computing, the Levenberg–Marquardt algorithm 
+ (LMA or just LM), also known as the damped least-squares (DLS) 
+ method, is used to solve non-linear least squares problems. 
+ 
+ These minimization problems arise especially in least squares 
+ curve fitting.
+ </summary>
+ <remarks>
+ solver implements at <see cref="T:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.LmSolver"/>
+ </remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.Bootstrapping.LMA.FitInput.factors">
+ <summary>
+ The matrix row
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.Bootstrapping.LMA.FitInput.y">
+ <summary>
+ The non-linear function result output 
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.Instance">
+ <summary>
+ classify training model
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.Instance.label">
+ <summary>
+ the real label data
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.Instance.x">
+ <summary>
+ the object properties vector
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.Instance.Load``1(System.Collections.Generic.IEnumerable{``0},System.String[],System.String)">
+ <summary>
+ load raw dataset helper function
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="data"></param>
+ <param name="featureSet"></param>
+ <param name="label"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.Logistic">
+ <summary>
+ This method uses Gradient descent algorithm. It uses number of small
+ steps (iterations) And with each step use New theta values which
+ results in smaller cost function value. After a while it comes to 
+ local minima (minimum cost function).
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.Logistic.ALPHA">
+ <summary>
+ the learning rate 
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.Logistic.ITERATIONS">
+ <summary>
+ the number of iterations 
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.Bootstrapping.Logistic.theta">
+ <summary>
+ the weight to learn 
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.Logistic.sigmoid(Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.NumericMatrix)">
+ <summary>
+ Sigmoid function. Formula: g = 1 ./ (1 + (exp(-1 .* z)));
+ </summary>
+ <param name="z">
+ Matrix, for which elements sigmoid function is calculated.
+ </param>
+ <returns>
+ Matrix with elements from sigmoid function.
+ </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LowessFittings.Lowess(System.Collections.Generic.IEnumerable{System.Drawing.PointF},System.Double,System.Int32)">
+ <summary>
+ Locally-weighted polynomial regression via the LOWESS algorithm.
+ </summary>
+ <param name="sample"></param>
+ <param name="f">smoother span (proportion of points which influence smoothing at each value)</param>
+ <param name="nsteps">number of iterations in the robust fit</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LowessFittings.Lowess(System.Double[],System.Double[],System.Int32,System.Double,System.Int32,System.Double)">
+ <summary>
+ Locally-weighted polynomial regression via the LOWESS algorithm.
+ </summary>
+ <param name="x">ordered x-axis values (abscissa values)</param>
+ <param name="y">corresponding y-axis values (ordinate values)</param>
+ <param name="n">number of observations</param>
+ <param name="f">smoother span (proportion of points which influence smoothing at each value)</param>
+ <param name="nsteps">number of iterations in the robust fit</param>
+ <param name="delta">nonnegative parameter which may be used to reduce the number of computations</param>
+ <returns>
+ sorted x-values and fitted values
+ </returns>
+ <remarks>
+ Calculates fitted values using a nearest neighbor function and robust locally weighted regression of degree one with the tricube weight function.
+ 
+ -   Cleveland, William S. 1979. "Robust Locally and Smoothing Weighted Regression Scatterplots." _Journal of the American Statistical Association_ 74 (368): 829–36. doi:[10.1080/01621459.1979.10481038](https://doi.org/10.1080/01621459.1979.10481038).
+ -   Cleveland, William S. 1981. "Lowess: A program for smoothing scatterplots by robust locally weighted regression." _American Statistician_ 35 (1) 54–55. doi:[10.2307/2683591](https://doi.org/10.2307/2683591).
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LowessFittings.lowest(System.Double[],System.Double[],System.Int32,System.Int32,System.Int32,System.Int32,System.Double[],System.Boolean,System.Double[])">
+ <summary>
+ Calculates the fitted value `ys` for a value `xs` on the horizontal axis.
+ </summary>
+ <param name="x">ordered x-axis values (abscissa values)</param>
+ <param name="y">corresponding y-axis values (ordinate values)</param>
+ <param name="n">number of observations</param>
+ <param name="i">current index</param>
+ <param name="nleft">index of the first point used in computing the fitted value</param>
+ <param name="nright">index of the last point used in computing the fitted value</param>
+ <param name="w">weights at indices from `nleft` to `nright` to be used in the calculation of the fitted value</param>
+ <param name="userw">boolean indicating whether a robust fit is carried out using the weights in `rw`</param>
+ <param name="rw">robustness weights</param>
+ <returns>fitted value</returns>
+ <remarks>
+ The smoothed value for the x-axis value at the current index is computed using a (robust) locally weighted regression of degree one.  
+ The tricube weight function is used with `h` equal to the maximum of `xs - x[ nleft ]` and `x[ nright ] - xs`.
+ 
+ -   Cleveland, William S. 1979. "Robust Locally and Smoothing Weighted Regression Scatterplots." _Journal of the American Statistical Association_ 74 (368): 829–36. doi:[10.1080/01621459.1979.10481038](https://doi.org/10.1080/01621459.1979.10481038).
+ -   Cleveland, William S. 1981. "Lowess: A program for smoothing scatterplots by robust locally weighted regression." _American Statistician_ 35 (1) 54–55. doi:[10.2307/2683591](https://doi.org/10.2307/2683591).
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.StockPredict">
+ <summary>
+ Bayesian Curve Fitting
+ </summary>
+</member>
+</members>
+</doc>

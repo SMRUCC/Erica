@@ -839,6 +839,14 @@
             "fileVersion": "1.0.0.0"
           }
         }
+      },
+      "Microsoft.VisualBasic.Data.Bootstrapping.Fittings/5.0.1.2389": {
+        "runtime": {
+          "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.dll": {
+            "assemblyVersion": "5.0.1.2389",
+            "fileVersion": "5.0.1.2389"
+          }
+        }
       }
     }
   },
@@ -1453,6 +1461,11 @@
       "sha512": ""
     },
     "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.Reference/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.VisualBasic.Data.Bootstrapping.Fittings/5.0.1.2389": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
