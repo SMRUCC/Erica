@@ -14,8 +14,8 @@ Module alignmentTest
         Dim img As BitmapBuffer
 
         Using gfx As IGraphics = DriverLoad.CreateDefaultRasterGraphics(New Size(120, 90), Color.Transparent)
-            Call gfx.FillRectangle(Brushes.Red, New Rectangle(30, 60, 20, 20))
-            Call gfx.FillCircles(Brushes.Blue, {New PointF(15, 20), New PointF(30, 30)}, 5)
+            Call gfx.FillRectangle(Brushes.Violet, New Rectangle(30, 60, 20, 20))
+            Call gfx.FillCircles(Brushes.SkyBlue, {New PointF(15, 20), New PointF(30, 30)}, 5)
 
             Call gfx.Flush()
 

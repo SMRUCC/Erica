@@ -1,5 +1,4 @@
-﻿Imports Microsoft.VisualBasic.ComponentModel.Collection
-Imports Microsoft.VisualBasic.Language.Vectorization
+﻿Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Math.LinearAlgebra
 Imports std = System.Math
@@ -36,35 +35,8 @@ Public Class SlideSample
         }
     End Function
 
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Public Function RasterizePoints(xmin As Single, xmax As Single, ymin As Single, ymax As Single, res As Single) As Double()()()
-        Dim x_seq As Double() = Vector.seq(xmin, xmax, by:=res)
-        Dim y_seq As Double() = Vector.seq(ymin, ymax, by:=res)
-        Dim grid_matrix As Double()()() = intensity _
-            .Select(Function(c)
-                        Return RectangularArray.Matrix(Of Double)(y_seq.Length, x_seq.Length)
-                    End Function) _
-            .ToArray
-
-        For i As Integer = 0 To x_seq.Length - 1
-            For j As Integer = 0 To y_seq.Length - 1
-                Dim cell_x_min = x_seq(i)
-                Dim cell_x_max = x_seq(i) + res
-                Dim cell_y_min = y_seq(j)
-                Dim cell_y_max = y_seq(j) + res
-                ' 查找在当前单元格内的点
-                Dim in_cell As BooleanVector = (x >= cell_x_min) & (x < cell_x_max) & (y >= cell_y_min) & (y < cell_y_max)
-
-                If in_cell.Any Then
-                    For k As Integer = 0 To intensity.Length - 1
-                        Dim v = intensity(k)
-                        Dim m = grid_matrix(k)
-
-                        m(j)(i) = v(in_cell).Average  ' 取平均强度
-                    Next
-                End If
-            Next
-        Next
-
-        Return grid_matrix
+        Return SlideRasterize.RasterizePoints(Me, xmin, xmax, ymin, ymax, res)
     End Function
 End Class
