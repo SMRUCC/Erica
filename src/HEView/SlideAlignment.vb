@@ -34,7 +34,7 @@ Public Class SlideAlignment : Inherits IGradFunction
         Dim upper_bounds = New Double() {2 * pi, Inf, Inf, 10.0, 10.0}  ' theta最大2π, sx/sy最大10
         Dim lbfgsb As New LBFGSB
         Dim optf As New SlideAlignment(ref, target, res)
-        Dim result As Double() = lbfgsb.maxit(maxit).minimize(optf, initial_params, lower_bounds, upper_bounds)
+        Dim result As Double() = lbfgsb.maxit(maxit).debug.minimize(optf, initial_params, lower_bounds, upper_bounds)
 
         Call ("!RESULT").debug
         Call ("k = " & lbfgsb.k.ToString()).debug
