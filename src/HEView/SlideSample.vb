@@ -1,6 +1,7 @@
 ﻿Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.Language.Vectorization
 Imports Microsoft.VisualBasic.Math.LinearAlgebra
+Imports Microsoft.VisualBasic.Math.Scripting.BasicR
 Imports std = System.Math
 
 Public Class SlideSample
@@ -70,8 +71,8 @@ Public Class SlideSample
     Public Function ObjectiveFunction(theta As Single, tx As Single, ty As Single, sx As Single, sy As Single, res As Single)
         Dim df2_transformed = Transform(theta, tx, ty, sx, sy)
         ' 设置网格范围（基于df1和变换后df2的边界，并添加10%缓冲）
-        Dim all_x = c(x, df2_transformed.x)
-        Dim all_y = c(y, df2_transformed.y)
+        Dim all_x = base.c(x, df2_transformed.x)
+        Dim all_y = base.c(y, df2_transformed.y)
         Dim xmin = min(all_x) - 0.1 * diff(Range(all_x))
         Dim xmax = max(all_x) + 0.1 * diff(Range(all_x))
         Dim ymin = min(all_y) - 0.1 * diff(Range(all_y))
