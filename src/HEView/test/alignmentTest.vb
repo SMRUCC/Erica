@@ -54,6 +54,9 @@ Module alignmentTest
         Dim sample = ref.Transform(std.PI * 1.33, 36, -99, 1.2, 0.988)
         Dim result = SlideAlignment.MakeAlignment(ref, sample)
 
+        Call SlideSample.Render(ref).Save("Z:/ref.bmp")
+        Call SlideSample.Render(result).Save("Z:/align.bmp")
+
         Pause()
     End Sub
 End Module

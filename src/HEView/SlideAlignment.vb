@@ -73,8 +73,11 @@ Public Class SlideAlignment : Inherits IGradFunction
 
         ' 如果有效点太少，返回高损失
         If (intensity1(0).Length < 10 OrElse intensity2(0).Length < 10) Then
-            Return 1000  ' 惩罚值
+            Return df1.intensity(0).Length * 1000 / (intensity1(0).Length + 1) ' 惩罚值
         End If
+
+        Dim checkW = df2_transformed.x.Range.MinMax
+        Dim checkH = df2_transformed.y.Range.MinMax
 
         ' 计算皮尔森相关性
         Dim cor_value = df1.intensity _
@@ -88,7 +91,13 @@ Public Class SlideAlignment : Inherits IGradFunction
 
         ' 如果相关性为NA（如常数向量），返回高损失
         If ([is].na(cor_value).Any) Then
-            Return 1000
+            Return 1000 * cor_value.Count(Function(xi) xi.IsNaNImaginary)
+        End If
+
+        If checkW.Any(Function(a) a < 0) Then
+            Return -checkW.Min
+        ElseIf checkH.Any(Function(a) a < 0) Then
+            Return -checkH.Min
         End If
 
         ' 返回负相关性（因为optim最小化目标）

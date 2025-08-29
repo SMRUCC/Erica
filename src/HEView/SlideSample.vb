@@ -1,4 +1,8 @@
-﻿Imports System.Runtime.CompilerServices
+﻿Imports System.Drawing
+Imports System.Runtime.CompilerServices
+Imports Microsoft.VisualBasic.Imaging
+Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
+Imports Microsoft.VisualBasic.Imaging.Drawing2D.HeatMap
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Math.LinearAlgebra
 Imports std = System.Math
@@ -8,6 +12,37 @@ Public Class SlideSample
     Public Property x As Vector
     Public Property y As Vector
     Public Property intensity As Vector()
+
+    Public Shared Function Render(slide As SlideSample, Optional heatmap As Integer = -1, Optional dims As Size? = Nothing) As Bitmap
+        If dims Is Nothing Then
+            Dim xlim = slide.x.Range.MinMax
+            Dim ylim = slide.y.Range.MinMax
+
+            dims = New Size(xlim(1) * 1.25, ylim(1) * 1.25)
+        End If
+
+        Dim heat As Double()
+
+        If heatmap > -1 Then
+            heat = slide.intensity(heatmap)
+        Else
+            heat = slide.intensity(0) _
+                .Select(Function(v, i)
+                            Return slide.intensity _
+                                .Select(Function(x) x(i)) _
+                                .Average
+                        End Function) _
+                .ToArray
+        End If
+
+        Dim pixels As PixelData() = heat _
+            .Select(Function(val, i) New PixelData(slide.x(i), slide.y(i), val)) _
+            .ToArray
+        Dim raster As New PixelRender(ScalerPalette.Jet.Description, 30, Color.White)
+        Dim img As Bitmap = raster.RenderRasterImage(pixels, dims)
+
+        Return img
+    End Function
 
     ''' <summary>
     ''' 
