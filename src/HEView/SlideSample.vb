@@ -73,10 +73,10 @@ Public Class SlideSample
         ' 设置网格范围（基于df1和变换后df2的边界，并添加10%缓冲）
         Dim all_x = base.c(x, df2_transformed.x)
         Dim all_y = base.c(y, df2_transformed.y)
-        Dim xmin = min(all_x) - 0.1 * diff(Range(all_x))
-        Dim xmax = max(all_x) + 0.1 * diff(Range(all_x))
-        Dim ymin = min(all_y) - 0.1 * diff(Range(all_y))
-        Dim ymax = max(all_y) + 0.1 * diff(Range(all_y))
+        Dim xmin = all_x.Min - 0.1 * diff(Range(all_x))
+        Dim xmax = all_x.Max + 0.1 * diff(Range(all_x))
+        Dim ymin = all_y.Min - 0.1 * diff(Range(all_y))
+        Dim ymax = all_y.Max + 0.1 * diff(Range(all_y))
 
         ' 栅格化df1和变换后的df2
         Dim grid1 = RasterizePoints(xmin, xmax, ymin, ymax, res)
