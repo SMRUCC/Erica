@@ -87,7 +87,7 @@ Public Class SlideAlignment : Inherits IGradFunction
             .ToArray
 
         ' 如果相关性为NA（如常数向量），返回高损失
-        If ([is].na(cor_value).Sum > 0) Then
+        If ([is].na(cor_value).Any) Then
             Return 1000
         End If
 
