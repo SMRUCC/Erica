@@ -15,6 +15,10 @@ Module Program
     End Sub
 
     Sub Main(args As String())
+        Call alignmentTest.test()
+    End Sub
+
+    Sub scanCells()
         Dim bin = Thresholding.ostuFilter(SkiaImage.FromFile("Z:\Capture.PNG").ToBitmap.MemoryBuffer, factor:=0.8)
 
         Call bin.Save("Z:\bin.bmp")
