@@ -1,5 +1,6 @@
 ﻿Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.Language.Vectorization
+Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Math.LinearAlgebra
 Imports Microsoft.VisualBasic.Math.Scripting.BasicR
 Imports std = System.Math
@@ -68,38 +69,46 @@ Public Class SlideSample
         Return grid_matrix
     End Function
 
-    Public Function ObjectiveFunction(theta As Single, tx As Single, ty As Single, sx As Single, sy As Single, res As Single)
-        Dim df2_transformed = Transform(theta, tx, ty, sx, sy)
+    Public Function ObjectiveFunction(df2 As SlideSample, theta As Single, tx As Single, ty As Single, sx As Single, sy As Single, res As Single) As Double
+        Dim df2_transformed = df2.Transform(theta, tx, ty, sx, sy)
         ' 设置网格范围（基于df1和变换后df2的边界，并添加10%缓冲）
         Dim all_x = base.c(x, df2_transformed.x)
         Dim all_y = base.c(y, df2_transformed.y)
-        Dim xmin = all_x.Min - 0.1 * diff(Range(all_x))
-        Dim xmax = all_x.Max + 0.1 * diff(Range(all_x))
-        Dim ymin = all_y.Min - 0.1 * diff(Range(all_y))
-        Dim ymax = all_y.Max + 0.1 * diff(Range(all_y))
+        Dim xmin = all_x.Min - 0.1 * base.diff(base.range(all_x))(0)
+        Dim xmax = all_x.Max + 0.1 * base.diff(base.range(all_x))(0)
+        Dim ymin = all_y.Min - 0.1 * base.diff(base.range(all_y))(0)
+        Dim ymax = all_y.Max + 0.1 * base.diff(base.range(all_y))(0)
 
         ' 栅格化df1和变换后的df2
         Dim grid1 = RasterizePoints(xmin, xmax, ymin, ymax, res)
         Dim grid2 = df2_transformed.RasterizePoints(xmin, xmax, ymin, ymax, res)
 
         ' 提取非NA的单元格（仅处理两者都有值的单元格）
-        Dim valid_cells = !Is.na(grid1) & !Is.na(grid2)
-        Dim intensity1 = grid1(valid_cells)
-        Dim intensity2 = grid2(valid_cells)
+        ' Dim valid_cells = !is.na(grid1) & !is.na(grid2)
+        Dim intensity1 = grid1 '(valid_cells)
+        Dim intensity2 = grid2 '(valid_cells)
 
         ' 如果有效点太少，返回高损失
         If (intensity1.Length < 10 OrElse intensity2.Length < 10) Then
-            Return (1000)  ' 惩罚值
+            Return 1000  ' 惩罚值
         End If
 
         ' 计算皮尔森相关性
-        Dim cor_value = cor(intensity1, intensity2, method = "pearson")
+        Dim cor_value = intensity _
+            .Select(Function(v, i)
+                        Return cor(intensity1(i), intensity2(i), method:="pearson")
+                    End Function) _
+            .Select(Function(cor)
+                        Return cor.IteratesALL.Average
+                    End Function) _
+            .ToArray
+
         ' 如果相关性为NA（如常数向量），返回高损失
-        If (Is .na(cor_value)) Then
-            Return (1000)
+        If ([is].na(cor_value).Any) Then
+            Return 1000
         End If
 
         ' 返回负相关性（因为optim最小化目标）
-        Return (-cor_value)
+        Return -cor_value.Average
     End Function
 End Class
