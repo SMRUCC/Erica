@@ -32,7 +32,7 @@ Public Class SlideSample
         Return New SlideSample With {
             .x = x_new,
             .y = y_new,
-            .intensity = intensity
+            .intensity = intensity.ToArray
         }
     End Function
 

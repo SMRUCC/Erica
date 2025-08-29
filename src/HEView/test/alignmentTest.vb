@@ -19,7 +19,7 @@ Module alignmentTest
 
             Call gfx.Flush()
 
-            img = DirectCast(DirectCast(gfx, GdiRasterGraphics).ImageResource, SkiaImage).GetBinaryBitmap.GetMemoryBuffer
+            img = DirectCast(DirectCast(gfx, GdiRasterGraphics).ImageResource, SkiaImage).ToBitmap.GetMemoryBuffer
         End Using
 
         Dim vx As New List(Of Double)
@@ -33,8 +33,8 @@ Module alignmentTest
                 Dim c As Color = img.GetPixel(x, y)
 
                 If Not c.IsTransparent Then
-                    Call vx.Add(x)
-                    Call vy.Add(y)
+                    Call vx.Add(x + 1)
+                    Call vy.Add(y + 1)
                     Call vr.Add(c.R)
                     Call vg.Add(c.G)
                     Call vb.Add(c.B)
