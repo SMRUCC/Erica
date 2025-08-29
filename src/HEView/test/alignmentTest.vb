@@ -13,9 +13,9 @@ Module alignmentTest
     Private Function createDemo() As SlideSample
         Dim img As BitmapBuffer
 
-        Using gfx As IGraphics = DriverLoad.CreateDefaultRasterGraphics(New Size(1200, 900), Color.Transparent)
-            Call gfx.FillRectangle(Brushes.Red, New Rectangle(30, 600, 200, 200))
-            Call gfx.FillCircles(Brushes.Blue, {New PointF(150, 200), New PointF(300, 300)}, 130)
+        Using gfx As IGraphics = DriverLoad.CreateDefaultRasterGraphics(New Size(120, 90), Color.Transparent)
+            Call gfx.FillRectangle(Brushes.Red, New Rectangle(30, 60, 20, 20))
+            Call gfx.FillCircles(Brushes.Blue, {New PointF(15, 20), New PointF(30, 30)}, 5)
 
             Call gfx.Flush()
 

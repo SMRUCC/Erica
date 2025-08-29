@@ -72,7 +72,7 @@ Public Class SlideAlignment : Inherits IGradFunction
         Dim intensity2 = grid2 '(valid_cells)
 
         ' 如果有效点太少，返回高损失
-        If (intensity1.Length < 10 OrElse intensity2.Length < 10) Then
+        If (intensity1(0).Length < 10 OrElse intensity2(0).Length < 10) Then
             Return 1000  ' 惩罚值
         End If
 
@@ -87,7 +87,7 @@ Public Class SlideAlignment : Inherits IGradFunction
             .ToArray
 
         ' 如果相关性为NA（如常数向量），返回高损失
-        If ([is].na(cor_value).Any) Then
+        If ([is].na(cor_value).Sum > 0) Then
             Return 1000
         End If
 
