@@ -54,7 +54,7 @@ Public Class SlideSample
                 ' 查找在当前单元格内的点
                 Dim in_cell As BooleanVector = (x >= cell_x_min) & (x < cell_x_max) & (y >= cell_y_min) & (y < cell_y_max)
 
-                If in_cell.Sum > 0 Then
+                If in_cell.Any Then
                     For k As Integer = 0 To intensity.Length - 1
                         Dim v = intensity(k)
                         Dim m = grid_matrix(k)
