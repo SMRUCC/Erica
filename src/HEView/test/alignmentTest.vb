@@ -5,6 +5,7 @@ Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.BitmapImage
 Imports Microsoft.VisualBasic.Imaging.Driver
 Imports Microsoft.VisualBasic.Math.LinearAlgebra
+Imports Microsoft.VisualBasic.Parallel
 Imports Brushes = Microsoft.VisualBasic.Imaging.Brushes
 Imports std = System.Math
 
@@ -48,6 +49,10 @@ Module alignmentTest
             .intensity = {New Vector(vr), New Vector(vg), New Vector(vb)}
         }
     End Function
+
+    Sub New()
+        VectorTask.n_threads = 8
+    End Sub
 
     Sub test()
         Dim ref = createDemo()
