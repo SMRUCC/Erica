@@ -20,7 +20,7 @@ Public Class SlideAlignment : Inherits IGradFunction
         Me.res = res
     End Sub
 
-    Public Shared Function MakeAlignment(ref As SlideSample, target As SlideSample) As SlideSample
+    Public Shared Function MakeAlignment(ref As SlideSample, target As SlideSample, Optional maxit As Integer = 50) As SlideSample
         ' 主优化部分
         ' 假设df1和df2已存在：dataframe With x, y, intensity
         ' 设置网格分辨率res（根据数据调整：例如取平均点距的一半）
@@ -34,7 +34,7 @@ Public Class SlideAlignment : Inherits IGradFunction
         Dim upper_bounds = New Double() {2 * pi, Inf, Inf, 10.0, 10.0}  ' theta最大2π, sx/sy最大10
         Dim lbfgsb As New LBFGSB
         Dim optf As New SlideAlignment(ref, target, res)
-        Dim result As Double() = lbfgsb.minimize(optf, initial_params, lower_bounds, upper_bounds)
+        Dim result As Double() = lbfgsb.maxit(maxit).minimize(optf, initial_params, lower_bounds, upper_bounds)
 
         Call ("!RESULT").debug
         Call ("k = " & lbfgsb.k.ToString()).debug
