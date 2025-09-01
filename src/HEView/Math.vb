@@ -1,5 +1,6 @@
 ﻿Imports System.Drawing
 Imports System.Runtime.CompilerServices
+Imports Microsoft.VisualBasic.ApplicationServices.Terminal.ProgressBar.Tqdm
 Imports Microsoft.VisualBasic.ComponentModel.Ranges.Model
 Imports Microsoft.VisualBasic.Data.GraphTheory.GridGraph
 Imports Microsoft.VisualBasic.Imaging
@@ -27,7 +28,9 @@ Public Module Math
                                  Into Average((cell.width + cell.height) / 2)
         Dim view As Grid(Of CellScan()) = all.EncodeGrid(radius:=averageR)
 
-        For i As Integer = 0 To all.Length - 1
+        Call "evaluate the cells population moran-I".info
+
+        For Each i As Integer In TqdmWrapper.Range(0, all.Length)
             Dim target = all(i)
             Dim nearby = view.SpatialLookup(target, averageR) _
                 .OrderBy(Function(a) target.DistanceTo(a)) _
@@ -87,6 +90,9 @@ Public Module Math
     ''' split the large region as cell cluster
     ''' </summary>
     ''' <param name="cells"></param>
+    ''' <param name="noise">
+    ''' the quantile level of the cell size, all cells that with cell size less than this quantile cutoff will be treated as noised.
+    ''' </param>
     ''' <returns></returns>
     <Extension>
     Public Iterator Function Split(cells As IEnumerable(Of CellScan), Optional noise As Double = 0.25) As IEnumerable(Of CellScan)
@@ -107,7 +113,9 @@ Public Module Math
         Dim maxR As Double = Aggregate cell As CellScan In all Into Average((cell.width + cell.height) / 2)
         Dim minR As Double = Aggregate cell As CellScan In all.Skip(all.Length / 3) Into Average((cell.width + cell.height) / 2)
 
-        For Each cell As CellScan In all
+        Call "split the large cell block".info
+
+        For Each cell As CellScan In TqdmWrapper.Wrap(all)
             If cell.points <= averagePt Then
                 Yield cell
                 Continue For

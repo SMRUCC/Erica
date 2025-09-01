@@ -10,12 +10,13 @@ Imports Microsoft.VisualBasic.Serialization.JSON
 Public Module DziScanner
 
     <Extension>
-    Public Iterator Function ScanCells(dzi As DziImage, level As Integer, dir As String,
-                                       Optional ostu_factor As Double = 0.7,
-                                       Optional noise As Double = 0.25,
-                                       Optional moran_knn As Integer = 32) As IEnumerable(Of CellScan)
+    Public Function ScanCells(dzi As DziImage, level As Integer, dir As String,
+                              Optional ostu_factor As Double = 0.7,
+                              Optional noise As Double = 0.25,
+                              Optional moran_knn As Integer = 32) As IEnumerable(Of CellScan)
 
         Dim bar As Tqdm.ProgressBar = Nothing
+        Dim globalLookups As New List(Of CellScan)
 
         For Each file As String In Tqdm.Wrap(dir.ListFiles("*.jpg", "*.png", "*.jpeg", "*.bmp").ToArray, bar:=bar)
             Dim image As Image = Image.FromFile(file)
@@ -23,28 +24,13 @@ Public Module DziScanner
             Dim xy = file.BaseName.Split("_"c).AsInteger
             Dim tile As Rectangle = dzi.DecodeTile(level, xy(0), xy(1))
 
-            Call bar.SetLabel($"{xy.GetJson} -> (offset:{tile.Left},{tile.Top},  width:{tile.Width} x height:{tile.Height})")
-
-            For Each cell As CellScan In bitmap.ScanTile(tile.Location, ostu_factor, noise, moran_knn)
-                Yield cell
-            Next
+            Call bar.SetLabel($"global lookups of tile {xy.GetJson} -> (offset:{tile.Left},{tile.Top}, width:{tile.Width} x height:{tile.Height})")
+            Call globalLookups.AddRange(CellScan _
+                    .CellLookups(grid:=Thresholding.ostuFilter(bitmap, flip:=False, ostu_factor, verbose:=False),
+                                 binary_processing:=False,
+                                 offset:=tile.Location))
         Next
-    End Function
 
-    <Extension>
-    Private Function ScanTile(data As BitmapBuffer, offset As Point,
-                              Optional ostu_factor As Double = 0.7,
-                              Optional noise As Double = 0.25,
-                              Optional moran_knn As Integer = 32) As IEnumerable(Of CellScan)
-
-        Dim cells = CellScan _
-            .CellLookups(grid:=Thresholding.ostuFilter(data, flip:=False, ostu_factor, verbose:=False),
-                         binary_processing:=False,
-                         offset:=offset) _
-            .Split(noise) _
-            .MoranI(knn:=moran_knn) _
-            .ToArray
-
-        Return cells
+        Return globalLookups.Split(noise).MoranI(knn:=moran_knn)
     End Function
 End Module
