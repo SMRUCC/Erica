@@ -59,10 +59,20 @@ Public Module Math
             target.pvalue = pv
         Next
 
-        Dim minVal As Double = Aggregate cell As CellScan
-                               In all
-                               Where Not cell.moranI.IsNaNImaginary
-                               Into Min(cell.moranI)
+        Dim real As CellScan() = all _
+            .Where(Function(cell)
+                       Return Not cell.moranI.IsNaNImaginary
+                   End Function) _
+            .ToArray
+        Dim minVal As Double
+
+        If real.Length > 0 Then
+            minVal = Aggregate cell As CellScan
+                     In real
+                     Into Min(cell.moranI)
+        Else
+            minVal = 0
+        End If
 
         For i As Integer = 0 To all.Length - 1
             If all(i).moranI.IsNaNImaginary Then
