@@ -43,11 +43,13 @@ declare namespace singleCell {
      * @param moran_knn -
      * 
      * + default value Is ``32``.
+     * @param split_blocks 
+     * + default value Is ``false``.
      * @param env -
      * 
      * + default value Is ``null``.
    */
-   function HE_cells(HEstain: any, is_binarized?: boolean, flip?: boolean, ostu_factor?: number, offset?: any, noise?: number, moran_knn?: object, env?: object): object;
+   function HE_cells(HEstain: any, is_binarized?: boolean, flip?: boolean, ostu_factor?: number, offset?: any, noise?: number, moran_knn?: object, split_blocks?: boolean, env?: object): object;
    /**
     * extract the raw expression data matrix from the h5ad object
     * 
@@ -90,8 +92,9 @@ declare namespace singleCell {
         * @param ostu_factor default value Is ``0.7``.
         * @param noise default value Is ``0.25``.
         * @param moran_knn default value Is ``32``.
+        * @param split_blocks default value Is ``false``.
       */
-      function dzi_cells(dzi: object, level: object, dir: string, ostu_factor?: number, noise?: number, moran_knn?: object): object;
+      function dzi_cells(dzi: object, level: object, dir: string, ostu_factor?: number, noise?: number, moran_knn?: object, split_blocks?: boolean): object;
    }
    /**
     * Create spatial annotations data set for each spot data
