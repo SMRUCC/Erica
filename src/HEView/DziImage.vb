@@ -21,6 +21,30 @@ Public Class DziImage
         End Function
     End Class
 
+    ''' <summary>
+    ''' 计算指定层级的图像维度（宽度或高度）
+    ''' </summary>
+    ''' <param name="originalDimension">原始维度（宽度或高度）</param>
+    ''' <param name="level">目标层级</param>
+    ''' <returns>指定层级的维度</returns>
+    Public ReadOnly Property MaxZoomLevels As Integer
+        Get
+            ' 将原始维度连续除以2（level次），并使用Ceiling确保最小为1像素
+            Dim dimension As Integer = std.Min(Size.Width, Size.Height)
+
+            For i As Integer = 1 To Integer.MaxValue
+                dimension = CInt(std.Ceiling(dimension / 2.0))
+
+                If dimension = 1 Then
+                    Return i
+                End If
+            Next
+
+            ' very very large image to zoom
+            Return Integer.MaxValue
+        End Get
+    End Property
+
     Public Overrides Function ToString() As String
         Return Size.ToString
     End Function
@@ -57,8 +81,8 @@ Public Class DziImage
     ''' </remarks>
     Public Function DecodeTile(level As Integer, col As Integer, row As Integer) As Rectangle
         ' 1. 计算当前层级的图像尺寸
-        Dim levelWidth As Integer = CalculateLevelDimension(Size.Width, level)
-        Dim levelHeight As Integer = CalculateLevelDimension(Size.Height, level)
+        Dim levelWidth As Integer = CInt(std.Ceiling(Size.Width / std.Pow(2, level)))
+        Dim levelHeight As Integer = CInt(std.Ceiling(Size.Height / std.Pow(2, level)))
 
         ' 2. 计算当前层级瓦片的列数和行数
         Dim totalCols As Integer = CInt(std.Ceiling(levelWidth / CDbl(TileSize)))
@@ -66,10 +90,10 @@ Public Class DziImage
 
         ' 参数检查
         If col < 0 OrElse col >= totalCols Then
-            Throw New ArgumentOutOfRangeException("col", $"列号必须在0到{totalCols - 1}之间。")
+            Throw New ArgumentOutOfRangeException("col", $"列号col={col}必须在0到{totalCols - 1}之间。")
         End If
         If row < 0 OrElse row >= totalRows Then
-            Throw New ArgumentOutOfRangeException("row", $"行号必须在0到{totalRows - 1}之间。")
+            Throw New ArgumentOutOfRangeException("row", $"行号row={row}必须在0到{totalRows - 1}之间。")
         End If
 
         ' 3. 计算当前瓦片的起始坐标（考虑Overlap）
@@ -121,20 +145,4 @@ Public Class DziImage
         ' 8. 返回最终计算的矩形区域
         Return New Rectangle(startX, startY, tileWidth, tileHeight)
     End Function
-
-    ''' <summary>
-    ''' 计算指定层级的图像维度（宽度或高度）
-    ''' </summary>
-    ''' <param name="originalDimension">原始维度（宽度或高度）</param>
-    ''' <param name="level">目标层级</param>
-    ''' <returns>指定层级的维度</returns>
-    Private Function CalculateLevelDimension(originalDimension As Integer, level As Integer) As Integer
-        ' 将原始维度连续除以2（level次），并使用Ceiling确保最小为1像素
-        Dim dimension As Integer = originalDimension
-        For i As Integer = 1 To level
-            dimension = CInt(std.Ceiling(dimension / 2.0))
-        Next
-        Return dimension
-    End Function
-
 End Class
