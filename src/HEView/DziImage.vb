@@ -3,6 +3,7 @@ Imports System.Xml.Serialization
 Imports std = System.Math
 
 <XmlType("Image", [Namespace]:="http://schemas.microsoft.com/deepzoom/2008")>
+<XmlRoot("Image", [Namespace]:="http://schemas.microsoft.com/deepzoom/2008")>
 Public Class DziImage
 
     <XmlAttribute> Public Property Format As String
