@@ -44,6 +44,7 @@ Imports FontStyle = System.Drawing.FontStyle
 ''' single cell data toolkit
 ''' </summary>
 <Package("singleCell")>
+<RTypeExport("dzi", GetType(DziImage))>
 Public Module singleCells
 
     Sub Main()
@@ -367,6 +368,20 @@ Public Module singleCells
         Return spots.ToArray
     End Function
 
+    ''' <summary>
+    ''' scan the cells from a given HE image
+    ''' </summary>
+    ''' <param name="HEstain">
+    ''' the HE image
+    ''' </param>
+    ''' <param name="is_binarized"></param>
+    ''' <param name="flip"></param>
+    ''' <param name="ostu_factor"></param>
+    ''' <param name="offset"></param>
+    ''' <param name="noise"></param>
+    ''' <param name="moran_knn"></param>
+    ''' <param name="env"></param>
+    ''' <returns></returns>
     <ExportAPI("HE_cells")>
     <RApiReturn(GetType(CellScan))>
     Public Function HECells(HEstain As Object,
@@ -408,5 +423,25 @@ Public Module singleCells
             .ToArray
 
         Return cells
+    End Function
+
+    ''' <summary>
+    ''' read the deepzoom image metadata xml file
+    ''' </summary>
+    ''' <param name="file"></param>
+    ''' <returns></returns>
+    <ExportAPI("read.dziImage")>
+    Public Function dziFromfile(file As String) As DziImage
+        Return file.LoadXml(Of DziImage)
+    End Function
+
+    <ExportAPI("scan.dzi_cells")>
+    <RApiReturn(GetType(CellScan))>
+    Public Function scanDziCells(dzi As DziImage, level As Integer, dir As String,
+                                 Optional ostu_factor As Double = 0.7,
+                                 Optional noise As Double = 0.25,
+                                 Optional moran_knn As Integer = 32) As Object
+
+        Return dzi.ScanCells(level, dir, ostu_factor, noise, moran_knn).ToArray
     End Function
 End Module
