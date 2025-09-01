@@ -46,7 +46,7 @@ Public Class DziImage
     End Property
 
     Public Overrides Function ToString() As String
-        Return Size.ToString
+        Return Size.ToString & $", max-zoom-levels: {MaxZoomLevels}"
     End Function
 
     ''' <summary>
