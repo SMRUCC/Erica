@@ -81,8 +81,8 @@ Public Class DziImage
     ''' </remarks>
     Public Function DecodeTile(level As Integer, col As Integer, row As Integer) As Rectangle
         ' 1. 计算当前层级的图像尺寸
-        Dim levelWidth As Integer = CInt(std.Ceiling(Size.Width / std.Pow(2, level)))
-        Dim levelHeight As Integer = CInt(std.Ceiling(Size.Height / std.Pow(2, level)))
+        Dim levelWidth As Integer = CInt(std.Ceiling(Size.Width / std.Pow(2, MaxZoomLevels - level)))
+        Dim levelHeight As Integer = CInt(std.Ceiling(Size.Height / std.Pow(2, MaxZoomLevels - level)))
 
         ' 2. 计算当前层级瓦片的列数和行数
         Dim totalCols As Integer = CInt(std.Ceiling(levelWidth / CDbl(TileSize)))
