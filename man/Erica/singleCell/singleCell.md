@@ -9,4 +9,6 @@ single cell data toolkit
 + [umap_annotation](singleCell/umap_annotation.1) Extract the UMAP matrix from h5ad
 + [expression_list](singleCell/expression_list.1) Extract the gene id set with non-missing expression status under 
 + [spatial_annotations](singleCell/spatial_annotations.1) Create spatial annotations data set for each spot data
-+ [HE_cells](singleCell/HE_cells.1) 
++ [HE_cells](singleCell/HE_cells.1) scan the cells from a given HE image
++ [read.dziImage](singleCell/read.dziImage.1) read the deepzoom image metadata xml file
++ [scan.dzi_cells](singleCell/scan.dzi_cells.1) 

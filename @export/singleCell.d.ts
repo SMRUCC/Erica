@@ -21,13 +21,31 @@ declare namespace singleCell {
    */
    function expression_list(raw: object, q?: number): object;
    /**
-     * @param is_binarized default value Is ``false``.
-     * @param flip default value Is ``false``.
-     * @param ostu_factor default value Is ``0.7``.
-     * @param offset default value Is ``null``.
-     * @param noise default value Is ``0.25``.
-     * @param moran_knn default value Is ``32``.
-     * @param env default value Is ``null``.
+    * scan the cells from a given HE image
+    * 
+    * 
+     * @param HEstain the HE image
+     * @param is_binarized -
+     * 
+     * + default value Is ``false``.
+     * @param flip -
+     * 
+     * + default value Is ``false``.
+     * @param ostu_factor -
+     * 
+     * + default value Is ``0.7``.
+     * @param offset -
+     * 
+     * + default value Is ``null``.
+     * @param noise -
+     * 
+     * + default value Is ``0.25``.
+     * @param moran_knn -
+     * 
+     * + default value Is ``32``.
+     * @param env -
+     * 
+     * + default value Is ``null``.
    */
    function HE_cells(HEstain: any, is_binarized?: boolean, flip?: boolean, ostu_factor?: number, offset?: any, noise?: number, moran_knn?: object, env?: object): object;
    /**
@@ -49,6 +67,13 @@ declare namespace singleCell {
    function pca_annotation(h5ad: object): object;
    module read {
       /**
+       * read the deepzoom image metadata xml file
+       * 
+       * 
+        * @param file -
+      */
+      function dziImage(file: string): object;
+      /**
        * read h5ad object from a specific hdf5 file
        * 
        * > this function only works on Windows platform.
@@ -59,6 +84,14 @@ declare namespace singleCell {
         * + default value Is ``true``.
       */
       function h5ad(h5adfile: string, loadExpr0?: boolean): object;
+   }
+   module scan {
+      /**
+        * @param ostu_factor default value Is ``0.7``.
+        * @param noise default value Is ``0.25``.
+        * @param moran_knn default value Is ``32``.
+      */
+      function dzi_cells(dzi: object, level: object, dir: string, ostu_factor?: number, noise?: number, moran_knn?: object): object;
    }
    /**
     * Create spatial annotations data set for each spot data
