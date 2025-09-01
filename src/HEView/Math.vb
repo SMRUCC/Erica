@@ -79,6 +79,11 @@ Public Module Math
             .Where(Function(cell) cell.points > filter) _
             .ToArray
 
+        If all.Length = 0 Then
+            ' no data if scan on a blank white image
+            Return
+        End If
+
         Dim averagePt As Double = Aggregate cell As CellScan In all Into Average(cell.points)
         Dim maxR As Double = Aggregate cell As CellScan In all Into Average((cell.width + cell.height) / 2)
         Dim minR As Double = Aggregate cell As CellScan In all.Skip(all.Length / 3) Into Average((cell.width + cell.height) / 2)
