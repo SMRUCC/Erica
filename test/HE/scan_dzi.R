@@ -9,4 +9,5 @@ let cells = dzi |> scan.dzi_cells(level =15, dir ="F:\cccccc\de1f4295b57d237928d
                                 noise  = 0.25,
                                 moran_knn = 32);
 
-write.csv(cells, file = "F:\cccccc\de1f4295b57d237928d08bd3c99c8fc2_files\cells.csv");                                
+write.csv(as.data.frame(cells), file = "F:\cccccc\de1f4295b57d237928d08bd3c99c8fc2_files\cells.csv");              
+                  
