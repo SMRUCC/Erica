@@ -31,6 +31,6 @@ Public Module DziScanner
                                  offset:=tile.Location))
         Next
 
-        Return globalLookups.Split(noise).MoranI(knn:=moran_knn)
+        Return globalLookups.FilterNoise(noise).Split().MoranI(knn:=moran_knn)
     End Function
 End Module

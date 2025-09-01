@@ -418,7 +418,8 @@ Public Module singleCells
         Dim offsetPt As PointF = If(offsetVec.IsNullOrEmpty, Nothing, New PointF(offsetVec(0), offsetVec(1)))
         Dim cells = CellScan _
             .CellLookups(data, binary_processing:=False, offset:=offset) _
-            .Split(noise) _
+            .FilterNoise(noise) _
+            .Split() _
             .MoranI(knn:=moran_knn) _
             .ToArray
 

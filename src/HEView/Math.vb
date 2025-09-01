@@ -86,6 +86,19 @@ Public Module Math
         Return all
     End Function
 
+    <Extension>
+    Public Function FilterNoise(cells As IEnumerable(Of CellScan), Optional noise As Double = 0.25) As CellScan()
+        Dim all As CellScan() = cells.ToArray
+        Dim q As QuantileEstimationGK = all.Select(Function(c) c.points).GKQuantile
+        Dim filter As Double = q.Query(noise)
+
+        all = all _
+            .Where(Function(cell) cell.points > filter) _
+            .ToArray
+
+        Return all
+    End Function
+
     ''' <summary>
     ''' split the large region as cell cluster
     ''' </summary>
@@ -95,14 +108,8 @@ Public Module Math
     ''' </param>
     ''' <returns></returns>
     <Extension>
-    Public Iterator Function Split(cells As IEnumerable(Of CellScan), Optional noise As Double = 0.25) As IEnumerable(Of CellScan)
+    Public Iterator Function Split(cells As IEnumerable(Of CellScan)) As IEnumerable(Of CellScan)
         Dim all As CellScan() = cells.ToArray
-        Dim q As QuantileEstimationGK = all.Select(Function(c) c.points).GKQuantile
-        Dim filter As Double = q.Query(noise)
-
-        all = all _
-            .Where(Function(cell) cell.points > filter) _
-            .ToArray
 
         If all.Length = 0 Then
             ' no data if scan on a blank white image
@@ -111,7 +118,9 @@ Public Module Math
 
         Dim averagePt As Double = Aggregate cell As CellScan In all Into Average(cell.points)
         Dim maxR As Double = Aggregate cell As CellScan In all Into Average((cell.width + cell.height) / 2)
-        Dim minR As Double = Aggregate cell As CellScan In all.Skip(all.Length / 3) Into Average((cell.width + cell.height) / 2)
+        Dim minR As Double = Aggregate cell As CellScan
+                             In all.Skip(all.Length / 3)
+                             Into Average((cell.width + cell.height) / 2)
 
         Call "split the large cell block".info
 
