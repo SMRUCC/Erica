@@ -1,5 +1,5 @@
 let data = read.csv("F:\cccccc\de1f4295b57d237928d08bd3c99c8fc2_files\cells.csv",  check.names = FALSE);
-let density = data$density; # "moran-I";
+let density = data$"moran-I";
 
 print(density);
 print(range(density));
