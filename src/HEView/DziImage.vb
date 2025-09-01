@@ -13,6 +13,7 @@ Public Class DziImage
     Public Property Size As SizeInt
 
     Public Class SizeInt
+
         <XmlAttribute> Public Property Width As Integer
         <XmlAttribute> Public Property Height As Integer
 
@@ -27,23 +28,30 @@ Public Class DziImage
     ''' <param name="originalDimension">原始维度（宽度或高度）</param>
     ''' <param name="level">目标层级</param>
     ''' <returns>指定层级的维度</returns>
-    Public ReadOnly Property MaxZoomLevels As Integer
+    Public ReadOnly Property MaxZoomLevels As SizeInt
         Get
-            ' 将原始维度连续除以2（level次），并使用Ceiling确保最小为1像素
-            Dim dimension As Integer = std.Min(Size.Width, Size.Height)
-
-            For i As Integer = 1 To Integer.MaxValue
-                dimension = CInt(std.Ceiling(dimension / 2.0))
-
-                If dimension = 1 Then
-                    Return i
-                End If
-            Next
-
-            ' very very large image to zoom
-            Return Integer.MaxValue
+            Return New SizeInt With {
+                .Width = EvaluateMaxZoomLevels(Size.Width),
+                .Height = EvaluateMaxZoomLevels(Size.Height)
+            }
         End Get
     End Property
+
+    Private Shared Function EvaluateMaxZoomLevels(len As Integer) As Integer
+        ' 将原始维度连续除以2（level次），并使用Ceiling确保最小为1像素
+        Dim dimension As Integer = len
+
+        For i As Integer = 1 To Integer.MaxValue
+            dimension = CInt(std.Ceiling(dimension / 2.0))
+
+            If dimension = 1 Then
+                Return i
+            End If
+        Next
+
+        ' very very large image to zoom
+        Return Integer.MaxValue
+    End Function
 
     Public Overrides Function ToString() As String
         Return Size.ToString & $", max-zoom-levels: {MaxZoomLevels}"
@@ -80,9 +88,10 @@ Public Class DziImage
     ''' 左边界、右边界）的瓦片，其重叠区域需要特殊处理，不能超出图像的实际边界。
     ''' </remarks>
     Public Function DecodeTile(level As Integer, col As Integer, row As Integer) As Rectangle
+        Dim MaxZoomLevels = Me.MaxZoomLevels
         ' 1. 计算当前层级的图像尺寸
-        Dim levelWidth As Integer = CInt(std.Ceiling(Size.Width / std.Pow(2, MaxZoomLevels - level)))
-        Dim levelHeight As Integer = CInt(std.Ceiling(Size.Height / std.Pow(2, MaxZoomLevels - level)))
+        Dim levelWidth As Integer = CInt(std.Ceiling(Size.Width / std.Pow(2, MaxZoomLevels.Width - level)))
+        Dim levelHeight As Integer = CInt(std.Ceiling(Size.Height / std.Pow(2, MaxZoomLevels.Height - level)))
 
         ' 2. 计算当前层级瓦片的列数和行数
         Dim totalCols As Integer = CInt(std.Ceiling(levelWidth / CDbl(TileSize)))
