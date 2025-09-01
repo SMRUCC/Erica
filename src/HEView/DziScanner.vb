@@ -13,7 +13,8 @@ Public Module DziScanner
     Public Function ScanCells(dzi As DziImage, level As Integer, dir As String,
                               Optional ostu_factor As Double = 0.7,
                               Optional noise As Double = 0.25,
-                              Optional moran_knn As Integer = 32) As IEnumerable(Of CellScan)
+                              Optional moran_knn As Integer = 32,
+                              Optional splitBlocks As Boolean = True) As IEnumerable(Of CellScan)
 
         Dim bar As Tqdm.ProgressBar = Nothing
         Dim globalLookups As New List(Of CellScan)
@@ -31,6 +32,15 @@ Public Module DziScanner
                                  offset:=tile.Location))
         Next
 
-        Return globalLookups.FilterNoise(noise).Split().MoranI(knn:=moran_knn)
+        If splitBlocks Then
+            Return globalLookups _
+                .FilterNoise(noise) _
+                .Split() _
+                .MoranI(knn:=moran_knn)
+        Else
+            Return globalLookups _
+                .FilterNoise(noise) _
+                .MoranI(knn:=moran_knn)
+        End If
     End Function
 End Module

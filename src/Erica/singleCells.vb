@@ -392,6 +392,7 @@ Public Module singleCells
                             Optional offset As Object = Nothing,
                             Optional noise As Double = 0.25,
                             Optional moran_knn As Integer = 32,
+                            Optional split_blocks As Boolean = False,
                             Optional env As Environment = Nothing) As Object
 
         Dim data As BitmapBuffer
@@ -416,12 +417,15 @@ Public Module singleCells
 
         Dim offsetVec As Double() = CLRVector.asNumeric(offset)
         Dim offsetPt As PointF = If(offsetVec.IsNullOrEmpty, Nothing, New PointF(offsetVec(0), offsetVec(1)))
-        Dim cells = CellScan _
+        Dim cells As CellScan() = CellScan _
             .CellLookups(data, binary_processing:=False, offset:=offset) _
-            .FilterNoise(noise) _
-            .Split() _
-            .MoranI(knn:=moran_knn) _
-            .ToArray
+            .FilterNoise(noise)
+
+        If split_blocks Then
+            cells = cells.Split().ToArray
+        End If
+
+        cells = cells.MoranI(knn:=moran_knn)
 
         Return cells
     End Function
@@ -441,8 +445,13 @@ Public Module singleCells
     Public Function scanDziCells(dzi As DziImage, level As Integer, dir As String,
                                  Optional ostu_factor As Double = 0.7,
                                  Optional noise As Double = 0.25,
-                                 Optional moran_knn As Integer = 32) As Object
+                                 Optional moran_knn As Integer = 32,
+                                 Optional split_blocks As Boolean = False) As Object
 
-        Return dzi.ScanCells(level, dir, ostu_factor, noise, moran_knn).ToArray
+        Return dzi.ScanCells(level, dir, ostu_factor,
+                             noise:=noise,
+                             moran_knn:=moran_knn,
+                             splitBlocks:=split_blocks) _
+                  .ToArray
     End Function
 End Module
