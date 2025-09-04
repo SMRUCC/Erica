@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.IO
 Imports HEView
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Data.ChartPlots
@@ -13,6 +14,7 @@ Imports Microsoft.VisualBasic.Imaging.Driver
 Imports Microsoft.VisualBasic.Imaging.Filters
 Imports Microsoft.VisualBasic.Imaging.Math2D
 Imports Microsoft.VisualBasic.Linq
+Imports Microsoft.VisualBasic.MIME.application.json
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports Microsoft.VisualBasic.Scripting.Runtime
 Imports SMRUCC.genomics.Analysis
@@ -454,4 +456,11 @@ Public Module singleCells
                              splitBlocks:=split_blocks) _
                   .ToArray
     End Function
+
+    <ExportAPI("write.cells_bson")>
+    Public Sub writeCellBson(cells As CellScan(), file As String)
+        Using s As Stream = file.Open(FileMode.OpenOrCreate, doClear:=True, [readOnly]:=False)
+            Call BSON.SafeWriteBuffer(cells.CreateJSONElement, s)
+        End Using
+    End Sub
 End Module
