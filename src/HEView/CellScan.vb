@@ -11,7 +11,8 @@ Public Class CellScan : Implements Layout2D
 
     Public Property x As Double Implements Layout2D.X
     Public Property y As Double Implements Layout2D.Y
-    Public Property physical As PointF
+    Public Property physical_x As Double
+    Public Property physical_y As Double
     Public Property area As Double
     Public Property ratio As Double
     Public Property scan_x As Double()
@@ -53,7 +54,8 @@ Public Class CellScan : Implements Layout2D
                 .scan_y = shape.ypoints,
                 .x = rect.X,
                 .y = rect.Y,
-                .physical = New PointF(.x + offset.X, .y + offset.Y),
+                .physical_x = .x + offset.X,
+                .physical_y = .y + offset.Y,
                 .points = shape.length,
                 .height = rect.Height,
                 .width = rect.Width
@@ -65,8 +67,8 @@ Public Class CellScan : Implements Layout2D
         Dim raw As PointF()
 
         If physical Then
-            Dim offset_x = Me.physical.X - x
-            Dim offset_y = Me.physical.Y - y
+            Dim offset_x = Me.physical_x - x
+            Dim offset_y = Me.physical_y - y
 
             raw = scan_x _
                 .Select(Function(xi, i)

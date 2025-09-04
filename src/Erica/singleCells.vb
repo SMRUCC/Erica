@@ -83,15 +83,15 @@ Public Module singleCells
     Private Function HEcellsMatrix(cells As CellScan(), args As list, env As Environment) As dataframe
         Dim df As New dataframe With {
             .rownames = cells _
-                .Select(Function(c) c.physical.ToString.MD5) _
+                .Select(Function(c) $"{c.physical_x},{c.physical_y}".MD5) _
                 .ToArray,
             .columns = New Dictionary(Of String, Array)
         }
 
         Call df.add("x", From cell As CellScan In cells Select cell.x)
         Call df.add("y", From cell As CellScan In cells Select cell.y)
-        Call df.add("physical_x", From cell As CellScan In cells Select cell.physical.X)
-        Call df.add("physical_y", From cell As CellScan In cells Select cell.physical.Y)
+        Call df.add("physical_x", From cell As CellScan In cells Select cell.physical_x)
+        Call df.add("physical_y", From cell As CellScan In cells Select cell.physical_y)
         Call df.add("area", From cell As CellScan In cells Select cell.area)
         Call df.add("ratio", From cell As CellScan In cells Select cell.ratio)
         Call df.add("size", From cell As CellScan In cells Select cell.points)
