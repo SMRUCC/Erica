@@ -11,6 +11,10 @@ Public Class CellScan : Implements Layout2D
 
     Public Property x As Double Implements Layout2D.X
     Public Property y As Double Implements Layout2D.Y
+
+    ' 20250904 PointF can not be serialized in bson handler
+    ' decompose the PointF as physical_x and physical_y
+
     Public Property physical_x As Double
     Public Property physical_y As Double
     Public Property area As Double
