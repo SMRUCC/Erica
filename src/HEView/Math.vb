@@ -30,7 +30,7 @@ Public Module Math
 
         Call "evaluate the cells population moran-I".info
 
-        For Each i As Integer In TqdmWrapper.Range(0, all.Length)
+        For Each i As Integer In TqdmWrapper.Range(0, all.Length, wrap_console:=App.EnableTqdm)
             Dim target = all(i)
             Dim nearby = view.SpatialLookup(target, averageR) _
                 .OrderBy(Function(a) target.DistanceTo(a)) _
