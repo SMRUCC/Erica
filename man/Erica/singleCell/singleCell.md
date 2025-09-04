@@ -12,3 +12,4 @@ single cell data toolkit
 + [HE_cells](singleCell/HE_cells.1) scan the cells from a given HE image
 + [read.dziImage](singleCell/read.dziImage.1) read the deepzoom image metadata xml file
 + [scan.dzi_cells](singleCell/scan.dzi_cells.1) 
++ [write.cells_bson](singleCell/write.cells_bson.1) 
