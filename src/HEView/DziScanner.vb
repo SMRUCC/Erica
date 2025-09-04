@@ -21,7 +21,7 @@ Public Module DziScanner
 
         For Each file As String In Tqdm.Wrap(dir.ListFiles("*.jpg", "*.png", "*.jpeg", "*.bmp").ToArray, bar:=bar)
             Dim image As Image = Image.FromFile(file)
-            Dim bitmap As BitmapBuffer = image.GetMemoryBitmap
+            Dim bitmap As BitmapBuffer = BitmapBuffer.FromImage(image)
             Dim xy = file.BaseName.Split("_"c).AsInteger
             Dim tile As Rectangle = dzi.DecodeTile(level, xy(0), xy(1))
 
