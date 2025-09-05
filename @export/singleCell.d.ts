@@ -137,4 +137,9 @@ declare namespace singleCell {
      * @param h5ad -
    */
    function umap_annotation(h5ad: object): object;
+   module write {
+      /**
+      */
+      function cells_bson(cells: object, file: string): ;
+   }
 }

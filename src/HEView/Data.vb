@@ -9,15 +9,15 @@ Public Module Data
         Dim tbl As New DataFrame With {
             .rownames = all _
                 .Select(Function(c)
-                            Return c.physical.ToString.MD5
+                            Return $"{c.physical_x},{c.physical_y}".MD5
                         End Function) _
                 .ToArray
         }
 
         Call tbl.add("x", From cell As CellScan In all Select cell.x)
         Call tbl.add("y", From cell As CellScan In all Select cell.y)
-        Call tbl.add("physical_x", From cell As CellScan In all Select cell.physical.X)
-        Call tbl.add("physical_y", From cell As CellScan In all Select cell.physical.Y)
+        Call tbl.add("physical_x", From cell As CellScan In all Select cell.physical_x)
+        Call tbl.add("physical_y", From cell As CellScan In all Select cell.physical_y)
         Call tbl.add("area", From cell As CellScan In all Select cell.area)
         Call tbl.add("ratio", From cell As CellScan In all Select cell.ratio)
         Call tbl.add("size", From cell As CellScan In all Select cell.points)

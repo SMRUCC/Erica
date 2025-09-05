@@ -17,6 +17,12 @@ Public Class DziImage
         <XmlAttribute> Public Property Width As Integer
         <XmlAttribute> Public Property Height As Integer
 
+        Public ReadOnly Property Max As Integer
+            Get
+                Return std.Max(Width, Height)
+            End Get
+        End Property
+
         Public Overrides Function ToString() As String
             Return $"{{width:{Width}, height:{Height}}}"
         End Function

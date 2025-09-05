@@ -30,7 +30,7 @@ Public Module Math
 
         Call "evaluate the cells population moran-I".info
 
-        For Each i As Integer In TqdmWrapper.Range(0, all.Length)
+        For Each i As Integer In TqdmWrapper.Range(0, all.Length, wrap_console:=App.EnableTqdm)
             Dim target = all(i)
             Dim nearby = view.SpatialLookup(target, averageR) _
                 .OrderBy(Function(a) target.DistanceTo(a)) _
@@ -135,8 +135,8 @@ Public Module Math
                 .ToArray
             Dim pack As New CirclePacker(region, New DoubleRange(minR, maxR))
             Dim centers As Polygon2D() = pack.PackCircles.ToArray
-            Dim offset_x = cell.physical.X - cell.x
-            Dim offset_y = cell.physical.Y - cell.y
+            Dim offset_x = cell.physical_x - cell.x
+            Dim offset_y = cell.physical_y - cell.y
 
             For Each center As Polygon2D In centers
                 Dim rect As RectangleF = center.GetRectangle
@@ -154,7 +154,8 @@ Public Module Math
                     .scan_x = shape.X.ToArray,
                     .scan_y = shape.Y.ToArray,
                     .ratio = std.Max(.width, .height) / std.Min(.width, .height),
-                    .physical = New PointF(.x + offset_x, .y + offset_y)
+                    .physical_x = .x + offset_x,
+                    .physical_y = .y + offset_y
                 }
             Next
         Next
