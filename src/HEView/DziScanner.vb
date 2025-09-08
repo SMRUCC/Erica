@@ -36,7 +36,6 @@ Public Module DziScanner
             Dim tile As Rectangle = dzi.DecodeTile(level, xy(0), xy(1))
             Dim tip As String = $"global lookups of tile {xy.GetJson} -> (offset:{tile.Left},{tile.Top}, width:{tile.Width} x height:{tile.Height})"
 
-            Call bar.SetLabel(tip)
             Call globalLookups.AddRange(CellScan _
                     .CellLookups(grid:=Thresholding.ostuFilter(bitmap, flip:=False, ostu_factor, verbose:=False),
                                  binary_processing:=False,
@@ -44,8 +43,10 @@ Public Module DziScanner
 
             If Not wrap_tqdm Then
                 If ++offset Mod d = 0 Then
-                    Call RunSlavePipeline.SendProgress(offset / imagefiles.Length, tip)
+                    Call RunSlavePipeline.SendProgress(100 * CInt(offset) / imagefiles.Length, tip)
                 End If
+            Else
+                Call bar.SetLabel(tip)
             End If
         Next
 
