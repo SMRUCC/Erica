@@ -38,8 +38,15 @@ Public Class SingleExpression : Implements IEmbeddingScatter
 
 End Class
 
+''' <summary>
+''' A common abstract model of a sample embedding result
+''' </summary>
 Public Interface IEmbeddingScatter
 
+    ''' <summary>
+    ''' the unique reference label of the sample, usualy be the [x,y] point label for spatial data spot or barcode for single cells data.
+    ''' </summary>
+    ''' <returns></returns>
     ReadOnly Property label As String
     ReadOnly Property cluster As String
 
