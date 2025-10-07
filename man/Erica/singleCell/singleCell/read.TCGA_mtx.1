@@ -1,0 +1,32 @@
+.\" man page create by R# package system.
+.TH SINGLECELL 1 2000-Jan "read.TCGA_mtx" "read.TCGA_mtx"
+.SH NAME
+read.TCGA_mtx \- Read expression matrix from a TCGA MTX dataset folder
+.SH SYNOPSIS
+\fIread.TCGA_mtx(\fBdataset\fR as string);\fR
+.SH DESCRIPTION
+.PP
+Read expression matrix from a TCGA MTX dataset folder
+.PP
+.SH OPTIONS
+.PP
+\fBdataset\fB \fR\- a folder path to the TCGA MTX dataset files, this folder should includes the data files:
+ 1. barcodes.tsv
+ 2. features.tsv
+ 3. matrix.mtx
+. 
+.PP
+.SH VALUE
+.PP
+a clr @\fBT:Microsoft.VisualBasic.Data.Framework.DataFrame\fR object that contains all information that read from the given TCGA dataset folder.
+.PP
+.SH EXAMPLES
+.PP
+let matrix = read.TCGA_mtx("/home/TCGA/gdc_download_20251007_143507.913543/cc317a3f-9aa8-4e82-b394-25a13320956b/aa55ac5e-7a48-45fd-9fb5-7e013805b247/");
+.PP
+.SH SEE ALSO
+singleCell
+.SH FILES
+.PP
+Erica.dll
+.PP

@@ -86,6 +86,17 @@ declare namespace singleCell {
         * + default value Is ``true``.
       */
       function h5ad(h5adfile: string, loadExpr0?: boolean): object;
+      /**
+       * Read expression matrix from a TCGA MTX dataset folder
+       * 
+       * 
+        * @param dataset a folder path to the TCGA MTX dataset files, this folder should includes the data files:
+        *  1. barcodes.tsv
+        *  2. features.tsv
+        *  3. matrix.mtx
+        * @return a clr @``T:Microsoft.VisualBasic.Data.Framework.DataFrame`` object that contains all information that read from the given TCGA dataset folder.
+      */
+      function TCGA_mtx(dataset: string): object;
    }
    module scan {
       /**
