@@ -35,6 +35,14 @@ Public Module TCGA
         For i As Integer = 0 To genes.Length - 1
             Dim gene As TCGAGeneFeature = genes(i)
             Dim v As Double() = matrix(i)
+            Dim vec As New FeatureVector(gene.gene_id, v) With {
+                .attributes = New Dictionary(Of String, String) From {
+                    {NameOf(TCGAGeneFeature.gene_id), gene.gene_id},
+                    {NameOf(TCGAGeneFeature.gene_name), gene.gene_name}
+                }
+            }
+
+            Call df.add(vec)
         Next
 
         Return df
