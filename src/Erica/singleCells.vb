@@ -18,6 +18,7 @@ Imports Microsoft.VisualBasic.MIME.application.json
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports Microsoft.VisualBasic.Scripting.Runtime
 Imports SMRUCC.genomics.Analysis
+Imports SMRUCC.genomics.Analysis.SingleCell
 Imports SMRUCC.genomics.Analysis.Spatial.RAID
 Imports SMRUCC.genomics.Analysis.Spatial.RAID.HDF5
 Imports SMRUCC.Rsharp.Runtime
@@ -25,6 +26,7 @@ Imports SMRUCC.Rsharp.Runtime.Components
 Imports SMRUCC.Rsharp.Runtime.Internal.Object
 Imports SMRUCC.Rsharp.Runtime.Interop
 Imports SMRUCC.Rsharp.Runtime.Vectorization
+Imports clr_df = Microsoft.VisualBasic.Data.Framework.DataFrame
 Imports RInternal = SMRUCC.Rsharp.Runtime.Internal
 
 #If NET48 Then
@@ -177,6 +179,26 @@ Public Module singleCells
     <ExportAPI("read.h5ad")>
     Public Function readH5ad(h5adfile As String, Optional loadExpr0 As Boolean = True) As AnnData
         Return LoadDisk.LoadDiskMemory(h5adfile, loadExpr0)
+    End Function
+
+    ''' <summary>
+    ''' Read expression matrix from a TCGA MTX dataset folder
+    ''' </summary>
+    ''' <param name="dataset">a folder path to the TCGA MTX dataset files, this folder should includes the data files:
+    ''' 1. barcodes.tsv
+    ''' 2. features.tsv
+    ''' 3. matrix.mtx
+    ''' </param>
+    ''' <returns>
+    ''' a clr <see cref="clr_df"/> object that contains all information that read from the given TCGA dataset folder.
+    ''' </returns>
+    ''' <example>
+    ''' let matrix = read.TCGA_mtx("/home/TCGA/gdc_download_20251007_143507.913543/cc317a3f-9aa8-4e82-b394-25a13320956b/aa55ac5e-7a48-45fd-9fb5-7e013805b247/");
+    ''' </example>
+    <ExportAPI("read.TCGA_mtx")>
+    <RApiReturn(GetType(clr_df))>
+    Public Function readTCGAMTX(dataset As String) As Object
+        Return TCGA.MTXReader(dataset)
     End Function
 
     ''' <summary>

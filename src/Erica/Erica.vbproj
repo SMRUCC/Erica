@@ -78,6 +78,7 @@
     <ProjectReference Include="..\bgee\bgee.vbproj" />
     <ProjectReference Include="..\HEView\HEView.vbproj" />
     <ProjectReference Include="..\SingleCell\PhenoGraph\PhenoGraph\PhenoGraph.NET5.vbproj" />
+    <ProjectReference Include="..\SingleCell\SingleExpression\SingleExpression.vbproj" />
     <ProjectReference Include="..\SingleCell\STdeconvolve\STdeconvolve\STdeconvolve.NET5.vbproj" />
     <ProjectReference Include="..\STImaging\STImaging.vbproj" />
     <ProjectReference Include="..\STRaid\STRaid.vbproj" />
