@@ -24,8 +24,20 @@ Public Module TCGA
     Public Function MTXReader(dataset As String) As DataFrame
         Dim barcodes As String() = $"{dataset}/barcodes.tsv".ReadAllLines
         Dim genes As TCGAGeneFeature() = TCGAGeneFeature.ParseFile($"{dataset}/features.tsv").ToArray
-        Dim matrix As SparseMatrix = MTXFormat.ReadMatrix($"{dataset}/matrix.mtx")
+        Dim matrix As Double()() = MTXFormat.ReadMatrix($"{dataset}/matrix.mtx").ArrayPack
+        Dim df As New DataFrame With {
+            .description = $"TCGA dataset: {dataset}",
+            .name = dataset.BaseName,
+            .features = New Dictionary(Of String, FeatureVector),
+            .rownames = barcodes
+        }
 
+        For i As Integer = 0 To genes.Length - 1
+            Dim gene As TCGAGeneFeature = genes(i)
+            Dim v As Double() = matrix(i)
+        Next
+
+        Return df
     End Function
 
 End Module
