@@ -67,38 +67,96 @@ ordinary_procrustes <- function(X, Y, scale = TRUE) {
     ))
 }
 
-# 示例使用：生成测试数据并验证
-set.seed(123)  # 确保可重复性
+# 创建2D形状示例：三角形和其变形版本
+set.seed(123)
 
-# 创建示例数据：X为基准矩阵，Y为X的旋转缩放平移版本
-X <- matrix(rnorm(15, mean=5), nrow=5, ncol=3)  # 5个样本，3维
-rotation_true <- matrix(c(0.96, -0.28, 0.00,
-                          0.28, 0.96, 0.00,
-                          0.00, 0.00, 1.00), nrow=3)  # 约15度旋转矩阵
-Y_raw <- scale(X, center=TRUE, scale=FALSE) %*% rotation_true * 1.5 + matrix(c(2,3,4), 5, 3, byrow=TRUE)
+# 基准三角形（等边三角形）
+triangle_X <- matrix(c(0, 0,    # 顶点1
+                      1, 0,    # 顶点2
+                      0.5, 0.866), # 顶点3
+                    nrow = 3, ncol = 2, byrow = TRUE)
+
+# 对三角形进行旋转、缩放和平移创建变形版本
+rotation_angle <- 30 * pi / 180  # 30度旋转
+rotation_matrix <- matrix(c(cos(rotation_angle), -sin(rotation_angle),
+                         sin(rotation_angle), cos(rotation_angle)),
+                       nrow = 2, ncol = 2)
+
+# 应用变换：先缩放1.5倍，再旋转30度，最后平移(2,1)
+triangle_Y_raw <- (1.5 * triangle_X) %*% rotation_matrix + matrix(c(2, 1), 3, 2, byrow = TRUE)
 
 # 执行普氏分析
-result <- ordinary_procrustes(X, Y_raw, scale = TRUE)
+result <- ordinary_procrustes(triangle_X, triangle_Y_raw, scale = TRUE)
 
-# 打印关键结果
-cat("Procrustes统计量 (M²):", result$procrustes_ss, "\n")
-cat("缩放因子:", result$scale, "\n")
+# 打印结果
+cat("=== 2D形状普氏分析结果 ===\n")
+cat("Procrustes统计量 (M²):", round(result$procrustes_ss, 4), "\n")
+cat("缩放因子:", round(result$scale, 4), "\n")
 cat("旋转矩阵:\n")
-print(result$rotation)
-cat("平移向量:", result$translation, "\n")
+print(round(result$rotation, 4))
+cat("平移向量:", round(result$translation, 4), "\n")
 
-# 验证对齐效果：计算对齐后Y与X的均方误差
-mse <- mean((result$Y_aligned - X)^2)
-cat("对齐后Y与X的均方误差 (MSE):", mse, "\n")
+# 计算对齐误差
+alignment_error <- sqrt(mean(rowSums((result$Y_aligned - triangle_X)^2)))
+cat("平均对齐误差:", round(alignment_error, 4), "\n")
 
-# 可视化对比（适用于2D数据，若为3D需使用其他方法）
-if (ncol(X) == 2) {
-    plot(X[,1], X[,2], col = "red", pch = 16, xlim = range(X, result$Y_aligned),
-         ylim = range(X, result$Y_aligned), main = "普氏分析结果（2D）",
-         xlab = "维度1", ylab = "维度2")
-    points(Y_raw[,1], Y_raw[,2], col = "blue", pch = 17)
-    points(result$Y_aligned[,1], result$Y_aligned[,2], col = "green", pch = 18)
-    legend("topright", legend = c("原始X", "原始Y", "对齐后Y"),
-           col = c("red", "blue", "green"), pch = c(16,17,18))
-    segments(X[,1], X[,2], result$Y_aligned[,1], result$Y_aligned[,2], lty = 2)  # 连接线
-}
+# 可视化结果
+library(ggplot2)
+library(ggforce)
+
+# 准备绘图数据
+shape_data <- data.frame(
+  x = c(triangle_X[,1], triangle_Y_raw[,1], result$Y_aligned[,1]),
+  y = c(triangle_X[,2], triangle_Y_raw[,2], result$Y_aligned[,2]),
+  shape_type = rep(c("基准形状", "变形形状", "对齐后形状"), each = 3),
+  point_id = rep(1:3, 3)
+)
+
+# 创建连线数据（用于显示三角形边）
+line_data <- data.frame(
+  x = c(triangle_X[,1], triangle_Y_raw[,1], result$Y_aligned[,1]),
+  y = c(triangle_X[,2], triangle_Y_raw[,1], result$Y_aligned[,2]),
+  group = rep(1:3, each = 3),
+  shape_type = rep(c("基准形状", "变形形状", "对齐后形状"), each = 3)
+)
+
+# 绘制形状对比图
+a = ggplot(shape_data, aes(x = x, y = y, color = shape_type, shape = shape_type)) +
+  geom_point(size = 4) +
+  geom_polygon(data = subset(shape_data, shape_type == "基准形状"),
+               aes(group = 1), fill = "red", alpha = 0.2) +
+  geom_polygon(data = subset(shape_data, shape_type == "变形形状"),
+               aes(group = 1), fill = "blue", alpha = 0.2) +
+  geom_polygon(data = subset(shape_data, shape_type == "对齐后形状"),
+               aes(group = 1), fill = "green", alpha = 0.2) +
+  geom_text(aes(label = point_id), nudge_y = 0.1, size = 3, color = "black") +
+  scale_color_manual(values = c("基准形状" = "red", "变形形状" = "blue", "对齐后形状" = "green")) +
+  scale_shape_manual(values = c("基准形状" = 16, "变形形状" = 17, "对齐后形状" = 18)) +
+  labs(title = "2D形状普氏分析结果",
+       subtitle = "展示基准三角形、变形三角形和对齐后三角形的对比",
+       x = "X坐标", y = "Y坐标",
+       color = "形状类型", shape = "形状类型") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+# 创建更简单的点对点连接图（显示对应点关系）
+b = ggplot(shape_data, aes(x = x, y = y, color = shape_type)) +
+  geom_point(size = 3) +
+  geom_path(data = subset(shape_data, shape_type == "基准形状"),
+            aes(group = 1), color = "red", linetype = "dashed") +
+  geom_path(data = subset(shape_data, shape_type == "对齐后形状"),
+            aes(group = 1), color = "green", linetype = "dashed") +
+  geom_segment(data = data.frame(x1 = triangle_X[,1], y1 = triangle_X[,2],
+                                x2 = result$Y_aligned[,1], y2 = result$Y_aligned[,2]),
+              aes(x = x1, y = y1, xend = x2, yend = y2),
+              arrow = arrow(length = unit(0.1, "inches")), color = "gray") +
+  geom_text(aes(label = point_id), nudge_y = 0.08, size = 3, color = "black") +
+  scale_color_manual(values = c("red", "blue", "green")) +
+  labs(title = "点对点对齐关系",
+       subtitle = "箭头显示从基准形状到对齐后形状的变换",
+       x = "X坐标", y = "Y坐标") +
+  theme_minimal()
+
+print(a)
+print(b)
+
