@@ -54,7 +54,7 @@ ordinary_procrustes <- function(X, Y, scale = TRUE) {
 
     # 8. 计算Procrustes统计量
     ss <- sum((X_centered - Y_aligned_centered)^2)
-    
+
     # 计算拟合优度
     norm_X <- sqrt(sum(X_centered^2))
     correlation <- sum(d) / (norm_X * sqrt(sum(Y_scaled^2)))
@@ -70,6 +70,29 @@ ordinary_procrustes <- function(X, Y, scale = TRUE) {
     ))
 }
 
+# 修正后的多边形还原函数
+restore_polygon_rotation <- function(B, theta_deg, centroid_A, centroid_B) {
+    # B: 旋转后多边形
+    # theta_deg: 旋转角度（度）
+    # centroid_A: 原多边形重心
+    # centroid_B: 旋转后多边形重心
+
+    theta_rad <- theta_deg * pi / 180  # 逆旋转角度
+
+    # 创建逆旋转矩阵
+    R_inv <- matrix(c(cos(theta_rad), sin(theta_rad),
+                      -sin(theta_rad), cos(theta_rad)), nrow = 2, byrow = TRUE)
+
+    # 正确的还原步骤：
+    # 1. 将B平移到原点（减去B的重心）
+    # 2. 应用逆旋转
+    # 3. 平移到A的重心位置
+    B_centered <- B - matrix(centroid_B, nrow = nrow(B), ncol = 2, byrow = TRUE)
+    A_centered_restored <- t(R_inv %*% t(B_centered))
+    A_restored <- A_centered_restored + matrix(centroid_A, nrow = nrow(B), ncol = 2, byrow = TRUE)
+
+    return(A_restored)
+}
 
 # 创建2D形状示例：飞机形状多边形
 set.seed(123)
