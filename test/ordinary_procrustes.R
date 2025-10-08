@@ -17,87 +17,56 @@ ordinary_procrustes <- function(X, Y, scale = TRUE) {
     X_centered <- scale(X, center = TRUE, scale = FALSE)
     Y_centered <- scale(Y, center = TRUE, scale = FALSE)
 
-    # 2. 计算缩放因子（基于Frobenius范数）
-    if (scale) {
-        norm_X <- sqrt(sum(X_centered^2))
-        norm_Y <- sqrt(sum(Y_centered^2))
+    # 2. 计算协方差矩阵（使用未缩放的Y）
+    C <- t(Y_centered) %*% X_centered
 
-        if (norm_Y < .Machine$double.eps) {
+    # 3. SVD分解
+    svd_result <- svd(C)
+    U <- svd_result$u
+    V <- svd_result$v
+    d <- svd_result$d  # 奇异值
+
+    # 4. 计算旋转矩阵
+    R <- V %*% t(U)
+
+    # 5. 处理反射问题
+    if (det(R) < 0) {
+        # 调整最后一个奇异值对应的向量
+        V[, p] <- -V[, p]
+        R <- V %*% t(U)
+    }
+
+    # 6. 计算最优缩放因子（关键修正点）
+    if (scale) {
+        norm_Y_sq <- sum(Y_centered^2)
+        if (norm_Y_sq < .Machine$double.eps) {
             stop("Y矩阵的范数过小，无法计算缩放因子")
         }
-        s <- norm_X / norm_Y
+        s <- sum(d) / norm_Y_sq  # 正确的缩放因子计算公式
     } else {
         s <- 1
     }
 
-    # 应用缩放（关键修正：先缩放）
+    # 7. 应用变换
     Y_scaled <- s * Y_centered
-
-    # 3. 计算旋转矩阵（修正核心数学逻辑）
-    # 计算协方差矩阵
-    C <- t(Y_scaled) %*% X_centered  # 注意顺序：Y'X而不是X'Y
-
-    # SVD分解
-    svd_result <- svd(C)
-    U <- svd_result$u
-    V <- svd_result$v
-    D <- diag(1, nrow = p)  # 单位矩阵用于构建旋转矩阵
-
-    # 关键修正：正确的旋转矩阵构建方式
-    # 根据正交普氏问题的最优解：R = V * U^T
-    R <- V %*% t(U)
-
-    # 更稳健的反射处理（基于行列式符号）
-    det_R <- det(R)
-    cat("旋转矩阵行列式:", det_R, "\n")  # 调试信息
-
-    # 如果行列式为负，需要校正反射
-    if (det_R < 0) {
-        # 方法1：调整最后一个奇异值对应的向量
-        V[, p] <- -V[, p]
-        R <- V %*% t(U)
-
-        # 验证校正结果
-        det_R_corrected <- det(R)
-        cat("校正后行列式:", det_R_corrected, "\n")
-
-        # 确保校正成功
-        if (det_R_corrected < 0) {
-            warning("反射校正可能未完全成功，行列式仍为负")
-        }
-    }
-
-    # 4. 验证旋转矩阵的正交性
-    identity_approx <- R %*% t(R)
-    ortho_error <- sum((identity_approx - diag(p))^2)
-    cat("旋转矩阵正交性误差:", ortho_error, "\n")
-
-    if (ortho_error > 1e-10) {
-        warning("旋转矩阵可能不是严格正交的")
-    }
-
-    # 5. 变换Y：应用旋转和平移
-    Y_aligned_centered <- Y_scaled %*% R  # 注意顺序：缩放后的Y应用旋转
+    Y_aligned_centered <- Y_scaled %*% R
     Y_aligned <- Y_aligned_centered + matrix(colMeans(X), n, p, byrow = TRUE)
 
-    # 6. 计算Procrustes统计量
+    # 8. 计算Procrustes统计量
     ss <- sum((X_centered - Y_aligned_centered)^2)
+    
+    # 计算拟合优度
+    norm_X <- sqrt(sum(X_centered^2))
+    correlation <- sum(d) / (norm_X * sqrt(sum(Y_scaled^2)))
 
-    # 计算拟合优度（相关系数）
-    correlation <- sum(svd_result$d) / (norm_X * sqrt(sum(Y_scaled^2)))
-
-    # 返回详细结果
+    # 返回结果
     return(list(
-        Y_aligned = Y_aligned,        # 对齐后的Y矩阵
-        rotation = R,                  # 旋转矩阵
-        scale = s,                     # 缩放因子
-        translation = colMeans(X),     # 平移向量
-        procrustes_ss = ss,            # Procrustes平方和
-        correlation = correlation,     # 拟合优度
-        centered_X = X_centered,       # 中心化X
-        centered_Y = Y_centered,       # 中心化Y
-        det_rotation = det(R),         # 旋转矩阵行列式（用于验证）
-        ortho_error = ortho_error      # 正交性误差
+        Y_aligned = Y_aligned,
+        rotation = R,
+        scale = s,
+        translation = colMeans(X),
+        procrustes_ss = ss,
+        correlation = correlation
     ))
 }
 
@@ -134,7 +103,7 @@ n_vertices <- n_vertices + 1  # 顶点数加1
 airplane_X <- matrix(c(x_base, y_base), ncol = 2, byrow = FALSE)
 
 # 对飞机形状进行旋转、缩放和平移创建变形版本
-rotation_angle <- 30 * pi / 180  # 30度旋转
+rotation_angle <- 5 * pi / 180  # 30度旋转
 rotation_matrix <- matrix(c(cos(rotation_angle), -sin(rotation_angle),
                          sin(rotation_angle), cos(rotation_angle)),
                        nrow = 2, ncol = 2, byrow = TRUE)
