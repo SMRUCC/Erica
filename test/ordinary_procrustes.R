@@ -13,54 +13,94 @@ ordinary_procrustes <- function(X, Y, scale = TRUE) {
     n <- nrow(X)  # 样本数
     p <- ncol(X)  # 维度
 
-    # 1. 中心化：平移至原点（去除位置差异）
+    # 1. 中心化：平移至原点
     X_centered <- scale(X, center = TRUE, scale = FALSE)
     Y_centered <- scale(Y, center = TRUE, scale = FALSE)
 
-    # 2. 计算旋转矩阵：通过SVD求解最优旋转
-    C <- t(X_centered) %*% Y_centered  # 协方差矩阵
-    svd_result <- svd(C)               # 奇异值分解
-    U <- svd_result$u
-    V <- svd_result$v
-    D <- svd_result$d                   # 奇异值向量
-
-    # 构建旋转矩阵并处理反射（更稳健的方式）
-    R <- U %*% t(V)
-    
-    # 改进的反射检测：确保行列式接近1（纯旋转）
-    if (det(R) < 0) {
-        # 更稳健的反射校正：通过调整最后一个奇异值
-        U[, p] <- -U[, p]
-        D[p] <- -D[p]
-        R <- U %*% t(V)
-    }
-
-    # 3. 计算缩放因子（修正后的公式）
+    # 2. 计算缩放因子（基于Frobenius范数）
     if (scale) {
-        trace_YY <- sum(diag(t(Y_centered) %*% Y_centered))  # Y的迹（正确分母）
-        s <- sum(D) / trace_YY  # 修正：s = trace(SVD奇异值) / trace(Y'Y)
+        norm_X <- sqrt(sum(X_centered^2))
+        norm_Y <- sqrt(sum(Y_centered^2))
+
+        if (norm_Y < .Machine$double.eps) {
+            stop("Y矩阵的范数过小，无法计算缩放因子")
+        }
+        s <- norm_X / norm_Y
     } else {
         s <- 1
     }
 
-    # 4. 变换Y：应用缩放、旋转和平移
-    Y_aligned_centered <- s * Y_centered %*% R  # 缩放和旋转
-    Y_aligned <- Y_aligned_centered + matrix(colMeans(X), n, p, byrow = TRUE)  # 平移至X的中心
+    # 应用缩放（关键修正：先缩放）
+    Y_scaled <- s * Y_centered
 
-    # 5. 计算Procrustes统计量（残差平方和，即M²值）
+    # 3. 计算旋转矩阵（修正核心数学逻辑）
+    # 计算协方差矩阵
+    C <- t(Y_scaled) %*% X_centered  # 注意顺序：Y'X而不是X'Y
+
+    # SVD分解
+    svd_result <- svd(C)
+    U <- svd_result$u
+    V <- svd_result$v
+    D <- diag(1, nrow = p)  # 单位矩阵用于构建旋转矩阵
+
+    # 关键修正：正确的旋转矩阵构建方式
+    # 根据正交普氏问题的最优解：R = V * U^T
+    R <- V %*% t(U)
+
+    # 更稳健的反射处理（基于行列式符号）
+    det_R <- det(R)
+    cat("旋转矩阵行列式:", det_R, "\n")  # 调试信息
+
+    # 如果行列式为负，需要校正反射
+    if (det_R < 0) {
+        # 方法1：调整最后一个奇异值对应的向量
+        V[, p] <- -V[, p]
+        R <- V %*% t(U)
+
+        # 验证校正结果
+        det_R_corrected <- det(R)
+        cat("校正后行列式:", det_R_corrected, "\n")
+
+        # 确保校正成功
+        if (det_R_corrected < 0) {
+            warning("反射校正可能未完全成功，行列式仍为负")
+        }
+    }
+
+    # 4. 验证旋转矩阵的正交性
+    identity_approx <- R %*% t(R)
+    ortho_error <- sum((identity_approx - diag(p))^2)
+    cat("旋转矩阵正交性误差:", ortho_error, "\n")
+
+    if (ortho_error > 1e-10) {
+        warning("旋转矩阵可能不是严格正交的")
+    }
+
+    # 5. 变换Y：应用旋转和平移
+    Y_aligned_centered <- Y_scaled %*% R  # 注意顺序：缩放后的Y应用旋转
+    Y_aligned <- Y_aligned_centered + matrix(colMeans(X), n, p, byrow = TRUE)
+
+    # 6. 计算Procrustes统计量
     ss <- sum((X_centered - Y_aligned_centered)^2)
 
-    # 返回结果
+    # 计算拟合优度（相关系数）
+    correlation <- sum(svd_result$d) / (norm_X * sqrt(sum(Y_scaled^2)))
+
+    # 返回详细结果
     return(list(
-        Y_aligned = Y_aligned,     # 对齐后的Y矩阵
-        rotation = R,              # 旋转矩阵（p x p）
-        scale = s,                 # 缩放因子
-        translation = colMeans(X), # 平移向量（X的中心）
-        procrustes_ss = ss,        # Procrustes平方和（M²）
-        centered_X = X_centered,   # 中心化后的X（用于验证）
-        centered_Y = Y_centered    # 中心化后的Y（用于验证）
+        Y_aligned = Y_aligned,        # 对齐后的Y矩阵
+        rotation = R,                  # 旋转矩阵
+        scale = s,                     # 缩放因子
+        translation = colMeans(X),     # 平移向量
+        procrustes_ss = ss,            # Procrustes平方和
+        correlation = correlation,     # 拟合优度
+        centered_X = X_centered,       # 中心化X
+        centered_Y = Y_centered,       # 中心化Y
+        det_rotation = det(R),         # 旋转矩阵行列式（用于验证）
+        ortho_error = ortho_error      # 正交性误差
     ))
 }
+
 
 # 创建2D形状示例：飞机形状多边形
 set.seed(123)
@@ -100,7 +140,7 @@ rotation_matrix <- matrix(c(cos(rotation_angle), -sin(rotation_angle),
                        nrow = 2, ncol = 2, byrow = TRUE)
 
 # 应用变换：先缩放1.5倍，再旋转30度，最后平移(2,1)
-airplane_Y_raw <- (1.5 * airplane_X) %*% rotation_matrix + 
+airplane_Y_raw <- (1.5 * airplane_X) %*% rotation_matrix +
                   matrix(c(2, 1), nrow = n_vertices, ncol = 2, byrow = TRUE)
 
 # 执行普氏分析
@@ -149,9 +189,9 @@ plt = ggplot(shape_data, aes(x = x, y = y, color = shape_type, shape = shape_typ
   geom_polygon(data = subset(shape_data, shape_type == "对齐后形状"),
                aes(group = 1), fill = "green", alpha = 0.2, linetype = "solid") +
   geom_text(aes(label = point_id), nudge_y = 0.05, size = 2.5, color = "black") +
-  scale_color_manual(values = c("基准形状" = "red", "变形形状" = "blue", 
+  scale_color_manual(values = c("基准形状" = "red", "变形形状" = "blue",
                                "对齐后形状" = "green")) +
-  scale_shape_manual(values = c("基准形状" = 16, "变形形状" = 17, 
+  scale_shape_manual(values = c("基准形状" = 16, "变形形状" = 17,
                                "对齐后形状" = 18)) +
   labs(title = "飞机形状普氏分析结果",
        subtitle = paste("展示基准飞机形状（", n_vertices, "个顶点）、变形形状和对齐后形状的对比"),
