@@ -52,6 +52,9 @@ ordinary_procrustes <- function(X, Y, scale = TRUE) {
     # Y_aligned_centered <- Y_scaled %*% R
     Y_aligned <- Y_scaled + matrix(colMeans(X), n, p, byrow = TRUE)
 
+    rotation = compute_rotation_angle_corrected(X,Y_aligned);
+    Y_aligned = restore_polygon_corrected(Y_aligned, rotation$angle, rotation$centroid_A, rotation$centroid_B)
+
     # 8. 计算Procrustes统计量
     ss <- sum((X_centered - Y_aligned)^2)
 
@@ -62,7 +65,8 @@ ordinary_procrustes <- function(X, Y, scale = TRUE) {
     # 返回结果
     return(list(
         Y_aligned = Y_aligned,
-        rotation = R,
+        rotation = rotation$rotation_matrix,
+        angle = rotation$angle,
         scale = s,
         translation = colMeans(X),
         procrustes_ss = ss,
@@ -70,7 +74,84 @@ ordinary_procrustes <- function(X, Y, scale = TRUE) {
     ))
 }
 
+# 修正后的旋转角度计算函数
+compute_rotation_angle_corrected <- function(A, B) {
+  # A: 原多边形矩阵（n x 2）
+  # B: 旋转后多边形矩阵（n x 2）
 
+  # 计算重心
+  centroid_A <- colMeans(A)
+  centroid_B <- colMeans(B)
+
+  # 中心化点集
+  A_centered <- A - matrix(centroid_A, nrow = nrow(A), ncol = 2, byrow = TRUE)
+  B_centered <- B - matrix(centroid_B, nrow = nrow(B), ncol = 2, byrow = TRUE)
+
+  # 方法1：使用更稳健的角度计算方法
+  # 计算每个点相对于重心的角度差
+  angles_A <- atan2(A_centered[,2], A_centered[,1])
+  angles_B <- atan2(B_centered[,2], B_centered[,1])
+
+  # 计算角度差异（考虑周期性问题）
+  angle_diffs <- angles_B - angles_A
+  angle_diffs <- (angle_diffs + pi) %% (2 * pi) - pi  # 归一化到[-pi, pi]
+
+  # 使用中位数减少异常值影响
+  theta_rad <- median(angle_diffs)
+  theta_deg <- theta_rad * 180 / pi
+
+  # 方法2：备用的协方差矩阵方法（更稳健的SVD处理）
+  H <- t(A_centered) %*% B_centered
+  svd_H <- svd(H)
+
+  # 计算旋转矩阵（确保纯旋转）
+  R <- svd_H$v %*% t(svd_H$u)
+
+  # 强制行列式为1（确保是纯旋转，无反射）
+  if (det(R) < 0) {
+    # 如果行列式为负，调整以消除反射
+    svd_H$v[,2] <- -svd_H$v[,2]
+    R <- svd_H$v %*% t(svd_H$u)
+  }
+
+  # 从旋转矩阵提取角度（更稳健的方法）
+  theta_from_matrix <- atan2(R[2,1], R[1,1])
+  theta_deg_from_matrix <- theta_from_matrix * 180 / pi
+
+  # 选择更一致的角度估计
+  if (abs(theta_deg - theta_deg_from_matrix) > 90) {
+    theta_deg <- theta_deg_from_matrix
+  }
+
+  return(list(angle = theta_deg,
+              rotation_matrix = R,
+              centroid_A = centroid_A,
+              centroid_B = centroid_B))
+}
+
+# 修正后的多边形还原函数
+restore_polygon_corrected <- function(B, theta_deg, centroid_A, centroid_B) {
+  # B: 旋转后多边形
+  # theta_deg: 旋转角度（度）
+  # centroid_A: 原多边形重心
+  # centroid_B: 旋转后多边形重心
+
+  theta_rad <- theta_deg * pi / 180  # 逆旋转角度
+
+  # 创建逆旋转矩阵
+  R_inv <- matrix(c(cos(theta_rad), sin(theta_rad),
+                  -sin(theta_rad), cos(theta_rad)), nrow = 2, byrow = TRUE)
+
+  # 正确的还原步骤：
+  # 1. 将B平移到原点（减去B的重心）
+  # 2. 应用逆旋转
+  # 3. 平移到A的重心位置
+  B_centered <- B - matrix(centroid_B, nrow = nrow(B), ncol = 2, byrow = TRUE)
+  A_centered_restored <- t(R_inv %*% t(B_centered))
+  A_restored <- A_centered_restored + matrix(centroid_A, nrow = nrow(B), ncol = 2, byrow = TRUE)
+
+  return(A_restored)
+}
 
 # 创建2D形状示例：飞机形状多边形
 set.seed(123)
@@ -104,7 +185,7 @@ n_vertices <- n_vertices + 1  # 顶点数加1
 airplane_X <- matrix(c(x_base, y_base), ncol = 2, byrow = FALSE)
 
 # 对飞机形状进行旋转、缩放和平移创建变形版本
-rotation_angle <- 5 * pi / 180  # 30度旋转
+rotation_angle <- 45 * pi / 180  # 30度旋转
 rotation_matrix <- matrix(c(cos(rotation_angle), -sin(rotation_angle),
                          sin(rotation_angle), cos(rotation_angle)),
                        nrow = 2, ncol = 2, byrow = TRUE)
