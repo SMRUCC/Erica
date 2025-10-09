@@ -9,7 +9,7 @@
 #' @param scale Logical. If TRUE (default), scaling is applied to Y during alignment. If FALSE, only rotation and translation are used.
 #'
 #' @return A list containing the following components:
-#' \item{Y_aligned}{The aligned version of Y after applying Procrustes transformation.}
+#' \item{aligned}{The aligned version of Y after applying Procrustes transformation.}
 #' \item{rotation}{The rotation matrix (orthogonal) applied to Y.}
 #' \item{angle}{The rotation angle in radians (if applicable).}
 #' \item{scale}{The scaling factor applied to Y.}
@@ -37,7 +37,7 @@
 #' Y <- matrix(c(1.1, 2.1, 3.1, 4.1, 5.1, 6.1), ncol = 2)
 #' result <- ordinary_procrustes(X, Y)
 #' print(result$correlation) # Alignment quality
-#' plot(result$Y_aligned, col = "red", pch = 19)
+#' plot(result$aligned, col = "red", pch = 19)
 #' points(X, col = "blue", pch = 17)
 #' legend("topleft", legend = c("Aligned Y", "Target X"), col = c("red", "blue"), pch = c(19, 17))
 #'
@@ -102,7 +102,7 @@ ordinary_procrustes <- function(X, Y, scale = TRUE) {
 
   # 返回结果
   return(list(
-    Y_aligned = Y_aligned,
+    aligned = Y_aligned,
     rotation = rotation$rotation_matrix,
     angle = rotation$angle,
     scale = s,
@@ -270,62 +270,21 @@ rotate_polygon_back <- function(B, theta_deg, centroid_A, centroid_B) {
   return(A_restored)
 }
 
-# 创建2D形状示例：飞机形状多边形
-set.seed(123)
-
-# 设置顶点数量（20-30个顶点）
-n_vertices <- 25
-
-# 定义飞机形状的基准多边形（近似飞机轮廓）
-# 生成一个细长多边形模拟飞机机身，加上机翼和尾翼形状
-theta <- seq(0, 2*pi, length.out = n_vertices)
-
-# 创建飞机形状：细长机身加上机翼和尾翼的变形
-x_base <- 0.6 * cos(theta) + 0.5  # 机身基础形状
-y_base <- 0.2 * sin(theta) + 0.3  # 基本高度
-
-# 添加机翼和尾翼特征使形状更像飞机
-# 在特定角度区域扩大宽度模拟机翼
-wing_indices <- which(theta > pi/4 & theta < 3*pi/4 | theta > 5*pi/4 & theta < 7*pi/4)
-y_base[wing_indices] <- y_base[wing_indices] * 2.5  # 扩大机翼区域
-
-# 添加尾翼特征
-tail_indices <- which(theta > 3*pi/2 - 0.3 & theta < 3*pi/2 + 0.3)
-y_base[tail_indices] <- y_base[tail_indices] * 1.8  # 尾翼稍微突出
-
-# 确保多边形闭合（首尾点相同）
-x_base <- c(x_base, x_base[1])
-y_base <- c(y_base, y_base[1])
-n_vertices <- n_vertices + 1  # 顶点数加1
-
-# 创建基准飞机形状矩阵
-airplane_X <- matrix(c(x_base, y_base), ncol = 2, byrow = FALSE)
-
-# 对飞机形状进行旋转、缩放和平移创建变形版本
-rotation_angle <- 45 * pi / 180  # 30度旋转
-rotation_matrix <- matrix(c(cos(rotation_angle), -sin(rotation_angle),
-                            sin(rotation_angle), cos(rotation_angle)),
-                          nrow = 2, ncol = 2, byrow = TRUE)
-
-# 应用变换：先缩放1.5倍，再旋转30度，最后平移(2,1)
-airplane_Y_raw <- (1.5 * airplane_X) %*% rotation_matrix +
-  matrix(c(2, 1), nrow = n_vertices, ncol = 2, byrow = TRUE)
-
-# 执行普氏分析
-result <- ordinary_procrustes(airplane_X, airplane_Y_raw, scale = TRUE)
-
-
-
-debug_print = function(result = list(Y_aligned = NULL, # the aligned polygon matrix
-                                     rotation = NULL, # rotation matrix
-                                     angle = NULL, # rotation angle
-                                     scale = NULL, # scale factor
-                                     translation = NULL, # translation [x,y]
-                                     procrustes_ss = NULL, # procrustes stat score
-                                     correlation = NULL # correlation
+#' make ddebug print of the ordinary procrustes analysis result
+#' result is the ordinary procrustes analysis result output
+#' X is the base polygon for make the alignment
+debug_print = function(X, result = list(aligned = NULL, # the aligned polygon matrix
+                                        rotation = NULL, # rotation matrix
+                                        angle = NULL, # rotation angle
+                                        scale = NULL, # scale factor
+                                        translation = NULL, # translation [x,y]
+                                        procrustes_ss = NULL, # procrustes stat score
+                                        correlation = NULL # correlation
 )) {
+  n_vertices = nrow(result$aligned);
+
   # 打印结果
-  cat("=== 飞机形状普氏分析结果 ===\n")
+  cat("=== 多边形形状对齐，普氏分析结果 ===\n")
   cat("顶点数量:", n_vertices, "\n")
   cat("Procrustes统计量 (M²):", round(result$procrustes_ss, 4), "\n")
   cat("缩放因子:", round(result$scale, 4), "\n")
@@ -334,27 +293,27 @@ debug_print = function(result = list(Y_aligned = NULL, # the aligned polygon mat
   cat("平移向量:", round(result$translation, 4), "\n")
 
   # 计算对齐误差
-  alignment_error <- sqrt(mean(rowSums((result$Y_aligned - airplane_X)^2)))
+  alignment_error <- sqrt(mean(rowSums((result$aligned - X)^2)))
   cat("平均对齐误差:", round(alignment_error, 4), "\n")
 }
 
 # 可视化结果
-polygon_alignment_visual = function(airplane_X, airplane_Y_raw, Y_aligned) {
+polygon_alignment_visual = function(X, target, aligned) {
   library(ggplot2)
   library(ggforce)
 
   # 准备绘图数据
   shape_data <- data.frame(
-    x = c(airplane_X[,1], airplane_Y_raw[,1], Y_aligned[,1]),
-    y = c(airplane_X[,2], airplane_Y_raw[,2], Y_aligned[,2]),
+    x = c(X[,1], target[,1], aligned[,1]),
+    y = c(X[,2], target[,2], aligned[,2]),
     shape_type = rep(c("基准形状", "变形形状", "对齐后形状"), each = n_vertices),
     point_id = rep(1:n_vertices, 3)
   )
 
   # 创建连线数据（用于显示多边形边）
   line_data <- data.frame(
-    x = c(airplane_X[,1], airplane_Y_raw[,1], Y_aligned[,1]),
-    y = c(airplane_X[,2], airplane_Y_raw[,2], Y_aligned[,2]),
+    x = c(X[,1], target[,1], aligned[,1]),
+    y = c(X[,2], target[,2], aligned[,2]),
     group = rep(1:3, each = n_vertices),
     shape_type = rep(c("基准形状", "变形形状", "对齐后形状"), each = n_vertices)
   )
@@ -373,8 +332,8 @@ polygon_alignment_visual = function(airplane_X, airplane_Y_raw, Y_aligned) {
                                   "对齐后形状" = "green")) +
     scale_shape_manual(values = c("基准形状" = 16, "变形形状" = 17,
                                   "对齐后形状" = 18)) +
-    labs(title = "飞机形状普氏分析结果",
-         subtitle = paste("展示基准飞机形状（", n_vertices, "个顶点）、变形形状和对齐后形状的对比"),
+    labs(title = "多边形形状对齐，普氏分析结果",
+         subtitle = paste("展示基准多边形形状（", n_vertices, "个顶点）、变形形状和对齐后形状的对比"),
          x = "X坐标", y = "Y坐标",
          color = "形状类型", shape = "形状类型") +
     theme_minimal() +
@@ -384,4 +343,51 @@ polygon_alignment_visual = function(airplane_X, airplane_Y_raw, Y_aligned) {
   print(plt)
 }
 
+demo = function() {
+  # 创建2D形状示例：飞机形状多边形
+  set.seed(123)
 
+  # 设置顶点数量（20-30个顶点）
+  n_vertices <- 25
+
+  # 定义飞机形状的基准多边形（近似飞机轮廓）
+  # 生成一个细长多边形模拟飞机机身，加上机翼和尾翼形状
+  theta <- seq(0, 2*pi, length.out = n_vertices)
+
+  # 创建飞机形状：细长机身加上机翼和尾翼的变形
+  x_base <- 0.6 * cos(theta) + 0.5  # 机身基础形状
+  y_base <- 0.2 * sin(theta) + 0.3  # 基本高度
+
+  # 添加机翼和尾翼特征使形状更像飞机
+  # 在特定角度区域扩大宽度模拟机翼
+  wing_indices <- which(theta > pi/4 & theta < 3*pi/4 | theta > 5*pi/4 & theta < 7*pi/4)
+  y_base[wing_indices] <- y_base[wing_indices] * 2.5  # 扩大机翼区域
+
+  # 添加尾翼特征
+  tail_indices <- which(theta > 3*pi/2 - 0.3 & theta < 3*pi/2 + 0.3)
+  y_base[tail_indices] <- y_base[tail_indices] * 1.8  # 尾翼稍微突出
+
+  # 确保多边形闭合（首尾点相同）
+  x_base <- c(x_base, x_base[1])
+  y_base <- c(y_base, y_base[1])
+  n_vertices <- n_vertices + 1  # 顶点数加1
+
+  # 创建基准飞机形状矩阵
+  airplane_X <- matrix(c(x_base, y_base), ncol = 2, byrow = FALSE)
+
+  # 对飞机形状进行旋转、缩放和平移创建变形版本
+  rotation_angle <- 45 * pi / 180  # 30度旋转
+  rotation_matrix <- matrix(c(cos(rotation_angle), -sin(rotation_angle),
+                              sin(rotation_angle), cos(rotation_angle)),
+                            nrow = 2, ncol = 2, byrow = TRUE)
+
+  # 应用变换：先缩放1.5倍，再旋转30度，最后平移(2,1)
+  airplane_Y_raw <- (1.5 * airplane_X) %*% rotation_matrix +
+    matrix(c(2, 1), nrow = n_vertices, ncol = 2, byrow = TRUE)
+
+  # 执行普氏分析
+  result <- ordinary_procrustes(airplane_X, airplane_Y_raw, scale = TRUE)
+
+  debug_print(airplane_X, result);
+  polygon_alignment_visual(airplane_X, airplane_Y_raw, result$aligned);
+}
