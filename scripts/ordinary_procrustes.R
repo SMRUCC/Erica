@@ -24,12 +24,12 @@
 #'   \item **Scaling and Rotation**: Compute the optimal scaling factor and rotation matrix using singular value decomposition (SVD) of the covariance matrix between X and Y.
 #'   \item **Translation**: Shift the aligned Y to the centroid of X.
 #' }
-#' The function also computes a goodness-of-fit statistic (`correlation`) based on the sum of singular values from the SVD decomposition [1,2](@ref).
+#' The function also computes a goodness-of-fit statistic (`correlation`) based on the sum of singular values from the SVD decomposition.
 #'
 #' @note
 #' The input matrices X and Y must have the same dimensions. The function uses the Frobenius norm to compute the scaling factor
 #' when `scale = TRUE`. If the norm of Y is too small, the function will stop with an error. The rotation matrix is computed using
-#' SVD, ensuring orthogonality [1,5](@ref).
+#' SVD, ensuring orthogonality.
 #'
 #' @examples
 #' # Create two simple 2D point sets
@@ -131,16 +131,16 @@ ordinary_procrustes <- function(X, Y, scale = TRUE) {
 #' This function employs two independent methods to estimate the rotation angle between two aligned point sets:
 #' \enumerate{
 #'   \item \strong{Angle Difference Method}: Computes the angle for each point relative to the centroid of its polygon using \code{atan2}, then calculates the median difference of these angles. This approach is robust to outliers through the use of median aggregation.
-#'   \item \strong{SVD-Based Method}: Uses Singular Value Decomposition (SVD) of the covariance matrix to derive the optimal rotation matrix. This method ensures a proper rotation by enforcing a determinant of 1, avoiding reflections [5](@ref).
+#'   \item \strong{SVD-Based Method}: Uses Singular Value Decomposition (SVD) of the covariance matrix to derive the optimal rotation matrix. This method ensures a proper rotation by enforcing a determinant of 1, avoiding reflections.
 #' }
-#' The function automatically selects the most consistent angle estimate between the two methods. If the difference between their estimates exceeds 90 degrees, the SVD-based result is preferred due to its global optimization properties [5](@ref).
+#' The function automatically selects the most consistent angle estimate between the two methods. If the difference between their estimates exceeds 90 degrees, the SVD-based result is preferred due to its global optimization properties.
 #'
 #' @note
 #' Important considerations for using this function:
 #' \itemize{
 #'   \item The two input matrices A and B must have the same number of points (rows) and correspond point-by-point.
 #'   \item The function assumes that the polygons are already centered and that only rotation (not translation or scaling) differentiates them.
-#'   \item For the SVD method, the rotation matrix is calculated as R = V * U^T after decomposing H = U * D * V^T, which is a standard approach for orthogonal Procrustes analysis [5](@ref).
+#'   \item For the SVD method, the rotation matrix is calculated as R = V * U^T after decomposing H = U * D * V^T, which is a standard approach for orthogonal Procrustes analysis.
 #' }
 #'
 #' @examples
