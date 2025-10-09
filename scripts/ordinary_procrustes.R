@@ -298,6 +298,9 @@ debug_print = function(X, result = list(aligned = NULL, # the aligned polygon ma
 }
 
 # 可视化结果
+# x is the base reference polygon
+# target is the target polygon to make ordinary procrustes analysis alignment
+# aligned is the aligned result polygon of the target polygon object reference to the base polygon X
 polygon_alignment_visual = function(X, target, aligned) {
   library(ggplot2)
   library(ggforce)
