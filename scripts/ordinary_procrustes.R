@@ -4,9 +4,9 @@
 ordinary_procrustes <- function(X, Y, scale = TRUE) {
     # 检查输入矩阵维度
     if (nrow(X) != nrow(Y)) {
-        stop("The X and Y matrices must have the same number of rows (number of samples).")
+        stop("The X and Y matrices must have the same number of rows (number of samples)!");
     } else if (ncol(X) != ncol(Y)) {
-        stop("X和Y必须具有相同的列数（维度）")
+        stop("The X and Y matrices must have the same number of columns (dimensions)!");
     }
 
     n <- nrow(X)  # 样本数
@@ -22,24 +22,24 @@ ordinary_procrustes <- function(X, Y, scale = TRUE) {
     # 3. SVD分解
     svd_result <- svd(C)
     U <- svd_result$u
-    V <- svd_result$v
+    # V <- svd_result$v
     d <- svd_result$d  # 奇异值
 
-    # 4. 计算旋转矩阵
-    R <- V %*% t(U)
+    # # 4. 计算旋转矩阵
+    # R <- V %*% t(U)
 
-    # 5. 处理反射问题
-    if (det(R) < 0) {
-        # 调整最后一个奇异值对应的向量
-        V[, p] <- -V[, p]
-        R <- V %*% t(U)
-    }
+    # # 5. 处理反射问题
+    # if (det(R) < 0) {
+    #     # 调整最后一个奇异值对应的向量
+    #     V[, p] <- -V[, p]
+    #     R <- V %*% t(U)
+    # }
 
     # 6. 计算最优缩放因子（关键修正点）
     if (scale) {
         norm_Y_sq <- sum(Y_centered^2)
         if (norm_Y_sq < .Machine$double.eps) {
-            stop("Y矩阵的范数过小，无法计算缩放因子")
+            stop("The norm of the Y matrix is too small to calculate the scaling factor.")
         }
         s <- sum(d) / norm_Y_sq  # 正确的缩放因子计算公式
     } else {
