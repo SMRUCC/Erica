@@ -22,18 +22,7 @@ ordinary_procrustes <- function(X, Y, scale = TRUE) {
     # 3. SVD分解
     svd_result <- svd(C)
     U <- svd_result$u
-    # V <- svd_result$v
     d <- svd_result$d  # 奇异值
-
-    # # 4. 计算旋转矩阵
-    # R <- V %*% t(U)
-
-    # # 5. 处理反射问题
-    # if (det(R) < 0) {
-    #     # 调整最后一个奇异值对应的向量
-    #     V[, p] <- -V[, p]
-    #     R <- V %*% t(U)
-    # }
 
     # 6. 计算最优缩放因子（关键修正点）
     if (scale) {
@@ -48,11 +37,10 @@ ordinary_procrustes <- function(X, Y, scale = TRUE) {
 
     # 7. 应用变换
     Y_scaled <- s * Y_centered
-    # Y_aligned_centered <- Y_scaled %*% R
     Y_aligned <- Y_scaled + matrix(colMeans(X), n, p, byrow = TRUE)
 
-    rotation = compute_rotation_angle_corrected(X,Y_aligned);
-    Y_aligned = restore_polygon_corrected(Y_aligned, rotation$angle, rotation$centroid_A, rotation$centroid_B)
+    rotation = compute_rotation_angle(X,Y_aligned);
+    Y_aligned = rotate_polygon_back(Y_aligned, rotation$angle, rotation$centroid_A, rotation$centroid_B)
 
     # 8. 计算Procrustes统计量
     ss <- sum((X_centered - Y_aligned)^2)
@@ -73,10 +61,11 @@ ordinary_procrustes <- function(X, Y, scale = TRUE) {
     ))
 }
 
-# 修正后的旋转角度计算函数
-compute_rotation_angle_corrected <- function(A, B) {
+# 旋转角度计算函数
   # A: 原多边形矩阵（n x 2）
   # B: 旋转后多边形矩阵（n x 2）
+compute_rotation_angle <- function(A, B) {
+
 
   # 计算重心
   centroid_A <- colMeans(A)
@@ -128,12 +117,13 @@ compute_rotation_angle_corrected <- function(A, B) {
               centroid_B = centroid_B))
 }
 
-# 修正后的多边形还原函数
-restore_polygon_corrected <- function(B, theta_deg, centroid_A, centroid_B) {
+# 多边形旋转还原函数
   # B: 旋转后多边形
   # theta_deg: 旋转角度（度）
   # centroid_A: 原多边形重心
   # centroid_B: 旋转后多边形重心
+rotate_polygon_back <- function(B, theta_deg, centroid_A, centroid_B) {
+
 
   theta_rad <- theta_deg * pi / 180  # 逆旋转角度
 
