@@ -2,68 +2,68 @@
 # 输入：X和Y为两个矩阵，行数相同（样本数），列数相同（维度）
 # 输出：对齐后的Y矩阵、旋转矩阵、缩放因子、平移向量和Procrustes统计量
 ordinary_procrustes <- function(X, Y, scale = TRUE) {
-    # 检查输入矩阵维度
-    if (nrow(X) != nrow(Y)) {
-        stop("The X and Y matrices must have the same number of rows (number of samples)!");
-    } else if (ncol(X) != ncol(Y)) {
-        stop("The X and Y matrices must have the same number of columns (dimensions)!");
+  # 检查输入矩阵维度
+  if (nrow(X) != nrow(Y)) {
+    stop("The X and Y matrices must have the same number of rows (number of samples)!");
+  } else if (ncol(X) != ncol(Y)) {
+    stop("The X and Y matrices must have the same number of columns (dimensions)!");
+  }
+
+  n <- nrow(X)  # 样本数
+  p <- ncol(X)  # 维度
+
+  # 1. 中心化：平移至原点
+  X_centered <- scale(X, center = TRUE, scale = FALSE)
+  Y_centered <- scale(Y, center = TRUE, scale = FALSE)
+
+  # 2. 计算协方差矩阵（使用未缩放的Y）
+  C <- t(Y_centered) %*% X_centered
+
+  # 3. SVD分解
+  svd_result <- svd(C)
+  U <- svd_result$u
+  d <- svd_result$d  # 奇异值
+
+  # 6. 计算最优缩放因子（关键修正点）
+  if (scale) {
+    norm_Y_sq <- sum(Y_centered^2)
+    if (norm_Y_sq < .Machine$double.eps) {
+      stop("The norm of the Y matrix is too small to calculate the scaling factor.")
     }
+    s <- sum(d) / norm_Y_sq  # 正确的缩放因子计算公式
+  } else {
+    s <- 1
+  }
 
-    n <- nrow(X)  # 样本数
-    p <- ncol(X)  # 维度
+  # 7. 应用变换
+  Y_scaled <- s * Y_centered
+  Y_aligned <- Y_scaled + matrix(colMeans(X), n, p, byrow = TRUE)
 
-    # 1. 中心化：平移至原点
-    X_centered <- scale(X, center = TRUE, scale = FALSE)
-    Y_centered <- scale(Y, center = TRUE, scale = FALSE)
+  rotation = compute_rotation_angle(X,Y_aligned);
+  Y_aligned = rotate_polygon_back(Y_aligned, rotation$angle, rotation$centroid_A, rotation$centroid_B)
 
-    # 2. 计算协方差矩阵（使用未缩放的Y）
-    C <- t(Y_centered) %*% X_centered
+  # 8. 计算Procrustes统计量
+  ss <- sum((X_centered - Y_aligned)^2)
 
-    # 3. SVD分解
-    svd_result <- svd(C)
-    U <- svd_result$u
-    d <- svd_result$d  # 奇异值
+  # 计算拟合优度
+  norm_X <- sqrt(sum(X_centered^2))
+  correlation <- sum(d) / (norm_X * sqrt(sum(Y_scaled^2)))
 
-    # 6. 计算最优缩放因子（关键修正点）
-    if (scale) {
-        norm_Y_sq <- sum(Y_centered^2)
-        if (norm_Y_sq < .Machine$double.eps) {
-            stop("The norm of the Y matrix is too small to calculate the scaling factor.")
-        }
-        s <- sum(d) / norm_Y_sq  # 正确的缩放因子计算公式
-    } else {
-        s <- 1
-    }
-
-    # 7. 应用变换
-    Y_scaled <- s * Y_centered
-    Y_aligned <- Y_scaled + matrix(colMeans(X), n, p, byrow = TRUE)
-
-    rotation = compute_rotation_angle(X,Y_aligned);
-    Y_aligned = rotate_polygon_back(Y_aligned, rotation$angle, rotation$centroid_A, rotation$centroid_B)
-
-    # 8. 计算Procrustes统计量
-    ss <- sum((X_centered - Y_aligned)^2)
-
-    # 计算拟合优度
-    norm_X <- sqrt(sum(X_centered^2))
-    correlation <- sum(d) / (norm_X * sqrt(sum(Y_scaled^2)))
-
-    # 返回结果
-    return(list(
-        Y_aligned = Y_aligned,
-        rotation = rotation$rotation_matrix,
-        angle = rotation$angle,
-        scale = s,
-        translation = colMeans(X),
-        procrustes_ss = ss,
-        correlation = correlation
-    ))
+  # 返回结果
+  return(list(
+    Y_aligned = Y_aligned,
+    rotation = rotation$rotation_matrix,
+    angle = rotation$angle,
+    scale = s,
+    translation = colMeans(X),
+    procrustes_ss = ss,
+    correlation = correlation
+  ))
 }
 
 # 旋转角度计算函数
-  # A: 原多边形矩阵（n x 2）
-  # B: 旋转后多边形矩阵（n x 2）
+# A: 原多边形矩阵（n x 2）
+# B: 旋转后多边形矩阵（n x 2）
 compute_rotation_angle <- function(A, B) {
 
 
@@ -118,10 +118,10 @@ compute_rotation_angle <- function(A, B) {
 }
 
 # 多边形旋转还原函数
-  # B: 旋转后多边形
-  # theta_deg: 旋转角度（度）
-  # centroid_A: 原多边形重心
-  # centroid_B: 旋转后多边形重心
+# B: 旋转后多边形
+# theta_deg: 旋转角度（度）
+# centroid_A: 原多边形重心
+# centroid_B: 旋转后多边形重心
 rotate_polygon_back <- function(B, theta_deg, centroid_A, centroid_B) {
 
 
@@ -129,7 +129,7 @@ rotate_polygon_back <- function(B, theta_deg, centroid_A, centroid_B) {
 
   # 创建逆旋转矩阵
   R_inv <- matrix(c(cos(theta_rad), sin(theta_rad),
-                  -sin(theta_rad), cos(theta_rad)), nrow = 2, byrow = TRUE)
+                    -sin(theta_rad), cos(theta_rad)), nrow = 2, byrow = TRUE)
 
   # 正确的还原步骤：
   # 1. 将B平移到原点（减去B的重心）
@@ -176,12 +176,12 @@ airplane_X <- matrix(c(x_base, y_base), ncol = 2, byrow = FALSE)
 # 对飞机形状进行旋转、缩放和平移创建变形版本
 rotation_angle <- 45 * pi / 180  # 30度旋转
 rotation_matrix <- matrix(c(cos(rotation_angle), -sin(rotation_angle),
-                         sin(rotation_angle), cos(rotation_angle)),
-                       nrow = 2, ncol = 2, byrow = TRUE)
+                            sin(rotation_angle), cos(rotation_angle)),
+                          nrow = 2, ncol = 2, byrow = TRUE)
 
 # 应用变换：先缩放1.5倍，再旋转30度，最后平移(2,1)
 airplane_Y_raw <- (1.5 * airplane_X) %*% rotation_matrix +
-                  matrix(c(2, 1), nrow = n_vertices, ncol = 2, byrow = TRUE)
+  matrix(c(2, 1), nrow = n_vertices, ncol = 2, byrow = TRUE)
 
 # 执行普氏分析
 result <- ordinary_procrustes(airplane_X, airplane_Y_raw, scale = TRUE)
@@ -230,9 +230,9 @@ plt = ggplot(shape_data, aes(x = x, y = y, color = shape_type, shape = shape_typ
                aes(group = 1), fill = "green", alpha = 0.2, linetype = "solid") +
   geom_text(aes(label = point_id), nudge_y = 0.05, size = 2.5, color = "black") +
   scale_color_manual(values = c("基准形状" = "red", "变形形状" = "blue",
-                               "对齐后形状" = "green")) +
+                                "对齐后形状" = "green")) +
   scale_shape_manual(values = c("基准形状" = 16, "变形形状" = 17,
-                               "对齐后形状" = 18)) +
+                                "对齐后形状" = 18)) +
   labs(title = "飞机形状普氏分析结果",
        subtitle = paste("展示基准飞机形状（", n_vertices, "个顶点）、变形形状和对齐后形状的对比"),
        x = "X坐标", y = "Y坐标",
