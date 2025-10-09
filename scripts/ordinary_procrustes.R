@@ -4,9 +4,8 @@
 ordinary_procrustes <- function(X, Y, scale = TRUE) {
     # 检查输入矩阵维度
     if (nrow(X) != nrow(Y)) {
-        stop("X和Y必须具有相同的行数（样本数）")
-    }
-    if (ncol(X) != ncol(Y)) {
+        stop("The X and Y matrices must have the same number of rows (number of samples).")
+    } else if (ncol(X) != ncol(Y)) {
         stop("X和Y必须具有相同的列数（维度）")
     }
 
