@@ -1,7 +1,7 @@
 #' Ordinary Procrustes Analysis (OPA) for Matrix Alignment
 #'
-#' This function performs Ordinary Procrustes Analysis (OPA) to align two matrices by finding the optimal translation, rotation, 
-#' and scaling that minimizes the sum of squared differences between them. It is commonly used in shape analysis, morphometrics, 
+#' This function performs Ordinary Procrustes Analysis (OPA) to align two matrices by finding the optimal translation, rotation,
+#' and scaling that minimizes the sum of squared differences between them. It is commonly used in shape analysis, morphometrics,
 #' and image registration.
 #'
 #' @param X A numeric matrix representing the target/reference matrix. Each row is a sample, and each column is a dimension.
@@ -27,8 +27,8 @@
 #' The function also computes a goodness-of-fit statistic (`correlation`) based on the sum of singular values from the SVD decomposition [1,2](@ref).
 #'
 #' @note
-#' The input matrices X and Y must have the same dimensions. The function uses the Frobenius norm to compute the scaling factor 
-#' when `scale = TRUE`. If the norm of Y is too small, the function will stop with an error. The rotation matrix is computed using 
+#' The input matrices X and Y must have the same dimensions. The function uses the Frobenius norm to compute the scaling factor
+#' when `scale = TRUE`. If the norm of Y is too small, the function will stop with an error. The rotation matrix is computed using
 #' SVD, ensuring orthogonality [1,5](@ref).
 #'
 #' @examples
@@ -112,12 +112,67 @@ ordinary_procrustes <- function(X, Y, scale = TRUE) {
   ))
 }
 
-# 旋转角度计算函数
-# A: 原多边形矩阵（n x 2）
-# B: 旋转后多边形矩阵（n x 2）
+#' Compute Rotation Angle Between Two Polygons
+#'
+#' This function calculates the rotation angle and rotation matrix between two polygons (or sets of 2D points) by comparing their point-wise orientations relative to their centroids or using Singular Value Decomposition (SVD).
+#'
+#' @param A A numeric matrix with dimensions n x 2 representing the original polygon coordinates. Each row corresponds to a point, with two columns for x and y coordinates.
+#' @param B A numeric matrix with dimensions n x 2 representing the rotated polygon coordinates. It must have the same number of points as matrix A.
+#'
+#' @return A list containing the following components:
+#' \itemize{
+#'   \item \code{angle}: The estimated rotation angle in degrees from polygon A to polygon B.
+#'   \item \code{rotation_matrix}: The 2x2 rotation matrix corresponding to the computed angle.
+#'   \item \code{centroid_A}: The centroid (center of mass) of the original polygon A as a numeric vector of length 2.
+#'   \item \code{centroid_B}: The centroid (center of mass) of the rotated polygon B as a numeric vector of length 2.
+#' }
+#'
+#' @details
+#' This function employs two independent methods to estimate the rotation angle between two aligned point sets:
+#' \enumerate{
+#'   \item \strong{Angle Difference Method}: Computes the angle for each point relative to the centroid of its polygon using \code{atan2}, then calculates the median difference of these angles. This approach is robust to outliers through the use of median aggregation.
+#'   \item \strong{SVD-Based Method}: Uses Singular Value Decomposition (SVD) of the covariance matrix to derive the optimal rotation matrix. This method ensures a proper rotation by enforcing a determinant of 1, avoiding reflections [5](@ref).
+#' }
+#' The function automatically selects the most consistent angle estimate between the two methods. If the difference between their estimates exceeds 90 degrees, the SVD-based result is preferred due to its global optimization properties [5](@ref).
+#'
+#' @note
+#' Important considerations for using this function:
+#' \itemize{
+#'   \item The two input matrices A and B must have the same number of points (rows) and correspond point-by-point.
+#'   \item The function assumes that the polygons are already centered and that only rotation (not translation or scaling) differentiates them.
+#'   \item For the SVD method, the rotation matrix is calculated as R = V * U^T after decomposing H = U * D * V^T, which is a standard approach for orthogonal Procrustes analysis [5](@ref).
+#' }
+#'
+#' @examples
+#' # Create a simple square polygon
+#' square_A <- matrix(c(0, 0, 1, 0, 1, 1, 0, 1), ncol = 2, byrow = TRUE)
+#'
+#' # Define a 45-degree rotation matrix
+#' theta <- 45 * pi / 180
+#' R <- matrix(c(cos(theta), -sin(theta), sin(theta), cos(theta)), nrow = 2)
+#'
+#' # Apply rotation to create polygon B
+#' square_B <- square_A %*% t(R)
+#'
+#' # Compute rotation angle between original and rotated square
+#' result <- compute_rotation_angle(square_A, square_B)
+#' print(paste("Rotation angle:", result$angle, "degrees"))
+#'
+#' # Verify the rotation matrix
+#' print(result$rotation_matrix)
+#'
+#' @seealso
+#' Related topics:
+#' \itemize{
+#'   \item \code{\link[base]{atan2}} for angle calculations
+#'   \item \code{\link[base]{svd}} for singular value decomposition
+#'   \item \code{\link[stats]{median}} for robust averaging
+#' }
+#'
+#' @author Your Name <your.email@example.com>
+#'
+#' @export
 compute_rotation_angle <- function(A, B) {
-
-
   # 计算重心
   centroid_A <- colMeans(A)
   centroid_B <- colMeans(B)
@@ -168,14 +223,36 @@ compute_rotation_angle <- function(A, B) {
               centroid_B = centroid_B))
 }
 
-# 多边形旋转还原函数
-# B: 旋转后多边形
-# theta_deg: 旋转角度（度）
-# centroid_A: 原多边形重心
-# centroid_B: 旋转后多边形重心
+#' Reverse rotation of a polygon
+#'
+#' This function restores a rotated polygon to its original position by applying an inverse rotation transformation.
+#' The process involves three main steps: translating the rotated polygon to the origin (subtracting its centroid),
+#' applying the inverse rotation matrix, and then translating it back to the original polygon's centroid position.
+#'
+#' @param B A numeric matrix representing the vertices of the rotated polygon. Each row corresponds to a vertex (x, y coordinates).
+#' @param theta_deg The rotation angle in degrees (positive for counterclockwise rotation) that was originally applied.
+#' @param centroid_A A numeric vector of length 2 specifying the centroid (x, y) of the original polygon before rotation.
+#' @param centroid_B A numeric vector of length 2 specifying the centroid (x, y) of the rotated polygon.
+#'
+#' @return A numeric matrix with the same dimensions as `B`, containing the coordinates of the polygon vertices after restoring to the original position.
+#'
+#' @examples
+#' # Create a simple square polygon
+#' original_square <- matrix(c(0, 0, 1, 0, 1, 1, 0, 1), ncol = 2, byrow = TRUE)
+#' centroid_orig <- c(0.5, 0.5) # Centroid of the original square
+#'
+#' # Suppose the square was rotated by 45 degrees around its centroid
+#' theta <- 45
+#' # In practice, the rotated polygon and its centroid would come from a rotation operation
+#' # For demonstration, we'll use the original polygon as if it were rotated
+#' rotated_square <- original_square
+#' centroid_rot <- centroid_orig
+#'
+#' # Restore the polygon to its original position
+#' restored_square <- rotate_polygon_back(rotated_square, theta, centroid_orig, centroid_rot)
+#'
+#' @export
 rotate_polygon_back <- function(B, theta_deg, centroid_A, centroid_B) {
-
-
   theta_rad <- theta_deg * pi / 180  # 逆旋转角度
 
   # 创建逆旋转矩阵
@@ -237,59 +314,74 @@ airplane_Y_raw <- (1.5 * airplane_X) %*% rotation_matrix +
 # 执行普氏分析
 result <- ordinary_procrustes(airplane_X, airplane_Y_raw, scale = TRUE)
 
-# 打印结果
-cat("=== 飞机形状普氏分析结果 ===\n")
-cat("顶点数量:", n_vertices, "\n")
-cat("Procrustes统计量 (M²):", round(result$procrustes_ss, 4), "\n")
-cat("缩放因子:", round(result$scale, 4), "\n")
-cat("旋转矩阵:\n")
-print(round(result$rotation, 4))
-cat("平移向量:", round(result$translation, 4), "\n")
 
-# 计算对齐误差
-alignment_error <- sqrt(mean(rowSums((result$Y_aligned - airplane_X)^2)))
-cat("平均对齐误差:", round(alignment_error, 4), "\n")
+
+debug_print = function(result = list(Y_aligned = NULL, # the aligned polygon matrix
+                                     rotation = NULL, # rotation matrix
+                                     angle = NULL, # rotation angle
+                                     scale = NULL, # scale factor
+                                     translation = NULL, # translation [x,y]
+                                     procrustes_ss = NULL, # procrustes stat score
+                                     correlation = NULL # correlation
+)) {
+  # 打印结果
+  cat("=== 飞机形状普氏分析结果 ===\n")
+  cat("顶点数量:", n_vertices, "\n")
+  cat("Procrustes统计量 (M²):", round(result$procrustes_ss, 4), "\n")
+  cat("缩放因子:", round(result$scale, 4), "\n")
+  cat("旋转矩阵:\n")
+  print(round(result$rotation, 4))
+  cat("平移向量:", round(result$translation, 4), "\n")
+
+  # 计算对齐误差
+  alignment_error <- sqrt(mean(rowSums((result$Y_aligned - airplane_X)^2)))
+  cat("平均对齐误差:", round(alignment_error, 4), "\n")
+}
 
 # 可视化结果
-library(ggplot2)
-library(ggforce)
+polygon_alignment_visual = function(airplane_X, airplane_Y_raw, Y_aligned) {
+  library(ggplot2)
+  library(ggforce)
 
-# 准备绘图数据
-shape_data <- data.frame(
-  x = c(airplane_X[,1], airplane_Y_raw[,1], result$Y_aligned[,1]),
-  y = c(airplane_X[,2], airplane_Y_raw[,2], result$Y_aligned[,2]),
-  shape_type = rep(c("基准形状", "变形形状", "对齐后形状"), each = n_vertices),
-  point_id = rep(1:n_vertices, 3)
-)
+  # 准备绘图数据
+  shape_data <- data.frame(
+    x = c(airplane_X[,1], airplane_Y_raw[,1], Y_aligned[,1]),
+    y = c(airplane_X[,2], airplane_Y_raw[,2], Y_aligned[,2]),
+    shape_type = rep(c("基准形状", "变形形状", "对齐后形状"), each = n_vertices),
+    point_id = rep(1:n_vertices, 3)
+  )
 
-# 创建连线数据（用于显示多边形边）
-line_data <- data.frame(
-  x = c(airplane_X[,1], airplane_Y_raw[,1], result$Y_aligned[,1]),
-  y = c(airplane_X[,2], airplane_Y_raw[,2], result$Y_aligned[,2]),
-  group = rep(1:3, each = n_vertices),
-  shape_type = rep(c("基准形状", "变形形状", "对齐后形状"), each = n_vertices)
-)
+  # 创建连线数据（用于显示多边形边）
+  line_data <- data.frame(
+    x = c(airplane_X[,1], airplane_Y_raw[,1], Y_aligned[,1]),
+    y = c(airplane_X[,2], airplane_Y_raw[,2], Y_aligned[,2]),
+    group = rep(1:3, each = n_vertices),
+    shape_type = rep(c("基准形状", "变形形状", "对齐后形状"), each = n_vertices)
+  )
 
-# 绘制形状对比图
-plt = ggplot(shape_data, aes(x = x, y = y, color = shape_type, shape = shape_type)) +
-  geom_point(size = 3) +
-  geom_polygon(data = subset(shape_data, shape_type == "基准形状"),
-               aes(group = 1), fill = "red", alpha = 0.2, linetype = "solid") +
-  geom_polygon(data = subset(shape_data, shape_type == "变形形状"),
-               aes(group = 1), fill = "blue", alpha = 0.2, linetype = "solid") +
-  geom_polygon(data = subset(shape_data, shape_type == "对齐后形状"),
-               aes(group = 1), fill = "green", alpha = 0.2, linetype = "solid") +
-  geom_text(aes(label = point_id), nudge_y = 0.05, size = 2.5, color = "black") +
-  scale_color_manual(values = c("基准形状" = "red", "变形形状" = "blue",
-                                "对齐后形状" = "green")) +
-  scale_shape_manual(values = c("基准形状" = 16, "变形形状" = 17,
-                                "对齐后形状" = 18)) +
-  labs(title = "飞机形状普氏分析结果",
-       subtitle = paste("展示基准飞机形状（", n_vertices, "个顶点）、变形形状和对齐后形状的对比"),
-       x = "X坐标", y = "Y坐标",
-       color = "形状类型", shape = "形状类型") +
-  theme_minimal() +
-  theme(legend.position = "bottom") +
-  coord_equal()  # 确保比例一致，保持形状不变形
+  # 绘制形状对比图
+  plt = ggplot(shape_data, aes(x = x, y = y, color = shape_type, shape = shape_type)) +
+    geom_point(size = 3) +
+    geom_polygon(data = subset(shape_data, shape_type == "基准形状"),
+                 aes(group = 1), fill = "red", alpha = 0.2, linetype = "solid") +
+    geom_polygon(data = subset(shape_data, shape_type == "变形形状"),
+                 aes(group = 1), fill = "blue", alpha = 0.2, linetype = "solid") +
+    geom_polygon(data = subset(shape_data, shape_type == "对齐后形状"),
+                 aes(group = 1), fill = "green", alpha = 0.2, linetype = "solid") +
+    geom_text(aes(label = point_id), nudge_y = 0.05, size = 2.5, color = "black") +
+    scale_color_manual(values = c("基准形状" = "red", "变形形状" = "blue",
+                                  "对齐后形状" = "green")) +
+    scale_shape_manual(values = c("基准形状" = 16, "变形形状" = 17,
+                                  "对齐后形状" = 18)) +
+    labs(title = "飞机形状普氏分析结果",
+         subtitle = paste("展示基准飞机形状（", n_vertices, "个顶点）、变形形状和对齐后形状的对比"),
+         x = "X坐标", y = "Y坐标",
+         color = "形状类型", shape = "形状类型") +
+    theme_minimal() +
+    theme(legend.position = "bottom") +
+    coord_equal()  # 确保比例一致，保持形状不变形
 
-print(plt)
+  print(plt)
+}
+
+
