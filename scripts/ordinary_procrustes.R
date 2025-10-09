@@ -270,16 +270,55 @@ rotate_polygon_back <- function(B, theta_deg, centroid_A, centroid_B) {
   return(A_restored)
 }
 
-#' make ddebug print of the ordinary procrustes analysis result
-#' result is the ordinary procrustes analysis result output
-#' X is the base polygon for make the alignment
-debug_print = function(X, result = list(aligned = NULL, # the aligned polygon matrix
-                                        rotation = NULL, # rotation matrix
-                                        angle = NULL, # rotation angle
-                                        scale = NULL, # scale factor
-                                        translation = NULL, # translation [x,y]
+#' Debug Print for Ordinary Procrustes Analysis Results
+#'
+#' This function provides a detailed debug printout of the results from an ordinary Procrustes analysis.
+#' It displays key alignment parameters such as rotation matrix, scale factor, translation vector,
+#' and Procrustes statistic, along with calculated metrics like the average alignment error between
+#' the aligned shape and the base polygon.
+#'
+#' @param X A numeric matrix representing the base polygon vertices for alignment.
+#'   Each row should correspond to a vertex coordinate.
+#' @param result A list containing the output of an ordinary Procrustes analysis. The list should
+#'   include the following components:
+#'   \describe{
+#'     \item{aligned}{Numeric matrix of the aligned polygon vertices}
+#'     \item{rotation}{Numeric matrix representing the rotation applied}
+#'     \item{angle}{Numeric value of the rotation angle in radians (optional)}
+#'     \item{scale}{Numeric value of the scale factor applied}
+#'     \item{translation}{Numeric vector [x, y] of the translation applied}
+#'     \item{procrustes_ss}{Numeric value of the Procrustes sum of squares statistic}
+#'     \item{correlation}{Numeric value of the correlation coefficient (optional)}
+#'   }
+#'
+#' @return This function does not return a value explicitly. It prints the analysis results to the
+#'   console and invisibly returns `NULL`.
+#'
+#' @examples
+#' # Create a base polygon matrix (e.g., a square)
+#' X <- matrix(c(0, 0, 1, 0, 1, 1, 0, 1), ncol = 2, byrow = TRUE)
+#'
+#' # Simulate a Procrustes analysis result list
+#' result_sim <- list(
+#'   aligned = matrix(c(0.1, 0.1, 1.1, 0.1, 1.1, 1.1, 0.1, 1.1), ncol = 2, byrow = TRUE),
+#'   rotation = matrix(c(0.99, -0.01, 0.01, 0.99), ncol = 2),
+#'   scale = 1.02,
+#'   translation = c(0.1, 0.1),
+#'   procrustes_ss = 0.05,
+#'   correlation = 0.98
+#' )
+#'
+#' # Print the debug information
+#' debug_print(X, result_sim)
+#'
+#' @export
+debug_print = function(X, result = list(aligned = NULL,       # the aligned polygon matrix
+                                        rotation = NULL,      # rotation matrix
+                                        angle = NULL,         # rotation angle
+                                        scale = NULL,         # scale factor
+                                        translation = NULL,   # translation [x,y]
                                         procrustes_ss = NULL, # procrustes stat score
-                                        correlation = NULL # correlation
+                                        correlation = NULL    # correlation
 )) {
   n_vertices = nrow(result$aligned);
 
@@ -297,10 +336,43 @@ debug_print = function(X, result = list(aligned = NULL, # the aligned polygon ma
   cat("平均对齐误差:", round(alignment_error, 4), "\n")
 }
 
-# 可视化结果
-# x is the base reference polygon
-# target is the target polygon to make ordinary procrustes analysis alignment
-# aligned is the aligned result polygon of the target polygon object reference to the base polygon X
+#' Visualization of Ordinary Procrustes Analysis for 2D Polygon Alignment
+#'
+#' This function creates a comparative visualization of polygon alignment using Ordinary Procrustes Analysis (OPA).
+#' It plots three polygons: the base reference polygon, the target polygon before alignment, and the target polygon after alignment.
+#' The visualization includes points representing vertices, polygon fills with transparency, and vertex labels for clear comparison.
+#'
+#' @param X A numeric matrix or data frame with two columns representing the base reference polygon's vertex coordinates (x, y).
+#'           It serves as the fixed reference for alignment.
+#' @param target A numeric matrix or data frame with two columns representing the target polygon's vertex coordinates (x, y) before alignment.
+#'               Must have the same number of vertices as `X`.
+#' @param aligned A numeric matrix or data frame with two columns representing the aligned polygon's vertex coordinates (x, y) after Procrustes analysis.
+#'                Must have the same number of vertices as `X` and `target`.
+#'
+#' @return A ggplot object displaying the alignment results. The plot includes:
+#' \itemize{
+#'   \item Points for each vertex, colored and shaped by polygon type
+#'   \item Polygon outlines and semi-transparent fills
+#'   \item Vertex labels showing the point IDs
+#'   \item Equal coordinate aspect ratio to preserve shape proportions
+#' }
+#' The function also prints the plot to the active graphics device.
+#'
+#' @examples
+#' \dontrun{
+#' # Create example polygons: a triangle and a transformed version
+#' n_vertices <- 3
+#' X <- matrix(c(0,0, 1,0, 0.5,1), ncol=2, byrow=TRUE)
+#' target <- matrix(c(0.1,0.1, 1.1,0.1, 0.6,1.1), ncol=2, byrow=TRUE)
+#' aligned <- matrix(c(0.05,0.05, 0.95,0.05, 0.5,0.95), ncol=2, byrow=TRUE)
+#'
+#' # Generate visualization
+#' polygon_alignment_visual(X, target, aligned)
+#' }
+#'
+#' @import ggplot2
+#' @import ggforce
+#' @export
 polygon_alignment_visual = function(X, target, aligned) {
   library(ggplot2)
   library(ggforce)
@@ -394,3 +466,5 @@ demo = function() {
   debug_print(airplane_X, result);
   polygon_alignment_visual(airplane_X, airplane_Y_raw, result$aligned);
 }
+
+demo();
