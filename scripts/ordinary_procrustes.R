@@ -1,6 +1,57 @@
-# 普通普氏分析（Ordinary Procrustes Analysis）基础实现
-# 输入：X和Y为两个矩阵，行数相同（样本数），列数相同（维度）
-# 输出：对齐后的Y矩阵、旋转矩阵、缩放因子、平移向量和Procrustes统计量
+#' Ordinary Procrustes Analysis (OPA) for Matrix Alignment
+#'
+#' This function performs Ordinary Procrustes Analysis (OPA) to align two matrices by finding the optimal translation, rotation, 
+#' and scaling that minimizes the sum of squared differences between them. It is commonly used in shape analysis, morphometrics, 
+#' and image registration.
+#'
+#' @param X A numeric matrix representing the target/reference matrix. Each row is a sample, and each column is a dimension.
+#' @param Y A numeric matrix representing the source matrix to be aligned to X. Must have the same dimensions as X.
+#' @param scale Logical. If TRUE (default), scaling is applied to Y during alignment. If FALSE, only rotation and translation are used.
+#'
+#' @return A list containing the following components:
+#' \item{Y_aligned}{The aligned version of Y after applying Procrustes transformation.}
+#' \item{rotation}{The rotation matrix (orthogonal) applied to Y.}
+#' \item{angle}{The rotation angle in radians (if applicable).}
+#' \item{scale}{The scaling factor applied to Y.}
+#' \item{translation}{The translation vector applied to Y (centroid of X).}
+#' \item{procrustes_ss}{The Procrustes sum of squared differences between X and the aligned Y.}
+#' \item{correlation}{The correlation-like measure of alignment quality (higher values indicate better alignment).}
+#'
+#' @details
+#' The Procrustes analysis involves three steps:
+#' \enumerate{
+#'   \item **Centering**: Remove the centroids of X and Y by column-wise mean subtraction.
+#'   \item **Scaling and Rotation**: Compute the optimal scaling factor and rotation matrix using singular value decomposition (SVD) of the covariance matrix between X and Y.
+#'   \item **Translation**: Shift the aligned Y to the centroid of X.
+#' }
+#' The function also computes a goodness-of-fit statistic (`correlation`) based on the sum of singular values from the SVD decomposition [1,2](@ref).
+#'
+#' @note
+#' The input matrices X and Y must have the same dimensions. The function uses the Frobenius norm to compute the scaling factor 
+#' when `scale = TRUE`. If the norm of Y is too small, the function will stop with an error. The rotation matrix is computed using 
+#' SVD, ensuring orthogonality [1,5](@ref).
+#'
+#' @examples
+#' # Create two simple 2D point sets
+#' X <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
+#' Y <- matrix(c(1.1, 2.1, 3.1, 4.1, 5.1, 6.1), ncol = 2)
+#' result <- ordinary_procrustes(X, Y)
+#' print(result$correlation) # Alignment quality
+#' plot(result$Y_aligned, col = "red", pch = 19)
+#' points(X, col = "blue", pch = 17)
+#' legend("topleft", legend = c("Aligned Y", "Target X"), col = c("red", "blue"), pch = c(19, 17))
+#'
+#' @references
+#' For theoretical details, see:
+#' \itemize{
+#'   \item Procrustes analysis: https://en.wikipedia.org/wiki/Procrustes_analysis
+#'   \item SVD-based alignment: https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem
+#' }
+#'
+#' @seealso
+#' Related functions: \code{\link[vegan]{procrustes}} (vegan package), \code{\link[shape]{procGPA}} (shape package).
+#'
+#' @export
 ordinary_procrustes <- function(X, Y, scale = TRUE) {
   # 检查输入矩阵维度
   if (nrow(X) != nrow(Y)) {
