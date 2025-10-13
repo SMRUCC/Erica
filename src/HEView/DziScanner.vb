@@ -22,6 +22,7 @@ Public Module DziScanner
             Dim image As Image = Image.FromStream(dir.OpenFile(file, IO.FileMode.Open, IO.FileAccess.Read))
             Dim bitmap As BitmapBuffer = BitmapBuffer.FromImage(image)
 
+            Call bits.Add(bitmap.GetARGBStream)
             Call bitmap.Dispose()
         Next
 
@@ -52,6 +53,7 @@ Public Module DziScanner
         Dim imagefiles As String() = dir.EnumerateFiles("/", "*.jpg", "*.png", "*.jpeg", "*.bmp").ToArray
         Dim d As Integer = imagefiles.Length / 25
         Dim offset As i32 = 0
+        Dim threshold As Double = ostu_factor * globalThreshold(dir, imagefiles)
 
         If d = 0 Then
             d = 1
@@ -65,7 +67,10 @@ Public Module DziScanner
             Dim tip As String = $"global lookups of tile {xy.GetJson} -> (offset:{tile.Left},{tile.Top}, width:{tile.Width} x height:{tile.Height})"
 
             Call globalLookups.AddRange(CellScan _
-                    .CellLookups(grid:=Thresholding.ostuFilter(bitmap, flip:=False, ostu_factor, verbose:=False),
+                    .CellLookups(grid:=Thresholding.ostuFilter(bitmap,
+                                                               threshold:=threshold,
+                                                               flip:=False,
+                                                               verbose:=False),
                                  binary_processing:=False,
                                  offset:=tile.Location))
             Call bitmap.Dispose()
