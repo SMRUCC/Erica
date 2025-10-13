@@ -1,5 +1,6 @@
 ﻿Imports System.Drawing
 Imports System.Runtime.CompilerServices
+Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualBasic.ApplicationServices.Terminal.ProgressBar
 Imports Microsoft.VisualBasic.CommandLine.InteropService.Pipeline
 Imports Microsoft.VisualBasic.Imaging
@@ -11,8 +12,19 @@ Imports Microsoft.VisualBasic.Serialization.JSON
 
 Public Module DziScanner
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="dzi"></param>
+    ''' <param name="level"></param>
+    ''' <param name="dir">A directory path that contains the image files in current <paramref name="level"/>.</param>
+    ''' <param name="ostu_factor"></param>
+    ''' <param name="noise"></param>
+    ''' <param name="moran_knn"></param>
+    ''' <param name="splitBlocks"></param>
+    ''' <returns></returns>
     <Extension>
-    Public Function ScanCells(dzi As DziImage, level As Integer, dir As String,
+    Public Function ScanCells(dzi As DziImage, level As Integer, dir As IFileSystemEnvironment,
                               Optional ostu_factor As Double = 0.7,
                               Optional noise As Double = 0.25,
                               Optional moran_knn As Integer = 32,
@@ -21,7 +33,7 @@ Public Module DziScanner
         Dim bar As Tqdm.ProgressBar = Nothing
         Dim globalLookups As New List(Of CellScan)
         Dim wrap_tqdm As Boolean = App.EnableTqdm
-        Dim imagefiles As String() = dir.ListFiles("*.jpg", "*.png", "*.jpeg", "*.bmp").ToArray
+        Dim imagefiles As String() = dir.EnumerateFiles("/", "*.jpg", "*.png", "*.jpeg", "*.bmp").ToArray
         Dim d As Integer = imagefiles.Length / 25
         Dim offset As i32 = 0
 
@@ -30,7 +42,7 @@ Public Module DziScanner
         End If
 
         For Each file As String In Tqdm.Wrap(imagefiles, bar:=bar, wrap_console:=wrap_tqdm)
-            Dim image As Image = Image.FromFile(file)
+            Dim image As Image = Image.FromStream(dir.OpenFile(file, IO.FileMode.Open, IO.FileAccess.Read))
             Dim bitmap As BitmapBuffer = BitmapBuffer.FromImage(image)
             Dim xy = file.BaseName.Split("_"c).AsInteger
             Dim tile As Rectangle = dzi.DecodeTile(level, xy(0), xy(1))

@@ -1,6 +1,7 @@
 ﻿Imports System.Drawing
 Imports System.IO
 Imports HEView
+Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Data.ChartPlots
 Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas
@@ -466,7 +467,7 @@ Public Module singleCells
 
     <ExportAPI("scan.dzi_cells")>
     <RApiReturn(GetType(CellScan))>
-    Public Function scanDziCells(dzi As DziImage, level As Integer, dir As String,
+    Public Function scanDziCells(dzi As DziImage, level As Integer, dir As IFileSystemEnvironment,
                                  Optional ostu_factor As Double = 0.7,
                                  Optional noise As Double = 0.25,
                                  Optional moran_knn As Integer = 32,
