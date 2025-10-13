@@ -12,5 +12,6 @@ single cell data toolkit
 + [spatial_annotations](singleCell/spatial_annotations.1) Create spatial annotations data set for each spot data
 + [HE_cells](singleCell/HE_cells.1) scan the cells from a given HE image
 + [read.dziImage](singleCell/read.dziImage.1) read the deepzoom image metadata xml file
++ [parse_dziImage](singleCell/parse_dziImage.1) Parse the dzi image metadata from a given xml document data
 + [scan.dzi_cells](singleCell/scan.dzi_cells.1) 
 + [write.cells_bson](singleCell/write.cells_bson.1) 

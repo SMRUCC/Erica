@@ -61,6 +61,13 @@ declare namespace singleCell {
    */
    function HTS_matrix(h5ad: any, env?: object): object;
    /**
+    * Parse the dzi image metadata from a given xml document data
+    * 
+    * 
+     * @param xml -
+   */
+   function parse_dziImage(xml: string): object;
+   /**
     * Extract the PCA matrix from h5ad
     * 
     * 
@@ -100,12 +107,25 @@ declare namespace singleCell {
    }
    module scan {
       /**
-        * @param ostu_factor default value Is ``0.7``.
-        * @param noise default value Is ``0.25``.
-        * @param moran_knn default value Is ``32``.
-        * @param split_blocks default value Is ``false``.
+       * 
+       * 
+        * @param dzi -
+        * @param level usually be the max zoom level
+        * @param dir A directory path that contains the image files in current **`level`**.
+        * @param ostu_factor -
+        * 
+        * + default value Is ``0.7``.
+        * @param noise -
+        * 
+        * + default value Is ``0.25``.
+        * @param moran_knn -
+        * 
+        * + default value Is ``32``.
+        * @param split_blocks -
+        * 
+        * + default value Is ``false``.
       */
-      function dzi_cells(dzi: object, level: object, dir: string, ostu_factor?: number, noise?: number, moran_knn?: object, split_blocks?: boolean): object;
+      function dzi_cells(dzi: object, level: object, dir: object, ostu_factor?: number, noise?: number, moran_knn?: object, split_blocks?: boolean): object;
    }
    /**
     * Create spatial annotations data set for each spot data

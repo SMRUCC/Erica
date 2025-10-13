@@ -5,11 +5,35 @@ scan.dzi_cells \-
 .SH SYNOPSIS
 \fIscan.dzi_cells(\fBdzi\fR as <generic> DziImage, 
 \fBlevel\fR as integer, 
-\fBdir\fR as string, 
+\fBdir\fR as <generic> IFileSystemEnvironment, 
 \fBostu_factor\fR as double = 0.7, 
 \fBnoise\fR as double = 0.25, 
 \fBmoran_knn\fR as integer = 32, 
 \fBsplit_blocks\fR as boolean = FALSE);\fR
+.SH OPTIONS
+.PP
+\fBdzi\fB \fR\- -. 
+.PP
+.PP
+\fBlevel\fB \fR\- usually be the max zoom level. 
+.PP
+.PP
+\fBdir\fB \fR\- 
+ A directory path that contains the image files in current **`level`**.
+. 
+.PP
+.PP
+\fBostu_factor\fB \fR\- -. 
+.PP
+.PP
+\fBnoise\fB \fR\- -. 
+.PP
+.PP
+\fBmoran_knn\fB \fR\- -. 
+.PP
+.PP
+\fBsplit_blocks\fB \fR\- -. 
+.PP
 .SH SEE ALSO
 singleCell
 .SH FILES
