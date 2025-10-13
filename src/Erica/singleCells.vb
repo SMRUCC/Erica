@@ -466,6 +466,16 @@ Public Module singleCells
     End Function
 
     ''' <summary>
+    ''' Parse the dzi image metadata from a given xml document data
+    ''' </summary>
+    ''' <param name="xml"></param>
+    ''' <returns></returns>
+    <ExportAPI("parse_dziImage")>
+    Public Function parseDzi(xml As String) As DziImage
+        Return xml.LoadFromXml(Of DziImage)
+    End Function
+
+    ''' <summary>
     ''' 
     ''' </summary>
     ''' <param name="dzi"></param>
