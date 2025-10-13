@@ -495,12 +495,14 @@ Public Module singleCells
                                  Optional ostu_factor As Double = 0.7,
                                  Optional noise As Double = 0.25,
                                  Optional moran_knn As Integer = 32,
+                                 Optional flip As Boolean = False,
                                  Optional split_blocks As Boolean = False) As Object
 
         Return dzi.ScanCells(level, dir, ostu_factor,
                              noise:=noise,
                              moran_knn:=moran_knn,
-                             splitBlocks:=split_blocks) _
+                             splitBlocks:=split_blocks,
+                             flip:=flip) _
                   .ToArray
     End Function
 

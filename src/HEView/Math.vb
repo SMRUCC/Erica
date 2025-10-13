@@ -40,7 +40,6 @@ Public Module Math
         For Each i As Integer In TqdmWrapper.Range(0, all.Length, wrap_console:=App.EnableTqdm)
             Dim target As CellScan = all(i)
             Dim nearby = view.SpatialLookup(target, medianR) _
-                .Where(Function(a) target.DistanceTo(a) < cutoff) _
                 .OrderBy(Function(a) target.DistanceTo(a)) _
                 .Take(knn) _
                 .ToArray

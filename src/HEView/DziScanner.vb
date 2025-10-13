@@ -45,7 +45,8 @@ Public Module DziScanner
                               Optional ostu_factor As Double = 0.7,
                               Optional noise As Double = 0.25,
                               Optional moran_knn As Integer = 32,
-                              Optional splitBlocks As Boolean = True) As IEnumerable(Of CellScan)
+                              Optional splitBlocks As Boolean = True,
+                              Optional flip As Boolean = False) As IEnumerable(Of CellScan)
 
         Dim bar As Tqdm.ProgressBar = Nothing
         Dim globalLookups As New List(Of CellScan)
@@ -69,7 +70,7 @@ Public Module DziScanner
             Call globalLookups.AddRange(CellScan _
                     .CellLookups(grid:=Thresholding.ostuFilter(bitmap,
                                                                threshold:=threshold,
-                                                               flip:=False,
+                                                               flip:=flip,
                                                                verbose:=False),
                                  binary_processing:=False,
                                  offset:=tile.Location))
