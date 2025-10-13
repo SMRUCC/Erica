@@ -14,7 +14,7 @@ dzi = parse_dziImage(pack |> getText(dzi));
 let images = dir.open(`/${dir_files}/15/`, fs = pack);
 
 let cells = dzi |> scan.dzi_cells(level =15, dir =images,
-                                  ostu_factor  = 1.125,
+                                  ostu_factor  = 0.85,
                                 noise  = 0.5,
                                 moran_knn = 64);
 

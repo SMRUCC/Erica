@@ -9,6 +9,7 @@ Imports Microsoft.VisualBasic.Imaging.Physics
 Imports Microsoft.VisualBasic.Math
 Imports Microsoft.VisualBasic.Math.Distributions
 Imports Microsoft.VisualBasic.Math.Quantile
+Imports Microsoft.VisualBasic.Math.Statistics.Linq
 Imports std = System.Math
 
 Public Module Math
@@ -23,16 +24,21 @@ Public Module Math
             Return all
         End If
 
-        Dim averageR As Double = Aggregate cell As CellScan
+        ' median of the cell radius
+        Dim medianR As Double = (From cell As CellScan
                                  In all
-                                 Into Average((cell.width + cell.height) / 2)
-        Dim view As Grid(Of CellScan()) = all.EncodeGrid(radius:=averageR)
+                                 Select ((cell.width + cell.height) / 2)).Median
+        If medianR < 5 Then
+            medianR = 5
+        End If
+
+        Dim view As Grid(Of CellScan()) = all.EncodeGrid(radius:=medianR)
 
         Call "evaluate the cells population moran-I".info
 
         For Each i As Integer In TqdmWrapper.Range(0, all.Length, wrap_console:=App.EnableTqdm)
             Dim target = all(i)
-            Dim nearby = view.SpatialLookup(target, averageR) _
+            Dim nearby = view.SpatialLookup(target, medianR) _
                 .OrderBy(Function(a) target.DistanceTo(a)) _
                 .Take(knn) _
                 .ToArray
