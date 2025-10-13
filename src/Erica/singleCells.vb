@@ -101,6 +101,7 @@ Public Module singleCells
         Call df.add("r1", From cell As CellScan In cells Select cell.width)
         Call df.add("r2", From cell As CellScan In cells Select cell.height)
         Call df.add("density", From cell As CellScan In cells Select cell.density)
+        Call df.add("mean_distance", From cell As CellScan In cells Select cell.average_dist)
         Call df.add("moran-I", From cell As CellScan In cells Select cell.moranI)
         Call df.add("p-value", From cell As CellScan In cells Select cell.pvalue)
 
