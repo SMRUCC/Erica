@@ -465,6 +465,19 @@ Public Module singleCells
         Return file.LoadXml(Of DziImage)
     End Function
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="dzi"></param>
+    ''' <param name="level">usually be the max zoom level</param>
+    ''' <param name="dir">
+    ''' A directory path that contains the image files in current <paramref name="level"/>.
+    ''' </param>
+    ''' <param name="ostu_factor"></param>
+    ''' <param name="noise"></param>
+    ''' <param name="moran_knn"></param>
+    ''' <param name="split_blocks"></param>
+    ''' <returns></returns>
     <ExportAPI("scan.dzi_cells")>
     <RApiReturn(GetType(CellScan))>
     Public Function scanDziCells(dzi As DziImage, level As Integer, dir As IFileSystemEnvironment,
