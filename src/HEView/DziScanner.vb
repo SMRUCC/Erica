@@ -3,6 +3,7 @@ Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualBasic.ApplicationServices.Terminal.ProgressBar
 Imports Microsoft.VisualBasic.CommandLine.InteropService.Pipeline
+Imports Microsoft.VisualBasic.ComponentModel.Collection.Generic
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.BitmapImage
 Imports Microsoft.VisualBasic.Imaging.Filters
@@ -11,6 +12,21 @@ Imports Microsoft.VisualBasic.Scripting.Runtime
 Imports Microsoft.VisualBasic.Serialization.JSON
 
 Public Module DziScanner
+
+    Private Function globalThreshold(dir As IFileSystemEnvironment, imagefiles As String()) As Integer
+        Dim bits As New BucketSet(Of UInteger)
+        Dim bar As Tqdm.ProgressBar = Nothing
+        Dim wrap_tqdm As Boolean = App.EnableTqdm
+
+        For Each file As String In Tqdm.Wrap(imagefiles, bar:=bar, wrap_console:=wrap_tqdm)
+            Dim image As Image = Image.FromStream(dir.OpenFile(file, IO.FileMode.Open, IO.FileAccess.Read))
+            Dim bitmap As BitmapBuffer = BitmapBuffer.FromImage(image)
+
+            Call bitmap.Dispose()
+        Next
+
+        Return otsuThreshold(bits)
+    End Function
 
     ''' <summary>
     ''' 
@@ -52,6 +68,7 @@ Public Module DziScanner
                     .CellLookups(grid:=Thresholding.ostuFilter(bitmap, flip:=False, ostu_factor, verbose:=False),
                                  binary_processing:=False,
                                  offset:=tile.Location))
+            Call bitmap.Dispose()
 
             If Not wrap_tqdm Then
                 If ++offset Mod d = 0 Then
