@@ -4,7 +4,7 @@ require(HDS);
 imports "singleCell" from "Erica";
 imports "machineVision" from "signalKit";
 
-let scan_pack = "C:\Users\Administrator\Desktop\MLKL-5\HE.hds";
+let scan_pack = "C:\Users\Administrator\Desktop\MLKL-5\CD31+PAS.hds";
 let pack = read_stream(scan_pack);
 let dzi = list.files(pack, pattern = "*.dzi", recursive =FALSE);
 let dir_files = `${basename(dzi)}_files`;
