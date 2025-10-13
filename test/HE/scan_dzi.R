@@ -1,12 +1,21 @@
 require(Erica);
+require(HDS);
 
 imports "singleCell" from "Erica";
 imports "machineVision" from "signalKit";
 
-let dzi = read.dziImage("F:\cccccc\de1f4295b57d237928d08bd3c99c8fc2_files\de1f4295b57d237928d08bd3c99c8fc2.xml");
-let cells = dzi |> scan.dzi_cells(level =15, dir ="F:\cccccc\de1f4295b57d237928d08bd3c99c8fc2_files\15",
+let scan_pack = "C:\Users\Administrator\Desktop\MLKL-5\HE.hds";
+let pack = read_stream(scan_pack);
+let dzi = list.files(pack, pattern = "*.dzi", recursive =FALSE);
+let dir_files = `${basename(dzi)}_files`;
+
+dzi = parse_dziImage(pack |> getText(dzi));
+
+let images = dir.open(`/${dir_files}/15/`, fs = pack);
+
+let cells = dzi |> scan.dzi_cells(level =15, dir =images,
                                   ostu_factor  = 1.125,
                                 noise  = 0.5,
                                 moran_knn = 64);
 
-write.csv(as.data.frame(cells), file = "F:\cccccc\de1f4295b57d237928d08bd3c99c8fc2_files\cells.csv");              
+write.csv(as.data.frame(cells), file = `${dirname(scan_pack)}/${basename(scan_pack)}_cells.csv`);              
