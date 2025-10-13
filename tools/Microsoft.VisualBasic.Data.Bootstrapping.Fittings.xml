@@ -897,24 +897,24 @@ Microsoft.VisualBasic.Data.Bootstrapping.Fittings
  The non-linear function result output 
  </summary>
 </member>
-<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.Instance">
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.Logistic.Instance">
  <summary>
  classify training model
  </summary>
 </member>
-<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.Instance.label">
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.Logistic.Instance.label">
  <summary>
  the real label data
  </summary>
  <returns></returns>
 </member>
-<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.Instance.x">
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.Logistic.Instance.x">
  <summary>
  the object properties vector
  </summary>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.Instance.Load``1(System.Collections.Generic.IEnumerable{``0},System.String[],System.String)">
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.Logistic.Instance.Load``1(System.Collections.Generic.IEnumerable{``0},System.String[],System.String)">
  <summary>
  load raw dataset helper function
  </summary>
@@ -924,7 +924,7 @@ Microsoft.VisualBasic.Data.Bootstrapping.Fittings
  <param name="label"></param>
  <returns></returns>
 </member>
-<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.Logistic">
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.Logistic.Logistic">
  <summary>
  This method uses Gradient descent algorithm. It uses number of small
  steps (iterations) And with each step use New theta values which
@@ -932,22 +932,22 @@ Microsoft.VisualBasic.Data.Bootstrapping.Fittings
  local minima (minimum cost function).
  </summary>
 </member>
-<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.Logistic.ALPHA">
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.Logistic.Logistic.ALPHA">
  <summary>
  the learning rate 
  </summary>
 </member>
-<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.Logistic.ITERATIONS">
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.Logistic.Logistic.ITERATIONS">
  <summary>
  the number of iterations 
  </summary>
 </member>
-<member name="F:Microsoft.VisualBasic.Data.Bootstrapping.Logistic.theta">
+<member name="F:Microsoft.VisualBasic.Data.Bootstrapping.Logistic.Logistic.theta">
  <summary>
  the weight to learn 
  </summary>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.Logistic.sigmoid(Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.NumericMatrix)">
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.Logistic.Logistic.sigmoid(Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.NumericMatrix)">
  <summary>
  Sigmoid function. Formula: g = 1 ./ (1 + (exp(-1 .* z)));
  </summary>
