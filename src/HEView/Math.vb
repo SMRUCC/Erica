@@ -38,7 +38,7 @@ Public Module Math
         Call "evaluate the cells population moran-I".info
 
         For Each i As Integer In TqdmWrapper.Range(0, all.Length, wrap_console:=App.EnableTqdm)
-            Dim target = all(i)
+            Dim target As CellScan = all(i)
             Dim nearby = view.SpatialLookup(target, medianR) _
                 .Where(Function(a) target.DistanceTo(a) < cutoff) _
                 .OrderBy(Function(a) target.DistanceTo(a)) _
