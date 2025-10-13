@@ -121,11 +121,13 @@ declare namespace singleCell {
         * @param moran_knn -
         * 
         * + default value Is ``32``.
+        * @param flip 
+        * + default value Is ``false``.
         * @param split_blocks -
         * 
         * + default value Is ``false``.
       */
-      function dzi_cells(dzi: object, level: object, dir: object, ostu_factor?: number, noise?: number, moran_knn?: object, split_blocks?: boolean): object;
+      function dzi_cells(dzi: object, level: object, dir: object, ostu_factor?: number, noise?: number, moran_knn?: object, flip?: boolean, split_blocks?: boolean): object;
    }
    /**
     * Create spatial annotations data set for each spot data
