@@ -27,6 +27,7 @@ Public Class CellScan : Implements Layout2D
     Public Property width As Double
     Public Property height As Double
     Public Property density As Double
+    Public Property average_dist As Double
 
     ''' <summary>
     ''' 

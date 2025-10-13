@@ -26,22 +26,25 @@ Public Module Math
 
         ' median of the cell radius
         Dim medianR As Double = (From cell As CellScan
-                                 In all
+                                 In all.AsParallel
                                  Select ((cell.width + cell.height) / 2)).Median
         If medianR < 5 Then
             medianR = 5
         End If
 
         Dim view As Grid(Of CellScan()) = all.EncodeGrid(radius:=medianR)
+        Dim cutoff As Double = medianR * 2
 
         Call "evaluate the cells population moran-I".info
 
         For Each i As Integer In TqdmWrapper.Range(0, all.Length, wrap_console:=App.EnableTqdm)
             Dim target = all(i)
             Dim nearby = view.SpatialLookup(target, medianR) _
+                .Where(Function(a) target.DistanceTo(a) < cutoff) _
                 .OrderBy(Function(a) target.DistanceTo(a)) _
                 .Take(knn) _
                 .ToArray
+            Dim averageDist As Double = If(nearby.Length = 0, 0, nearby.Average(Function(a) target.DistanceTo(a)))
             Dim data = nearby.Select(Function(a) a.ratio).ToArray
             Dim c1 = nearby.X
             Dim c2 = nearby.Y
@@ -63,6 +66,7 @@ Public Module Math
                 pv = 1
             End If
 
+            target.average_dist = averageDist
             target.density = data.Length / knn
             target.moranI = moranVal.observed
             target.pvalue = pv
