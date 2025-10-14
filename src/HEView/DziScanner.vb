@@ -80,7 +80,7 @@ Public Module DziScanner
 
         Erase imagefiles
 
-        ' Call b.DumpExport("Z:/IHC1/b/")
+        Call b.DumpExport("Z:/IHC1/b/")
         ' Call r.DumpExport("Z:/IHC1/r/")
         ' Call g.DumpExport("Z:/IHC1/g/")
 
@@ -156,6 +156,8 @@ Public Module DziScanner
         If d = 0 Then
             d = 1
         End If
+
+        Call $"global threshold for ostu filter is {threshold}.".debug
 
         For Each file As DziImageBuffer In Tqdm.Wrap(imagefiles, bar:=bar, wrap_console:=wrap_tqdm)
             Dim bitmap As BitmapBuffer = file.bitmap

@@ -32,10 +32,12 @@ Public Module Math
             medianR = 5
         End If
 
+        Call $"create grid for spatial search with grid size(radius)={medianR}".info
+
         Dim view As Grid(Of CellScan()) = all.EncodeGrid(radius:=medianR)
         Dim cutoff As Double = medianR * 2
 
-        Call "evaluate the cells population moran-I".info
+        Call $"evaluate the cells population moran-I, with knn={knn} nearby selection".info
 
         For Each i As Integer In TqdmWrapper.Range(0, all.Length, wrap_console:=App.EnableTqdm)
             Dim target As CellScan = all(i)
@@ -106,6 +108,8 @@ Public Module Math
         Dim all As CellScan() = cells.ToArray
         Dim q As QuantileEstimationGK = all.Select(Function(c) c.points).GKQuantile
         Dim filter As Integer = CInt(q.Query(noise))
+
+        Call $"cell shape which has its shape points less than {filter}(quantile={noise}) will be treated as noise data.".debug
 
         all = all _
             .Where(Function(cell) cell.points > filter) _
