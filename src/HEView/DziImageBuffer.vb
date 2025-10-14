@@ -3,6 +3,7 @@ Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualBasic.ApplicationServices.Terminal.ProgressBar.Tqdm
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.BitmapImage
+Imports Microsoft.VisualBasic.Imaging.Filters
 Imports Microsoft.VisualBasic.Scripting.Runtime
 
 Public Class DziImageBuffer
@@ -49,6 +50,24 @@ Public Class DziImageBuffer
 
             Yield New DziImageBuffer(tile, xy, bitmap)
         Next
+    End Function
+
+    Public Shared Function GlobalScales(tiles As DziImageBuffer()) As DziImageBuffer()
+        Dim tileList As BitmapBuffer() = New BitmapBuffer(tiles.Length - 1) {}
+
+        For i As Integer = 0 To tileList.Length - 1
+            tileList(i) = tiles(i).bitmap
+        Next
+
+        tileList = tileList.GlobalTileScales.ToArray
+
+        For i As Integer = 0 To tileList.Length - 1
+            With tiles(i)
+                tiles(i) = New DziImageBuffer(.tile, .xy, tileList(i))
+            End With
+        Next
+
+        Return tiles
     End Function
 
 End Class

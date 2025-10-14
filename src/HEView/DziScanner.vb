@@ -80,6 +80,10 @@ Public Module DziScanner
 
         Erase imagefiles
 
+        r = DziImageBuffer.GlobalScales(r)
+        g = DziImageBuffer.GlobalScales(g)
+        b = DziImageBuffer.GlobalScales(b)
+
         ' Call b.DumpExport("Z:/IHC1/b/")
         ' Call r.DumpExport("Z:/IHC1/r/")
         ' Call g.DumpExport("Z:/IHC1/g/")
