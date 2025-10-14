@@ -1,6 +1,6 @@
 require(ggplot);
 
-let cells_file = "C:\Users\Administrator\Desktop\MLKL-5\4 color (IHC1)_cells.csv";
+let cells_file = "C:\Users\Administrator\Desktop\MLKL-5\CD31+PAS_cells.csv";
 let cells = read.csv(cells_file, row.names = 1, check.names = FALSE);
 
 # cells = cells[as.numeric(cells$mean_distance) > 1, ];

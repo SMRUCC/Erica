@@ -71,7 +71,7 @@ Public Module DziScanner
 
         For Each i As Integer In TqdmWrapper.Range(0, imagefiles.Length, wrap_console:=App.EnableTqdm)
             Dim image As DziImageBuffer = imagefiles(i)
-            Dim rgb = image.bitmap.RGB
+            Dim rgb = image.bitmap.RGB(flip:=True)
 
             r(i) = New DziImageBuffer(image.tile, image.xy, rgb.R)
             g(i) = New DziImageBuffer(image.tile, image.xy, rgb.G)
@@ -79,6 +79,10 @@ Public Module DziScanner
         Next
 
         Erase imagefiles
+
+        For Each item In r
+            Call item.bitmap.Save($"Z:/test/{item.xy.JoinBy("-")}.bmp")
+        Next
 
         Call "scan cells in red channel...".info
         Dim r_cells As CellScan() = r.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
