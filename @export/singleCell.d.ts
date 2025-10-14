@@ -126,8 +126,10 @@ declare namespace singleCell {
         * @param split_blocks -
         * 
         * + default value Is ``false``.
+        * @param split_IHC1_channels 
+        * + default value Is ``false``.
       */
-      function dzi_cells(dzi: object, level: object, dir: object, ostu_factor?: number, noise?: number, moran_knn?: object, flip?: boolean, split_blocks?: boolean): object;
+      function dzi_cells(dzi: object, level: object, dir: object, ostu_factor?: number, noise?: number, moran_knn?: object, flip?: boolean, split_blocks?: boolean, split_IHC1_channels?: boolean): object;
    }
    /**
     * Create spatial annotations data set for each spot data
