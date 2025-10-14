@@ -496,7 +496,22 @@ Public Module singleCells
                                  Optional noise As Double = 0.25,
                                  Optional moran_knn As Integer = 32,
                                  Optional flip As Boolean = False,
-                                 Optional split_blocks As Boolean = False) As Object
+                                 Optional split_blocks As Boolean = False,
+                                 Optional split_IHC1_channels As Boolean = False) As Object
+
+        If split_IHC1_channels Then
+            Dim rgb As list = list.empty
+            Dim channels = dzi.ScanIHC1Cells(level, dir,
+                                             ostu_factor:=ostu_factor,
+                                             noise:=noise,
+                                             moran_knn:=moran_knn,
+                                             splitBlocks:=split_blocks)
+            Call rgb.add("r", channels.r)
+            Call rgb.add("g", channels.g)
+            Call rgb.add("b", channels.b)
+
+            Return rgb
+        End If
 
         Return dzi.ScanCells(level, dir, ostu_factor,
                              noise:=noise,
