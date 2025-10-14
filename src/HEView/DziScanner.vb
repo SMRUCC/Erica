@@ -30,6 +30,26 @@ Public Module DziScanner
     End Function
 
     ''' <summary>
+    ''' scan with RGB colors
+    ''' </summary>
+    ''' <param name="dzi"></param>
+    ''' <param name="level"></param>
+    ''' <param name="dir"></param>
+    ''' <param name="ostu_factor"></param>
+    ''' <param name="noise"></param>
+    ''' <param name="moran_knn"></param>
+    ''' <param name="splitBlocks"></param>
+    ''' <returns></returns>
+    <Extension>
+    Public Function ScanIHC1Cells(dzi As DziImage, level As Integer, dir As IFileSystemEnvironment,
+                                  Optional ostu_factor As Double = 0.7,
+                                  Optional noise As Double = 0.25,
+                                  Optional moran_knn As Integer = 32,
+                                  Optional splitBlocks As Boolean = True) As IEnumerable(Of CellScan)
+
+    End Function
+
+    ''' <summary>
     ''' 
     ''' </summary>
     ''' <param name="dzi"></param>
