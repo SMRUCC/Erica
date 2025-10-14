@@ -2,14 +2,25 @@
 Imports System.Xml.Serialization
 Imports std = System.Math
 
+''' <summary>
+''' metadata of the dzi image data
+''' </summary>
 <XmlType("Image", [Namespace]:="http://schemas.microsoft.com/deepzoom/2008")>
 <XmlRoot("Image", [Namespace]:="http://schemas.microsoft.com/deepzoom/2008")>
 Public Class DziImage
 
+    ''' <summary>
+    ''' the tile image file format
+    ''' </summary>
+    ''' <returns></returns>
     <XmlAttribute> Public Property Format As String
     <XmlAttribute> Public Property Overlap As Integer
     <XmlAttribute> Public Property TileSize As Integer
 
+    ''' <summary>
+    ''' the raw input image dimension size
+    ''' </summary>
+    ''' <returns></returns>
     Public Property Size As SizeInt
 
     Public Class SizeInt

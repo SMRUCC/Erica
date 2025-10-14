@@ -99,7 +99,7 @@ Public Module Math
     ''' 
     ''' </summary>
     ''' <param name="cells"></param>
-    ''' <param name="noise">quantile level for filter the polygon shape points. all cell shapes which has shape points less than this quantile level will be treated as noise</param>
+    ''' <param name="noise">quantile level for filter the polygon shape points. all cell shapes which has its shape points less than this quantile level will be treated as noise</param>
     ''' <returns></returns>
     <Extension>
     Public Function FilterNoise(cells As IEnumerable(Of CellScan), Optional noise As Double = 0.25) As CellScan()

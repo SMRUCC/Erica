@@ -477,18 +477,24 @@ Public Module singleCells
     End Function
 
     ''' <summary>
-    ''' 
+    ''' Scan all single cell shapes from the given dzi slide data
     ''' </summary>
-    ''' <param name="dzi"></param>
+    ''' <param name="dzi">metadata of the dzi image</param>
     ''' <param name="level">usually be the max zoom level</param>
     ''' <param name="dir">
     ''' A directory path that contains the image files in current <paramref name="level"/>.
     ''' </param>
     ''' <param name="ostu_factor"></param>
-    ''' <param name="noise"></param>
+    ''' <param name="noise">
+    ''' quantile level for filter the polygon shape points. all cell shapes which has its
+    ''' shape points less than this quantile level will be treated as noise
+    ''' </param>
     ''' <param name="moran_knn"></param>
     ''' <param name="split_blocks"></param>
-    ''' <returns></returns>
+    ''' <returns>
+    ''' if scanning of the IHC1 channels, then this function will returns a tuple list that contains
+    ''' the rgb channels single cell detections result of the IHC1 image.
+    ''' </returns>
     <ExportAPI("scan.dzi_cells")>
     <RApiReturn(GetType(CellScan))>
     Public Function scanDziCells(dzi As DziImage, level As Integer, dir As IFileSystemEnvironment,
