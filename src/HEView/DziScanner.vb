@@ -81,17 +81,17 @@ Public Module DziScanner
         Erase imagefiles
 
         Call "scan cells in red channel...".info
-        Dim r_cells As CellScan() = r.ScanBuffer(ostu_factor:=ostu_factor, flip:=True, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
+        Dim r_cells As CellScan() = r.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
 
         Erase r
 
         Call "scan cells in green channel...".info
-        Dim g_cells As CellScan() = g.ScanBuffer(ostu_factor:=ostu_factor, flip:=True, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
+        Dim g_cells As CellScan() = g.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
 
         Erase g
 
         Call "scan cells in blue channel...".info
-        Dim b_cells As CellScan() = b.ScanBuffer(ostu_factor:=ostu_factor, flip:=True, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
+        Dim b_cells As CellScan() = b.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
 
         Erase b
 
@@ -150,7 +150,7 @@ Public Module DziScanner
             Dim bitmap As BitmapBuffer = file.bitmap
             Dim xy As Integer() = file.xy
             Dim tile As Rectangle = file.tile
-            Dim tip As String = $"global lookups of tile {xy.GetJson} -> (offset:{tile.Left},{tile.Top}, width:{tile.Width} x height:{tile.Height})"
+            Dim tip As String = $"global lookups tile {xy.GetJson} -> (offset:{tile.Left},{tile.Top}, width:{tile.Width} x height:{tile.Height}) found {globalLookups.Count} single cells"
 
             Call globalLookups.AddRange(CellScan _
                     .CellLookups(grid:=Thresholding.ostuFilter(bitmap,
