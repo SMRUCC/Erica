@@ -80,6 +80,10 @@ Public Module DziScanner
 
         Erase imagefiles
 
+        Call r.DumpExport("Z:/IHC1/r/")
+        Call g.DumpExport("Z:/IHC1/g/")
+        Call b.DumpExport("Z:/IHC1/b/")
+
         Call "scan cells in red channel...".info
         Dim r_cells As CellScan() = r.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
 
@@ -97,6 +101,13 @@ Public Module DziScanner
 
         Return (r_cells, g_cells, b_cells)
     End Function
+
+    <Extension>
+    Public Sub DumpExport(images As IEnumerable(Of DziImageBuffer), outputdir As String)
+        For Each img As DziImageBuffer In images
+            Call img.bitmap.Save($"{outputdir}/{img.xy.JoinBy("_")}.bmp")
+        Next
+    End Sub
 
     ''' <summary>
     ''' 
