@@ -16,7 +16,7 @@ let images = dir.open(`/${dir_files}/${level}/`, fs = pack);
 
 let cells = dzi |> scan.dzi_cells(level =level, dir =images,
                                   ostu_factor  = 0.85,
-                                noise  = 0.5,
+                                noise  = 0.2,
                                 flip = FALSE,
                                 moran_knn = 256);
 
