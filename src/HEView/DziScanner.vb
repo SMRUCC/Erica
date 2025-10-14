@@ -84,9 +84,9 @@ Public Module DziScanner
         g = DziImageBuffer.GlobalScales(g)
         b = DziImageBuffer.GlobalScales(b)
 
-        ' Call b.DumpExport("Z:/IHC1/b/")
-        ' Call r.DumpExport("Z:/IHC1/r/")
-        ' Call g.DumpExport("Z:/IHC1/g/")
+        Call b.DumpExport("K:/IHC1/b/")
+        Call r.DumpExport("K:/IHC1/r/")
+        Call g.DumpExport("K:/IHC1/g/")
 
         Call "scan cells in red channel...".info
         Dim r_cells As CellScan() = r.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
