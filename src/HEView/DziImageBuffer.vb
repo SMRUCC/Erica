@@ -1,5 +1,6 @@
 ﻿Imports System.Drawing
 Imports Microsoft.VisualBasic.ApplicationServices
+Imports Microsoft.VisualBasic.ApplicationServices.Terminal.ProgressBar.Tqdm
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.BitmapImage
 Imports Microsoft.VisualBasic.Scripting.Runtime
@@ -26,7 +27,9 @@ Public Class DziImageBuffer
 
         Dim imagefiles As String() = dir.EnumerateFiles("/", "*.jpg", "*.png", "*.jpeg", "*.bmp").ToArray
 
-        For Each file As String In imagefiles
+        Call $"load image buffers from dzi zoom level: {level}".info
+
+        For Each file As String In TqdmWrapper.Wrap(imagefiles, wrap_console:=App.EnableTqdm)
             Dim image As Image = Image.FromStream(dir.OpenFile(file, IO.FileMode.Open, IO.FileAccess.Read))
             Dim bitmap As BitmapBuffer = BitmapBuffer.FromImage(image)
             Dim xy = file.BaseName.Split("_"c).AsInteger
