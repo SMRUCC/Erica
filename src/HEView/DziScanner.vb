@@ -78,9 +78,22 @@ Public Module DziScanner
             b(i) = New DziImageBuffer(image.tile, image.xy, rgb.B)
         Next
 
+        Erase imagefiles
+
+        Call "scan cells in red channel...".info
         Dim r_cells As CellScan() = r.ScanBuffer(ostu_factor:=ostu_factor, flip:=True, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
+
+        Erase r
+
+        Call "scan cells in green channel...".info
         Dim g_cells As CellScan() = g.ScanBuffer(ostu_factor:=ostu_factor, flip:=True, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
+
+        Erase g
+
+        Call "scan cells in blue channel...".info
         Dim b_cells As CellScan() = b.ScanBuffer(ostu_factor:=ostu_factor, flip:=True, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
+
+        Erase b
 
         Return (r_cells, g_cells, b_cells)
     End Function
@@ -115,7 +128,7 @@ Public Module DziScanner
     End Function
 
     <Extension>
-    Private Function ScanBuffer(imagefiles As DziImageBuffer(),
+    Private Function ScanBuffer(ByRef imagefiles As DziImageBuffer(),
                                 ostu_factor As Double,
                                 flip As Boolean,
                                 splitBlocks As Integer,
