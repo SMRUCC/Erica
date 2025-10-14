@@ -4,10 +4,10 @@ require(filter);
 imports "singleCell" from "Erica";
 imports "machineVision" from "signalKit";
 
-let snapshot = readImage(relative_work("100_244.bmp")) |> filter::adjust_contrast(100);
+let snapshot = readImage(relative_work("100_244.bmp")) |> filter::adjust_contrast(-10);
 let bin = machineVision::ostu(snapshot, flip = FALSE,
                             factor =0.8);
-                            
+
 print(snapshot);
 bitmap(snapshot, file = relative_work("cells_grayscale3.bmp"));
 

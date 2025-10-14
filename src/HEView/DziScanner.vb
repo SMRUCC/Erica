@@ -80,7 +80,7 @@ Public Module DziScanner
 
         Erase imagefiles
 
-        Call b.DumpExport("Z:/IHC1/b/")
+        ' Call b.DumpExport("Z:/IHC1/b/")
         ' Call r.DumpExport("Z:/IHC1/r/")
         ' Call g.DumpExport("Z:/IHC1/g/")
 
