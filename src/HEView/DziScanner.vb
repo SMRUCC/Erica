@@ -2,6 +2,7 @@
 Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualBasic.ApplicationServices.Terminal.ProgressBar
+Imports Microsoft.VisualBasic.ApplicationServices.Terminal.ProgressBar.Tqdm
 Imports Microsoft.VisualBasic.CommandLine.InteropService.Pipeline
 Imports Microsoft.VisualBasic.ComponentModel.Collection.Generic
 Imports Microsoft.VisualBasic.Imaging.BitmapImage
@@ -66,7 +67,9 @@ Public Module DziScanner
         Dim g As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
         Dim b As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
 
-        For i As Integer = 0 To imagefiles.Length - 1
+        Call "split ICH1 rgb channels...".info
+
+        For Each i As Integer In TqdmWrapper.Range(0, imagefiles.Length, wrap_console:=App.EnableTqdm)
             Dim image As DziImageBuffer = imagefiles(i)
             Dim rgb = image.bitmap.RGB
 
