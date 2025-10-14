@@ -107,15 +107,17 @@ declare namespace singleCell {
    }
    module scan {
       /**
+       * Scan all single cell shapes from the given dzi slide data
        * 
        * 
-        * @param dzi -
+        * @param dzi metadata of the dzi image
         * @param level usually be the max zoom level
         * @param dir A directory path that contains the image files in current **`level`**.
         * @param ostu_factor -
         * 
         * + default value Is ``0.7``.
-        * @param noise -
+        * @param noise quantile level for filter the polygon shape points. all cell shapes which has its
+        *  shape points less than this quantile level will be treated as noise
         * 
         * + default value Is ``0.25``.
         * @param moran_knn -
@@ -128,6 +130,8 @@ declare namespace singleCell {
         * + default value Is ``false``.
         * @param split_IHC1_channels 
         * + default value Is ``false``.
+        * @return if scanning of the IHC1 channels, then this function will returns a tuple list that contains
+        *  the rgb channels single cell detections result of the IHC1 image.
       */
       function dzi_cells(dzi: object, level: object, dir: object, ostu_factor?: number, noise?: number, moran_knn?: object, flip?: boolean, split_blocks?: boolean, split_IHC1_channels?: boolean): object;
    }

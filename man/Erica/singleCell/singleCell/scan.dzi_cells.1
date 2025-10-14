@@ -1,7 +1,7 @@
 .\" man page create by R# package system.
 .TH SINGLECELL 1 2000-Jan "scan.dzi_cells" "scan.dzi_cells"
 .SH NAME
-scan.dzi_cells \- 
+scan.dzi_cells \- Scan all single cell shapes from the given dzi slide data
 .SH SYNOPSIS
 \fIscan.dzi_cells(\fBdzi\fR as <generic> DziImage, 
 \fBlevel\fR as integer, 
@@ -12,9 +12,13 @@ scan.dzi_cells \-
 \fBflip\fR as boolean = FALSE, 
 \fBsplit_blocks\fR as boolean = FALSE, 
 \fBsplit_IHC1_channels\fR as boolean = FALSE);\fR
+.SH DESCRIPTION
+.PP
+Scan all single cell shapes from the given dzi slide data
+.PP
 .SH OPTIONS
 .PP
-\fBdzi\fB \fR\- -. 
+\fBdzi\fB \fR\- metadata of the dzi image. 
 .PP
 .PP
 \fBlevel\fB \fR\- usually be the max zoom level. 
@@ -28,13 +32,21 @@ scan.dzi_cells \-
 \fBostu_factor\fB \fR\- -. 
 .PP
 .PP
-\fBnoise\fB \fR\- -. 
+\fBnoise\fB \fR\- 
+ quantile level for filter the polygon shape points. all cell shapes which has its
+ shape points less than this quantile level will be treated as noise
+. 
 .PP
 .PP
 \fBmoran_knn\fB \fR\- -. 
 .PP
 .PP
 \fBsplit_blocks\fB \fR\- -. 
+.PP
+.SH VALUE
+.PP
+if scanning of the IHC1 channels, then this function will returns a tuple list that contains
+ the rgb channels single cell detections result of the IHC1 image.
 .PP
 .SH SEE ALSO
 singleCell
