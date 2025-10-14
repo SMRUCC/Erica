@@ -4,29 +4,43 @@ Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualBasic.ApplicationServices.Terminal.ProgressBar
 Imports Microsoft.VisualBasic.CommandLine.InteropService.Pipeline
 Imports Microsoft.VisualBasic.ComponentModel.Collection.Generic
-Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.BitmapImage
 Imports Microsoft.VisualBasic.Imaging.Filters
 Imports Microsoft.VisualBasic.Language
-Imports Microsoft.VisualBasic.Scripting.Runtime
 Imports Microsoft.VisualBasic.Serialization.JSON
 
 Public Module DziScanner
 
-    Private Function globalThreshold(dir As IFileSystemEnvironment, imagefiles As String()) As Integer
+    Private Function globalThreshold(imagefiles As DziImageBuffer()) As Integer
         Dim bits As New BucketSet(Of UInteger)
         Dim bar As Tqdm.ProgressBar = Nothing
         Dim wrap_tqdm As Boolean = App.EnableTqdm
 
-        For Each file As String In Tqdm.Wrap(imagefiles, bar:=bar, wrap_console:=wrap_tqdm)
-            Dim image As Image = Image.FromStream(dir.OpenFile(file, IO.FileMode.Open, IO.FileAccess.Read))
-            Dim bitmap As BitmapBuffer = BitmapBuffer.FromImage(image)
-
-            Call bits.Add(bitmap.GetARGBStream)
-            Call bitmap.Dispose()
+        For Each file As DziImageBuffer In Tqdm.Wrap(imagefiles, bar:=bar, wrap_console:=wrap_tqdm)
+            Call bits.Add(file.bitmap.GetARGBStream)
         Next
 
         Return otsuThreshold(bits)
+    End Function
+
+    Public Function globalIHC1Threshold(imagefiles As DziImageBuffer()) As (r As Integer, g As Integer, b As Integer)
+        Dim bitsR As New BucketSet(Of UInteger)
+        Dim bitsG As New BucketSet(Of UInteger)
+        Dim bitsB As New BucketSet(Of UInteger)
+        Dim bar As Tqdm.ProgressBar = Nothing
+        Dim wrap_tqdm As Boolean = App.EnableTqdm
+
+        For Each file As DziImageBuffer In Tqdm.Wrap(imagefiles, bar:=bar, wrap_console:=wrap_tqdm)
+            Dim bitmap As BitmapBuffer = file.bitmap
+            Dim rgb = bitmap.RGB
+
+            Call bitsR.Add(rgb.R.GetARGBStream)
+            Call bitsG.Add(rgb.G.GetARGBStream)
+            Call bitsB.Add(rgb.B.GetARGBStream)
+            Call bitmap.Dispose()
+        Next
+
+        Return (otsuThreshold(bitsR), otsuThreshold(bitsG), otsuThreshold(bitsB))
     End Function
 
     ''' <summary>
@@ -45,8 +59,27 @@ Public Module DziScanner
                                   Optional ostu_factor As Double = 0.7,
                                   Optional noise As Double = 0.25,
                                   Optional moran_knn As Integer = 32,
-                                  Optional splitBlocks As Boolean = True) As IEnumerable(Of CellScan)
+                                  Optional splitBlocks As Boolean = True) As (r As CellScan(), g As CellScan(), b As CellScan())
 
+        Dim imagefiles As DziImageBuffer() = DziImageBuffer.LoadBuffer(dzi, level, dir).ToArray
+        Dim r As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
+        Dim g As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
+        Dim b As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
+
+        For i As Integer = 0 To imagefiles.Length - 1
+            Dim image As DziImageBuffer = imagefiles(i)
+            Dim rgb = image.bitmap.RGB
+
+            r(i) = New DziImageBuffer(image.tile, image.xy, rgb.R)
+            g(i) = New DziImageBuffer(image.tile, image.xy, rgb.G)
+            b(i) = New DziImageBuffer(image.tile, image.xy, rgb.B)
+        Next
+
+        Dim r_cells As CellScan() = r.ScanBuffer(ostu_factor:=ostu_factor, flip:=True, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
+        Dim g_cells As CellScan() = g.ScanBuffer(ostu_factor:=ostu_factor, flip:=True, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
+        Dim b_cells As CellScan() = b.ScanBuffer(ostu_factor:=ostu_factor, flip:=True, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
+
+        Return (r_cells, g_cells, b_cells)
     End Function
 
     ''' <summary>
@@ -68,23 +101,39 @@ Public Module DziScanner
                               Optional splitBlocks As Boolean = True,
                               Optional flip As Boolean = False) As IEnumerable(Of CellScan)
 
+        Return DziImageBuffer.LoadBuffer(dzi, level, dir) _
+            .ToArray _
+            .ScanBuffer(ostu_factor:=ostu_factor,
+                        flip:=flip,
+                        splitBlocks:=splitBlocks,
+                        noise:=noise,
+                        moran_knn:=moran_knn
+             )
+    End Function
+
+    <Extension>
+    Private Function ScanBuffer(imagefiles As DziImageBuffer(),
+                                ostu_factor As Double,
+                                flip As Boolean,
+                                splitBlocks As Integer,
+                                noise As Double,
+                                moran_knn As Integer) As IEnumerable(Of CellScan)
+
         Dim bar As Tqdm.ProgressBar = Nothing
         Dim globalLookups As New List(Of CellScan)
         Dim wrap_tqdm As Boolean = App.EnableTqdm
-        Dim imagefiles As String() = dir.EnumerateFiles("/", "*.jpg", "*.png", "*.jpeg", "*.bmp").ToArray
         Dim d As Integer = imagefiles.Length / 25
         Dim offset As i32 = 0
-        Dim threshold As Double = ostu_factor * globalThreshold(dir, imagefiles)
+        Dim threshold As Integer = ostu_factor * globalThreshold(imagefiles)
 
         If d = 0 Then
             d = 1
         End If
 
-        For Each file As String In Tqdm.Wrap(imagefiles, bar:=bar, wrap_console:=wrap_tqdm)
-            Dim image As Image = Image.FromStream(dir.OpenFile(file, IO.FileMode.Open, IO.FileAccess.Read))
-            Dim bitmap As BitmapBuffer = BitmapBuffer.FromImage(image)
-            Dim xy = file.BaseName.Split("_"c).AsInteger
-            Dim tile As Rectangle = dzi.DecodeTile(level, xy(0), xy(1))
+        For Each file As DziImageBuffer In Tqdm.Wrap(imagefiles, bar:=bar, wrap_console:=wrap_tqdm)
+            Dim bitmap As BitmapBuffer = file.bitmap
+            Dim xy As Integer() = file.xy
+            Dim tile As Rectangle = file.tile
             Dim tip As String = $"global lookups of tile {xy.GetJson} -> (offset:{tile.Left},{tile.Top}, width:{tile.Width} x height:{tile.Height})"
 
             Call globalLookups.AddRange(CellScan _
