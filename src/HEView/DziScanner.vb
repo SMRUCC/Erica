@@ -73,9 +73,9 @@ Public Module DziScanner
             Dim image As DziImageBuffer = imagefiles(i)
             Dim rgb = image.bitmap.RGB(flip:=True)
 
-            r(i) = New DziImageBuffer(image.tile, image.xy, BitmapScale.Grayscale(rgb.R))
-            g(i) = New DziImageBuffer(image.tile, image.xy, BitmapScale.Grayscale(rgb.G))
-            b(i) = New DziImageBuffer(image.tile, image.xy, BitmapScale.Grayscale(rgb.B))
+            r(i) = New DziImageBuffer(image.tile, image.xy, rgb.R)
+            g(i) = New DziImageBuffer(image.tile, image.xy, rgb.G)
+            b(i) = New DziImageBuffer(image.tile, image.xy, rgb.B)
         Next
 
         Erase imagefiles
