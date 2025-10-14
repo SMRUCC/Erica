@@ -62,7 +62,7 @@ Public Module DziScanner
                                   Optional moran_knn As Integer = 32,
                                   Optional splitBlocks As Boolean = True) As (r As CellScan(), g As CellScan(), b As CellScan())
 
-        Dim imagefiles As DziImageBuffer() = DziImageBuffer.LoadBuffer(dzi, level, dir).ToArray
+        Dim imagefiles As DziImageBuffer() = DziImageBuffer.LoadBuffer(dzi, level, dir, skipBlank:=True).ToArray
         Dim r As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
         Dim g As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
         Dim b As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}

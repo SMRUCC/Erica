@@ -23,7 +23,8 @@ Public Class DziImageBuffer
 
     Public Shared Iterator Function LoadBuffer(dzi As DziImage,
                                                level As Integer,
-                                               dir As IFileSystemEnvironment) As IEnumerable(Of DziImageBuffer)
+                                               dir As IFileSystemEnvironment,
+                                               Optional skipBlank As Boolean = False) As IEnumerable(Of DziImageBuffer)
 
         Dim imagefiles As String() = dir.EnumerateFiles("/", "*.jpg", "*.png", "*.jpeg", "*.bmp").ToArray
 
@@ -32,6 +33,17 @@ Public Class DziImageBuffer
         For Each file As String In TqdmWrapper.Wrap(imagefiles, wrap_console:=App.EnableTqdm)
             Dim image As Image = Image.FromStream(dir.OpenFile(file, IO.FileMode.Open, IO.FileAccess.Read))
             Dim bitmap As BitmapBuffer = BitmapBuffer.FromImage(image)
+
+            If skipBlank Then
+                Dim pixels = bitmap.GetARGBStream
+                Dim z As UInteger = pixels(Scan0)
+                Dim isblank As Boolean = pixels.All(Function(i) i = z)
+
+                If isblank Then
+                    Continue For
+                End If
+            End If
+
             Dim xy = file.BaseName.Split("_"c).AsInteger
             Dim tile As Rectangle = dzi.DecodeTile(level, xy(0), xy(1))
 
