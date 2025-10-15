@@ -130,10 +130,14 @@ declare namespace singleCell {
         * + default value Is ``false``.
         * @param split_IHC1_channels 
         * + default value Is ``false``.
+        * @param split_IHC2_channels 
+        * + default value Is ``false``.
         * @return if scanning of the IHC1 channels, then this function will returns a tuple list that contains
         *  the rgb channels single cell detections result of the IHC1 image.
+        *  if scanning of the IHC2 channels, then this function will returns a tuple list that contains
+        *  the cmyk channels single cell detection result of the IHC2 image.
       */
-      function dzi_cells(dzi: object, level: object, dir: object, ostu_factor?: number, noise?: number, moran_knn?: object, flip?: boolean, split_blocks?: boolean, split_IHC1_channels?: boolean): object;
+      function dzi_cells(dzi: object, level: object, dir: object, ostu_factor?: number, noise?: number, moran_knn?: object, flip?: boolean, split_blocks?: boolean, split_IHC1_channels?: boolean, split_IHC2_channels?: boolean): object;
    }
    /**
     * Create spatial annotations data set for each spot data

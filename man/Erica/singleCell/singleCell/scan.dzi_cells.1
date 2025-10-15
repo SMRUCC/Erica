@@ -11,7 +11,8 @@ scan.dzi_cells \- Scan all single cell shapes from the given dzi slide data
 \fBmoran_knn\fR as integer = 32, 
 \fBflip\fR as boolean = FALSE, 
 \fBsplit_blocks\fR as boolean = FALSE, 
-\fBsplit_IHC1_channels\fR as boolean = FALSE);\fR
+\fBsplit_IHC1_channels\fR as boolean = FALSE, 
+\fBsplit_IHC2_channels\fR as boolean = FALSE);\fR
 .SH DESCRIPTION
 .PP
 Scan all single cell shapes from the given dzi slide data
@@ -47,6 +48,8 @@ Scan all single cell shapes from the given dzi slide data
 .PP
 if scanning of the IHC1 channels, then this function will returns a tuple list that contains
  the rgb channels single cell detections result of the IHC1 image.
+ if scanning of the IHC2 channels, then this function will returns a tuple list that contains
+ the cmyk channels single cell detection result of the IHC2 image.
 .PP
 .SH SEE ALSO
 singleCell
