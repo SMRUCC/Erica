@@ -549,4 +549,36 @@ Public Module singleCells
             Call BSON.SafeWriteBuffer(cells.CreateJSONElement, s)
         End Using
     End Sub
+
+    ''' <summary>
+    ''' Debug test used only
+    ''' </summary>
+    ''' <param name="pixel">[r,g,b] color value, in range [0,1]</param>
+    ''' <param name="type"></param>
+    ''' <returns></returns>
+    <ExportAPI("ihc_unmixing")>
+    Public Function IHCUnmixing_f(<RRawVectorArgument> pixel As Object,
+                                  <RRawVectorArgument(TypeCodes.string)>
+                                  Optional type As Object = "ihc1|ihc2",
+                                  Optional env As Environment = Nothing) As Object
+
+        Dim rgb As Double() = CLRVector.asNumeric(pixel)
+        Dim type_str As String() = CLRVector.asCharacter(type)
+        Dim vec As Double()
+        Dim names As String()
+        Dim color As Color = Color.FromArgb(CInt(rgb(0) * 255), CInt(rgb(1) * 255), CInt(rgb(2) * 255))
+
+        Select Case Strings.LCase(type_str(0))
+            Case "ihc1"
+                vec = IHCUnmixing.UnmixPixel(color, IHCUnmixing.GetReferenceMatrixIHC1)
+                names = IHCUnmixing.GetAntibodyNamesIHC1
+            Case "ihc2"
+                vec = IHCUnmixing.UnmixPixel(color, IHCUnmixing.GetReferenceMatrixIHC2)
+                names = IHCUnmixing.GetAntibodyNamesIHC2
+            Case Else
+                Return RInternal.debug.stop($"unknown experiment type: {type_str(0)}", env)
+        End Select
+
+        Return New list(vec, names)
+    End Function
 End Module

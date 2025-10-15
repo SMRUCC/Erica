@@ -794,6 +794,36 @@ Microsoft.VisualBasic.Data.Bootstrapping.Fittings
  <param name="x"></param>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.NonNegativeLeastSquares">
+ <summary>
+ NNLS Non-Negative Least-Squares algorithm
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NonNegativeLeastSquares.Solve(System.Double[0:,0:],System.Double[],System.Int32,System.Double)">
+ <summary>
+ 求解非负最小二乘问题：最小化 ||Ax - b||^2，满足 x >= 0
+ </summary>
+ <param name="A">设计矩阵 (m x n)</param>
+ <param name="b">观测向量 (m)</param>
+ <param name="maxIterations">最大迭代次数</param>
+ <param name="tolerance">收敛容差</param>
+ <returns>非负解向量 x (n)</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NonNegativeLeastSquares.SolveUnconstrainedLS(System.Double[0:,0:],System.Double[])">
+ <summary>
+ 求解无约束最小二乘问题（使用正规方程法，可考虑扩展为SVD以提升稳定性）
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NonNegativeLeastSquares.SolveLinearSystem(System.Double[0:,0:],System.Double[])">
+ <summary>
+ 使用部分主元高斯消元法求解线性方程组，提升数值稳定性
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NonNegativeLeastSquares.UpdateResidual(System.Double[0:,0:],System.Double[],System.Double[],System.Double[])">
+ <summary>
+ 更新残差向量 r = b - A*x
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.Bootstrapping.WeightedFit">
  <summary>
  加权拟合的结果
