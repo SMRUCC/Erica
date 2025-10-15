@@ -61,6 +61,18 @@ declare namespace singleCell {
    */
    function HTS_matrix(h5ad: any, env?: object): object;
    /**
+    * Debug test used only
+    * 
+    * 
+     * @param pixel [r,g,b] color value, in range [0,1]
+     * @param type -
+     * 
+     * + default value Is ``["ihc1","ihc2"]``.
+     * @param env 
+     * + default value Is ``null``.
+   */
+   function ihc_unmixing(pixel: any, type?: any, env?: object): any;
+   /**
     * Parse the dzi image metadata from a given xml document data
     * 
     * 
