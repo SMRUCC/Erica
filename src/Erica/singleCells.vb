@@ -494,6 +494,8 @@ Public Module singleCells
     ''' <returns>
     ''' if scanning of the IHC1 channels, then this function will returns a tuple list that contains
     ''' the rgb channels single cell detections result of the IHC1 image.
+    ''' if scanning of the IHC2 channels, then this function will returns a tuple list that contains
+    ''' the cmyk channels single cell detection result of the IHC2 image.
     ''' </returns>
     <ExportAPI("scan.dzi_cells")>
     <RApiReturn(GetType(CellScan))>
@@ -503,7 +505,8 @@ Public Module singleCells
                                  Optional moran_knn As Integer = 32,
                                  Optional flip As Boolean = False,
                                  Optional split_blocks As Boolean = False,
-                                 Optional split_IHC1_channels As Boolean = False) As Object
+                                 Optional split_IHC1_channels As Boolean = False,
+                                 Optional split_IHC2_channels As Boolean = False) As Object
 
         If split_IHC1_channels Then
             Dim rgb As list = list.empty
@@ -517,6 +520,19 @@ Public Module singleCells
             Call rgb.add("b", channels.b)
 
             Return rgb
+        ElseIf split_IHC2_channels Then
+            Dim cmyk As list = list.empty
+            Dim channels = dzi.ScanIHC2Cells(level, dir,
+                                             ostu_factor:=ostu_factor,
+                                             noise:=noise,
+                                             moran_knn:=moran_knn,
+                                             splitBlocks:=split_blocks)
+            Call cmyk.add("c", channels.c)
+            Call cmyk.add("m", channels.m)
+            Call cmyk.add("y", channels.y)
+            Call cmyk.add("k", channels.k)
+
+            Return cmyk
         End If
 
         Return dzi.ScanCells(level, dir, ostu_factor,
