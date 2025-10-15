@@ -39,6 +39,9 @@ declare namespace Erica {
       function human_genes(): object;
    }
    /**
+   */
+   function max_dzi_level(slide_file: any): object;
+   /**
      * @param colors default value Is ``paper``.
      * @param title default value Is ``Spatial Spot Class``.
      * @param padding default value Is ``padding: 150px 350px 200px 200px;``.
