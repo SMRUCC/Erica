@@ -45,6 +45,72 @@ Public Module DziScanner
     End Function
 
     ''' <summary>
+    ''' scan with CMYK colors
+    ''' </summary>
+    ''' <param name="dzi"></param>
+    ''' <param name="level"></param>
+    ''' <param name="dir"></param>
+    ''' <param name="ostu_factor"></param>
+    ''' <param name="noise"></param>
+    ''' <param name="moran_knn"></param>
+    ''' <param name="splitBlocks"></param>
+    ''' <returns></returns>
+    <Extension>
+    Public Function ScanIHC2Cells(dzi As DziImage, level As Integer, dir As IFileSystemEnvironment,
+                                  Optional ostu_factor As Double = 0.7,
+                                  Optional noise As Double = 0.25,
+                                  Optional moran_knn As Integer = 32,
+                                  Optional splitBlocks As Boolean = True) As (c As CellScan(), m As CellScan(), y As CellScan(), k As CellScan())
+
+        Dim imagefiles As DziImageBuffer() = DziImageBuffer.LoadBuffer(dzi, level, dir, skipBlank:=True).ToArray
+        Dim c As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
+        Dim m As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
+        Dim y As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
+        Dim k As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
+
+        Call "split ICH2 cmyk channels...".info
+
+        For Each i As Integer In TqdmWrapper.Range(0, imagefiles.Length, wrap_console:=App.EnableTqdm)
+            Dim image As DziImageBuffer = imagefiles(i)
+            Dim cmyk = image.bitmap.CMYK(flip:=True)
+
+            c(i) = New DziImageBuffer(image.tile, image.xy, cmyk.C)
+            m(i) = New DziImageBuffer(image.tile, image.xy, cmyk.M)
+            y(i) = New DziImageBuffer(image.tile, image.xy, cmyk.Y)
+            k(i) = New DziImageBuffer(image.tile, image.xy, cmyk.K)
+        Next
+
+        Erase imagefiles
+
+        c = DziImageBuffer.GlobalScales(c)
+        m = DziImageBuffer.GlobalScales(m)
+        y = DziImageBuffer.GlobalScales(y)
+        k = DziImageBuffer.GlobalScales(k)
+
+        Call "scan cells in cyan channel...".info
+        Dim c_cells As CellScan() = c.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
+
+        Erase c
+
+        Call "scan cells in magenta channel...".info
+        Dim m_cells As CellScan() = m.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
+
+        Erase m
+
+        Call "scan cells in yellow channel...".info
+        Dim y_cells As CellScan() = y.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
+
+        Erase y
+
+        Call "scan cells in key (black) channel...".info
+        Dim k_cells As CellScan() = k.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
+
+        Erase k
+
+        Return (c_cells, m_cells, y_cells, k_cells)
+    End Function
+
+    ''' <summary>
     ''' scan with RGB colors
     ''' </summary>
     ''' <param name="dzi"></param>
