@@ -111,6 +111,8 @@ Public Class IHCUnmixing
             For i As Integer = 0 To n - 1
                 layers(i)(offset) = Color.FromArgb(bytes(i), bytes(i), bytes(i))
             Next
+
+            offset += 1
         Next
 
         Return layers _

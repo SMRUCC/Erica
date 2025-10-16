@@ -5,24 +5,24 @@ imports "singleCell" from "Erica";
 imports "machineVision" from "signalKit";
 
 let scan_pack = "C:\Users\Administrator\Desktop\MLKL-5\4 color (IHC1).hds";
+let level = Erica::max_dzi_level(scan_pack);
 let pack = read_stream(scan_pack);
 let dzi = list.files(pack, pattern = "*.dzi", recursive =FALSE);
 let dir_files = `${basename(dzi)}_files`;
-let level = 18;
-
-dzi = parse_dziImage(pack |> getText(dzi));
-
+let dzimeta = parse_dziImage(pack |> getText(dzi));
 let images = dir.open(`/${dir_files}/${level}/`, fs = pack);
-let rgb = dzi |> scan.dzi_cells(level =level, dir =images,
+let rgb = dzimeta |> scan.dzi_cells(level =level, dir =images,
                                   ostu_factor  = 0.85,
                                 noise  = 0.2,
                                 flip = FALSE,
                                 moran_knn = 256,
                                 split.IHC1.channels = TRUE);
-let r = as.data.frame(rgb$r);
-let g = as.data.frame(rgb$g);
-let b = as.data.frame(rgb$b);
+let result = NULL;
 
-write.csv(r, file = `${dirname(scan_pack)}/${basename(scan_pack)}_red.csv`);    
-write.csv(g, file = `${dirname(scan_pack)}/${basename(scan_pack)}_green.csv`);    
-write.csv(b, file = `${dirname(scan_pack)}/${basename(scan_pack)}_blue.csv`);              
+for(let name in names(rgb)) {
+  let data = as.data.frame(rgb[[name]]);
+  data[,"anitybody"] = name;
+  result = rbind(result, data);
+}
+
+write.csv(result, file = file.path(dirname(scan_pack), `${basename(scan_pack)}_antibody_cells.csv`));
