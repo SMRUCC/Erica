@@ -1,5 +1,9 @@
 ﻿Imports System.Drawing
+Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.Data.Bootstrapping
+Imports Microsoft.VisualBasic.Imaging.BitmapImage
+Imports Microsoft.VisualBasic.Math
+Imports Microsoft.VisualBasic.Scripting.Runtime
 
 Public Class IHCUnmixing
     ''' <summary>
@@ -94,6 +98,26 @@ Public Class IHCUnmixing
 
         ' 调用NNLS算法求解
         Return NonNegativeLeastSquares.Solve(A, b, tolerance:=tolerance)
+    End Function
+
+    Public Shared Function Unmix(mixed As BitmapBuffer, A As Double(,), n As Integer) As BitmapBuffer()
+        Dim layers As Color()() = RectangularArray.Matrix(Of Color)(n, mixed.Width * mixed.Height)
+        Dim offset As Integer = 0
+
+        For Each pixel As Color In mixed.GetPixelsAll
+            Dim vec As Double() = UnmixPixel(pixel, A)
+            Dim bytes As Integer() = SIMD.Multiply.f64_scalar_op_multiply_f64(255.0, vec).AsInteger
+
+            For i As Integer = 0 To n - 1
+                layers(i)(offset) = Color.FromArgb(bytes(i), bytes(i), bytes(i))
+            Next
+        Next
+
+        Return layers _
+            .Select(Function(pixels)
+                        Return New BitmapBuffer(pixels.Split(mixed.Width).ToMatrix, mixed.Size)
+                    End Function) _
+            .ToArray
     End Function
 
     ''' <summary>

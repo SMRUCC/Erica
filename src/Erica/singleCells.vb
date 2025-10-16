@@ -515,9 +515,11 @@ Public Module singleCells
                                              noise:=noise,
                                              moran_knn:=moran_knn,
                                              splitBlocks:=split_blocks)
-            Call rgb.add("r", channels.r)
-            Call rgb.add("g", channels.g)
-            Call rgb.add("b", channels.b)
+            Call rgb.add("CD11b", channels.CD11b)
+            Call rgb.add("CD11c", channels.CD11c)
+            Call rgb.add("CD8", channels.CD8)
+            Call rgb.add("PanCK", channels.PanCK)
+            Call rgb.add("Dapi", channels.Dapi)
 
             Return rgb
         ElseIf split_IHC2_channels Then
@@ -527,10 +529,12 @@ Public Module singleCells
                                              noise:=noise,
                                              moran_knn:=moran_knn,
                                              splitBlocks:=split_blocks)
-            Call cmyk.add("c", channels.c)
-            Call cmyk.add("m", channels.m)
-            Call cmyk.add("y", channels.y)
-            Call cmyk.add("k", channels.k)
+            Call cmyk.add("Lg6G", channels.Lg6G)
+            Call cmyk.add("CiH3", channels.CiH3)
+            Call cmyk.add("p16", channels.p16)
+            Call cmyk.add("CD11b", channels.CD11b)
+            Call cmyk.add("PanCK", channels.PanCK)
+            Call cmyk.add("Dapi", channels.Dapi)
 
             Return cmyk
         End If
