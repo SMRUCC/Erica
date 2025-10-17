@@ -25,89 +25,6 @@ Public Module DziScanner
     End Function
 
     ''' <summary>
-    ''' scan with CMYK colors
-    ''' </summary>
-    ''' <param name="dzi"></param>
-    ''' <param name="level"></param>
-    ''' <param name="dir"></param>
-    ''' <param name="ostu_factor"></param>
-    ''' <param name="noise"></param>
-    ''' <param name="moran_knn"></param>
-    ''' <param name="splitBlocks"></param>
-    ''' <returns></returns>
-    <Extension>
-    Public Function ScanIHC2Cells(dzi As DziImage, level As Integer, dir As IFileSystemEnvironment,
-                                  Optional ostu_factor As Double = 0.7,
-                                  Optional noise As Double = 0.25,
-                                  Optional moran_knn As Integer = 32,
-                                  Optional splitBlocks As Boolean = True) As (Lg6G As CellScan(), CiH3 As CellScan(), p16 As CellScan(), CD11b As CellScan(), PanCK As CellScan(), Dapi As CellScan())
-
-        Dim imagefiles As DziImageBuffer() = DziImageBuffer.LoadBuffer(dzi, level, dir, skipBlank:=True).ToArray
-        Dim Lg6G As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
-        Dim CiH3 As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
-        Dim p16 As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
-        Dim CD11b As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
-        Dim PanCK As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
-        Dim Dapi As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
-        Dim A As Double(,) = IHCUnmixing.GetReferenceMatrixIHC2
-
-        Call "split ICH2 antibody channels...".info
-
-        For Each i As Integer In TqdmWrapper.Range(0, imagefiles.Length, wrap_console:=App.EnableTqdm)
-            Dim image As DziImageBuffer = imagefiles(i)
-            Dim splits = IHCUnmixing.Unmix(image.bitmap, A, 6)
-
-            Lg6G(i) = New DziImageBuffer(image.tile, image.xy, splits(0))
-            CiH3(i) = New DziImageBuffer(image.tile, image.xy, splits(1))
-            p16(i) = New DziImageBuffer(image.tile, image.xy, splits(2))
-            CD11b(i) = New DziImageBuffer(image.tile, image.xy, splits(3))
-            PanCK(i) = New DziImageBuffer(image.tile, image.xy, splits(4))
-            Dapi(i) = New DziImageBuffer(image.tile, image.xy, splits(5))
-        Next
-
-        Erase imagefiles
-
-        Lg6G = DziImageBuffer.GlobalScales(Lg6G)
-        CiH3 = DziImageBuffer.GlobalScales(CiH3)
-        p16 = DziImageBuffer.GlobalScales(p16)
-        CD11b = DziImageBuffer.GlobalScales(CD11b)
-        PanCK = DziImageBuffer.GlobalScales(PanCK)
-        Dapi = DziImageBuffer.GlobalScales(Dapi)
-
-        Call "scan cells with antibody Lg6G...".info
-        Dim Lg6G_cells As CellScan() = Lg6G.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
-
-        Erase Lg6G
-
-        Call "scan cells with antibody CiH3...".info
-        Dim CiH3_cells As CellScan() = CiH3.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
-
-        Erase CiH3
-
-        Call "scan cells with antibody p16...".info
-        Dim p16_cells As CellScan() = p16.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
-
-        Erase p16
-
-        Call "scan cells with antibody CD11b...".info
-        Dim CD11b_cells As CellScan() = CD11b.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
-
-        Erase CD11b
-
-        Call "scan cells with antibody PanCK...".info
-        Dim PanCK_cells As CellScan() = PanCK.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
-
-        Erase PanCK
-
-        Call "scan cells with antibody Dapi...".info
-        Dim Dapi_cells As CellScan() = Dapi.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
-
-        Erase Dapi
-
-        Return (Lg6G_cells, CiH3_cells, p16_cells, CD11b_cells, PanCK_cells, Dapi_cells)
-    End Function
-
-    ''' <summary>
     ''' scan with RGB colors
     ''' </summary>
     ''' <param name="dzi"></param>
@@ -119,67 +36,50 @@ Public Module DziScanner
     ''' <param name="splitBlocks"></param>
     ''' <returns></returns>
     <Extension>
-    Public Function ScanIHC1Cells(dzi As DziImage, level As Integer, dir As IFileSystemEnvironment,
-                                  Optional ostu_factor As Double = 0.7,
-                                  Optional noise As Double = 0.25,
-                                  Optional moran_knn As Integer = 32,
-                                  Optional splitBlocks As Boolean = True) As (CD11b As CellScan(), CD11c As CellScan(), CD8 As CellScan(), PanCK As CellScan(), Dapi As CellScan())
+    Public Function ScanIHCRGBCells(dzi As DziImage, level As Integer, dir As IFileSystemEnvironment,
+                                    Optional ostu_factor As Double = 0.7,
+                                    Optional noise As Double = 0.25,
+                                    Optional moran_knn As Integer = 32,
+                                    Optional splitBlocks As Boolean = True) As (r As CellScan(), g As CellScan(), b As CellScan())
 
         Dim imagefiles As DziImageBuffer() = DziImageBuffer.LoadBuffer(dzi, level, dir, skipBlank:=True).ToArray
-        Dim CD11b As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
-        Dim CD11c As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
-        Dim CD8 As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
-        Dim PanCK As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
-        Dim Dapi As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
-        Dim A As Double(,) = IHCUnmixing.GetReferenceMatrixIHC1
+        Dim r As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
+        Dim g As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
+        Dim b As DziImageBuffer() = New DziImageBuffer(imagefiles.Length - 1) {}
 
         Call "split ICH1 antibody channels...".info
 
         For Each i As Integer In TqdmWrapper.Range(0, imagefiles.Length, wrap_console:=App.EnableTqdm)
             Dim image As DziImageBuffer = imagefiles(i)
-            Dim splits = IHCUnmixing.Unmix(image.bitmap, A, 5)
+            Dim splits = image.bitmap.RGB(flip:=True)
 
-            CD11b(i) = New DziImageBuffer(image.tile, image.xy, splits(0))
-            CD11c(i) = New DziImageBuffer(image.tile, image.xy, splits(1))
-            CD8(i) = New DziImageBuffer(image.tile, image.xy, splits(2))
-            PanCK(i) = New DziImageBuffer(image.tile, image.xy, splits(3))
-            Dapi(i) = New DziImageBuffer(image.tile, image.xy, splits(4))
+            r(i) = New DziImageBuffer(image.tile, image.xy, splits.R)
+            g(i) = New DziImageBuffer(image.tile, image.xy, splits.G)
+            b(i) = New DziImageBuffer(image.tile, image.xy, splits.B)
         Next
 
         Erase imagefiles
 
-        CD11b = DziImageBuffer.GlobalScales(CD11b)
-        CD11c = DziImageBuffer.GlobalScales(CD11c)
-        CD8 = DziImageBuffer.GlobalScales(CD8)
-        PanCK = DziImageBuffer.GlobalScales(PanCK)
-        Dapi = DziImageBuffer.GlobalScales(Dapi)
+        r = DziImageBuffer.GlobalScales(r)
+        g = DziImageBuffer.GlobalScales(g)
+        b = DziImageBuffer.GlobalScales(b)
 
-        Call "scan cells with antibody CD11b...".info
-        Dim CD11b_cells As CellScan() = CD11b.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
+        Call "scan cells with red channel...".info
+        Dim r_cells As CellScan() = r.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
 
-        Erase CD11b
+        Erase r
 
-        Call "scan cells with antibody CD11c...".info
-        Dim CD11c_cells As CellScan() = CD11c.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
+        Call "scan cells with green channel...".info
+        Dim g_cells As CellScan() = g.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
 
-        Erase CD11c
+        Erase g
 
-        Call "scan cells with antibody CD8...".info
-        Dim CD8_cells As CellScan() = CD8.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
+        Call "scan cells with blue channel...".info
+        Dim b_cells As CellScan() = b.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
 
-        Erase CD8
+        Erase b
 
-        Call "scan cells with antibody PanCK...".info
-        Dim PanCK_cells As CellScan() = PanCK.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
-
-        Erase PanCK
-
-        Call "scan cells with antibody Dapi...".info
-        Dim Dapi_cells As CellScan() = Dapi.ScanBuffer(ostu_factor:=ostu_factor, flip:=False, splitBlocks:=splitBlocks, noise:=noise, moran_knn:=moran_knn).ToArray
-
-        Erase Dapi
-
-        Return (CD11b_cells, CD11c_cells, CD8_cells, PanCK_cells, Dapi_cells)
+        Return (r_cells, g_cells, b_cells)
     End Function
 
     <Extension>
@@ -219,12 +119,12 @@ Public Module DziScanner
     End Function
 
     <Extension>
-    Private Function ScanBuffer(ByRef imagefiles As DziImageBuffer(),
-                                ostu_factor As Double,
-                                flip As Boolean,
-                                splitBlocks As Integer,
-                                noise As Double,
-                                moran_knn As Integer) As IEnumerable(Of CellScan)
+    Friend Function ScanBuffer(ByRef imagefiles As DziImageBuffer(),
+                               ostu_factor As Double,
+                               flip As Boolean,
+                               splitBlocks As Integer,
+                               noise As Double,
+                               moran_knn As Integer) As IEnumerable(Of CellScan)
 
         Dim bar As Tqdm.ProgressBar = Nothing
         Dim globalLookups As New List(Of CellScan)
