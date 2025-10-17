@@ -174,7 +174,8 @@ Public Module Math
                     .scan_y = shape.Y.ToArray,
                     .ratio = std.Max(.width, .height) / std.Min(.width, .height),
                     .physical_x = .x + offset_x,
-                    .physical_y = .y + offset_y
+                    .physical_y = .y + offset_y,
+                    .tile_id = cell.tile_id
                 }
             Next
         Next

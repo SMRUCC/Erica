@@ -80,7 +80,8 @@ Public Class IHCScanner
                     .weight = 0,
                     .width = cell.width,
                     .x = cell.x,
-                    .y = cell.y
+                    .y = cell.y,
+                    .tile_id = cell.tile_id
                 }
             Next
         Next

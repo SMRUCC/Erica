@@ -143,15 +143,21 @@ Public Module DziScanner
             Dim bitmap As BitmapBuffer = file.bitmap
             Dim xy As Integer() = file.xy
             Dim tile As Rectangle = file.tile
-            Dim tip As String = $"global lookups tile {xy.GetJson} -> (offset:{tile.Left},{tile.Top}, width:{tile.Width} x height:{tile.Height}) found {globalLookups.Count} single cells"
-
-            Call globalLookups.AddRange(CellScan _
+            Dim tip As String = $"{xy.GetJson} -> (offset:{tile.Left},{tile.Top}, width:{tile.Width} x height:{tile.Height}) found {globalLookups.Count} single cells"
+            Dim lookups = CellScan _
                     .CellLookups(grid:=Thresholding.ostuFilter(bitmap,
                                                                threshold:=threshold,
                                                                flip:=flip,
                                                                verbose:=False),
                                  binary_processing:=False,
-                                 offset:=tile.Location))
+                                 offset:=tile.Location).ToArray
+            Dim tile_id As String = xy.JoinBy("_")
+
+            For i As Integer = 0 To lookups.Length - 1
+                lookups(i).tile_id = tile_id
+            Next
+
+            Call globalLookups.AddRange(lookups)
             Call bitmap.Dispose()
 
             If Not wrap_tqdm Then
