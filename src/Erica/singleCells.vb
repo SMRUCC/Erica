@@ -505,38 +505,36 @@ Public Module singleCells
                                  Optional moran_knn As Integer = 32,
                                  Optional flip As Boolean = False,
                                  Optional split_blocks As Boolean = False,
-                                 Optional split_IHC1_channels As Boolean = False,
-                                 Optional split_IHC2_channels As Boolean = False) As Object
+                                 Optional split_rgb As Boolean = False,
+                                 Optional IHC_antibody As list = Nothing,
+                                 Optional env As Environment = Nothing) As Object
 
-        If split_IHC1_channels Then
+        If IHC_antibody IsNot Nothing Then
+            Dim antibody As New Dictionary(Of String, Color)
+
+            For Each name As String In IHC_antibody.getNames
+                antibody(name) = RColorPalette.GetRawColor(IHC_antibody.getByName(name))
+            Next
+
+            Dim unmix As New IHCScanner(antibody)
+            Dim cells = unmix.ScanCells(dzi, level, dir,
+                                             ostu_factor:=ostu_factor,
+                                             noise:=noise,
+                                             moran_knn:=moran_knn,
+                                             splitBlocks:=split_blocks).ToArray
+            Return cells
+        ElseIf split_rgb Then
             Dim rgb As list = list.empty
-            Dim channels = dzi.ScanIHC1Cells(level, dir,
+            Dim channels = dzi.ScanIHCRGBCells(level, dir,
                                              ostu_factor:=ostu_factor,
                                              noise:=noise,
                                              moran_knn:=moran_knn,
                                              splitBlocks:=split_blocks)
-            Call rgb.add("CD11b", channels.CD11b)
-            Call rgb.add("CD11c", channels.CD11c)
-            Call rgb.add("CD8", channels.CD8)
-            Call rgb.add("PanCK", channels.PanCK)
-            Call rgb.add("Dapi", channels.Dapi)
+            Call rgb.add("r", channels.r)
+            Call rgb.add("g", channels.g)
+            Call rgb.add("b", channels.b)
 
             Return rgb
-        ElseIf split_IHC2_channels Then
-            Dim cmyk As list = list.empty
-            Dim channels = dzi.ScanIHC2Cells(level, dir,
-                                             ostu_factor:=ostu_factor,
-                                             noise:=noise,
-                                             moran_knn:=moran_knn,
-                                             splitBlocks:=split_blocks)
-            Call cmyk.add("Lg6G", channels.Lg6G)
-            Call cmyk.add("CiH3", channels.CiH3)
-            Call cmyk.add("p16", channels.p16)
-            Call cmyk.add("CD11b", channels.CD11b)
-            Call cmyk.add("PanCK", channels.PanCK)
-            Call cmyk.add("Dapi", channels.Dapi)
-
-            Return cmyk
         End If
 
         Return dzi.ScanCells(level, dir, ostu_factor,

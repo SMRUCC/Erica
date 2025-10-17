@@ -3,6 +3,7 @@ Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualBasic.ApplicationServices.Terminal.ProgressBar.Tqdm
 Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
+Imports Microsoft.VisualBasic.Imaging.BitmapImage
 
 Public Class IHCScanner
 
@@ -55,6 +56,7 @@ Public Class IHCScanner
 
         For Each antibody As NamedCollection(Of Double) In Me.antibody
             Dim scaled = DziImageBuffer.GlobalScales(layers(antibody.name))
+            Dim tiles = layers(antibody.name).ToDictionary(Function(a) a.xy.JoinBy("_"), Function(a) a.bitmap)
             Dim cells As CellScan() = scaled.ScanBuffer(
                 ostu_factor:=ostu_factor,
                 flip:=False,
@@ -63,6 +65,11 @@ Public Class IHCScanner
                 moran_knn:=moran_knn).ToArray
 
             For Each cell As CellScan In cells
+                Dim tile As BitmapBuffer = tiles(cell.tile_id)
+                Dim weights = cell.scan_x _
+                    .Select(Function(xi, i) tile.GetRed(CInt(xi), CInt(cell.scan_y(i))) / 255) _
+                    .ToArray
+
                 Yield New IHCCellScan With {
                     .antibody = antibody.name,
                     .area = cell.area,
@@ -77,7 +84,7 @@ Public Class IHCScanner
                     .ratio = cell.ratio,
                     .scan_x = cell.scan_x,
                     .scan_y = cell.scan_y,
-                    .weight = 0,
+                    .weight = If(weights.Length = 0, 0, weights.Average),
                     .width = cell.width,
                     .x = cell.x,
                     .y = cell.y,
