@@ -24,26 +24,6 @@ Public Module DziScanner
         Return otsuThreshold(bits)
     End Function
 
-    Public Function globalIHC1Threshold(imagefiles As DziImageBuffer()) As (r As Integer, g As Integer, b As Integer)
-        Dim bitsR As New BucketSet(Of UInteger)
-        Dim bitsG As New BucketSet(Of UInteger)
-        Dim bitsB As New BucketSet(Of UInteger)
-        Dim bar As Tqdm.ProgressBar = Nothing
-        Dim wrap_tqdm As Boolean = App.EnableTqdm
-
-        For Each file As DziImageBuffer In Tqdm.Wrap(imagefiles, bar:=bar, wrap_console:=wrap_tqdm)
-            Dim bitmap As BitmapBuffer = file.bitmap
-            Dim rgb = bitmap.RGB
-
-            Call bitsR.Add(rgb.R.GetARGBStream)
-            Call bitsG.Add(rgb.G.GetARGBStream)
-            Call bitsB.Add(rgb.B.GetARGBStream)
-            Call bitmap.Dispose()
-        Next
-
-        Return (otsuThreshold(bitsR), otsuThreshold(bitsG), otsuThreshold(bitsB))
-    End Function
-
     ''' <summary>
     ''' scan with CMYK colors
     ''' </summary>
