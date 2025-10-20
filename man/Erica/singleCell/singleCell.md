@@ -15,4 +15,5 @@ single cell data toolkit
 + [parse_dziImage](singleCell/parse_dziImage.1) Parse the dzi image metadata from a given xml document data
 + [scan.dzi_cells](singleCell/scan.dzi_cells.1) Scan all single cell shapes from the given dzi slide data
 + [write.cells_bson](singleCell/write.cells_bson.1) 
-+ [ihc_unmixing](singleCell/ihc_unmixing.1) Debug test used only
++ [ihc_unmixing](singleCell/ihc_unmixing.1) unmix IHC stained pixel color into the corresponding antibody expression values
++ [dzi_unmix](singleCell/dzi_unmix.1) 

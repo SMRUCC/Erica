@@ -10,6 +10,9 @@
 */
 declare namespace singleCell {
    /**
+   */
+   function dzi_unmix(dzi: object, level: object, dir: object, IHC_antibody: object, export_dir: string): any;
+   /**
     * Extract the gene id set with non-missing expression status under 
     *  the given threshold value **`q`**.
     * 
@@ -61,17 +64,17 @@ declare namespace singleCell {
    */
    function HTS_matrix(h5ad: any, env?: object): object;
    /**
-    * Debug test used only
+    * unmix IHC stained pixel color into the corresponding antibody expression values
     * 
     * 
      * @param pixel [r,g,b] color value, in range [0,1]
-     * @param type -
+     * @param IHC_antibody a tuple list of the antibody reference colors
      * 
-     * + default value Is ``["ihc1","ihc2"]``.
+     * + default value Is ``null``.
      * @param env 
      * + default value Is ``null``.
    */
-   function ihc_unmixing(pixel: any, type?: any, env?: object): any;
+   function ihc_unmixing(pixel: any, IHC_antibody?: object, env?: object): any;
    /**
     * Parse the dzi image metadata from a given xml document data
     * 

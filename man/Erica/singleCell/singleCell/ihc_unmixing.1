@@ -1,21 +1,21 @@
 .\" man page create by R# package system.
 .TH SINGLECELL 1 2000-Jan "ihc_unmixing" "ihc_unmixing"
 .SH NAME
-ihc_unmixing \- Debug test used only
+ihc_unmixing \- unmix IHC stained pixel color into the corresponding antibody expression values
 .SH SYNOPSIS
 \fIihc_unmixing(\fBpixel\fR as any, 
-\fBtype\fR as any = ["ihc1","ihc2"], 
+\fBIHC_antibody\fR as list = \fB<NULL>\fR, 
 [\fB<Environment>\fR]);\fR
 .SH DESCRIPTION
 .PP
-Debug test used only
+unmix IHC stained pixel color into the corresponding antibody expression values
 .PP
 .SH OPTIONS
 .PP
 \fBpixel\fB \fR\- [r,g,b] color value, in range [0,1]. 
 .PP
 .PP
-\fBtype\fB \fR\- -. 
+\fBIHC_antibody\fB \fR\- a tuple list of the antibody reference colors. 
 .PP
 .SH SEE ALSO
 singleCell
