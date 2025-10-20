@@ -37,12 +37,7 @@ Public Class IHCScanner
         Return IHCUnmixing.UnmixPixel(pixel, A)
     End Function
 
-    Public Iterator Function ScanCells(dzi As DziImage, level As Integer, dir As IFileSystemEnvironment,
-                                       Optional ostu_factor As Double = 0.7,
-                                       Optional noise As Double = 0.25,
-                                       Optional moran_knn As Integer = 32,
-                                       Optional splitBlocks As Boolean = True) As IEnumerable(Of IHCCellScan)
-
+    Public Function UnmixDziImage(dzi As DziImage, level As Integer, dir As IFileSystemEnvironment) As Dictionary(Of String, DziImageBuffer())
         Dim imagefiles As DziImageBuffer() = DziImageBuffer.LoadBuffer(dzi, level, dir, skipBlank:=True).ToArray
         Dim layers As New Dictionary(Of String, DziImageBuffer())
         Dim N As Integer = Me.antibody.Length
@@ -63,6 +58,17 @@ Public Class IHCScanner
         Next
 
         Erase imagefiles
+
+        Return layers
+    End Function
+
+    Public Iterator Function ScanCells(dzi As DziImage, level As Integer, dir As IFileSystemEnvironment,
+                                       Optional ostu_factor As Double = 0.7,
+                                       Optional noise As Double = 0.25,
+                                       Optional moran_knn As Integer = 32,
+                                       Optional splitBlocks As Boolean = True) As IEnumerable(Of IHCCellScan)
+
+        Dim layers As Dictionary(Of String, DziImageBuffer()) = UnmixDziImage(dzi, level, dir)
 
         For Each antibody As NamedCollection(Of Double) In Me.antibody
             Dim scaled = DziImageBuffer.GlobalScales(layers(antibody.name))

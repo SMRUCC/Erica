@@ -560,7 +560,7 @@ Public Module singleCells
     ''' unmix IHC stained pixel color into the corresponding antibody expression values
     ''' </summary>
     ''' <param name="pixel">[r,g,b] color value, in range [0,1]</param>
-    ''' <param name="IHC_antibody"></param>
+    ''' <param name="IHC_antibody">a tuple list of the antibody reference colors</param>
     ''' <returns></returns>
     <ExportAPI("ihc_unmixing")>
     Public Function IHCUnmixing_f(<RRawVectorArgument> pixel As Object,
@@ -575,4 +575,21 @@ Public Module singleCells
 
         Return New list(vec, names)
     End Function
+
+    <ExportAPI("dzi_unmix")>
+    Public Function dzi_unmix(dzi As DziImage, level As Integer, dir As IFileSystemEnvironment, IHC_antibody As list, export_dir As String) As Object
+        Dim unmix As IHCScanner = antibodyColors(IHC_antibody)
+        Dim layers As Dictionary(Of String, DziImageBuffer()) = unmix.UnmixDziImage(dzi, level, dir)
+
+        For Each antibody_name As String In unmix.Antibodies
+            Dim antibody_dir As String = Path.Combine(export_dir, antibody_name)
+
+            For Each image As DziImageBuffer In layers(antibody_name)
+                Call image.bitmap.Save($"{antibody_dir}/{image.xy.JoinBy("_")}.bmp")
+            Next
+        Next
+
+        Return Nothing
+    End Function
+
 End Module
