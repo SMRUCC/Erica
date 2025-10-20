@@ -10,6 +10,12 @@ Public Class IHCScanner
     ReadOnly antibody As NamedCollection(Of Double)()
     ReadOnly A As Double(,)
 
+    Public ReadOnly Property Antibodies As String()
+        Get
+            Return antibody.Select(Function(a) a.name).ToArray
+        End Get
+    End Property
+
     Sub New(antibody As Dictionary(Of String, Color))
         Me.antibody = antibody _
             .Select(Function(a)
@@ -26,6 +32,10 @@ Public Class IHCScanner
             A(2, i) = vec(2)
         Next
     End Sub
+
+    Public Function UnmixPixel(pixel As Color) As Double()
+        Return IHCUnmixing.UnmixPixel(pixel, A)
+    End Function
 
     Public Iterator Function ScanCells(dzi As DziImage, level As Integer, dir As IFileSystemEnvironment,
                                        Optional ostu_factor As Double = 0.7,

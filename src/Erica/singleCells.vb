@@ -510,13 +510,7 @@ Public Module singleCells
                                  Optional env As Environment = Nothing) As Object
 
         If IHC_antibody IsNot Nothing Then
-            Dim antibody As New Dictionary(Of String, Color)
-
-            For Each name As String In IHC_antibody.getNames
-                antibody(name) = RColorPalette.GetRawColor(IHC_antibody.getByName(name))
-            Next
-
-            Dim unmix As New IHCScanner(antibody)
+            Dim unmix As IHCScanner = antibodyColors(IHC_antibody)
             Dim cells = unmix.ScanCells(dzi, level, dir,
                                              ostu_factor:=ostu_factor,
                                              noise:=noise,
@@ -552,34 +546,32 @@ Public Module singleCells
         End Using
     End Sub
 
+    Private Function antibodyColors(IHC_antibody As list) As IHCScanner
+        Dim antibody As New Dictionary(Of String, Color)
+
+        For Each name As String In IHC_antibody.getNames
+            antibody(name) = RColorPalette.GetRawColor(IHC_antibody.getByName(name))
+        Next
+
+        Return New IHCScanner(antibody)
+    End Function
+
     ''' <summary>
-    ''' Debug test used only
+    ''' unmix IHC stained pixel color into the corresponding antibody expression values
     ''' </summary>
     ''' <param name="pixel">[r,g,b] color value, in range [0,1]</param>
-    ''' <param name="type"></param>
+    ''' <param name="IHC_antibody"></param>
     ''' <returns></returns>
     <ExportAPI("ihc_unmixing")>
     Public Function IHCUnmixing_f(<RRawVectorArgument> pixel As Object,
-                                  <RRawVectorArgument(TypeCodes.string)>
-                                  Optional type As Object = "ihc1|ihc2",
+                                  Optional IHC_antibody As list = Nothing,
                                   Optional env As Environment = Nothing) As Object
 
         Dim rgb As Double() = CLRVector.asNumeric(pixel)
-        Dim type_str As String() = CLRVector.asCharacter(type)
-        Dim vec As Double()
-        Dim names As String()
+        Dim unmix As IHCScanner = antibodyColors(IHC_antibody)
         Dim color As Color = Color.FromArgb(CInt(rgb(0) * 255), CInt(rgb(1) * 255), CInt(rgb(2) * 255))
-
-        Select Case Strings.LCase(type_str(0))
-            Case "ihc1"
-                vec = IHCUnmixing.UnmixPixel(color, IHCUnmixing.GetReferenceMatrixIHC1)
-                names = IHCUnmixing.GetAntibodyNamesIHC1
-            Case "ihc2"
-                vec = IHCUnmixing.UnmixPixel(color, IHCUnmixing.GetReferenceMatrixIHC2)
-                names = IHCUnmixing.GetAntibodyNamesIHC2
-            Case Else
-                Return RInternal.debug.stop($"unknown experiment type: {type_str(0)}", env)
-        End Select
+        Dim vec As Double() = unmix.UnmixPixel(color)
+        Dim names As String() = unmix.Antibodies
 
         Return New list(vec, names)
     End Function

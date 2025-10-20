@@ -92,4 +92,91 @@ Public Class CellScan : Implements Layout2D
         Return raw.ConcaveHull
     End Function
 
+    ''' <summary>
+    ''' 对细胞数据进行几何变换（缩放、旋转、平移）
+    ''' </summary>
+    ''' <param name="cells">原始细胞数组</param>
+    ''' <param name="transform">变换参数</param>
+    ''' <returns>变换后的细胞数组</returns>
+    Public Shared Function ApplyTransform(cells As CellScan(), transform As Transform) As CellScan()
+        If cells Is Nothing OrElse cells.Length = 0 Then
+            Return New CellScan() {}
+        End If
+
+        Dim transformedCells(cells.Length - 1) As CellScan
+
+        ' 预先计算三角函数值以提高性能
+        Dim cosTheta As Double = std.Cos(transform.theta)
+        Dim sinTheta As Double = std.Sin(transform.theta)
+
+        For i As Integer = 0 To cells.Length - 1
+            Dim originalCell As CellScan = cells(i)
+            Dim transformedCell As New CellScan()
+
+            ' 复制原始属性
+            transformedCell.tile_id = originalCell.tile_id
+
+            ' 应用变换：先缩放，再旋转，最后平移
+            Dim x As Double = originalCell.physical_x
+            Dim y As Double = originalCell.physical_y
+
+            ' 1. 缩放变换
+            x = x * transform.scalex
+            y = y * transform.scaley
+
+            ' 2. 旋转变换
+            ' 注意：标准数学坐标系中的旋转公式
+            Dim xRotated As Double = x * cosTheta - y * sinTheta
+            Dim yRotated As Double = x * sinTheta + y * cosTheta
+
+            ' 3. 平移变换
+            transformedCell.physical_x = xRotated + transform.tx
+            transformedCell.physical_y = yRotated + transform.ty
+
+            transformedCells(i) = transformedCell
+        Next
+
+        Return transformedCells
+    End Function
+
+    ''' <summary>
+    ''' 使用变换矩阵应用复合变换（更高效的方式）
+    ''' </summary>
+    Public Shared Function ApplyTransformWithMatrix(cells As CellScan(), transform As Transform) As CellScan()
+        If cells Is Nothing OrElse cells.Length = 0 Then
+            Return New CellScan() {}
+        End If
+
+        Dim transformedCells(cells.Length - 1) As CellScan
+
+        ' 构建复合变换矩阵：缩放 × 旋转 × 平移
+        Dim cosTheta As Double = std.Cos(transform.theta)
+        Dim sinTheta As Double = std.Sin(transform.theta)
+
+        ' 变换矩阵的各个分量
+        Dim m11 As Double = transform.scalex * cosTheta   ' 缩放和旋转的复合
+        Dim m12 As Double = -transform.scaley * sinTheta
+        Dim m21 As Double = transform.scalex * sinTheta
+        Dim m22 As Double = transform.scaley * cosTheta
+        Dim tx As Double = transform.tx
+        Dim ty As Double = transform.ty
+
+        For i As Integer = 0 To cells.Length - 1
+            Dim originalCell As CellScan = cells(i)
+            Dim transformedCell As New CellScan()
+
+            transformedCell.tile_id = originalCell.tile_id
+
+            Dim x As Double = originalCell.physical_x
+            Dim y As Double = originalCell.physical_y
+
+            ' 应用复合变换矩阵
+            transformedCell.physical_x = x * m11 + y * m12 + tx
+            transformedCell.physical_y = x * m21 + y * m22 + ty
+
+            transformedCells(i) = transformedCell
+        Next
+
+        Return transformedCells
+    End Function
 End Class
