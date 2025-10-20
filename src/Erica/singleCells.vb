@@ -512,18 +512,21 @@ Public Module singleCells
         If IHC_antibody IsNot Nothing Then
             Dim unmix As IHCScanner = antibodyColors(IHC_antibody)
             Dim cells = unmix.ScanCells(dzi, level, dir,
-                                             ostu_factor:=ostu_factor,
-                                             noise:=noise,
-                                             moran_knn:=moran_knn,
-                                             splitBlocks:=split_blocks).ToArray
+                ostu_factor:=ostu_factor,
+                noise:=noise,
+                moran_knn:=moran_knn,
+                splitBlocks:=split_blocks).ToArray
+
             Return cells
         ElseIf split_rgb Then
             Dim rgb As list = list.empty
             Dim channels = dzi.ScanIHCRGBCells(level, dir,
-                                             ostu_factor:=ostu_factor,
-                                             noise:=noise,
-                                             moran_knn:=moran_knn,
-                                             splitBlocks:=split_blocks)
+                ostu_factor:=ostu_factor,
+                noise:=noise,
+                moran_knn:=moran_knn,
+                splitBlocks:=split_blocks
+            )
+
             Call rgb.add("r", channels.r)
             Call rgb.add("g", channels.g)
             Call rgb.add("b", channels.b)
