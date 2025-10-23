@@ -17,6 +17,7 @@ Imports Microsoft.VisualBasic.Imaging.Filters
 Imports Microsoft.VisualBasic.Imaging.Math2D
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.MIME.application.json
+Imports Microsoft.VisualBasic.MIME.application.json.Javascript
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports Microsoft.VisualBasic.Scripting.Runtime
 Imports SMRUCC.genomics.Analysis
@@ -613,10 +614,20 @@ Public Module singleCells
                   .ToArray
     End Function
 
+    ''' <summary>
+    ''' write the cell matrix data into a bson file
+    ''' </summary>
+    ''' <param name="cells">a vector of the cell objects</param>
+    ''' <param name="file">file path to the bson file for save the cell matrix data</param>
     <ExportAPI("write.cells_bson")>
     Public Sub writeCellBson(cells As CellScan(), file As String)
         Using s As Stream = file.Open(FileMode.OpenOrCreate, doClear:=True, [readOnly]:=False)
-            Call BSON.SafeWriteBuffer(cells.CreateJSONElement, s)
+            Dim json As JsonElement = If(
+                TypeOf cells Is IHCCellScan(),
+                DirectCast(cells, IHCCellScan()).CreateJSONElement,
+                cells.CreateJSONElement)
+
+            Call BSON.SafeWriteBuffer(json, s)
         End Using
     End Sub
 
