@@ -98,7 +98,7 @@ Public Class CellScan : Implements Layout2D
     End Function
 
     ''' <summary>
-    ''' 对细胞数据进行几何变换（缩放、旋转、平移）
+    ''' Perform geometric transformations (scaling, rotation, translation) on cellular matrix data.
     ''' </summary>
     ''' <param name="cells">原始细胞数组</param>
     ''' <param name="transform">变换参数</param>
@@ -116,7 +116,7 @@ Public Class CellScan : Implements Layout2D
 
         For i As Integer = 0 To cells.Length - 1
             Dim originalCell As CellScan = cells(i)
-            Dim transformedCell As New CellScan()
+            Dim transformedCell As New CellScan(originalCell)
 
             ' 复制原始属性
             transformedCell.tile_id = originalCell.tile_id
@@ -168,7 +168,7 @@ Public Class CellScan : Implements Layout2D
 
         For i As Integer = 0 To cells.Length - 1
             Dim originalCell As CellScan = cells(i)
-            Dim transformedCell As New CellScan()
+            Dim transformedCell As New CellScan(originalCell)
 
             transformedCell.tile_id = originalCell.tile_id
 

@@ -86,9 +86,7 @@ Public Module singleCells
     <RGenericOverloads("as.data.frame")>
     Private Function HEcellsMatrix2(cells As IHCCellScan(), args As list, env As Environment) As dataframe
         Dim df As dataframe = HEcellsMatrix(DirectCast(cells, CellScan()), args, env)
-
         Call df.add("antibody", From cell As IHCCellScan In cells Select cell.antibody)
-
         Return df
     End Function
 
@@ -509,7 +507,7 @@ Public Module singleCells
     ''' the cmyk channels single cell detection result of the IHC2 image.
     ''' </returns>
     <ExportAPI("scan.dzi_cells")>
-    <RApiReturn(GetType(CellScan))>
+    <RApiReturn(GetType(CellScan), GetType(IHCCellScan))>
     Public Function scanDziCells(dzi As DziImage, level As Integer, dir As IFileSystemEnvironment,
                                  Optional ostu_factor As Double = 0.7,
                                  Optional noise As Double = 0.25,
@@ -606,4 +604,9 @@ Public Module singleCells
         Return Nothing
     End Function
 
+    <ExportAPI("geo_transform")>
+    <RApiReturn(GetType(CellScan))>
+    Public Function geo_transform(cells As CellScan(), transform As Transform) As Object
+        Return CellScan.ApplyTransform(cells, transform)
+    End Function
 End Module
