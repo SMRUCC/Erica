@@ -35,6 +35,28 @@ Public Class CellScan : Implements Layout2D
     ''' <returns></returns>
     Public Property weight As Double
 
+    Protected Overridable Function Clone() As CellScan
+        Return New CellScan With {
+            .area = area,
+            .average_dist = average_dist,
+            .density = density,
+            .height = height,
+            .moranI = moranI,
+            .physical_x = physical_x,
+            .physical_y = physical_y,
+            .points = points,
+            .pvalue = pvalue,
+            .ratio = ratio,
+            .scan_x = scan_x,
+            .scan_y = scan_y,
+            .tile_id = tile_id,
+            .weight = weight,
+            .width = width,
+            .x = x,
+            .y = y
+        }
+    End Function
+
     ''' <summary>
     ''' 
     ''' </summary>
@@ -116,7 +138,7 @@ Public Class CellScan : Implements Layout2D
 
         For i As Integer = 0 To cells.Length - 1
             Dim originalCell As CellScan = cells(i)
-            Dim transformedCell As New CellScan(originalCell)
+            Dim transformedCell As CellScan = originalCell.Clone
 
             ' 复制原始属性
             transformedCell.tile_id = originalCell.tile_id
@@ -168,7 +190,7 @@ Public Class CellScan : Implements Layout2D
 
         For i As Integer = 0 To cells.Length - 1
             Dim originalCell As CellScan = cells(i)
-            Dim transformedCell As New CellScan(originalCell)
+            Dim transformedCell As CellScan = originalCell.Clone
 
             transformedCell.tile_id = originalCell.tile_id
 
