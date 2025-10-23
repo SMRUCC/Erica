@@ -29,6 +29,11 @@ Public Class CellScan : Implements Layout2D
     Public Property height As Double
     Public Property density As Double
     Public Property average_dist As Double
+    ''' <summary>
+    ''' the average grayscale weighted by area
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property weight As Double
 
     ''' <summary>
     ''' 
