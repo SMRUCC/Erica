@@ -24,6 +24,9 @@ declare namespace singleCell {
    */
    function expression_list(raw: object, q?: number): object;
    /**
+   */
+   function geo_transform(cells: object, transform: object): object;
+   /**
     * scan the cells from a given HE image
     * 
     * 
@@ -91,6 +94,16 @@ declare namespace singleCell {
    function pca_annotation(h5ad: object): object;
    module read {
       /**
+       * read the csv table file as cells data matrix
+       * 
+       * 
+        * @param file -
+        * @param env -
+        * 
+        * + default value Is ``null``.
+      */
+      function cells(file: any, env?: object): object|object;
+      /**
        * read the deepzoom image metadata xml file
        * 
        * 
@@ -154,7 +167,7 @@ declare namespace singleCell {
         *  if scanning of the IHC2 channels, then this function will returns a tuple list that contains
         *  the cmyk channels single cell detection result of the IHC2 image.
       */
-      function dzi_cells(dzi: object, level: object, dir: object, ostu_factor?: number, noise?: number, moran_knn?: object, flip?: boolean, split_blocks?: boolean, split_rgb?: boolean, IHC_antibody?: object, env?: object): object;
+      function dzi_cells(dzi: object, level: object, dir: object, ostu_factor?: number, noise?: number, moran_knn?: object, flip?: boolean, split_blocks?: boolean, split_rgb?: boolean, IHC_antibody?: object, env?: object): object|object;
    }
    /**
     * Create spatial annotations data set for each spot data
@@ -199,6 +212,11 @@ declare namespace singleCell {
    function umap_annotation(h5ad: object): object;
    module write {
       /**
+       * write the cell matrix data into a bson file
+       * 
+       * 
+        * @param cells a vector of the cell objects
+        * @param file file path to the bson file for save the cell matrix data
       */
       function cells_bson(cells: object, file: string): ;
    }
