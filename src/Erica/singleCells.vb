@@ -5,6 +5,7 @@ Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Data.ChartPlots
 Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas
+Imports Microsoft.VisualBasic.Data.Framework.IO
 Imports Microsoft.VisualBasic.Emit.Delegates
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.BitmapImage
@@ -99,6 +100,7 @@ Public Module singleCells
             .columns = New Dictionary(Of String, Array)
         }
 
+        Call df.add("tile_id", From cell As CellScan In cells Select cell.tile_id)
         Call df.add("x", From cell As CellScan In cells Select cell.x)
         Call df.add("y", From cell As CellScan In cells Select cell.y)
         Call df.add("physical_x", From cell As CellScan In cells Select cell.physical_x)
@@ -115,6 +117,66 @@ Public Module singleCells
         Call df.add("p-value", From cell As CellScan In cells Select cell.pvalue)
 
         Return df
+    End Function
+
+    ''' <summary>
+    ''' read the csv table file as cells data matrix
+    ''' </summary>
+    ''' <param name="file"></param>
+    ''' <param name="env"></param>
+    ''' <returns></returns>
+    <ExportAPI("read.cells")>
+    <RApiReturn(GetType(CellScan), GetType(IHCCellScan))>
+    Public Function readCellsMatrix(<RRawVectorArgument> file As Object, Optional env As Environment = Nothing) As Object
+        Dim s = SMRUCC.Rsharp.GetFileStream(file, FileAccess.Read, env)
+
+        If s Like GetType(Message) Then
+            Return s.TryCast(Of Message)
+        End If
+
+        Dim df As DataFrameResolver = DataFrameResolver.Load(s.TryCast(Of Stream))
+        Dim antibody As Integer = df.GetOrdinal("antibody")
+        Dim isIHCCells As Boolean = antibody > -1
+        Dim cells As New List(Of CellScan)
+        Dim x As Integer = df.GetOrdinal("x")
+        Dim y As Integer = df.GetOrdinal("y")
+        Dim physical_x As Integer = df.GetOrdinal("physical_x")
+        Dim physical_y As Integer = df.GetOrdinal("physical_y")
+        Dim area As Integer = df.GetOrdinal("area")
+        Dim ratio As Integer = df.GetOrdinal("ratio")
+        Dim size As Integer = df.GetOrdinal("size")
+        Dim r1 As Integer = df.GetOrdinal("r1")
+        Dim r2 As Integer = df.GetOrdinal("r2")
+        Dim weight As Integer = df.GetOrdinal("weight")
+        Dim density As Integer = df.GetOrdinal("density")
+        Dim mean_distance As Integer = df.GetOrdinal("mean_distance")
+        Dim moran_I As Integer = df.GetOrdinal("moran-I")
+        Dim p_value As Integer = df.GetOrdinal("p-value")
+        Dim tile_id As Integer = df.GetOrdinal("tile_id")
+
+        Do While df.Read
+            Dim cell As CellScan = If(isIHCCells, New IHCCellScan With {.antibody = df.GetString(antibody)}, New CellScan)
+
+            cell.x = df.GetDouble(x)
+            cell.y = df.GetDouble(y)
+            cell.physical_x = df.GetDouble(physical_x)
+            cell.physical_y = df.GetDouble(physical_y)
+            cell.area = df.GetDouble(area)
+            cell.ratio = df.GetDouble(ratio)
+            cell.points = df.GetInt32(size)
+            cell.width = df.GetDouble(r1)
+            cell.height = df.GetDouble(r2)
+            cell.weight = df.GetDouble(weight)
+            cell.density = df.GetDouble(density)
+            cell.average_dist = df.GetDouble(mean_distance)
+            cell.moranI = df.GetDouble(moran_I)
+            cell.pvalue = df.GetDouble(p_value)
+            cell.tile_id = df.GetString(tile_id)
+
+            Call cells.Add(cell)
+        Loop
+
+        Return cells.ToArray
     End Function
 
     <RGenericOverloads("as.data.frame")>
