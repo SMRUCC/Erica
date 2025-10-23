@@ -55,6 +55,7 @@ Public Module singleCells
     Sub Main()
         Call RInternal.Object.Converts.addHandler(GetType(SpotAnnotation()), AddressOf SpotAnnotationMatrix)
         Call RInternal.Object.Converts.addHandler(GetType(CellScan()), AddressOf HEcellsMatrix)
+        Call RInternal.Object.Converts.addHandler(GetType(IHCCellScan()), AddressOf HEcellsMatrix2)
 
         Call RInternal.generic.add("plot", GetType(CellScan()), AddressOf plotCellScans)
     End Sub
@@ -80,6 +81,15 @@ Public Module singleCells
             Dim app As New FillPolygons(polygons, scatter, theme)
             Return app.Plot(size, driver:=driver)
         End If
+    End Function
+
+    <RGenericOverloads("as.data.frame")>
+    Private Function HEcellsMatrix2(cells As IHCCellScan(), args As list, env As Environment) As dataframe
+        Dim df As dataframe = HEcellsMatrix(DirectCast(cells, CellScan()), args, env)
+
+        Call df.add("antibody", From cell As IHCCellScan In cells Select cell.antibody)
+
+        Return df
     End Function
 
     <RGenericOverloads("as.data.frame")>
