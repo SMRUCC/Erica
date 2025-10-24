@@ -6,8 +6,8 @@ let CD31_PAS = read.csv("C:\Users\Administrator\Desktop\MLKL-5\CD31+PAS_cells.cs
 
 print(HE, max.print = 13);
 
-HE = geometry2D::polygon2D(HE$physical_x, HE$physical_y);
-CD31_PAS = geometry2D::polygon2D(CD31_PAS$physical_x, CD31_PAS$physical_y);
+HE = data.frame(x=HE$physical_x,y= HE$physical_y) |> concaveHull(as.polygon = TRUE);
+CD31_PAS = data.frame(x=CD31_PAS$physical_x,y= CD31_PAS$physical_y) |> concaveHull(as.polygon = TRUE);
 
 print(HE);
 print(CD31_PAS);
