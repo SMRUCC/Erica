@@ -15,7 +15,7 @@ let HE_outline = polygon2D(HE,raster_n =3) |> concaveHull(as.polygon = TRUE);
 let CD31_PAS_outline = polygon2D(CD31_PAS,raster_n =3) |> concaveHull(as.polygon = TRUE);
 
 let HE_polygon =polygon2D(HE,raster_n =3);
-let CD31_PAS_polygon = polygon2D(,raster_n =3);
+let CD31_PAS_polygon = polygon2D(CD31_PAS,raster_n =3);
 
 HE = as.data.frame(HE_polygon);
 HE[,"class"] = "HE";
@@ -37,9 +37,9 @@ aligned = rbind(HE, aligned);
 let un_aligned = rbind(HE, CD31_PAS);
 
 bitmap(file = file.path(dir, "unaligned.png")) {
-    plot(as.numeric(un_aligned$x),as.numeric(un_aligned$y), class = un_aligned$class, fill = "white");
+    plot(as.numeric(un_aligned$x),as.numeric(un_aligned$y), class = un_aligned$class, fill = "white",point_size= 1);
 }
 
 bitmap(file = file.path(dir, "aligned.png")) {
-    plot(as.numeric(aligned$x),as.numeric(aligned$y), class = aligned$class, fill = "white");
+    plot(as.numeric(aligned$x),as.numeric(aligned$y), class = aligned$class, fill = "white",point_size= 1);
 }
