@@ -10,7 +10,7 @@ let CD31_PAS = read.csv( file.path(dir, "CD31+PAS.csv") , row.names =NULL, check
 print(HE, max.print = 13);
 
 let get_mainshape = function(multishapes, name) {
-    multishapes = knn_cluster(multishapes, knn = 32, p = 0.5);
+    multishapes = knn_cluster(multishapes, knn = 64, p = 0.8);
     multishapes = as.data.frame(multishapes);
 
     print(multishapes, max.print = 16);
