@@ -8,8 +8,8 @@ let CD31_PAS = read.csv( file.path(dir, "CD31+PAS_cells.csv") , row.names =1, ch
 
 print(HE, max.print = 13);
 
-HE = polygon2D(HE$physical_x, HE$physical_y) |> rasterize(estimate_size = 1200) |> polygon2D(raster_n =3) |> as.data.frame();
-CD31_PAS = polygon2D(CD31_PAS$physical_x, CD31_PAS$physical_y) |> rasterize(estimate_size = 1200) |> polygon2D(raster_n =3) |> as.data.frame();
+HE = polygon2D(HE$physical_x, HE$physical_y) |> rasterize(estimate_size = 550) |> polygon2D(raster_n =3) |> as.data.frame();
+CD31_PAS = polygon2D(CD31_PAS$physical_x, CD31_PAS$physical_y) |> rasterize(estimate_size = 550) |> polygon2D(raster_n =3) |> as.data.frame();
 
 write.csv(HE, file.path(dir, "raster/HE.csv"), row.names = FALSE);
 write.csv(CD31_PAS, file.path(dir, "raster/CD31+PAS.csv"), row.names = FALSE);
