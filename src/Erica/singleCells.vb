@@ -149,6 +149,7 @@ Public Module singleCells
         Dim size As Integer = df.GetOrdinal("size")
         Dim r1 As Integer = df.GetOrdinal("r1")
         Dim r2 As Integer = df.GetOrdinal("r2")
+        Dim theta As Integer = df.GetOrdinal("theta")
         Dim weight As Integer = df.GetOrdinal("weight")
         Dim density As Integer = df.GetOrdinal("density")
         Dim mean_distance As Integer = df.GetOrdinal("mean_distance")
@@ -174,6 +175,7 @@ Public Module singleCells
             cell.moranI = df.GetDouble(moran_I)
             cell.pvalue = df.GetDouble(p_value)
             cell.tile_id = df.GetString(tile_id)
+            cell.theta = df.GetDouble(theta)
 
             Call cells.Add(cell)
         Loop
