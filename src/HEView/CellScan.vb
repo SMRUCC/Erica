@@ -180,43 +180,24 @@ Public Class CellScan : Implements Layout2D
     End Function
 
     ''' <summary>
-    ''' 使用变换矩阵应用复合变换（更高效的方式）
+    ''' 仿射变换
     ''' </summary>
-    Public Shared Function ApplyTransformWithMatrix(cells As CellScan(), transform As Transform) As CellScan()
+    Public Shared Function ApplyTransformWithMatrix(cells As CellScan(), transform As AffineTransform) As CellScan()
         If cells Is Nothing OrElse cells.Length = 0 Then
             Return New CellScan() {}
+        Else
+            Dim transformedCells(cells.Length - 1) As CellScan
+
+            For i As Integer = 0 To cells.Length - 1
+                transformedCells(i) = cells(i).Clone
+
+                With transform.ApplyToPoint(New PointF(transformedCells(i).physical_x, transformedCells(i).physical_y))
+                    transformedCells(i).physical_x = .X
+                    transformedCells(i).physical_y = .Y
+                End With
+            Next
+
+            Return transformedCells
         End If
-
-        Dim transformedCells(cells.Length - 1) As CellScan
-
-        ' 构建复合变换矩阵：缩放 × 旋转 × 平移
-        Dim cosTheta As Double = std.Cos(transform.theta)
-        Dim sinTheta As Double = std.Sin(transform.theta)
-
-        ' 变换矩阵的各个分量
-        Dim m11 As Double = transform.scalex * cosTheta   ' 缩放和旋转的复合
-        Dim m12 As Double = -transform.scaley * sinTheta
-        Dim m21 As Double = transform.scalex * sinTheta
-        Dim m22 As Double = transform.scaley * cosTheta
-        Dim tx As Double = transform.tx
-        Dim ty As Double = transform.ty
-
-        For i As Integer = 0 To cells.Length - 1
-            Dim originalCell As CellScan = cells(i)
-            Dim transformedCell As CellScan = originalCell.Clone
-
-            transformedCell.tile_id = originalCell.tile_id
-
-            Dim x As Double = originalCell.physical_x
-            Dim y As Double = originalCell.physical_y
-
-            ' 应用复合变换矩阵
-            transformedCell.physical_x = x * m11 + y * m12 + tx
-            transformedCell.physical_y = x * m21 + y * m22 + ty
-
-            transformedCells(i) = transformedCell
-        Next
-
-        Return transformedCells
     End Function
 End Class
