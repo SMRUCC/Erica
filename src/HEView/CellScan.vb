@@ -182,7 +182,7 @@ Public Class CellScan : Implements Layout2D
     ''' <summary>
     ''' 仿射变换
     ''' </summary>
-    Public Shared Function ApplyTransformWithMatrix(cells As CellScan(), transform As AffineTransform) As CellScan()
+    Public Shared Function ApplyAffineTransform(cells As CellScan(), transform As AffineTransform) As CellScan()
         If cells Is Nothing OrElse cells.Length = 0 Then
             Return New CellScan() {}
         Else

@@ -679,7 +679,11 @@ Public Module singleCells
 
     <ExportAPI("geo_transform")>
     <RApiReturn(GetType(CellScan))>
-    Public Function geo_transform(cells As CellScan(), transform As Transform) As Object
-        Return CellScan.ApplyTransform(cells, transform)
+    Public Function geo_transform(cells As CellScan(), transform As GeometryTransform) As Object
+        If TypeOf transform Is Transform Then
+            Return CellScan.ApplyTransform(cells, DirectCast(transform, Transform))
+        Else
+            Return CellScan.ApplyAffineTransform(cells, DirectCast(transform, AffineTransform))
+        End If
     End Function
 End Module
