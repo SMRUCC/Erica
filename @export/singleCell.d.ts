@@ -30,10 +30,7 @@ declare namespace singleCell {
     * scan the cells from a given HE image
     * 
     * 
-     * @param HEstain the HE image
-     * @param is_binarized -
-     * 
-     * + default value Is ``false``.
+     * @param HEstain the HE image, should be a grayscale bitmap image.
      * @param flip -
      * 
      * + default value Is ``false``.
@@ -55,7 +52,7 @@ declare namespace singleCell {
      * 
      * + default value Is ``null``.
    */
-   function HE_cells(HEstain: any, is_binarized?: boolean, flip?: boolean, ostu_factor?: number, offset?: any, noise?: number, moran_knn?: object, split_blocks?: boolean, env?: object): object;
+   function HE_cells(HEstain: any, flip?: boolean, ostu_factor?: number, offset?: any, noise?: number, moran_knn?: object, split_blocks?: boolean, env?: object): object;
    /**
     * extract the raw expression data matrix from the h5ad object
     * 

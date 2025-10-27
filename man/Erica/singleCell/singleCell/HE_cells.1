@@ -4,7 +4,6 @@
 HE_cells \- scan the cells from a given HE image
 .SH SYNOPSIS
 \fIHE_cells(\fBHEstain\fR as any, 
-\fBis_binarized\fR as boolean = FALSE, 
 \fBflip\fR as boolean = FALSE, 
 \fBostu_factor\fR as double = 0.7, 
 \fBoffset\fR as any = \fB<NULL>\fR, 
@@ -19,11 +18,8 @@ scan the cells from a given HE image
 .SH OPTIONS
 .PP
 \fBHEstain\fB \fR\- 
- the HE image
+ the HE image, should be a grayscale bitmap image.
 . 
-.PP
-.PP
-\fBis_binarized\fB \fR\- -. 
 .PP
 .PP
 \fBflip\fB \fR\- -. 
