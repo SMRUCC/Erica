@@ -111,6 +111,7 @@ Public Module singleCells
         Call df.add("size", From cell As CellScan In cells Select cell.points)
         Call df.add("r1", From cell As CellScan In cells Select cell.r1)
         Call df.add("r2", From cell As CellScan In cells Select cell.r2)
+        Call df.add("theta", From cell As CellScan In cells Select cell.theta)
         Call df.add("weight", From cell As CellScan In cells Select cell.weight)
         Call df.add("density", From cell As CellScan In cells Select cell.density)
         Call df.add("mean_distance", From cell As CellScan In cells Select cell.average_dist)
