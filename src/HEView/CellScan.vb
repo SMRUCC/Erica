@@ -88,8 +88,8 @@ Public Class CellScan : Implements Layout2D
         Dim CELLS = CCLabeling.Process(bin, background:=Color.White, 0).ToArray
 
         For Each shape As Polygon2D In CELLS
-            Dim fit As EllipseFitResult = EllipseFitResult.FitEllipse(shape.ConcaveHull(r:=1, verbose:=False), strict:=False)
             Dim rect As RectangleF = shape.GetRectangle
+            Dim fit As EllipseFitResult = EllipseFitResult.FitEllipse(shape.ConcaveHull(r:=1, verbose:=False), strict:=False)
 
             If fit Is Nothing Then
                 Continue For
