@@ -3,6 +3,7 @@ Imports System.IO
 Imports HEView
 Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualBasic.CommandLine.Reflection
+Imports Microsoft.VisualBasic.ComponentModel.Algorithm.base
 Imports Microsoft.VisualBasic.Data.ChartPlots
 Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas
 Imports Microsoft.VisualBasic.Data.Framework.IO
@@ -16,6 +17,7 @@ Imports Microsoft.VisualBasic.Imaging.Driver
 Imports Microsoft.VisualBasic.Imaging.Filters
 Imports Microsoft.VisualBasic.Imaging.Math2D
 Imports Microsoft.VisualBasic.Linq
+Imports Microsoft.VisualBasic.Math.SignalProcessing.HungarianAlgorithm
 Imports Microsoft.VisualBasic.MIME.application.json
 Imports Microsoft.VisualBasic.MIME.application.json.Javascript
 Imports Microsoft.VisualBasic.Scripting.MetaData
@@ -682,5 +684,13 @@ Public Module singleCells
         Else
             Return CellScan.ApplyAffineTransform(cells, DirectCast(transform, AffineTransform))
         End If
+    End Function
+
+    <ExportAPI("hungarian_assignment")>
+    Public Function MakeHungarianAssignment(phase1 As CellScan(), phase2 As CellScan()) As Integer()
+        Dim distanceMap As New DistanceMap(Of CellScan)(phase1, phase2, Function(a, b) a.DistanceTo(b))
+        Dim assignMap As Integer() = HungarianAlgorithm.FindAssignments(distanceMap.GetMap)
+
+        Return assignMap
     End Function
 End Module
