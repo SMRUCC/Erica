@@ -11,7 +11,7 @@
             .area = area,
             .average_dist = average_dist,
             .density = density,
-            .height = height,
+            .r2 = r2,
             .moranI = moranI,
             .physical_x = physical_x,
             .physical_y = physical_y,
@@ -22,7 +22,7 @@
             .scan_y = scan_y,
             .tile_id = tile_id,
             .weight = weight,
-            .width = width,
+            .r1 = r1,
             .x = x,
             .y = y,
             .antibody = antibody

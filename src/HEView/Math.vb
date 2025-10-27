@@ -27,7 +27,7 @@ Public Module Math
         ' median of the cell radius
         Dim medianR As Double = (From cell As CellScan
                                  In all.AsParallel
-                                 Select ((cell.width + cell.height) / 2)).Median
+                                 Select ((cell.r1 + cell.r2) / 2)).Median
         If medianR < 5 Then
             medianR = 5
         End If
@@ -136,10 +136,10 @@ Public Module Math
         End If
 
         Dim averagePt As Double = Aggregate cell As CellScan In all Into Average(cell.points)
-        Dim maxR As Double = Aggregate cell As CellScan In all Into Average((cell.width + cell.height) / 2)
+        Dim maxR As Double = Aggregate cell As CellScan In all Into Average((cell.r1 + cell.r2) / 2)
         Dim minR As Double = Aggregate cell As CellScan
                              In all.Skip(all.Length / 3)
-                             Into Average((cell.width + cell.height) / 2)
+                             Into Average((cell.r1 + cell.r2) / 2)
 
         Call "split the large cell block".info
 
@@ -164,15 +164,15 @@ Public Module Math
                 Dim shape = center.GetFillPoints.ToArray
 
                 Yield New CellScan With {
-                    .height = rect.Height,
+                    .r2 = rect.Height,
                     .points = center.length,
-                    .width = rect.Width,
-                    .area = .width * .height,
+                    .r1 = rect.Width,
+                    .area = .r1 * .r2,
                     .x = cx,
                     .y = cy,
                     .scan_x = shape.X.ToArray,
                     .scan_y = shape.Y.ToArray,
-                    .ratio = std.Max(.width, .height) / std.Min(.width, .height),
+                    .ratio = std.Max(.r1, .r2) / std.Min(.r1, .r2),
                     .physical_x = .x + offset_x,
                     .physical_y = .y + offset_y,
                     .tile_id = cell.tile_id

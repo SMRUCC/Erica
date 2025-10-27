@@ -25,8 +25,21 @@ Public Class CellScan : Implements Layout2D
     Public Property moranI As Double
     Public Property pvalue As Double
     Public Property points As Integer
-    Public Property width As Double
-    Public Property height As Double
+    ''' <summary>
+    ''' 细胞椭圆长轴
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property r1 As Double
+    ''' <summary>
+    ''' 细胞椭圆短轴
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property r2 As Double
+    ''' <summary>
+    ''' 椭圆角度
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property theta As Double
     Public Property density As Double
     Public Property average_dist As Double
     ''' <summary>
@@ -40,7 +53,7 @@ Public Class CellScan : Implements Layout2D
             .area = area,
             .average_dist = average_dist,
             .density = density,
-            .height = height,
+            .r2 = r2,
             .moranI = moranI,
             .physical_x = physical_x,
             .physical_y = physical_y,
@@ -51,7 +64,7 @@ Public Class CellScan : Implements Layout2D
             .scan_y = scan_y,
             .tile_id = tile_id,
             .weight = weight,
-            .width = width,
+            .r1 = r1,
             .x = x,
             .y = y
         }
@@ -90,8 +103,8 @@ Public Class CellScan : Implements Layout2D
                 .physical_x = .x + offset.X,
                 .physical_y = .y + offset.Y,
                 .points = shape.length,
-                .height = rect.Height,
-                .width = rect.Width
+                .r2 = rect.Height,
+                .r1 = rect.Width
             }
         Next
     End Function

@@ -91,7 +91,7 @@ Public Class IHCScanner
                     .area = cell.area,
                     .average_dist = cell.average_dist,
                     .density = cell.density,
-                    .height = cell.height,
+                    .r2 = cell.r2,
                     .moranI = cell.moranI,
                     .physical_x = cell.physical_x,
                     .physical_y = cell.physical_y,
@@ -101,7 +101,7 @@ Public Class IHCScanner
                     .scan_x = cell.scan_x,
                     .scan_y = cell.scan_y,
                     .weight = If(weights.Length = 0, 0, weights.Average),
-                    .width = cell.width,
+                    .r1 = cell.r1,
                     .x = cell.x,
                     .y = cell.y,
                     .tile_id = cell.tile_id
