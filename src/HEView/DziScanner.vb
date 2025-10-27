@@ -145,12 +145,12 @@ Public Module DziScanner
             Dim tile As Rectangle = file.tile
             Dim tip As String = $"{xy.GetJson} -> (offset:{tile.Left},{tile.Top}, width:{tile.Width} x height:{tile.Height}) found {globalLookups.Count} single cells"
             Dim lookups = CellScan _
-                    .CellLookups(grid:=Thresholding.ostuFilter(bitmap,
-                                                               threshold:=threshold,
-                                                               flip:=flip,
-                                                               verbose:=False),
-                                 binary_processing:=False,
-                                 offset:=tile.Location).ToArray
+                .CellLookups(grayscale:=Thresholding.ostuFilter(bitmap,
+                                                                threshold:=threshold,
+                                                                flip:=flip,
+                                                                verbose:=False),
+                                offset:=tile.Location) _
+                .ToArray
             Dim tile_id As String = xy.JoinBy("_")
 
             For i As Integer = 0 To lookups.Length - 1
