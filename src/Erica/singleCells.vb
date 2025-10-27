@@ -470,9 +470,8 @@ Public Module singleCells
     ''' scan the cells from a given HE image
     ''' </summary>
     ''' <param name="HEstain">
-    ''' the HE image
+    ''' the HE image, should be a grayscale bitmap image.
     ''' </param>
-    ''' <param name="is_binarized"></param>
     ''' <param name="flip"></param>
     ''' <param name="ostu_factor"></param>
     ''' <param name="offset"></param>
@@ -483,7 +482,6 @@ Public Module singleCells
     <ExportAPI("HE_cells")>
     <RApiReturn(GetType(CellScan))>
     Public Function HECells(HEstain As Object,
-                            Optional is_binarized As Boolean = False,
                             Optional flip As Boolean = False,
                             Optional ostu_factor As Double = 0.7,
                             <RRawVectorArgument(TypeCodes.double)>
@@ -509,14 +507,10 @@ Public Module singleCells
             Return Message.InCompatibleType(GetType(BitmapBuffer), HEstain.GetType, env)
         End If
 
-        If Not is_binarized Then
-            data = Thresholding.ostuFilter(data, flip, ostu_factor)
-        End If
-
         Dim offsetVec As Double() = CLRVector.asNumeric(offset)
         Dim offsetPt As PointF = If(offsetVec.IsNullOrEmpty, Nothing, New PointF(offsetVec(0), offsetVec(1)))
         Dim cells As CellScan() = CellScan _
-            .CellLookups(data, binary_processing:=False, offset:=offset) _
+            .CellLookups(data, offset:=offset) _
             .FilterNoise(noise)
 
         If split_blocks Then
