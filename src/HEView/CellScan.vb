@@ -73,19 +73,18 @@ Public Class CellScan : Implements Layout2D
     End Function
 
     ''' <summary>
-    ''' 
+    ''' make ostu binary processing of the input image and then run CCL for extract the cell shapes from the binary image.
     ''' </summary>
-    ''' <param name="grid"></param>
-    ''' <param name="offset"></param>
-    ''' <param name="binary_processing">
-    ''' make ostu binary processing of the input image in this function?
+    ''' <param name="grayscale">
+    ''' should be a grayscale image
     ''' </param>
-    ''' <returns></returns>
-    Public Shared Iterator Function CellLookups(grid As BitmapBuffer,
-                                                Optional offset As Point = Nothing,
-                                                Optional binary_processing As Boolean = True) As IEnumerable(Of CellScan)
-
-        Dim bin As BitmapBuffer = If(binary_processing, grid.ostuFilter(flip:=False), grid)
+    ''' <param name="offset"></param>
+    ''' <returns>
+    ''' a collection of the cell object
+    ''' </returns>
+    ''' 
+    Public Shared Iterator Function CellLookups(grayscale As BitmapBuffer, Optional offset As Point = Nothing) As IEnumerable(Of CellScan)
+        Dim bin As BitmapBuffer = grayscale.ostuFilter(flip:=False)
         Dim CELLS = CCLabeling.Process(bin, background:=Color.White, 0).ToArray
 
         For Each shape As Polygon2D In CELLS
@@ -95,6 +94,15 @@ Public Class CellScan : Implements Layout2D
             If fit Is Nothing Then
                 Continue For
             End If
+
+            Dim weights As Double() = shape _
+                .AsEnumerable _
+                .Select(Function(p)
+                            ' RGB is identical in a grayscale image
+                            ' just use the R channel at here
+                            Return grayscale.GetPixel(p.X, p.Y).R / 255
+                        End Function) _
+                .ToArray
 
             Yield New CellScan With {
                 .area = fit.Area,
@@ -109,7 +117,7 @@ Public Class CellScan : Implements Layout2D
                 .r2 = fit.SemiMinorAxis,
                 .r1 = fit.SemiMajorAxis,
                 .theta = fit.RotationAngle,
-                .weight =
+                .weight = weights.Average
             }
         Next
     End Function
