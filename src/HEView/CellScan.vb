@@ -4,6 +4,8 @@ Imports Microsoft.VisualBasic.Imaging.BitmapImage
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Math2D.ConcaveHull
 Imports Microsoft.VisualBasic.Imaging.Filters
 Imports Microsoft.VisualBasic.Imaging.Math2D
+Imports Microsoft.VisualBasic.Linq
+Imports Microsoft.VisualBasic.Math.LinearAlgebra
 Imports Microsoft.VisualBasic.Math.MachineVision.CCL
 Imports std = System.Math
 
@@ -87,15 +89,16 @@ Public Class CellScan : Implements Layout2D
         Dim CELLS = CCLabeling.Process(bin, background:=Color.White, 0).ToArray
 
         For Each shape As Polygon2D In CELLS
+            Dim fit As EllipseFitResult = EllipseFitResult.FitEllipse(shape.ConcaveHull, strict:=False)
             Dim rect As RectangleF = shape.GetRectangle
 
-            If rect.Width = 0.0 OrElse rect.Height = 0.0 Then
+            If fit Is Nothing Then
                 Continue For
             End If
 
             Yield New CellScan With {
-                .area = rect.Width * rect.Height,
-                .ratio = std.Max(rect.Width, rect.Height) / std.Min(rect.Width, rect.Height),
+                .area = fit.Area,
+                .ratio = fit.SemiMinorAxis / fit.SemiMajorAxis,
                 .scan_x = shape.xpoints,
                 .scan_y = shape.ypoints,
                 .x = rect.X,
@@ -103,8 +106,10 @@ Public Class CellScan : Implements Layout2D
                 .physical_x = .x + offset.X,
                 .physical_y = .y + offset.Y,
                 .points = shape.length,
-                .r2 = rect.Height,
-                .r1 = rect.Width
+                .r2 = fit.SemiMinorAxis,
+                .r1 = fit.SemiMajorAxis,
+                .theta = fit.RotationAngle,
+                .weight =
             }
         Next
     End Function
