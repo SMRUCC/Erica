@@ -39,6 +39,6 @@ Public Module Data
 
     <Extension>
     Public Function CellGuid(cell As CellScan) As String
-        Return New String() {cell.tile_id, cell.physical_x, cell.physical_y}.JoinBy("-").MD5
+        Return New String() {cell.tile_id, CInt(cell.physical_x), CInt(cell.physical_y)}.JoinBy("-").MD5
     End Function
 End Module
