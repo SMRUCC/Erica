@@ -114,12 +114,12 @@ Public Class CellMatcher
     ''' <param name="cellsA">第一张切片的细胞列表</param>
     ''' <param name="cellsB">第二张切片的细胞列表</param>
     ''' <returns>匹配结果列表</returns>
-    Public Function GreedyMatchCells(cellsA As CellScan(), cellsB As CellScan()) As IEnumerable(Of CellMatchResult)
+    Public Function GreedyMatchCells(cellsA As CellScan(), cellsB As CellScan(), Optional knn As Integer = 6) As IEnumerable(Of CellMatchResult)
         ' 参数验证
         If cellsA.IsNullOrEmpty OrElse cellsB.IsNullOrEmpty Then
             Return New CellMatchResult() {}
         Else
-            Return GreedyMatchCellsInternal(cellsA, cellsB)
+            Return GreedyMatchCellsInternal(cellsA, cellsB, knn)
         End If
     End Function
 
@@ -129,7 +129,7 @@ Public Class CellMatcher
     ''' <param name="cellsA">第一张切片的细胞列表</param>
     ''' <param name="cellsB">第二张切片的细胞列表</param>
     ''' <returns>匹配结果列表</returns>
-    Public Iterator Function GreedyMatchCellsInternal(cellsA As CellScan(), cellsB As CellScan()) As IEnumerable(Of CellMatchResult)
+    Public Iterator Function GreedyMatchCellsInternal(cellsA As CellScan(), cellsB As CellScan(), knn As Integer) As IEnumerable(Of CellMatchResult)
         ' 创建KD树访问器
         Dim accessor As New CellScanAccessor()
         ' 使用第二张切片的细胞构建KD树
@@ -143,7 +143,7 @@ Public Class CellMatcher
             If matchedCellsA.Contains(cellA) Then Continue For
 
             ' 在KD树中搜索最近的几个细胞
-            Dim nearestNeighbors = kdTree.nearest(cellA, 5, _maxDistanceThreshold).ToList()
+            Dim nearestNeighbors = kdTree.nearest(cellA, knn, _maxDistanceThreshold).ToList()
 
             Dim bestMatch As CellMatchResult = Nothing
             Dim bestScore As Double = -1.0
