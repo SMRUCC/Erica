@@ -736,7 +736,7 @@ Public Module singleCells
 
     <ExportAPI("greedy_matches")>
     Public Function cellGreedyMatches(sliceA As CellScan(), sliceB As CellScan(),
-                                      Optional knn As Integer = 64,
+                                      Optional knn As Integer = 16,
                                       Optional maxDistance As Double = 500,
                                       Optional distanceWeight As Double = 0.7,
                                       Optional morphologyWeight As Double = 0.3) As CellMatchResult()
