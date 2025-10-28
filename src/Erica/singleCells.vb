@@ -693,4 +693,20 @@ Public Module singleCells
 
         Return assignMap
     End Function
+
+    <ExportAPI("greedy_matches")>
+    Public Function cellGreedyMatches(sliceA As CellScan(), sliceB As CellScan()) As CellMatchResult()
+        ' 创建细胞匹配器 
+        Dim matcher As New CellMatcher(maxDistance:=50.0, distanceWeight:=0.6, morphologyWeight:=0.4)
+        ' 执行匹配
+        Dim matchResults As CellMatchResult() = matcher _
+            .GreedyMatchCells(sliceA, sliceB) _
+            .OrderByDescending(Function(x) x.MatchScore) _
+            .ToArray
+
+        ' 输出统计信息
+        Call VBDebugger.EchoLine(matcher.GetMatchStatistics(matchResults, sliceA.Length, sliceB.Length))
+
+        Return matchResults.ToArray
+    End Function
 End Module

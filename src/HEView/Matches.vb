@@ -7,6 +7,7 @@ Imports std = System.Math
 ''' 细胞匹配结果类
 ''' </summary>
 Public Class CellMatchResult
+
     Public Property CellA As CellScan
     Public Property CellB As CellScan
     Public Property Distance As Double
@@ -21,9 +22,10 @@ End Class
 ''' 细胞匹配器 - 使用贪心算法进行细胞一一对应
 ''' </summary>
 Public Class CellMatcher
-    Private _maxDistanceThreshold As Double = 100.0 ' 最大距离阈值
-    Private _morphologyWeight As Double = 0.3 ' 形态学特征权重
-    Private _distanceWeight As Double = 0.7 ' 距离权重
+
+    ReadOnly _maxDistanceThreshold As Double = 100.0 ' 最大距离阈值
+    ReadOnly _morphologyWeight As Double = 0.3 ' 形态学特征权重
+    ReadOnly _distanceWeight As Double = 0.7 ' 距离权重
 
     ''' <summary>
     ''' 细胞访问器 - 用于KD树操作
@@ -66,6 +68,15 @@ Public Class CellMatcher
     End Class
 
     ''' <summary>
+    ''' 设置匹配参数
+    ''' </summary>
+    Public Sub New(maxDistance As Double, distanceWeight As Double, morphologyWeight As Double)
+        _maxDistanceThreshold = maxDistance
+        _distanceWeight = distanceWeight
+        _morphologyWeight = morphologyWeight
+    End Sub
+
+    ''' <summary>
     ''' 计算两个细胞的形态学相似度
     ''' </summary>
     Private Function CalculateMorphologySimilarity(cellA As CellScan, cellB As CellScan) As Double
@@ -99,26 +110,32 @@ Public Class CellMatcher
     ''' <param name="cellsA">第一张切片的细胞列表</param>
     ''' <param name="cellsB">第二张切片的细胞列表</param>
     ''' <returns>匹配结果列表</returns>
-    Public Function GreedyMatchCells(cellsA As List(Of CellScan), cellsB As List(Of CellScan)) As List(Of CellMatchResult)
-        Dim matchResults As New List(Of CellMatchResult)()
-
+    Public Function GreedyMatchCells(cellsA As CellScan(), cellsB As CellScan()) As IEnumerable(Of CellMatchResult)
         ' 参数验证
-        If cellsA Is Nothing OrElse cellsB Is Nothing OrElse cellsA.Count = 0 OrElse cellsB.Count = 0 Then
-            Return matchResults
+        If cellsA.IsNullOrEmpty OrElse cellsB.IsNullOrEmpty Then
+            Return New CellMatchResult() {}
+        Else
+            Return GreedyMatchCellsInternal(cellsA, cellsB)
         End If
+    End Function
 
+    ''' <summary>
+    ''' 使用贪心算法进行细胞匹配
+    ''' </summary>
+    ''' <param name="cellsA">第一张切片的细胞列表</param>
+    ''' <param name="cellsB">第二张切片的细胞列表</param>
+    ''' <returns>匹配结果列表</returns>
+    Public Iterator Function GreedyMatchCellsInternal(cellsA As CellScan(), cellsB As CellScan()) As IEnumerable(Of CellMatchResult)
         ' 创建KD树访问器
         Dim accessor As New CellScanAccessor()
-
         ' 使用第二张切片的细胞构建KD树
         Dim kdTree As New KdTree(Of CellScan)(cellsB, accessor)
-
         ' 记录已匹配的细胞
         Dim matchedCellsA As New HashSet(Of CellScan)()
         Dim matchedCellsB As New HashSet(Of CellScan)()
 
         ' 为第一张切片的每个细胞寻找最佳匹配
-        For Each cellA In cellsA
+        For Each cellA As CellScan In cellsA
             If matchedCellsA.Contains(cellA) Then Continue For
 
             ' 在KD树中搜索最近的几个细胞
@@ -154,9 +171,10 @@ Public Class CellMatcher
 
             ' 如果找到有效匹配且得分足够高，则记录匹配
             If bestMatch IsNot Nothing AndAlso bestScore > 0.3 Then
-                matchResults.Add(bestMatch)
                 matchedCellsA.Add(cellA)
                 matchedCellsB.Add(bestMatch.CellB)
+
+                Yield bestMatch
             End If
         Next
 
@@ -165,9 +183,9 @@ Public Class CellMatcher
 
         If unmatchedCellsB.Count > 0 Then
             ' 为第一张切片构建KD树进行反向匹配
-            Dim kdTreeA As New KdTree(Of CellScan)(cellsA.Where(Function(c) Not matchedCellsA.Contains(c)).ToList(), accessor)
+            Dim kdTreeA As New KdTree(Of CellScan)(From c As CellScan In cellsA Where Not matchedCellsA.Contains(c), accessor)
 
-            For Each cellB In unmatchedCellsB
+            For Each cellB As CellScan In unmatchedCellsB
                 Dim nearestNeighbors = kdTreeA.nearest(cellB, 3, _maxDistanceThreshold).ToList()
 
                 Dim bestMatch As CellMatchResult = Nothing
@@ -192,39 +210,26 @@ Public Class CellMatcher
                 Next
 
                 If bestMatch IsNot Nothing AndAlso bestScore > 0.3 Then
-                    matchResults.Add(bestMatch)
                     matchedCellsA.Add(bestMatch.CellA)
                     matchedCellsB.Add(cellB)
+
+                    Yield bestMatch
                 End If
             Next
         End If
-
-        ' 按匹配得分排序
-        matchResults.Sort(Function(x, y) y.MatchScore.CompareTo(x.MatchScore))
-
-        Return matchResults
     End Function
-
-    ''' <summary>
-    ''' 设置匹配参数
-    ''' </summary>
-    Public Sub SetMatchParameters(maxDistance As Double, distanceWeight As Double, morphologyWeight As Double)
-        _maxDistanceThreshold = maxDistance
-        _distanceWeight = distanceWeight
-        _morphologyWeight = morphologyWeight
-    End Sub
 
     ''' <summary>
     ''' 获取匹配统计信息
     ''' </summary>
-    Public Function GetMatchStatistics(matches As List(Of CellMatchResult), totalCellsA As Integer, totalCellsB As Integer) As String
+    Public Function GetMatchStatistics(matches As CellMatchResult(), totalCellsA As Integer, totalCellsB As Integer) As String
         Dim matchedA = matches.Select(Function(m) m.CellA).Distinct().Count()
         Dim matchedB = matches.Select(Function(m) m.CellB).Distinct().Count()
 
         Return $"匹配统计: " & vbCrLf &
                $"切片A: {matchedA}/{totalCellsA} 细胞已匹配 ({matchedA / totalCellsA * 100:F1}%)" & vbCrLf &
                $"切片B: {matchedB}/{totalCellsB} 细胞已匹配 ({matchedB / totalCellsB * 100:F1}%)" & vbCrLf &
-               $"成功匹配对数: {matches.Count}" & vbCrLf &
+               $"成功匹配对数: {matches.Length}" & vbCrLf &
                $"平均匹配距离: {matches.Average(Function(m) m.Distance):F2}" & vbCrLf &
                $"平均匹配得分: {matches.Average(Function(m) m.MatchScore):F4}"
     End Function
