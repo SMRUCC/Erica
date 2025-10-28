@@ -19,3 +19,5 @@ single cell data toolkit
 + [ihc_unmixing](singleCell/ihc_unmixing.1) unmix IHC stained pixel color into the corresponding antibody expression values
 + [dzi_unmix](singleCell/dzi_unmix.1) 
 + [geo_transform](singleCell/geo_transform.1) 
++ [hungarian_assignment](singleCell/hungarian_assignment.1) 
++ [greedy_matches](singleCell/greedy_matches.1) 

@@ -27,6 +27,9 @@ declare namespace singleCell {
    */
    function geo_transform(cells: object, transform: object): object;
    /**
+   */
+   function greedy_matches(sliceA: object, sliceB: object): object;
+   /**
     * scan the cells from a given HE image
     * 
     * 
@@ -63,6 +66,9 @@ declare namespace singleCell {
      * + default value Is ``null``.
    */
    function HTS_matrix(h5ad: any, env?: object): object;
+   /**
+   */
+   function hungarian_assignment(phase1: object, phase2: object): object;
    /**
     * unmix IHC stained pixel color into the corresponding antibody expression values
     * 
