@@ -594,13 +594,6 @@ Microsoft.VisualBasic.Data.Bootstrapping.Fittings
  保存拟合后的y值，在拟合时可设置为不保存节省内存
  </summary>
 </member>
-<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.FitResult.GetY(System.Double)">
- <summary>
- 根据x获取拟合方程的y值
- </summary>
- <param name="x"></param>
- <returns></returns>
-</member>
 <member name="P:Microsoft.VisualBasic.Data.Bootstrapping.FitResult.Slope">
  <summary>
  获取斜率
@@ -627,6 +620,13 @@ Microsoft.VisualBasic.Data.Bootstrapping.Fittings
  <remarks>
  Adjusted R-Squared 抵消样本数量对 R-Squared 的影响，做到了真正的 0~1，越大越好。
  </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Bootstrapping.FitResult.GetY(System.Double)">
+ <summary>
+ 根据x获取拟合方程的y值
+ </summary>
+ <param name="x"></param>
+ <returns></returns>
 </member>
 <member name="P:Microsoft.VisualBasic.Data.Bootstrapping.FitResult.FactorSize">
  <summary>
@@ -689,6 +689,15 @@ Microsoft.VisualBasic.Data.Bootstrapping.Fittings
  <param name="y">观察值的y</param>
  <returns></returns>
  
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LeastSquares.LinearFit(System.Double[],System.Double[],System.Int32)">
+ <summary>
+ Least squares resolve the linear fitting
+ </summary>
+ <param name="x">x axis</param>
+ <param name="y">y axis</param>
+ <param name="length">length of the vector of x or y</param>
+ <returns></returns>
 </member>
 <member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LeastSquares.PolyFit(Microsoft.VisualBasic.Math.LinearAlgebra.Vector,Microsoft.VisualBasic.Math.LinearAlgebra.Vector,System.Int32)">
  <summary>
