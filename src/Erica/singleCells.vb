@@ -90,9 +90,11 @@ Public Module singleCells
     Private Function plotCellMatches(matches As CellMatchResult(), args As list, env As Environment) As Object
         Dim slide1 As CellScan() = args.getValue(Of CellScan())("slide1", env)
         Dim slide2 As CellScan() = args.getValue(Of CellScan())("slide2", env)
+        Dim padding As String = InteropArgumentHelper.getPadding(args!padding, "padding: 10% 10% 15% 20%;")
         Dim theme As New Theme With {
             .background = RColorPalette.getColor(args.getBySynonyms("background", "bg"), [default]:="white"),
-            .gridFill = RColorPalette.getColor(args.getBySynonyms("gridFill", "grid.fill", "fill"), [default]:="white")
+            .gridFill = RColorPalette.getColor(args.getBySynonyms("gridFill", "grid.fill", "fill"), [default]:="white"),
+            .padding = padding
         }
         Dim app As New VisualCellMatches(matches, slide1, slide2, theme)
         Dim size As String = InteropArgumentHelper.getSize(args.getByName("size"), env)

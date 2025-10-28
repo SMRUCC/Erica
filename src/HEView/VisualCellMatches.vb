@@ -1,7 +1,12 @@
 ﻿Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic
+Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis
 Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.Drawing2D
+Imports Microsoft.VisualBasic.Linq
+Imports Microsoft.VisualBasic.Math.LinearAlgebra
+Imports Microsoft.VisualBasic.MIME.Html.CSS
+Imports Microsoft.VisualBasic.MIME.Html.Render
 
 Public Class VisualCellMatches : Inherits Plot
 
@@ -18,6 +23,20 @@ Public Class VisualCellMatches : Inherits Plot
     End Sub
 
     Protected Overrides Sub PlotInternal(ByRef g As IGraphics, canvas As GraphicsRegion)
+        Dim xTicks = slide1.JoinIterates(slide2).Select(Function(a) a.physical_x).CreateAxisTicks
+        Dim yTicks = slide1.JoinIterates(slide2).Select(Function(a) a.physical_y).CreateAxisTicks
+        Dim css As CSSEnvirnment = g.LoadEnvironment
+        Dim x = d3js.scale.linear.domain(values:=xTicks).range(values:=canvas.GetXLinearScaleRange(css))
+        Dim y = d3js.scale.linear.domain(values:=yTicks).range(values:=canvas.GetYLinearScaleRange(css))
+        Dim scaler As New DataScaler(rev:=True) With {
+            .AxisTicks = (xTicks.AsVector, yTicks.AsVector),
+            .region = canvas.PlotRegion(css),
+            .X = x,
+            .Y = y
+        }
 
+        If theme.drawAxis Then
+            Call Axis.DrawAxis(g, canvas, scaler, xlabel, ylabel, theme)
+        End If
     End Sub
 End Class
