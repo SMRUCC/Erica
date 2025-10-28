@@ -735,12 +735,18 @@ Public Module singleCells
     End Function
 
     <ExportAPI("greedy_matches")>
-    Public Function cellGreedyMatches(sliceA As CellScan(), sliceB As CellScan()) As CellMatchResult()
+    Public Function cellGreedyMatches(sliceA As CellScan(), sliceB As CellScan(),
+                                      Optional knn As Integer = 64,
+                                      Optional maxDistance As Double = 500,
+                                      Optional distanceWeight As Double = 0.7,
+                                      Optional morphologyWeight As Double = 0.3) As CellMatchResult()
         ' 创建细胞匹配器 
-        Dim matcher As New CellMatcher(maxDistance:=50.0, distanceWeight:=0.6, morphologyWeight:=0.4)
+        Dim matcher As New CellMatcher(maxDistance:=maxDistance,
+                                       distanceWeight:=distanceWeight,
+                                       morphologyWeight:=morphologyWeight)
         ' 执行匹配
         Dim matchResults As CellMatchResult() = matcher _
-            .GreedyMatchCells(sliceA, sliceB) _
+            .GreedyMatchCells(sliceA, sliceB, knn:=knn) _
             .OrderByDescending(Function(x) x.MatchScore) _
             .ToArray
 

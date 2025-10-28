@@ -61,7 +61,7 @@ Public Class VisualCellMatches : Inherits Plot
             End If
         Next
 
-        Dim line As New Pen(Color.LightGray, 2)
+        Dim line As New Pen(Color.Black, 4)
 
         For Each match As CellMatchResult In matches
             Dim pt1 = scaler.Translate(match.CellA)
