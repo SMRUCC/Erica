@@ -23,6 +23,7 @@ Public Module Data
         Call tbl.add("size", From cell As CellScan In all Select cell.points)
         Call tbl.add("r1", From cell As CellScan In all Select cell.r1)
         Call tbl.add("r2", From cell As CellScan In all Select cell.r2)
+        Call tbl.add("weight", From cell As CellScan In all Select cell.weight)
         Call tbl.add("density", From cell As CellScan In all Select cell.density)
         Call tbl.add("moran-I", From cell As CellScan In all Select cell.moranI)
         Call tbl.add("p-value", From cell As CellScan In all Select cell.pvalue)
