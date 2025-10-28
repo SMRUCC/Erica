@@ -20,8 +20,12 @@ let cells = dzi_meta |> scan.dzi_cells(
     moran_knn = 256
 );
 
-write.csv(as.data.frame(cells), file = cells_table);              
+cells = as.data.frame(cells);
+cells = cells[as.numeric(cells$mean_distance) > 0,];
+cells = cells[as.numeric(cells$size) > 6, ];
+
+write.csv(cells, file = cells_table);              
 
 bitmap(file = file.path(dirname(scan_pack), `${basename(cells_table)}.png`)) {
-    plot([cells]::physical_x, [cells]::physical_y, point_size = 5);
+    plot(as.numeric(cells$physical_x), as.numeric(cells$physical_y), point_size = 5, fill = white);
 }
