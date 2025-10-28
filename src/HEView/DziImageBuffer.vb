@@ -60,6 +60,11 @@ Public Class DziImageBuffer
         Next
     End Function
 
+    ''' <summary>
+    ''' make grayscale image with global scale across the tiles
+    ''' </summary>
+    ''' <param name="tiles"></param>
+    ''' <returns></returns>
     Public Shared Function GlobalScales(tiles As DziImageBuffer()) As DziImageBuffer()
         Dim tileList As BitmapBuffer() = New BitmapBuffer(tiles.Length - 1) {}
 
