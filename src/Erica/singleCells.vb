@@ -60,9 +60,30 @@ Public Module singleCells
         Call RInternal.Object.Converts.addHandler(GetType(SpotAnnotation()), AddressOf SpotAnnotationMatrix)
         Call RInternal.Object.Converts.addHandler(GetType(CellScan()), AddressOf HEcellsMatrix)
         Call RInternal.Object.Converts.addHandler(GetType(IHCCellScan()), AddressOf HEcellsMatrix2)
+        Call RInternal.Object.Converts.addHandler(GetType(CellMatchResult()), AddressOf matchesTable)
 
         Call RInternal.generic.add("plot", GetType(CellScan()), AddressOf plotCellScans)
     End Sub
+
+    <RGenericOverloads("as.data.frame")>
+    Private Function matchesTable(matches As CellMatchResult(), args As list, env As Environment) As Object
+        Dim df As New dataframe With {.columns = New Dictionary(Of String, Array)}
+
+        Call df.add("cell1", From m As CellMatchResult In matches Select m.CellA.CellGuid)
+        Call df.add("cell2", From m As CellMatchResult In matches Select m.CellB.CellGuid)
+
+        Call df.add("cell1_x", From m As CellMatchResult In matches Select m.CellA.physical_x)
+        Call df.add("cell1_y", From m As CellMatchResult In matches Select m.CellA.physical_y)
+
+        Call df.add("cell2_x", From m As CellMatchResult In matches Select m.CellB.physical_x)
+        Call df.add("cell2_y", From m As CellMatchResult In matches Select m.CellB.physical_y)
+
+        Call df.add("distance", From m As CellMatchResult In matches Select m.Distance)
+        Call df.add("morphology", From m As CellMatchResult In matches Select m.Morphology)
+        Call df.add("match_score", From m As CellMatchResult In matches Select m.MatchScore)
+
+        Return df
+    End Function
 
     <RGenericOverloads("plot")>
     Private Function plotCellScans(cells As CellScan(), args As list, env As Environment) As Object
@@ -98,7 +119,7 @@ Public Module singleCells
     Private Function HEcellsMatrix(cells As CellScan(), args As list, env As Environment) As dataframe
         Dim df As New dataframe With {
             .rownames = cells _
-                .Select(Function(c) $"{c.physical_x},{c.physical_y}".MD5) _
+                .Select(Function(c) c.CellGuid) _
                 .ToArray,
             .columns = New Dictionary(Of String, Array)
         }

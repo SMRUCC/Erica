@@ -11,6 +11,12 @@ Public Class CellMatchResult
     Public Property CellA As CellScan
     Public Property CellB As CellScan
     Public Property Distance As Double
+    Public Property Morphology As Double
+
+    ''' <summary>
+    ''' the total match score
+    ''' </summary>
+    ''' <returns></returns>
     Public Property MatchScore As Double
 
     Public Overrides Function ToString() As String
@@ -93,13 +99,11 @@ Public Class CellMatcher
     ''' <summary>
     ''' 计算匹配得分（综合考虑距离和形态学特征）
     ''' </summary>
-    Private Function CalculateMatchScore(cellA As CellScan, cellB As CellScan, distance As Double) As Double
+    Private Function CalculateMatchScore(cellA As CellScan, cellB As CellScan, distance As Double, ByRef morphologyScore As Double) As Double
         ' 距离得分（距离越小得分越高）
         Dim distanceScore As Double = std.Max(0, 1.0 - distance / _maxDistanceThreshold)
-
         ' 形态学相似度得分
-        Dim morphologyScore As Double = CalculateMorphologySimilarity(cellA, cellB)
-
+        morphologyScore = CalculateMorphologySimilarity(cellA, cellB)
         ' 综合得分
         Return distanceScore * _distanceWeight + morphologyScore * _morphologyWeight
     End Function
@@ -153,9 +157,9 @@ Public Class CellMatcher
 
                 ' 计算实际距离（开方得到欧几里得距离）
                 Dim actualDistance As Double = std.Sqrt(neighbor.distance)
-
+                Dim morphologyScore As Double = 0
                 ' 计算匹配得分
-                Dim score As Double = CalculateMatchScore(cellA, cellB, actualDistance)
+                Dim score As Double = CalculateMatchScore(cellA, cellB, actualDistance, morphologyScore)
 
                 ' 更新最佳匹配
                 If score > bestScore Then
@@ -164,7 +168,8 @@ Public Class CellMatcher
                         .CellA = cellA,
                         .CellB = cellB,
                         .Distance = actualDistance,
-                        .MatchScore = score
+                        .MatchScore = score,
+                        .Morphology = morphologyScore
                     }
                 End If
             Next
@@ -193,10 +198,14 @@ Public Class CellMatcher
 
                 For Each neighbor In nearestNeighbors
                     Dim cellA = neighbor.node.data
-                    If matchedCellsA.Contains(cellA) Then Continue For
 
+                    If matchedCellsA.Contains(cellA) Then
+                        Continue For
+                    End If
+
+                    Dim morphologyScore As Double = 0
                     Dim actualDistance As Double = std.Sqrt(neighbor.distance)
-                    Dim score As Double = CalculateMatchScore(cellA, cellB, actualDistance)
+                    Dim score As Double = CalculateMatchScore(cellA, cellB, actualDistance, morphologyScore)
 
                     If score > bestScore Then
                         bestScore = score
@@ -204,7 +213,8 @@ Public Class CellMatcher
                             .CellA = cellA,
                             .CellB = cellB,
                             .Distance = actualDistance,
-                            .MatchScore = score
+                            .MatchScore = score,
+                            .Morphology = morphologyScore
                         }
                     End If
                 Next
