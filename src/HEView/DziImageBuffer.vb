@@ -22,6 +22,14 @@ Public Class DziImageBuffer
         _bitmap = bitmap
     End Sub
 
+    ''' <summary>
+    ''' load tile image files from disk to memory 
+    ''' </summary>
+    ''' <param name="dzi"></param>
+    ''' <param name="level"></param>
+    ''' <param name="dir"></param>
+    ''' <param name="skipBlank"></param>
+    ''' <returns></returns>
     Public Shared Iterator Function LoadBuffer(dzi As DziImage,
                                                level As Integer,
                                                dir As IFileSystemEnvironment,

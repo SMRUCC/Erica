@@ -8,6 +8,7 @@ Imports Microsoft.VisualBasic.ComponentModel.Collection.Generic
 Imports Microsoft.VisualBasic.Imaging.BitmapImage
 Imports Microsoft.VisualBasic.Imaging.Filters
 Imports Microsoft.VisualBasic.Language
+Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Serialization.JSON
 
 Public Module DziScanner
@@ -110,6 +111,7 @@ Public Module DziScanner
 
         Return DziImageBuffer.LoadBuffer(dzi, level, dir) _
             .ToArray _
+            .DoCall(AddressOf DziImageBuffer.GlobalScales) _
             .ScanBuffer(ostu_factor:=ostu_factor,
                         flip:=flip,
                         splitBlocks:=splitBlocks,
