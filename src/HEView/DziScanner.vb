@@ -111,7 +111,6 @@ Public Module DziScanner
 
         Return DziImageBuffer.LoadBuffer(dzi, level, dir, skipBlank:=True) _
             .ToArray _
-            .DoCall(AddressOf DziImageBuffer.GlobalScales) _
             .ScanBuffer(ostu_factor:=ostu_factor,
                         flip:=flip,
                         splitBlocks:=splitBlocks,
@@ -147,12 +146,7 @@ Public Module DziScanner
             Dim tile As Rectangle = file.tile
             Dim tip As String = $"{xy.GetJson} -> (offset:{tile.Left},{tile.Top}, width:{tile.Width} x height:{tile.Height}) found {globalLookups.Count} single cells"
             Dim lookups = CellScan _
-                .CellLookups(grayscale:=Thresholding.ostuFilter(bitmap,
-                                                                threshold:=threshold,
-                                                                flip:=flip,
-                                                                verbose:=False),
-                             offset:=tile.Location,
-                             verbose:=False) _
+                .CellLookups(grayscale:=bitmap, offset:=tile.Location, verbose:=False) _
                 .ToArray
             Dim tile_id As String = xy.JoinBy("_")
 

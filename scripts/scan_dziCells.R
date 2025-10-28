@@ -21,3 +21,7 @@ let cells = dzi_meta |> scan.dzi_cells(
 );
 
 write.csv(as.data.frame(cells), file = cells_table);              
+
+bitmap(file = file.path(dirname(scan_pack), `${basename(cells_table)}.png`)) {
+    plot([cells]::physical_x, [cells]::physical_y, point_size = 5);
+}
