@@ -90,7 +90,7 @@ Public Class CellScan : Implements Layout2D
         For Each shape As Polygon2D In CELLS
             Dim rect As RectangleF = shape.GetRectangle
             ' Dim fit As EllipseFitResult = EllipseFitResult.FitEllipse(shape.AsEnumerable.ToArray, strict:=False)
-            Dim fit As EllipseFitResult = SimpleCellMorphology.Measure(shape.AsEnumerable)
+            Dim fit As EllipseFitResult = SimpleCellMorphology.CalculateMetrics(shape.AsEnumerable.ToArray)
 
             If fit Is Nothing Then
                 Continue For
