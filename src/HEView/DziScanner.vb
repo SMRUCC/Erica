@@ -109,7 +109,7 @@ Public Module DziScanner
                               Optional splitBlocks As Boolean = True,
                               Optional flip As Boolean = False) As IEnumerable(Of CellScan)
 
-        Return DziImageBuffer.LoadBuffer(dzi, level, dir) _
+        Return DziImageBuffer.LoadBuffer(dzi, level, dir, skipBlank:=True) _
             .ToArray _
             .DoCall(AddressOf DziImageBuffer.GlobalScales) _
             .ScanBuffer(ostu_factor:=ostu_factor,
