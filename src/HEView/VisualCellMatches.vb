@@ -1,4 +1,5 @@
-﻿Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic
+﻿Imports System.Drawing
+Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic
 Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis
 Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas
 Imports Microsoft.VisualBasic.Imaging
@@ -14,6 +15,9 @@ Public Class VisualCellMatches : Inherits Plot
     ReadOnly slide1 As CellScan()
     ReadOnly slide2 As CellScan()
 
+    Public Property slide1Color As Color = Color.Red
+    Public Property slide2Color As Color = Color.Green
+
     Public Sub New(matches As IEnumerable(Of CellMatchResult), slide1 As CellScan(), slide2 As CellScan(), theme As Theme)
         MyBase.New(theme)
 
@@ -28,7 +32,7 @@ Public Class VisualCellMatches : Inherits Plot
         Dim css As CSSEnvirnment = g.LoadEnvironment
         Dim x = d3js.scale.linear.domain(values:=xTicks).range(values:=canvas.GetXLinearScaleRange(css))
         Dim y = d3js.scale.linear.domain(values:=yTicks).range(values:=canvas.GetYLinearScaleRange(css))
-        Dim scaler As New DataScaler(rev:=True) With {
+        Dim scaler As New DataScaler() With {
             .AxisTicks = (xTicks.AsVector, yTicks.AsVector),
             .region = canvas.PlotRegion(css),
             .X = x,
@@ -38,5 +42,23 @@ Public Class VisualCellMatches : Inherits Plot
         If theme.drawAxis Then
             Call Axis.DrawAxis(g, canvas, scaler, xlabel, ylabel, theme)
         End If
+
+        For Each cell As CellScan In slide1
+            Dim center = scaler.Translate(cell.physical_x, cell.physical_y)
+            Dim r As Single = cell.r2
+
+            If Not r.IsNaNImaginary Then
+                Call g.DrawCircle(center, slide1Color, Nothing, r)
+            End If
+        Next
+
+        For Each cell As CellScan In slide2
+            Dim center = scaler.Translate(cell.physical_x, cell.physical_y)
+            Dim r As Single = cell.r2
+
+            If Not r.IsNaNImaginary Then
+                Call g.DrawCircle(center, slide2Color, Nothing, r)
+            End If
+        Next
     End Sub
 End Class
