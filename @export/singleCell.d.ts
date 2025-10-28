@@ -27,8 +27,12 @@ declare namespace singleCell {
    */
    function geo_transform(cells: object, transform: object): object;
    /**
+     * @param knn default value Is ``16``.
+     * @param maxDistance default value Is ``500``.
+     * @param distanceWeight default value Is ``0.7``.
+     * @param morphologyWeight default value Is ``0.3``.
    */
-   function greedy_matches(sliceA: object, sliceB: object): object;
+   function greedy_matches(sliceA: object, sliceB: object, knn?: object, maxDistance?: number, distanceWeight?: number, morphologyWeight?: number): object;
    /**
     * scan the cells from a given HE image
     * 

@@ -4,7 +4,11 @@
 greedy_matches \- 
 .SH SYNOPSIS
 \fIgreedy_matches(\fBsliceA\fR as <generic> CellScan[], 
-\fBsliceB\fR as <generic> CellScan[]);\fR
+\fBsliceB\fR as <generic> CellScan[], 
+\fBknn\fR as integer = 16, 
+\fBmaxDistance\fR as double = 500, 
+\fBdistanceWeight\fR as double = 0.7, 
+\fBmorphologyWeight\fR as double = 0.3);\fR
 .SH SEE ALSO
 singleCell
 .SH FILES
