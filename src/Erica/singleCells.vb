@@ -63,6 +63,7 @@ Public Module singleCells
         Call RInternal.Object.Converts.addHandler(GetType(CellMatchResult()), AddressOf matchesTable)
 
         Call RInternal.generic.add("plot", GetType(CellScan()), AddressOf plotCellScans)
+        Call RInternal.generic.add("plot", GetType(CellMatchResult()), AddressOf plotCellMatches)
     End Sub
 
     <RGenericOverloads("as.data.frame")>
@@ -83,6 +84,22 @@ Public Module singleCells
         Call df.add("match_score", From m As CellMatchResult In matches Select m.MatchScore)
 
         Return df
+    End Function
+
+    <RGenericOverloads("plot")>
+    Private Function plotCellMatches(matches As CellMatchResult(), args As list, env As Environment) As Object
+        Dim slide1 As CellScan() = args.getValue(Of CellScan())("slide1", env)
+        Dim slide2 As CellScan() = args.getValue(Of CellScan())("slide2", env)
+        Dim theme As New Theme With {
+            .background = RColorPalette.getColor(args.getBySynonyms("background", "bg"), [default]:="white"),
+            .gridFill = RColorPalette.getColor(args.getBySynonyms("gridFill", "grid.fill", "fill"), [default]:="white")
+        }
+        Dim app As New VisualCellMatches(matches, slide1, slide2, theme)
+        Dim size As String = InteropArgumentHelper.getSize(args.getByName("size"), env)
+        Dim driver As Drivers = env.getDriver
+        Dim dpi As Integer = CLRVector.asInteger(args.getBySynonyms("dpi", "ppi")).ElementAtOrDefault(0, [default]:=100)
+
+        Return app.Plot(size, dpi, driver)
     End Function
 
     <RGenericOverloads("plot")>
