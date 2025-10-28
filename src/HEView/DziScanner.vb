@@ -151,7 +151,8 @@ Public Module DziScanner
                                                                 threshold:=threshold,
                                                                 flip:=flip,
                                                                 verbose:=False),
-                             offset:=tile.Location) _
+                             offset:=tile.Location,
+                             verbose:=False) _
                 .ToArray
             Dim tile_id As String = xy.JoinBy("_")
 
