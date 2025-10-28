@@ -16,7 +16,7 @@ Public Class VisualCellMatches : Inherits Plot
     ReadOnly slide2 As CellScan()
 
     Public Property slide1Color As Color = Color.Red
-    Public Property slide2Color As Color = Color.Green
+    Public Property slide2Color As Color = Color.SkyBlue
 
     Public Sub New(matches As IEnumerable(Of CellMatchResult), slide1 As CellScan(), slide2 As CellScan(), theme As Theme)
         MyBase.New(theme)
@@ -45,7 +45,7 @@ Public Class VisualCellMatches : Inherits Plot
 
         For Each cell As CellScan In slide1
             Dim center = scaler.Translate(cell.physical_x, cell.physical_y)
-            Dim r As Single = cell.r2
+            Dim r As Single = 6
 
             If Not r.IsNaNImaginary Then
                 Call g.DrawCircle(center, slide1Color, Nothing, r)
@@ -54,11 +54,20 @@ Public Class VisualCellMatches : Inherits Plot
 
         For Each cell As CellScan In slide2
             Dim center = scaler.Translate(cell.physical_x, cell.physical_y)
-            Dim r As Single = cell.r2
+            Dim r As Single = 6
 
             If Not r.IsNaNImaginary Then
                 Call g.DrawCircle(center, slide2Color, Nothing, r)
             End If
+        Next
+
+        Dim line As New Pen(Color.LightGray, 2)
+
+        For Each match As CellMatchResult In matches
+            Dim pt1 = scaler.Translate(match.CellA)
+            Dim pt2 = scaler.Translate(match.CellB)
+
+            Call g.DrawLine(line, pt1, pt2)
         Next
     End Sub
 End Class
