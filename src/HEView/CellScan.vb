@@ -89,12 +89,14 @@ Public Class CellScan : Implements Layout2D
 
         For Each shape As Polygon2D In CELLS
             Dim rect As RectangleF = shape.GetRectangle
-            Dim fit As EllipseFitResult = EllipseFitResult.FitEllipse(shape.AsEnumerable.ToArray, strict:=False)
+            ' Dim fit As EllipseFitResult = EllipseFitResult.FitEllipse(shape.AsEnumerable.ToArray, strict:=False)
+            Dim fit As EllipseFitResult = SimpleCellMorphology.Measure(shape.AsEnumerable)
 
             If fit Is Nothing Then
                 Continue For
             End If
 
+            Dim center As PointF = rect.Centre
             Dim weights As Double() = shape _
                 .AsEnumerable _
                 .Select(Function(p)
@@ -109,8 +111,8 @@ Public Class CellScan : Implements Layout2D
                 .ratio = fit.SemiMinorAxis / fit.SemiMajorAxis,
                 .scan_x = shape.xpoints,
                 .scan_y = shape.ypoints,
-                .x = rect.X,
-                .y = rect.Y,
+                .x = center.X,
+                .y = center.Y,
                 .physical_x = .x + offset.X,
                 .physical_y = .y + offset.Y,
                 .points = shape.length,
