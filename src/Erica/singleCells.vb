@@ -709,6 +709,8 @@ Public Module singleCells
         For Each antibody_name As String In unmix.Antibodies
             Dim antibody_dir As String = Path.Combine(export_dir, antibody_name)
 
+            Call dzi.GetXml.SaveTo($"{antibody_dir}/index.xml")
+
             For Each image As DziImageBuffer In layers(antibody_name)
                 Call image.bitmap.Save($"{antibody_dir}/{image.xy.JoinBy("_")}.bmp")
             Next

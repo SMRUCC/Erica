@@ -71,6 +71,8 @@ Public Class IHCScanner
         Dim layers As Dictionary(Of String, DziImageBuffer()) = UnmixDziImage(dzi, level, dir)
 
         For Each antibody As NamedCollection(Of Double) In Me.antibody
+            Call $"processing the antibody layer: {antibody.name}".debug
+
             Dim scaled = DziImageBuffer.GlobalScales(layers(antibody.name))
             Dim tiles = layers(antibody.name).ToDictionary(Function(a) a.xy.JoinBy("_"), Function(a) a.bitmap)
             Dim cells As CellScan() = scaled.ScanBuffer(
