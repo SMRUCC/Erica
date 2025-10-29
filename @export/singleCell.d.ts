@@ -10,6 +10,10 @@
 */
 declare namespace singleCell {
    /**
+     * @param grid default value Is ``1000``.
+   */
+   function cell_rasterized(cells: object, grid?: object): object;
+   /**
    */
    function dzi_unmix(dzi: object, level: object, dir: object, IHC_antibody: object, export_dir: string): any;
    /**
