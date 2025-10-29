@@ -141,7 +141,7 @@ Public Module DziScanner
         Call $"global threshold for ostu filter is {threshold}.".debug
 
         For Each file As DziImageBuffer In Tqdm.Wrap(imagefiles, bar:=bar, wrap_console:=wrap_tqdm)
-            Dim bitmap As BitmapBuffer = file.bitmap
+            Dim bitmap As BitmapBuffer = file.bitmap.Grayscale
             Dim xy As Integer() = file.xy
             Dim tile As Rectangle = file.tile
             Dim tip As String = $"{xy.GetJson} -> (offset:{tile.Left},{tile.Top}, width:{tile.Width} x height:{tile.Height}) found {globalLookups.Count} single cells"
