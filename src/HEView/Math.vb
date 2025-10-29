@@ -41,19 +41,21 @@ Public Module Math
 
         For Each i As Integer In TqdmWrapper.Range(0, all.Length, wrap_console:=App.EnableTqdm)
             Dim target As CellScan = all(i)
-            Dim nearby = view.SpatialLookup(target, medianR) _
+            Dim nearby As CellScan() = view.SpatialLookup(target, medianR) _
                 .OrderBy(Function(a) target.DistanceTo(a)) _
                 .Take(knn) _
                 .ToArray
-            Dim averageDist As Double = If(nearby.Length = 0, 0, nearby.Average(Function(a) target.DistanceTo(a)))
-            Dim data = nearby.Select(Function(a) a.ratio).ToArray
-            Dim c1 = nearby.X
-            Dim c2 = nearby.Y
+            Dim averageDist As Double = If(nearby.Length = 0,
+                0.0,
+                nearby.Average(Function(a) target.DistanceTo(a)))
+            Dim data As Double() = nearby.Select(Function(a) a.ratio).ToArray
+            Dim c1 As Double() = nearby.X
+            Dim c2 As Double() = nearby.Y
             Dim moranVal = Moran.calc_moran(data, c1, c2)
             Dim pv As Double = pnorm.eval(moranVal.observed,
-                                     mean:=moranVal.expected,
-                                     sd:=moranVal.sd,
-                                     resolution:=1000)
+                                          mean:=moranVal.expected,
+                                          sd:=moranVal.sd,
+                                          resolution:=1000)
 
             If moranVal.observed <= -1 / (data.Length - 1) Then
                 pv = 2 * pv
