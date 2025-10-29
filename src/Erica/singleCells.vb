@@ -760,8 +760,8 @@ Public Module singleCells
     <ExportAPI("RANSAC_cell_alignment")>
     Public Function RANSAC_alignments(sliceA As CellScan(), sliceB As CellScan(),
                                       Optional iterations As Integer = 1000,
-                                      Optional distanceThreshold As Double = 0.1) As AffineTransform
+                                      Optional distance_threshold As Double = 0.1) As AffineTransform
 
-        Return RANSACPointAlignment.AlignPolygons(sliceA, sliceB, Function(cell) New Double() {cell.weight}, iterations, distanceThreshold)
+        Return RANSACPointAlignment.AlignPolygons(sliceA, sliceB, Function(cell) New Double() {cell.weight}, iterations, distance_threshold)
     End Function
 End Module

@@ -101,9 +101,9 @@ declare namespace singleCell {
    function pca_annotation(h5ad: object): object;
    /**
      * @param iterations default value Is ``1000``.
-     * @param distanceThreshold default value Is ``0.1``.
+     * @param distance_threshold default value Is ``0.1``.
    */
-   function RANSAC_cell_alignment(sliceA: object, sliceB: object, iterations?: object, distanceThreshold?: number): object;
+   function RANSAC_cell_alignment(sliceA: object, sliceB: object, iterations?: object, distance_threshold?: number): object;
    module read {
       /**
        * read the csv table file as cells data matrix
