@@ -17,6 +17,7 @@ Imports Microsoft.VisualBasic.Imaging.Driver
 Imports Microsoft.VisualBasic.Imaging.Filters
 Imports Microsoft.VisualBasic.Imaging.Math2D
 Imports Microsoft.VisualBasic.Linq
+Imports Microsoft.VisualBasic.Math.MachineVision
 Imports Microsoft.VisualBasic.Math.SignalProcessing.HungarianAlgorithm
 Imports Microsoft.VisualBasic.MIME.application.json
 Imports Microsoft.VisualBasic.MIME.application.json.Javascript
@@ -754,5 +755,13 @@ Public Module singleCells
         Call VBDebugger.EchoLine(matcher.GetMatchStatistics(matchResults, sliceA.Length, sliceB.Length))
 
         Return matchResults.ToArray
+    End Function
+
+    <ExportAPI("RANSAC_cell_alignment")>
+    Public Function RANSAC_alignments(sliceA As CellScan(), sliceB As CellScan(),
+                                      Optional iterations As Integer = 1000,
+                                      Optional distanceThreshold As Double = 0.1) As AffineTransform
+
+        Return RANSACPointAlignment.AlignPolygons(sliceA, sliceB, Function(cell) New Double() {cell.weight}, iterations, distanceThreshold)
     End Function
 End Module
