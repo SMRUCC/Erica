@@ -1,12 +1,31 @@
 .\" man page create by R# package system.
 .TH SINGLECELL 1 2000-Jan "RANSAC_cell_alignment" "RANSAC_cell_alignment"
 .SH NAME
-RANSAC_cell_alignment \- 
+RANSAC_cell_alignment \- Make RANSAC cell alignment between two slice data
 .SH SYNOPSIS
 \fIRANSAC_cell_alignment(\fBsliceA\fR as <generic> CellScan[], 
-\fBsliceB\fR as <generic> CellScan[], 
+\fBsubject\fR as <generic> CellScan[], 
 \fBiterations\fR as integer = 1000, 
 \fBdistance_threshold\fR as double = 0.1);\fR
+.SH DESCRIPTION
+.PP
+Make RANSAC cell alignment between two slice data
+.PP
+.SH OPTIONS
+.PP
+\fBsliceA\fB \fR\- the target slice cell data to be transformed.. 
+.PP
+.PP
+\fBsubject\fB \fR\- 
+ the reference slice cell data
+. 
+.PP
+.PP
+\fBiterations\fB \fR\- -. 
+.PP
+.PP
+\fBdistance_threshold\fB \fR\- -. 
+.PP
 .SH SEE ALSO
 singleCell
 .SH FILES

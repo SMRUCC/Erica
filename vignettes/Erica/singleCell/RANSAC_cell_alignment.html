@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>RANSAC_cell_alignment</title>
+    <title>Make RANSAC cell alignment between two slice data</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <link rel="stylesheet" type="text/css" href="../../_assets/page.css">
@@ -18,16 +18,16 @@
             </tr>
         </table>
 
-        <h2>RANSAC_cell_alignment</h2>
+        <h2>Make RANSAC cell alignment between two slice data</h2>
 
         <h3>Description</h3>
 
-        RANSAC_cell_alignment
+        
 
         <h3>Usage</h3>
 
         <div style="width: 100%; padding-left: 3%; color: black;">
-            <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>RANSAC_cell_alignment</strong>(<i>sliceA</i>, <i>sliceB</i>,
+            <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>RANSAC_cell_alignment</strong>(<i>sliceA</i>, <i>subject</i>,
     <i>iterations</i> = <span style='color: green;'>1000</span>,
     <i>distance.threshold</i> = <span style='color: green;'>0.1</span>);</code></pre>
         </div>
@@ -36,6 +36,21 @@
 
         <table>
             
+<dt>sliceA</dt>
+<dd><p>the target slice cell data to be transformed. [as <a href="/vignettes/clr/HEView/CellScan.html">CellScan</a>]</p></dd>
+
+
+<dt>subject</dt>
+<dd><p>the reference slice cell data. [as <a href="/vignettes/clr/HEView/CellScan.html">CellScan</a>]</p></dd>
+
+
+<dt>iterations</dt>
+<dd><p>[as integer]</p></dd>
+
+
+<dt>distance.threshold</dt>
+<dd><p>[as double]</p></dd>
+
         </table>
 
 

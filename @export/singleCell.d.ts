@@ -100,10 +100,19 @@ declare namespace singleCell {
    */
    function pca_annotation(h5ad: object): object;
    /**
-     * @param iterations default value Is ``1000``.
-     * @param distance_threshold default value Is ``0.1``.
+    * Make RANSAC cell alignment between two slice data
+    * 
+    * 
+     * @param sliceA the target slice cell data to be transformed.
+     * @param subject the reference slice cell data
+     * @param iterations -
+     * 
+     * + default value Is ``1000``.
+     * @param distance_threshold -
+     * 
+     * + default value Is ``0.1``.
    */
-   function RANSAC_cell_alignment(sliceA: object, sliceB: object, iterations?: object, distance_threshold?: number): object;
+   function RANSAC_cell_alignment(sliceA: object, subject: object, iterations?: object, distance_threshold?: number): object;
    module read {
       /**
        * read the csv table file as cells data matrix

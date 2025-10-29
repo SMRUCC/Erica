@@ -21,4 +21,4 @@ single cell data toolkit
 + [geo_transform](singleCell/geo_transform.1) 
 + [hungarian_assignment](singleCell/hungarian_assignment.1) 
 + [greedy_matches](singleCell/greedy_matches.1) 
-+ [RANSAC_cell_alignment](singleCell/RANSAC_cell_alignment.1) 
++ [RANSAC_cell_alignment](singleCell/RANSAC_cell_alignment.1) Make RANSAC cell alignment between two slice data
