@@ -757,6 +757,28 @@ Public Module singleCells
         Return matchResults.ToArray
     End Function
 
+    <ExportAPI("cell_rasterized")>
+    Public Function CellRasterized(cells As CellScan(), Optional grid As Integer = 1000) As CellScan()
+        Dim poly As New Polygon2D(cells.X, cells.Y)
+        Dim res As Double = Rasterizer.EstimateResolution(poly, grid)
+        Dim raster As RasterData = Rasterizer.Rasterize(poly, res)
+
+        Return raster _
+            .RasterDensity _
+            .Select(Function(r)
+                        Return New CellScan With {
+                            .area = r.Tag,
+                            .density = r.Tag,
+                            .physical_x = r.Value.X,
+                            .physical_y = r.Value.Y,
+                            .x = r.Value.X,
+                            .y = r.Value.Y,
+                            .weight = r.Tag
+                        }
+                    End Function) _
+            .ToArray
+    End Function
+
     ''' <summary>
     ''' Make RANSAC cell alignment between two slice data
     ''' </summary>
