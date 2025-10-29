@@ -757,11 +757,21 @@ Public Module singleCells
         Return matchResults.ToArray
     End Function
 
+    ''' <summary>
+    ''' Make RANSAC cell alignment between two slice data
+    ''' </summary>
+    ''' <param name="sliceA">the target slice cell data to be transformed.</param>
+    ''' <param name="subject">
+    ''' the reference slice cell data
+    ''' </param>
+    ''' <param name="iterations"></param>
+    ''' <param name="distance_threshold"></param>
+    ''' <returns></returns>
     <ExportAPI("RANSAC_cell_alignment")>
-    Public Function RANSAC_alignments(sliceA As CellScan(), sliceB As CellScan(),
+    Public Function RANSAC_alignments(sliceA As CellScan(), subject As CellScan(),
                                       Optional iterations As Integer = 1000,
                                       Optional distance_threshold As Double = 0.1) As AffineTransform
 
-        Return RANSACPointAlignment.AlignPolygons(sliceA, sliceB, Function(cell) New Double() {cell.weight}, iterations, distance_threshold)
+        Return RANSACPointAlignment.AlignPolygons(sliceA, subject, Function(cell) New Double() {cell.weight}, iterations, distance_threshold)
     End Function
 End Module
