@@ -21,7 +21,7 @@ let cells = dzi_meta |> scan.dzi_cells(
 );
 
 cells = as.data.frame(cells);
-cells = cells[as.numeric(cells$mean_distance) > 0,];
+# cells = cells[as.numeric(cells$mean_distance) > 0,];
 cells = cells[as.numeric(cells$size) > 6, ];
 
 write.csv(cells, file = cells_table);              
