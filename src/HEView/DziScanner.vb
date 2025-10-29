@@ -109,9 +109,8 @@ Public Module DziScanner
                               Optional splitBlocks As Boolean = True,
                               Optional flip As Boolean = False) As IEnumerable(Of CellScan)
 
-        Return DziImageBuffer.LoadBuffer(dzi, level, dir) _
+        Return DziImageBuffer.LoadBuffer(dzi, level, dir, skipBlank:=True) _
             .ToArray _
-            .DoCall(AddressOf DziImageBuffer.GlobalScales) _
             .ScanBuffer(ostu_factor:=ostu_factor,
                         flip:=flip,
                         splitBlocks:=splitBlocks,
@@ -142,16 +141,12 @@ Public Module DziScanner
         Call $"global threshold for ostu filter is {threshold}.".debug
 
         For Each file As DziImageBuffer In Tqdm.Wrap(imagefiles, bar:=bar, wrap_console:=wrap_tqdm)
-            Dim bitmap As BitmapBuffer = file.bitmap
+            Dim bitmap As BitmapBuffer = file.bitmap.Grayscale
             Dim xy As Integer() = file.xy
             Dim tile As Rectangle = file.tile
             Dim tip As String = $"{xy.GetJson} -> (offset:{tile.Left},{tile.Top}, width:{tile.Width} x height:{tile.Height}) found {globalLookups.Count} single cells"
             Dim lookups = CellScan _
-                .CellLookups(grayscale:=Thresholding.ostuFilter(bitmap,
-                                                                threshold:=threshold,
-                                                                flip:=flip,
-                                                                verbose:=False),
-                             offset:=tile.Location) _
+                .CellLookups(grayscale:=bitmap, offset:=tile.Location, verbose:=False) _
                 .ToArray
             Dim tile_id As String = xy.JoinBy("_")
 

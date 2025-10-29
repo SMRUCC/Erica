@@ -83,8 +83,12 @@ Public Class CellScan : Implements Layout2D
     ''' a collection of the cell object
     ''' </returns>
     ''' 
-    Public Shared Iterator Function CellLookups(grayscale As BitmapBuffer, Optional offset As Point = Nothing) As IEnumerable(Of CellScan)
-        Dim bin As BitmapBuffer = grayscale.ostuFilter(flip:=False)
+    Public Shared Iterator Function CellLookups(grayscale As BitmapBuffer,
+                                                Optional offset As Point = Nothing,
+                                                Optional global_ostuThreshold As Integer = -1,
+                                                Optional verbose As Boolean = True) As IEnumerable(Of CellScan)
+
+        Dim bin As BitmapBuffer = grayscale.ostuFilter(flip:=False, verbose:=verbose, threshold:=global_ostuThreshold)
         Dim CELLS = CCLabeling.Process(bin, background:=Color.White, 0).ToArray
 
         For Each shape As Polygon2D In CELLS
