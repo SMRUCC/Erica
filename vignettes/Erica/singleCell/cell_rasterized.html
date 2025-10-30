@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Make RANSAC cell alignment between two slice data</title>
+    <title>cell_rasterized</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <link rel="stylesheet" type="text/css" href="../../_assets/page.css">
@@ -13,44 +13,28 @@
 
         <table style="width: 100%;">
             <tr>
-                <td>RANSAC_cell_alignment {singleCell}</td>
+                <td>cell_rasterized {singleCell}</td>
                 <td style="text-align: right;">R Documentation</td>
             </tr>
         </table>
 
-        <h2>Make RANSAC cell alignment between two slice data</h2>
+        <h2>cell_rasterized</h2>
 
         <h3>Description</h3>
 
-        
+        cell_rasterized
 
         <h3>Usage</h3>
 
         <div style="width: 100%; padding-left: 3%; color: black;">
-            <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>RANSAC_cell_alignment</strong>(<i>sliceA</i>, <i>subject</i>,
-    <i>iterations</i> = <span style='color: green;'>1000</span>,
-    <i>distance.threshold</i> = <span style='color: green;'>0.1</span>);</code></pre>
+            <pre><code class='language-R' style="color: black; font-weight:normal;"><strong>cell_rasterized</strong>(<i>cells</i>,
+    <i>grid</i> = <span style='color: green;'>1000</span>);</code></pre>
         </div>
 
         <h3>Arguments</h3>
 
         <table>
             
-<dt>sliceA</dt>
-<dd><p>the target slice cell data to be transformed. [as <a href="/vignettes/clr/HEView/CellScan.html">CellScan</a>]</p></dd>
-
-
-<dt>subject</dt>
-<dd><p>the reference slice cell data. [as <a href="/vignettes/clr/HEView/CellScan.html">CellScan</a>]</p></dd>
-
-
-<dt>iterations</dt>
-<dd><p>[as integer]</p></dd>
-
-
-<dt>distance.threshold</dt>
-<dd><p>[as double]</p></dd>
-
         </table>
 
 
@@ -64,7 +48,7 @@
 
         <h3>Value</h3>
 
-        this function returns data object of type <a href="/vignettes/clr/Microsoft/VisualBasic/Imaging/Math2D/AffineTransform.html">AffineTransform</a>.<h4>clr value class</h4><ul><li><a href="/vignettes/clr/Microsoft/VisualBasic/Imaging/Math2D/AffineTransform.html">AffineTransform</a></li></ul>
+        this function returns data object of type <a href="/vignettes/clr/HEView/CellScan.html">CellScan[]</a>.<h4>clr value class</h4><ul><li><a href="/vignettes/clr/HEView/CellScan.html">CellScan[]</a></li></ul>
 
         <h3 style="display: none;">Examples</h3>
 

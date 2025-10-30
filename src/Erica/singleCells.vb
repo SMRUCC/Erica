@@ -759,11 +759,43 @@ Public Module singleCells
         Return matchResults.ToArray
     End Function
 
+    <ExportAPI("cell_rasterized")>
+    Public Function CellRasterized(cells As CellScan(), Optional grid As Integer = 1000) As CellScan()
+        Dim poly As New Polygon2D(cells.X, cells.Y)
+        Dim res As Double = Rasterizer.EstimateResolution(poly, grid)
+        Dim raster As RasterData = Rasterizer.Rasterize(poly, res)
+
+        Return raster _
+            .RasterDensity _
+            .Select(Function(r)
+                        Return New CellScan With {
+                            .area = r.Tag,
+                            .density = r.Tag,
+                            .physical_x = r.Value.X,
+                            .physical_y = r.Value.Y,
+                            .x = r.Value.X,
+                            .y = r.Value.Y,
+                            .weight = r.Tag
+                        }
+                    End Function) _
+            .ToArray
+    End Function
+
+    ''' <summary>
+    ''' Make RANSAC cell alignment between two slice data
+    ''' </summary>
+    ''' <param name="sliceA">the target slice cell data to be transformed.</param>
+    ''' <param name="subject">
+    ''' the reference slice cell data
+    ''' </param>
+    ''' <param name="iterations"></param>
+    ''' <param name="distance_threshold"></param>
+    ''' <returns></returns>
     <ExportAPI("RANSAC_cell_alignment")>
-    Public Function RANSAC_alignments(sliceA As CellScan(), sliceB As CellScan(),
+    Public Function RANSAC_alignments(sliceA As CellScan(), subject As CellScan(),
                                       Optional iterations As Integer = 1000,
                                       Optional distance_threshold As Double = 0.1) As AffineTransform
 
-        Return RANSACPointAlignment.AlignPolygons(sliceA, sliceB, Function(cell) New Double() {cell.weight}, iterations, distance_threshold)
+        Return RANSACPointAlignment.AlignPolygons(sliceA, subject, Function(cell) New Double() {cell.weight}, iterations, distance_threshold)
     End Function
 End Module
