@@ -712,6 +712,10 @@ Public Module singleCells
             Call dzi.GetXml.SaveTo($"{antibody_dir}/index.xml")
 
             For Each image As DziImageBuffer In layers(antibody_name)
+                If image Is Nothing OrElse image.bitmap Is Nothing Then
+                    Continue For
+                End If
+
                 Call image.bitmap.Save($"{antibody_dir}/{image.xy.JoinBy("_")}.bmp")
             Next
         Next
