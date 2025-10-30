@@ -6,6 +6,7 @@ Imports Microsoft.VisualBasic.Math
 Imports Microsoft.VisualBasic.Scripting.Runtime
 
 Public Class IHCUnmixing
+
     ''' <summary>
     ''' 获取IHC1实验的参考颜色矩阵（4色+DAPI）
     ''' </summary>
@@ -100,6 +101,13 @@ Public Class IHCUnmixing
         Return NonNegativeLeastSquares.Solve(A, b, tolerance:=tolerance)
     End Function
 
+    ''' <summary>
+    ''' Unmix the given raw color image as multiple layer grayscale image with given antibody color profiles.
+    ''' </summary>
+    ''' <param name="mixed">the raw color image to be unmixed</param>
+    ''' <param name="A">the antibody color profiles, each row is the rgb reference color, value should be normalized to range [0,1].</param>
+    ''' <param name="n">size of the layers</param>
+    ''' <returns></returns>
     Public Shared Function Unmix(mixed As BitmapBuffer, A As Double(,), n As Integer) As BitmapBuffer()
         Dim layers As Color()() = RectangularArray.Matrix(Of Color)(n, mixed.Width * mixed.Height)
         Dim offset As Integer = 0
@@ -108,6 +116,7 @@ Public Class IHCUnmixing
             Dim vec As Double() = UnmixPixel(pixel, A)
             Dim bytes As Integer() = SIMD.Multiply.f64_scalar_op_multiply_f64(255.0, vec).AsInteger
 
+            ' generates the grayscale image for each layer
             For i As Integer = 0 To n - 1
                 layers(i)(offset) = Color.FromArgb(bytes(i), bytes(i), bytes(i))
             Next

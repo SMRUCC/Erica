@@ -37,7 +37,17 @@ Public Class IHCScanner
         Return IHCUnmixing.UnmixPixel(pixel, A)
     End Function
 
-    Public Function UnmixDziImage(dzi As DziImage, level As Integer, dir As IFileSystemEnvironment) As Dictionary(Of String, DziImageBuffer())
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="dzi"></param>
+    ''' <param name="level"></param>
+    ''' <param name="dir"></param>
+    ''' <param name="skipBlank">
+    ''' skip of the blank tile image for make exports? tile image with all pixels is black or all pixels is white will be treated as blank tile image. 
+    ''' </param>
+    ''' <returns></returns>
+    Public Function UnmixDziImage(dzi As DziImage, level As Integer, dir As IFileSystemEnvironment, Optional skipBlank As Boolean = True) As Dictionary(Of String, DziImageBuffer())
         Dim imagefiles As DziImageBuffer() = DziImageBuffer.LoadBuffer(dzi, level, dir, skipBlank:=True).ToArray
         Dim layers As New Dictionary(Of String, DziImageBuffer())
         Dim N As Integer = Me.antibody.Length
