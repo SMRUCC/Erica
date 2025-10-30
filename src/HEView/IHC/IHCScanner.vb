@@ -51,6 +51,7 @@ Public Class IHCScanner
         Dim imagefiles As DziImageBuffer() = DziImageBuffer.LoadBuffer(dzi, level, dir, skipBlank:=True).ToArray
         Dim layers As New Dictionary(Of String, DziImageBuffer())
         Dim N As Integer = Me.antibody.Length
+        Dim grayscale As BitmapBuffer
 
         For Each antibody As NamedCollection(Of Double) In Me.antibody
             Call layers.Add(antibody.name, New DziImageBuffer(imagefiles.Length - 1) {})
@@ -60,10 +61,23 @@ Public Class IHCScanner
 
         For Each i As Integer In TqdmWrapper.Range(0, imagefiles.Length, wrap_console:=App.EnableTqdm)
             Dim image As DziImageBuffer = imagefiles(i)
-            Dim splits = IHCUnmixing.Unmix(image.bitmap, A, N)
+            Dim splits = IHCUnmixing.Unmix(image.bitmap, A, N, flip:=True)
 
             For offset As Integer = 0 To N - 1
-                layers(antibody(offset).name)(i) = New DziImageBuffer(image.tile, image.xy, splits(offset))
+                grayscale = splits(offset)
+
+                If skipBlank Then
+                    Dim allPixels As UInteger() = grayscale.GetARGBStream
+
+                    If allPixels.All(Function(b) b = BitmapBuffer.UInt32White) OrElse
+                        allPixels.All(Function(b) b = BitmapBuffer.UInt32Black2) OrElse
+                        allPixels.All(Function(b) b = BitmapBuffer.UInt32Black1) Then
+
+                        Continue For
+                    End If
+                End If
+
+                layers(antibody(offset).name)(i) = New DziImageBuffer(image.tile, image.xy, grayscale)
             Next
         Next
 

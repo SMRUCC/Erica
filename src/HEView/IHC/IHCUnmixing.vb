@@ -107,10 +107,11 @@ Public Class IHCUnmixing
     ''' <param name="mixed">the raw color image to be unmixed</param>
     ''' <param name="A">the antibody color profiles, each row is the rgb reference color, value should be normalized to range [0,1].</param>
     ''' <param name="n">size of the layers</param>
-    ''' <returns></returns>
-    Public Shared Function Unmix(mixed As BitmapBuffer, A As Double(,), n As Integer) As BitmapBuffer()
+    ''' <returns>grayscale image list</returns>
+    Public Shared Function Unmix(mixed As BitmapBuffer, A As Double(,), n As Integer, flip As Boolean) As BitmapBuffer()
         Dim layers As Color()() = RectangularArray.Matrix(Of Color)(n, mixed.Width * mixed.Height)
         Dim offset As Integer = 0
+        Dim grayscale As Byte
 
         For Each pixel As Color In mixed.GetPixelsAll
             Dim vec As Double() = UnmixPixel(pixel, A)
@@ -118,7 +119,9 @@ Public Class IHCUnmixing
 
             ' generates the grayscale image for each layer
             For i As Integer = 0 To n - 1
-                layers(i)(offset) = Color.FromArgb(bytes(i), bytes(i), bytes(i))
+                grayscale = bytes(0)
+                grayscale = If(flip, 255 - grayscale, grayscale)
+                layers(i)(offset) = Color.FromArgb(255, grayscale, grayscale, grayscale)
             Next
 
             offset += 1
