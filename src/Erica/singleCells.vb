@@ -131,7 +131,14 @@ Public Module singleCells
     <RGenericOverloads("as.data.frame")>
     Private Function HEcellsMatrix2(cells As IHCCellScan(), args As list, env As Environment) As dataframe
         Dim df As dataframe = HEcellsMatrix(DirectCast(cells, CellScan()), args, env)
-        Call df.add("antibody", From cell As IHCCellScan In cells Select cell.antibody)
+        Dim nameList As String() = cells.AntibodyNameList
+
+        For Each name As String In nameList
+            Call df.add(name, From cell As IHCCellScan
+                              In cells
+                              Select If(cell.antibody Is Nothing, 0.0, cell.antibody.TryGetValue(name)))
+        Next
+
         Return df
     End Function
 
@@ -180,8 +187,6 @@ Public Module singleCells
         End If
 
         Dim df As DataFrameResolver = DataFrameResolver.Load(s.TryCast(Of Stream))
-        Dim antibody As Integer = df.GetOrdinal("antibody")
-        Dim isIHCCells As Boolean = antibody > -1
         Dim cells As New List(Of CellScan)
         Dim x As Integer = df.GetOrdinal("x")
         Dim y As Integer = df.GetOrdinal("y")

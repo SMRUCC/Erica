@@ -5,6 +5,21 @@ Imports Microsoft.VisualBasic.Linq
 Public Module Data
 
     <Extension>
+    Public Function AntibodyNameList(ihcCells As IHCCellScan()) As String()
+        Return ihcCells _
+            .Select(Function(c) As IEnumerable(Of String)
+                        If c.antibody Is Nothing Then
+                            Return Nothing
+                        Else
+                            Return c.antibody.Keys
+                        End If
+                    End Function) _
+            .IteratesALL _
+            .Distinct _
+            .ToArray
+    End Function
+
+    <Extension>
     Public Function Tabular(Of T As CellScan)(cells As IEnumerable(Of T)) As DataFrame
         Dim all As CellScan() = cells.ToArray
         Dim tbl As New DataFrame With {
@@ -35,22 +50,12 @@ Public Module Data
             Dim ihcCells As IHCCellScan() = all _
                 .Select(Function(cell) DirectCast(cell, IHCCellScan)) _
                 .ToArray
-            Dim antibodyList As String() = ihcCells _
-                .Select(Function(c) As IEnumerable(Of String)
-                            If c.antibody Is Nothing Then
-                                Return Nothing
-                            Else
-                                Return c.antibody.Keys
-                            End If
-                        End Function) _
-                .IteratesALL _
-                .Distinct _
-                .ToArray
+            Dim antibodyList As String() = ihcCells.AntibodyNameList
 
             For Each name As String In antibodyList
                 Call tbl.add(name, From cell As IHCCellScan
-                                   In all
-                                   Select If(cell.antibody Is Nothing, 0.0, cell.antibody(name)))
+                                   In ihcCells
+                                   Select If(cell.antibody Is Nothing, 0.0, cell.antibody.TryGetValue(name)))
             Next
         End If
 
