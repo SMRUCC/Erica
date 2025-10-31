@@ -123,7 +123,8 @@ Public Class IHCScanner
             ' for each cell
             For i As Integer = 0 To lookups.Length - 1
                 lookups(i).tile_id = tile_id
-                lookups(i) = lookups(i).Clone
+                lookups(i) = lookups(i).Clone(New IHCCellScan)
+
             Next
 
             Call globalLookups.AddRange(lookups)

@@ -11,7 +11,11 @@ Public Class IHCCellScan : Inherits CellScan
     Sub New()
     End Sub
 
-    Friend Overrides Function Clone(cell As CellScan) As CellScan
+    Friend Overrides Function Clone(Optional ByRef cell As CellScan = Nothing) As CellScan
+        If cell Is Nothing Then
+            cell = New IHCCellScan
+        End If
+
         Call MyBase.Clone(cell)
 
         If TypeOf cell Is IHCCellScan AndAlso Not antibody Is Nothing Then

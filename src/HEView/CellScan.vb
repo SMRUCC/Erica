@@ -57,7 +57,9 @@ Public Class CellScan : Implements Layout2D
         Return $"({physical_x},{physical_y}) weight:{weight}, morphology:[r1:{r1},r2:{r2},theta:{theta}]"
     End Function
 
-    Friend Overridable Function Clone(target As CellScan) As CellScan
+    Friend Overridable Function Clone(Optional ByRef target As CellScan = Nothing) As CellScan
+        target = If(target, New CellScan)
+
         With target
             .area = area
             .average_dist = average_dist
@@ -179,7 +181,7 @@ Public Class CellScan : Implements Layout2D
 
         For i As Integer = 0 To cells.Length - 1
             Dim originalCell As CellScan = cells(i)
-            Dim transformedCell As CellScan = originalCell.Clone
+            Dim transformedCell As CellScan = originalCell.Clone()
 
             ' 复制原始属性
             transformedCell.tile_id = originalCell.tile_id
