@@ -7,6 +7,7 @@ Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Imaging.BitmapImage
 Imports Microsoft.VisualBasic.Language
+Imports Microsoft.VisualBasic.Scripting.Runtime
 Imports Microsoft.VisualBasic.Serialization.JSON
 
 Public Class IHCScanner
@@ -121,10 +122,26 @@ Public Class IHCScanner
             Dim tile_id As String = xy.JoinBy("_")
 
             ' for each cell
-            For i As Integer = 0 To lookups.Length - 1
-                lookups(i).tile_id = tile_id
-                lookups(i) = lookups(i).Clone(New IHCCellScan)
+            For j As Integer = 0 To lookups.Length - 1
+                Dim cell As IHCCellScan = lookups(j).Clone(New IHCCellScan)
+                Dim y As Integer() = cell.scan_y.AsInteger
 
+                cell.antibody = New Dictionary(Of String, Double)
+                cell.tile_id = tile_id
+
+                lookups(j) = cell
+
+                Dim pixels As Color() = cell.scan_x.Select(Function(xi, i) file.bitmap.GetPixel(xi, y(i))).ToArray
+                Dim layers As Double()() = pixels.Select(Function(pixel) UnmixPixel(pixel)).ToArray
+                Dim antibodySet = Me.antibody _
+                    .Select(Function(a, i)
+                                Return New NamedCollection(Of Double)(a.name, From pixel As Double() In layers Select pixel(i))
+                            End Function) _
+                    .ToArray
+
+                For Each antibody As NamedCollection(Of Double) In antibodySet
+                    cell.antibody(antibody.name) = antibody.Average
+                Next
             Next
 
             Call globalLookups.AddRange(lookups)
