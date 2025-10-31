@@ -697,9 +697,11 @@ Public Module singleCells
 
     Private Function antibodyColors(IHC_antibody As list) As IHCScanner
         Dim antibody As New Dictionary(Of String, Color)
+        Dim value As Object
 
         For Each name As String In IHC_antibody.getNames
-            antibody(name) = RColorPalette.GetRawColor(IHC_antibody.getByName(name))
+            value = IHC_antibody.getByName(name)
+            antibody(name) = RColorPalette.GetRawColor(value)
         Next
 
         Return New IHCScanner(antibody)
