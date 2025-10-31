@@ -48,9 +48,9 @@ Public Module Data
                 .ToArray
 
             For Each name As String In antibodyList
-                Call tbl.add("antibody_" & name, From cell As IHCCellScan
-                                                 In all
-                                                 Select If(cell.antibody Is Nothing, 0.0, cell.antibody(name)))
+                Call tbl.add(name, From cell As IHCCellScan
+                                   In all
+                                   Select If(cell.antibody Is Nothing, 0.0, cell.antibody(name)))
             Next
         End If
 
