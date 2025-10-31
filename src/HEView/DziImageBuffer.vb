@@ -9,7 +9,16 @@ Imports Microsoft.VisualBasic.Scripting.Runtime
 Public Class DziImageBuffer
 
     Public ReadOnly Property tile As Rectangle
+    ''' <summary>
+    ''' the raw color image buffer
+    ''' </summary>
+    ''' <returns></returns>
     Public ReadOnly Property bitmap As BitmapBuffer
+    ''' <summary>
+    ''' the raw color image buffer its grayscale image
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property grayscale As BitmapBuffer
     ''' <summary>
     ''' the tile xy
     ''' </summary>
@@ -20,6 +29,7 @@ Public Class DziImageBuffer
         _tile = tile
         _xy = xy
         _bitmap = bitmap
+        _grayscale = bitmap.Grayscale
     End Sub
 
     ''' <summary>
@@ -30,6 +40,9 @@ Public Class DziImageBuffer
     ''' <param name="dir"></param>
     ''' <param name="skipBlank"></param>
     ''' <returns></returns>
+    ''' <remarks>
+    ''' the grayscale image for each tile also created in the dzi tile constructor function
+    ''' </remarks>
     Public Shared Iterator Function LoadBuffer(dzi As DziImage,
                                                level As Integer,
                                                dir As IFileSystemEnvironment,

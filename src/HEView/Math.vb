@@ -164,21 +164,24 @@ Public Module Math
                 Dim cx As Double = center.xpoints.Average
                 Dim cy As Double = center.ypoints.Average
                 Dim shape = center.GetFillPoints.ToArray
+                Dim splitPart As CellScan = cell.Clone
 
-                Yield New CellScan With {
-                    .r2 = rect.Height,
-                    .points = center.length,
-                    .r1 = rect.Width,
-                    .area = .r1 * .r2,
-                    .x = cx,
-                    .y = cy,
-                    .scan_x = shape.X.ToArray,
-                    .scan_y = shape.Y.ToArray,
-                    .ratio = std.Max(.r1, .r2) / std.Min(.r1, .r2),
-                    .physical_x = .x + offset_x,
-                    .physical_y = .y + offset_y,
+                With splitPart
+                    .r2 = rect.Height
+                    .points = center.length
+                    .r1 = rect.Width
+                    .area = .r1 * .r2
+                    .x = cx
+                    .y = cy
+                    .scan_x = shape.X.ToArray
+                    .scan_y = shape.Y.ToArray
+                    .ratio = std.Max(.r1, .r2) / std.Min(.r1, .r2)
+                    .physical_x = .x + offset_x
+                    .physical_y = .y + offset_y
                     .tile_id = cell.tile_id
-                }
+                End With
+
+                Yield splitPart
             Next
         Next
     End Function

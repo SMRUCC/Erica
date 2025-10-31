@@ -50,30 +50,35 @@ Public Class CellScan : Implements Layout2D
     ''' <returns></returns>
     Public Property weight As Double
 
+    Sub New()
+    End Sub
+
     Public Overrides Function ToString() As String
         Return $"({physical_x},{physical_y}) weight:{weight}, morphology:[r1:{r1},r2:{r2},theta:{theta}]"
     End Function
 
-    Protected Overridable Function Clone() As CellScan
-        Return New CellScan With {
-            .area = area,
-            .average_dist = average_dist,
-            .density = density,
-            .r2 = r2,
-            .moranI = moranI,
-            .physical_x = physical_x,
-            .physical_y = physical_y,
-            .points = points,
-            .pvalue = pvalue,
-            .ratio = ratio,
-            .scan_x = scan_x,
-            .scan_y = scan_y,
-            .tile_id = tile_id,
-            .weight = weight,
-            .r1 = r1,
-            .x = x,
+    Friend Overridable Function Clone(target As CellScan) As CellScan
+        With target
+            .area = area
+            .average_dist = average_dist
+            .density = density
+            .r2 = r2
+            .moranI = moranI
+            .physical_x = physical_x
+            .physical_y = physical_y
+            .points = points
+            .pvalue = pvalue
+            .ratio = ratio
+            .scan_x = scan_x
+            .scan_y = scan_y
+            .tile_id = tile_id
+            .weight = weight
+            .r1 = r1
+            .x = x
             .y = y
-        }
+        End With
+
+        Return target
     End Function
 
     ''' <summary>

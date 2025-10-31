@@ -13,16 +13,16 @@ Imports Microsoft.VisualBasic.Serialization.JSON
 
 Public Module DziScanner
 
-    Private Function globalThreshold(imagefiles As DziImageBuffer()) As Integer
+    Friend Function globalThreshold(imagefiles As DziImageBuffer()) As Integer
         Dim bits As New BucketSet(Of UInteger)
         Dim bar As Tqdm.ProgressBar = Nothing
         Dim wrap_tqdm As Boolean = App.EnableTqdm
 
         For Each file As DziImageBuffer In Tqdm.Wrap(imagefiles, bar:=bar, wrap_console:=wrap_tqdm)
-            Call bits.Add(file.bitmap.GetARGBStream)
+            Call bits.Add(file.grayscale.GetARGBStream)
         Next
 
-        Return otsuThreshold(bits)
+        Return Thresholding.otsuThreshold(bits)
     End Function
 
     ''' <summary>
@@ -141,7 +141,7 @@ Public Module DziScanner
         Call $"global threshold for ostu filter is {threshold}.".debug
 
         For Each file As DziImageBuffer In Tqdm.Wrap(imagefiles, bar:=bar, wrap_console:=wrap_tqdm)
-            Dim bitmap As BitmapBuffer = file.bitmap.Grayscale
+            Dim bitmap As BitmapBuffer = file.grayscale
             Dim xy As Integer() = file.xy
             Dim tile As Rectangle = file.tile
             Dim tip As String = $"{xy.GetJson} -> (offset:{tile.Left},{tile.Top}, width:{tile.Width} x height:{tile.Height}) found {globalLookups.Count} single cells"
