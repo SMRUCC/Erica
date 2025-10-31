@@ -97,7 +97,9 @@ Public Class IHCScanner
                               Optional moran_knn As Integer = 32,
                               Optional splitBlocks As Boolean = True) As IEnumerable(Of IHCCellScan)
 
-        Dim imagefiles As DziImageBuffer() = DziImageBuffer.LoadBuffer(dzi, level, dir, skipBlank:=True).ToArray
+        Dim imagefiles As DziImageBuffer() = DziImageBuffer.LoadBuffer(dzi, level, dir,
+                                                                       skipBlank:=True,
+                                                                       flipBackground:=True).ToArray
         Dim bar As Tqdm.ProgressBar = Nothing
         Dim globalLookups As New List(Of IHCCellScan)
         Dim wrap_tqdm As Boolean = App.EnableTqdm
