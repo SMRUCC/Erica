@@ -99,7 +99,7 @@ Public Class IHCScanner
 
         Dim imagefiles As DziImageBuffer() = DziImageBuffer.LoadBuffer(dzi, level, dir, skipBlank:=True).ToArray
         Dim bar As Tqdm.ProgressBar = Nothing
-        Dim globalLookups As New List(Of CellScan)
+        Dim globalLookups As New List(Of IHCCellScan)
         Dim wrap_tqdm As Boolean = App.EnableTqdm
         Dim d As Integer = imagefiles.Length / 25
         Dim offset As i32 = 0
@@ -144,7 +144,9 @@ Public Class IHCScanner
                 Next
             Next
 
-            Call globalLookups.AddRange(lookups)
+            Call globalLookups.AddRange(From cell As CellScan
+                                        In lookups
+                                        Select DirectCast(cell, IHCCellScan))
             Call bitmap.Dispose()
 
             If Not wrap_tqdm Then
