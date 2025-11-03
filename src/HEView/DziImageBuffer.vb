@@ -9,7 +9,16 @@ Imports Microsoft.VisualBasic.Scripting.Runtime
 Public Class DziImageBuffer
 
     Public ReadOnly Property tile As Rectangle
+    ''' <summary>
+    ''' the raw color image buffer
+    ''' </summary>
+    ''' <returns></returns>
     Public ReadOnly Property bitmap As BitmapBuffer
+    ''' <summary>
+    ''' the raw color image buffer its grayscale image
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property grayscale As BitmapBuffer
     ''' <summary>
     ''' the tile xy
     ''' </summary>
@@ -20,6 +29,7 @@ Public Class DziImageBuffer
         _tile = tile
         _xy = xy
         _bitmap = bitmap
+        _grayscale = bitmap.Grayscale
     End Sub
 
     ''' <summary>
@@ -30,10 +40,14 @@ Public Class DziImageBuffer
     ''' <param name="dir"></param>
     ''' <param name="skipBlank"></param>
     ''' <returns></returns>
+    ''' <remarks>
+    ''' the grayscale image for each tile also created in the dzi tile constructor function
+    ''' </remarks>
     Public Shared Iterator Function LoadBuffer(dzi As DziImage,
                                                level As Integer,
                                                dir As IFileSystemEnvironment,
-                                               Optional skipBlank As Boolean = False) As IEnumerable(Of DziImageBuffer)
+                                               Optional skipBlank As Boolean = False,
+                                               Optional flipBackground As Boolean = False) As IEnumerable(Of DziImageBuffer)
 
         Dim imagefiles As String() = dir.EnumerateFiles("/", "*.jpg", "*.png", "*.jpeg", "*.bmp").ToArray
 
@@ -51,6 +65,17 @@ Public Class DziImageBuffer
                 If isblank Then
                     Continue For
                 End If
+            End If
+            If flipBackground Then
+                Dim pixels As Color() = bitmap.GetPixelsAll.ToArray
+
+                For i As Integer = 0 To pixels.Length - 1
+                    If pixels(i).Equals(Color.Black, tolerance:=0) OrElse pixels(i).IsTransparent Then
+                        pixels(i) = Color.White
+                    End If
+                Next
+
+                bitmap = New BitmapBuffer(pixels, bitmap.Size)
             End If
 
             Dim xy = file.BaseName.Split("_"c).AsInteger

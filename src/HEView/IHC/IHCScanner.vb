@@ -1,9 +1,14 @@
 ﻿Imports System.Drawing
 Imports Microsoft.VisualBasic.ApplicationServices
+Imports Microsoft.VisualBasic.ApplicationServices.Terminal.ProgressBar
 Imports Microsoft.VisualBasic.ApplicationServices.Terminal.ProgressBar.Tqdm
+Imports Microsoft.VisualBasic.CommandLine.InteropService.Pipeline
 Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Imaging.BitmapImage
+Imports Microsoft.VisualBasic.Language
+Imports Microsoft.VisualBasic.Scripting.Runtime
+Imports Microsoft.VisualBasic.Serialization.JSON
 
 Public Class IHCScanner
 
@@ -88,54 +93,87 @@ Public Class IHCScanner
         Return layers
     End Function
 
-    Public Iterator Function ScanCells(dzi As DziImage, level As Integer, dir As IFileSystemEnvironment,
-                                       Optional ostu_factor As Double = 0.7,
-                                       Optional noise As Double = 0.25,
-                                       Optional moran_knn As Integer = 32,
-                                       Optional splitBlocks As Boolean = True) As IEnumerable(Of IHCCellScan)
+    Public Function ScanCells(dzi As DziImage, level As Integer, dir As IFileSystemEnvironment,
+                              Optional ostu_factor As Double = 0.7,
+                              Optional noise As Double = 0.25,
+                              Optional moran_knn As Integer = 32,
+                              Optional splitBlocks As Boolean = True) As IEnumerable(Of IHCCellScan)
 
-        Dim layers As Dictionary(Of String, DziImageBuffer()) = UnmixDziImage(dzi, level, dir)
+        Dim imagefiles As DziImageBuffer() = DziImageBuffer.LoadBuffer(dzi, level, dir,
+                                                                       skipBlank:=True,
+                                                                       flipBackground:=True).ToArray
+        Dim bar As Tqdm.ProgressBar = Nothing
+        Dim globalLookups As New List(Of IHCCellScan)
+        Dim wrap_tqdm As Boolean = App.EnableTqdm
+        Dim d As Integer = imagefiles.Length / 25
+        Dim offset As i32 = 0
+        Dim threshold As Integer = ostu_factor * DziScanner.globalThreshold(imagefiles)
 
-        For Each antibody As NamedCollection(Of Double) In Me.antibody
-            Call $"processing the antibody layer: {antibody.name}".debug
+        If d = 0 Then
+            d = 1
+        End If
 
-            Dim scaled = DziImageBuffer.GlobalScales(layers(antibody.name))
-            Dim tiles = layers(antibody.name).ToDictionary(Function(a) a.xy.JoinBy("_"), Function(a) a.bitmap)
-            Dim cells As CellScan() = scaled.ScanBuffer(
-                ostu_factor:=ostu_factor,
-                flip:=False,
-                splitBlocks:=splitBlocks,
-                noise:=noise,
-                moran_knn:=moran_knn).ToArray
+        Call $"global threshold for ostu filter is {threshold}.".debug
 
-            For Each cell As CellScan In cells
-                Dim tile As BitmapBuffer = tiles(cell.tile_id)
-                Dim weights = cell.scan_x _
-                    .Select(Function(xi, i) tile.GetRed(CInt(xi), CInt(cell.scan_y(i))) / 255) _
+        For Each file As DziImageBuffer In Tqdm.Wrap(imagefiles, bar:=bar, wrap_console:=wrap_tqdm)
+            Dim bitmap As BitmapBuffer = file.grayscale
+            Dim xy As Integer() = file.xy
+            Dim tile As Rectangle = file.tile
+            Dim tip As String = $"{xy.GetJson} -> (offset:{tile.Left},{tile.Top}, width:{tile.Width} x height:{tile.Height}) found {globalLookups.Count} single cells"
+            Dim lookups = CellScan _
+                .CellLookups(grayscale:=bitmap, offset:=tile.Location, verbose:=False) _
+                .ToArray
+            Dim tile_id As String = xy.JoinBy("_")
+
+            ' for each cell
+            For j As Integer = 0 To lookups.Length - 1
+                Dim cell As IHCCellScan = lookups(j).Clone(New IHCCellScan)
+                Dim y As Integer() = cell.scan_y.AsInteger
+
+                cell.antibody = New Dictionary(Of String, Double)
+                cell.tile_id = tile_id
+
+                lookups(j) = cell
+
+                Dim pixels As Color() = cell.scan_x.Select(Function(xi, i) file.bitmap.GetPixel(xi, y(i))).ToArray
+                Dim layers As Double()() = pixels.Select(Function(pixel) UnmixPixel(pixel)).ToArray
+                Dim antibodySet = Me.antibody _
+                    .Select(Function(a, i)
+                                Return New NamedCollection(Of Double)(a.name, From pixel As Double() In layers Select pixel(i))
+                            End Function) _
                     .ToArray
 
-                Yield New IHCCellScan With {
-                    .antibody = antibody.name,
-                    .area = cell.area,
-                    .average_dist = cell.average_dist,
-                    .density = cell.density,
-                    .r2 = cell.r2,
-                    .moranI = cell.moranI,
-                    .physical_x = cell.physical_x,
-                    .physical_y = cell.physical_y,
-                    .points = cell.points,
-                    .pvalue = cell.pvalue,
-                    .ratio = cell.ratio,
-                    .scan_x = cell.scan_x,
-                    .scan_y = cell.scan_y,
-                    .weight = If(weights.Length = 0, 0, weights.Average),
-                    .r1 = cell.r1,
-                    .x = cell.x,
-                    .y = cell.y,
-                    .tile_id = cell.tile_id
-                }
+                For Each antibody As NamedCollection(Of Double) In antibodySet
+                    cell.antibody(antibody.name) = antibody.Average
+                Next
             Next
+
+            Call globalLookups.AddRange(From cell As CellScan
+                                        In lookups
+                                        Let antibodyMarked = DirectCast(cell, IHCCellScan)
+                                        Where Not antibodyMarked.antibody.All(Function(a) a.Value <= 0.0)
+                                        Select antibodyMarked)
+            Call bitmap.Dispose()
+
+            If Not wrap_tqdm Then
+                If ++offset Mod d = 0 Then
+                    Call RunSlavePipeline.SendProgress(100 * CInt(offset) / imagefiles.Length, tip)
+                End If
+            Else
+                Call bar.SetLabel(tip)
+            End If
         Next
+
+        If splitBlocks Then
+            Return globalLookups _
+                .FilterNoise(noise) _
+                .Split() _
+                .MoranI(knn:=moran_knn)
+        Else
+            Return globalLookups _
+                .FilterNoise(noise) _
+                .MoranI(knn:=moran_knn)
+        End If
     End Function
 
 End Class

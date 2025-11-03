@@ -1,32 +1,32 @@
-﻿Public Class IHCCellScan : Inherits CellScan
+﻿Imports Microsoft.VisualBasic.Serialization.JSON
+
+Public Class IHCCellScan : Inherits CellScan
 
     ''' <summary>
     ''' the antibody name used in IHC staining
     ''' </summary>
     ''' <returns></returns>
-    Public Property antibody As String
+    Public Property antibody As Dictionary(Of String, Double)
 
-    Protected Overrides Function Clone() As CellScan
-        Return New IHCCellScan With {
-            .area = area,
-            .average_dist = average_dist,
-            .density = density,
-            .r2 = r2,
-            .moranI = moranI,
-            .physical_x = physical_x,
-            .physical_y = physical_y,
-            .points = points,
-            .pvalue = pvalue,
-            .ratio = ratio,
-            .scan_x = scan_x,
-            .scan_y = scan_y,
-            .tile_id = tile_id,
-            .weight = weight,
-            .r1 = r1,
-            .x = x,
-            .y = y,
-            .antibody = antibody
-        }
+    Sub New()
+    End Sub
+
+    Friend Overrides Function Clone(Optional ByRef cell As CellScan = Nothing) As CellScan
+        If cell Is Nothing Then
+            cell = New IHCCellScan
+        End If
+
+        Call MyBase.Clone(cell)
+
+        If TypeOf cell Is IHCCellScan AndAlso Not antibody Is Nothing Then
+            DirectCast(cell, IHCCellScan).antibody = New Dictionary(Of String, Double)(antibody)
+        End If
+
+        Return cell
+    End Function
+
+    Public Overrides Function ToString() As String
+        Return MyBase.ToString() & "; antibody=" & antibody.GetJson
     End Function
 
 End Class

@@ -50,26 +50,37 @@ Public Class CellScan : Implements Layout2D
     ''' <returns></returns>
     Public Property weight As Double
 
-    Protected Overridable Function Clone() As CellScan
-        Return New CellScan With {
-            .area = area,
-            .average_dist = average_dist,
-            .density = density,
-            .r2 = r2,
-            .moranI = moranI,
-            .physical_x = physical_x,
-            .physical_y = physical_y,
-            .points = points,
-            .pvalue = pvalue,
-            .ratio = ratio,
-            .scan_x = scan_x,
-            .scan_y = scan_y,
-            .tile_id = tile_id,
-            .weight = weight,
-            .r1 = r1,
-            .x = x,
+    Sub New()
+    End Sub
+
+    Public Overrides Function ToString() As String
+        Return $"({physical_x},{physical_y}) weight:{weight}, morphology:[r1:{r1},r2:{r2},theta:{theta}]"
+    End Function
+
+    Friend Overridable Function Clone(Optional ByRef target As CellScan = Nothing) As CellScan
+        target = If(target, New CellScan)
+
+        With target
+            .area = area
+            .average_dist = average_dist
+            .density = density
+            .r2 = r2
+            .moranI = moranI
+            .physical_x = physical_x
+            .physical_y = physical_y
+            .points = points
+            .pvalue = pvalue
+            .ratio = ratio
+            .scan_x = scan_x
+            .scan_y = scan_y
+            .tile_id = tile_id
+            .weight = weight
+            .r1 = r1
+            .x = x
             .y = y
-        }
+        End With
+
+        Return target
     End Function
 
     ''' <summary>
@@ -170,7 +181,7 @@ Public Class CellScan : Implements Layout2D
 
         For i As Integer = 0 To cells.Length - 1
             Dim originalCell As CellScan = cells(i)
-            Dim transformedCell As CellScan = originalCell.Clone
+            Dim transformedCell As CellScan = originalCell.Clone()
 
             ' 复制原始属性
             transformedCell.tile_id = originalCell.tile_id

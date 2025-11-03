@@ -4,6 +4,7 @@ Imports HEView
 Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.ComponentModel.Algorithm.base
+Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.Data.ChartPlots
 Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas
 Imports Microsoft.VisualBasic.Data.Framework.IO
@@ -131,7 +132,14 @@ Public Module singleCells
     <RGenericOverloads("as.data.frame")>
     Private Function HEcellsMatrix2(cells As IHCCellScan(), args As list, env As Environment) As dataframe
         Dim df As dataframe = HEcellsMatrix(DirectCast(cells, CellScan()), args, env)
-        Call df.add("antibody", From cell As IHCCellScan In cells Select cell.antibody)
+        Dim nameList As String() = cells.AntibodyNameList
+
+        For Each name As String In nameList
+            Call df.add(name, From cell As IHCCellScan
+                              In cells
+                              Select If(cell.antibody Is Nothing, 0.0, cell.antibody.TryGetValue(name)))
+        Next
+
         Return df
     End Function
 
@@ -180,28 +188,44 @@ Public Module singleCells
         End If
 
         Dim df As DataFrameResolver = DataFrameResolver.Load(s.TryCast(Of Stream))
-        Dim antibody As Integer = df.GetOrdinal("antibody")
-        Dim isIHCCells As Boolean = antibody > -1
         Dim cells As New List(Of CellScan)
-        Dim x As Integer = df.GetOrdinal("x")
-        Dim y As Integer = df.GetOrdinal("y")
-        Dim physical_x As Integer = df.GetOrdinal("physical_x")
-        Dim physical_y As Integer = df.GetOrdinal("physical_y")
-        Dim area As Integer = df.GetOrdinal("area")
-        Dim ratio As Integer = df.GetOrdinal("ratio")
-        Dim size As Integer = df.GetOrdinal("size")
-        Dim r1 As Integer = df.GetOrdinal("r1")
-        Dim r2 As Integer = df.GetOrdinal("r2")
-        Dim theta As Integer = df.GetOrdinal("theta")
-        Dim weight As Integer = df.GetOrdinal("weight")
-        Dim density As Integer = df.GetOrdinal("density")
-        Dim mean_distance As Integer = df.GetOrdinal("mean_distance")
-        Dim moran_I As Integer = df.GetOrdinal("moran-I")
-        Dim p_value As Integer = df.GetOrdinal("p-value")
-        Dim tile_id As Integer = df.GetOrdinal("tile_id")
+        Dim ordinal As Index(Of String) = df.HeadTitles.Indexing
+        Dim x As Integer = ordinal("x")
+        Dim y As Integer = ordinal("y")
+        Dim physical_x As Integer = ordinal("physical_x")
+        Dim physical_y As Integer = ordinal("physical_y")
+        Dim area As Integer = ordinal("area")
+        Dim ratio As Integer = ordinal("ratio")
+        Dim size As Integer = ordinal("size")
+        Dim r1 As Integer = ordinal("r1")
+        Dim r2 As Integer = ordinal("r2")
+        Dim theta As Integer = ordinal("theta")
+        Dim weight As Integer = ordinal("weight")
+        Dim density As Integer = ordinal("density")
+        Dim mean_distance As Integer = ordinal("mean_distance")
+        Dim moran_I As Integer = ordinal("moran-I")
+        Dim p_value As Integer = ordinal("p-value")
+        Dim tile_id As Integer = ordinal("tile_id")
+
+        Call ordinal.Delete("x", "y", "physical_x", "physical_y",
+                            "area", "ratio", "size",
+                            "r1", "r2", "theta",
+                            "weight", "density", "mean_distance",
+                            "moran-I", "p-value",
+                            "tile_id")
+
+        Dim antibodies As SeqValue(Of String)() = ordinal.ToArray
+        Dim isIHCCells As Boolean = Not antibodies.IsNullOrEmpty
 
         Do While df.Read
-            Dim cell As CellScan = If(isIHCCells, New IHCCellScan With {.antibody = df.GetString(antibody)}, New CellScan)
+            Dim cell As CellScan = If(isIHCCells,
+                New IHCCellScan With {.antibody = New Dictionary(Of String, Double)},
+                New CellScan
+            )
+
+            For Each antibody As SeqValue(Of String) In antibodies
+                DirectCast(cell, IHCCellScan).antibody(CStr(antibody)) = df.GetDouble(CInt(antibody))
+            Next
 
             cell.x = df.GetDouble(x)
             cell.y = df.GetDouble(y)
@@ -673,9 +697,11 @@ Public Module singleCells
 
     Private Function antibodyColors(IHC_antibody As list) As IHCScanner
         Dim antibody As New Dictionary(Of String, Color)
+        Dim value As Object
 
         For Each name As String In IHC_antibody.getNames
-            antibody(name) = RColorPalette.GetRawColor(IHC_antibody.getByName(name))
+            value = IHC_antibody.getByName(name)
+            antibody(name) = RColorPalette.GetRawColor(value)
         Next
 
         Return New IHCScanner(antibody)

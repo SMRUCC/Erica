@@ -15,8 +15,8 @@ Imports std = System.Math
 Public Module Math
 
     <Extension>
-    Public Function MoranI(cells As IEnumerable(Of CellScan), Optional knn As Integer = 16) As CellScan()
-        Dim all As CellScan() = cells.ToArray
+    Public Function MoranI(Of T As CellScan)(cells As IEnumerable(Of T), Optional knn As Integer = 16) As T()
+        Dim all As T() = cells.ToArray
 
         ' skip of the possible blank collection
         ' if scan on a blank white image
@@ -25,7 +25,7 @@ Public Module Math
         End If
 
         ' median of the cell radius
-        Dim medianR As Double = (From cell As CellScan
+        Dim medianR As Double = (From cell As T
                                  In all.AsParallel
                                  Select ((cell.r1 + cell.r2) / 2)).Median
         If medianR < 5 Then
@@ -34,14 +34,14 @@ Public Module Math
 
         Call $"create grid for spatial search with grid size(radius)={medianR}".info
 
-        Dim view As Grid(Of CellScan()) = all.EncodeGrid(radius:=medianR)
+        Dim view As Grid(Of T()) = all.EncodeGrid(radius:=medianR)
         Dim cutoff As Double = medianR * 2
 
         Call $"evaluate the cells population moran-I, with knn={knn} nearby selection".info
 
         For Each i As Integer In TqdmWrapper.Range(0, all.Length, wrap_console:=App.EnableTqdm)
-            Dim target As CellScan = all(i)
-            Dim nearby As CellScan() = view.SpatialLookup(target, medianR) _
+            Dim target As T = all(i)
+            Dim nearby As T() = view.SpatialLookup(target, medianR) _
                 .OrderBy(Function(a) target.DistanceTo(a)) _
                 .Take(knn) _
                 .ToArray
@@ -75,7 +75,7 @@ Public Module Math
             target.pvalue = pv
         Next
 
-        Dim real As CellScan() = all _
+        Dim real As T() = all _
             .Where(Function(cell)
                        Return Not cell.moranI.IsNaNImaginary
                    End Function) _
@@ -83,7 +83,7 @@ Public Module Math
         Dim minVal As Double
 
         If real.Length > 0 Then
-            minVal = Aggregate cell As CellScan
+            minVal = Aggregate cell As T
                      In real
                      Into Min(cell.moranI)
         Else
@@ -106,8 +106,8 @@ Public Module Math
     ''' <param name="noise">quantile level for filter the polygon shape points. all cell shapes which has its shape points less than this quantile level will be treated as noise</param>
     ''' <returns></returns>
     <Extension>
-    Public Function FilterNoise(cells As IEnumerable(Of CellScan), Optional noise As Double = 0.25) As CellScan()
-        Dim all As CellScan() = cells.ToArray
+    Public Function FilterNoise(Of T As CellScan)(cells As IEnumerable(Of T), Optional noise As Double = 0.25) As T()
+        Dim all As T() = cells.ToArray
         Dim q As QuantileEstimationGK = all.Select(Function(c) c.points).GKQuantile
         Dim filter As Integer = CInt(q.Query(noise))
 
@@ -129,23 +129,23 @@ Public Module Math
     ''' </param>
     ''' <returns></returns>
     <Extension>
-    Public Iterator Function Split(cells As IEnumerable(Of CellScan)) As IEnumerable(Of CellScan)
-        Dim all As CellScan() = cells.ToArray
+    Public Iterator Function Split(Of T As CellScan)(cells As IEnumerable(Of T)) As IEnumerable(Of T)
+        Dim all As T() = cells.ToArray
 
         If all.Length = 0 Then
             ' no data if scan on a blank white image
             Return
         End If
 
-        Dim averagePt As Double = Aggregate cell As CellScan In all Into Average(cell.points)
-        Dim maxR As Double = Aggregate cell As CellScan In all Into Average((cell.r1 + cell.r2) / 2)
-        Dim minR As Double = Aggregate cell As CellScan
+        Dim averagePt As Double = Aggregate cell As T In all Into Average(cell.points)
+        Dim maxR As Double = Aggregate cell As T In all Into Average((cell.r1 + cell.r2) / 2)
+        Dim minR As Double = Aggregate cell As T
                              In all.Skip(all.Length / 3)
                              Into Average((cell.r1 + cell.r2) / 2)
 
         Call "split the large cell block".info
 
-        For Each cell As CellScan In TqdmWrapper.Wrap(all)
+        For Each cell As T In TqdmWrapper.Wrap(all)
             If cell.points <= averagePt Then
                 Yield cell
                 Continue For
@@ -164,21 +164,24 @@ Public Module Math
                 Dim cx As Double = center.xpoints.Average
                 Dim cy As Double = center.ypoints.Average
                 Dim shape = center.GetFillPoints.ToArray
+                Dim splitPart As T = cell.Clone
 
-                Yield New CellScan With {
-                    .r2 = rect.Height,
-                    .points = center.length,
-                    .r1 = rect.Width,
-                    .area = .r1 * .r2,
-                    .x = cx,
-                    .y = cy,
-                    .scan_x = shape.X.ToArray,
-                    .scan_y = shape.Y.ToArray,
-                    .ratio = std.Max(.r1, .r2) / std.Min(.r1, .r2),
-                    .physical_x = .x + offset_x,
-                    .physical_y = .y + offset_y,
+                With splitPart
+                    .r2 = rect.Height
+                    .points = center.length
+                    .r1 = rect.Width
+                    .area = .r1 * .r2
+                    .x = cx
+                    .y = cy
+                    .scan_x = shape.X.ToArray
+                    .scan_y = shape.Y.ToArray
+                    .ratio = std.Max(.r1, .r2) / std.Min(.r1, .r2)
+                    .physical_x = .x + offset_x
+                    .physical_y = .y + offset_y
                     .tile_id = cell.tile_id
-                }
+                End With
+
+                Yield splitPart
             Next
         Next
     End Function

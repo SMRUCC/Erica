@@ -1,7 +1,23 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.Data.Framework
+Imports Microsoft.VisualBasic.Linq
 
 Public Module Data
+
+    <Extension>
+    Public Function AntibodyNameList(ihcCells As IHCCellScan()) As String()
+        Return ihcCells _
+            .Select(Function(c) As IEnumerable(Of String)
+                        If c.antibody Is Nothing Then
+                            Return Nothing
+                        Else
+                            Return c.antibody.Keys
+                        End If
+                    End Function) _
+            .IteratesALL _
+            .Distinct _
+            .ToArray
+    End Function
 
     <Extension>
     Public Function Tabular(Of T As CellScan)(cells As IEnumerable(Of T)) As DataFrame
@@ -13,10 +29,6 @@ Public Module Data
                         End Function) _
                 .ToArray
         }
-
-        If GetType(T) Is GetType(IHCCellScan) Then
-            Call tbl.add("antibody", From cell As IHCCellScan In all Select cell.antibody)
-        End If
 
         Call tbl.add("tile_id", From cell As CellScan In all Select cell.tile_id)
         Call tbl.add("x", From cell As CellScan In all Select cell.x)
@@ -33,6 +45,19 @@ Public Module Data
         Call tbl.add("density", From cell As CellScan In all Select cell.density)
         Call tbl.add("moran-I", From cell As CellScan In all Select cell.moranI)
         Call tbl.add("p-value", From cell As CellScan In all Select cell.pvalue)
+
+        If GetType(T) Is GetType(IHCCellScan) Then
+            Dim ihcCells As IHCCellScan() = all _
+                .Select(Function(cell) DirectCast(cell, IHCCellScan)) _
+                .ToArray
+            Dim antibodyList As String() = ihcCells.AntibodyNameList
+
+            For Each name As String In antibodyList
+                Call tbl.add(name, From cell As IHCCellScan
+                                   In ihcCells
+                                   Select If(cell.antibody Is Nothing, 0.0, cell.antibody.TryGetValue(name)))
+            Next
+        End If
 
         Return tbl
     End Function
