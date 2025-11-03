@@ -148,7 +148,9 @@ Public Class IHCScanner
 
             Call globalLookups.AddRange(From cell As CellScan
                                         In lookups
-                                        Select DirectCast(cell, IHCCellScan))
+                                        Let antibodyMarked = DirectCast(cell, IHCCellScan)
+                                        Where Not antibodyMarked.antibody.All(Function(a) a.Value <= 0.0)
+                                        Select antibodyMarked)
             Call bitmap.Dispose()
 
             If Not wrap_tqdm Then
