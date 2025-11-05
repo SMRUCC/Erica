@@ -56,6 +56,8 @@ Imports FontStyle = System.Drawing.FontStyle
 ''' </summary>
 <Package("singleCell")>
 <RTypeExport("dzi", GetType(DziImage))>
+<RTypeExport("cell_morphology", GetType(CellScan))>
+<RTypeExport("ihc_cell", GetType(IHCCellScan))>
 Public Module singleCells
 
     Sub Main()
