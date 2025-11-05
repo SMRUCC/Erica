@@ -29,7 +29,7 @@ Public Class DziImageBuffer
         _tile = tile
         _xy = xy
         _bitmap = bitmap
-        _grayscale = bitmap.Grayscale
+        _grayscale = New BitmapBuffer(bitmap).Grayscale
     End Sub
 
     ''' <summary>
