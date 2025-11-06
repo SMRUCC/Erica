@@ -78,6 +78,7 @@ Public Class CellScan : Implements Layout2D
             .r1 = r1
             .x = x
             .y = y
+            .theta = theta
         End With
 
         Return target

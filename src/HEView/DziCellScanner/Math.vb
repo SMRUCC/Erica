@@ -115,6 +115,13 @@ Public Module Math
 
         all = all _
             .Where(Function(cell) cell.points > filter) _
+            .Where(Function(cell)
+                       ' filter out the invalid data
+                       Return Not (cell.area.IsNaNImaginary OrElse
+                           cell.weight.IsNaNImaginary OrElse
+                           cell.area <= 0.0 OrElse
+                           cell.weight <= 0.0)
+                   End Function) _
             .ToArray
 
         Return all
