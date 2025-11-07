@@ -216,7 +216,7 @@ Public Module singleCells
                             "moran-I", "p-value",
                             "tile_id")
 
-        Dim antibodies As SeqValue(Of String)() = ordinal.ToArray
+        Dim antibodies As SeqValue(Of String)() = ordinal.Where(Function(a) Not a.value.StringEmpty).ToArray
         Dim isIHCCells As Boolean = Not antibodies.IsNullOrEmpty
 
         Do While df.Read
