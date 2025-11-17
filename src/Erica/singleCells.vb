@@ -174,6 +174,79 @@ Public Module singleCells
         Return df
     End Function
 
+    <ExportAPI("antibody_names")>
+    <RApiReturn(TypeCodes.string)>
+    Public Function antibodyNames(<RRawVectorArgument> cells As Object, Optional env As Environment = Nothing) As Object
+        Dim pull As pipeline = pipeline.TryCreatePipeline(Of IHCCellScan)(cells, env)
+
+        If pull.isError Then
+            Call pull.getError.message.JoinBy(" ").warning
+            Return Nothing
+        End If
+
+        Return pull.populates(Of IHCCellScan)(env) _
+            .Select(Function(cell) cell.antibody.Keys) _
+            .IteratesALL _
+            .Distinct _
+            .ToArray
+    End Function
+
+    ''' <summary>
+    ''' get antibody weight data.
+    ''' </summary>
+    ''' <param name="cells"></param>
+    ''' <param name="antibody"></param>
+    ''' <param name="wrap_cells">
+    ''' this function returns a wrapped <see cref="CellScan"/> object vector if this parameter is set as TRUE, 
+    ''' otherwise this function returns a numeric vector of the weight value of the specific 
+    ''' <paramref name="antibody"/> data channel.
+    ''' </param>
+    ''' <param name="env"></param>
+    ''' <returns></returns>
+    <ExportAPI("antibody_data")>
+    <RApiReturn(GetType(CellScan), GetType(Double))>
+    Public Function antibodyData(<RRawVectorArgument> cells As Object, antibody$,
+                                 Optional wrap_cells As Boolean = False,
+                                 Optional env As Environment = Nothing) As Object
+
+        Dim pull As pipeline = pipeline.TryCreatePipeline(Of IHCCellScan)(cells, env)
+
+        If pull.isError Then
+            Return pull.getError
+        End If
+
+        If wrap_cells Then
+            Return pull.populates(Of IHCCellScan)(env) _
+                .Select(Function(cell)
+                            Return New CellScan() With {
+                                .area = cell.area,
+                                .average_dist = cell.average_dist,
+                                .density = cell.density,
+                                .moranI = cell.moranI,
+                                .physical_x = cell.physical_x,
+                                .physical_y = cell.physical_y,
+                                .points = cell.points,
+                                .pvalue = cell.pvalue,
+                                .r1 = cell.r1,
+                                .r2 = cell.r2,
+                                .ratio = cell.ratio,
+                                .scan_x = cell.scan_x,
+                                .scan_y = cell.scan_y,
+                                .theta = cell.theta,
+                                .tile_id = cell.tile_id,
+                                .weight = cell(antibody),
+                                .x = cell.x,
+                                .y = cell.y
+                            }
+                        End Function) _
+                .ToArray
+        Else
+            Return pull.populates(Of IHCCellScan)(env) _
+                .Select(Function(cell) cell(antibody)) _
+                .ToArray
+        End If
+    End Function
+
     ''' <summary>
     ''' read the csv table file as cells data matrix
     ''' </summary>

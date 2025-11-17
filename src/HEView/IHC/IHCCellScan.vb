@@ -8,6 +8,21 @@ Public Class IHCCellScan : Inherits CellScan
     ''' <returns></returns>
     Public Property antibody As Dictionary(Of String, Double)
 
+    ''' <summary>
+    ''' get the antibody weight data of this cell object 
+    ''' </summary>
+    ''' <param name="name"></param>
+    ''' <returns></returns>
+    Default Public ReadOnly Property data(name As String) As Double
+        Get
+            If antibody.ContainsKey(name) Then
+                Return antibody(name)
+            Else
+                Return 0.0
+            End If
+        End Get
+    End Property
+
     Sub New()
     End Sub
 
