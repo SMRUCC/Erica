@@ -1,0 +1,36 @@
+.\" man page create by R# package system.
+.TH SINGLECELL 1 2000-Jan "antibody_data" "antibody_data"
+.SH NAME
+antibody_data \- get antibody weight data.
+.SH SYNOPSIS
+\fIantibody_data(\fBcells\fR as any, 
+\fBantibody\fR as string, 
+\fBwrap_cells\fR as boolean = FALSE, 
+[\fB<Environment>\fR]);\fR
+.SH DESCRIPTION
+.PP
+get antibody weight data.
+.PP
+.SH OPTIONS
+.PP
+\fBcells\fB \fR\- -. 
+.PP
+.PP
+\fBantibody\fB \fR\- -. 
+.PP
+.PP
+\fBwrap_cells\fB \fR\- 
+ this function returns a wrapped @\fBT:HEView.CellScan\fR object vector if this parameter is set as TRUE, 
+ otherwise this function returns a numeric vector of the weight value of the specific 
+ **`antibody`** data channel.
+. 
+.PP
+.PP
+\fBenv\fB \fR\- -. 
+.PP
+.SH SEE ALSO
+singleCell
+.SH FILES
+.PP
+Erica.dll
+.PP

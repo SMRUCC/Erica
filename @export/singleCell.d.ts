@@ -10,6 +10,26 @@
 */
 declare namespace singleCell {
    /**
+    * get antibody weight data.
+    * 
+    * 
+     * @param cells -
+     * @param antibody -
+     * @param wrap_cells this function returns a wrapped @``T:HEView.CellScan`` object vector if this parameter is set as TRUE, 
+     *  otherwise this function returns a numeric vector of the weight value of the specific 
+     *  **`antibody`** data channel.
+     * 
+     * + default value Is ``false``.
+     * @param env -
+     * 
+     * + default value Is ``null``.
+   */
+   function antibody_data(cells: any, antibody: string, wrap_cells?: boolean, env?: object): object|number;
+   /**
+     * @param env default value Is ``null``.
+   */
+   function antibody_names(cells: any, env?: object): string;
+   /**
      * @param grid default value Is ``1000``.
    */
    function cell_rasterized(cells: object, grid?: object): object;

@@ -2,6 +2,8 @@
 
 single cell data toolkit
 
++ [antibody_names](singleCell/antibody_names.1) 
++ [antibody_data](singleCell/antibody_data.1) get antibody weight data.
 + [read.cells](singleCell/read.cells.1) read the csv table file as cells data matrix
 + [HTS_matrix](singleCell/HTS_matrix.1) extract the raw expression data matrix from the h5ad object
 + [read.h5ad](singleCell/read.h5ad.1) read h5ad object from a specific hdf5 file
