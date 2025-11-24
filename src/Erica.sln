@@ -3761,8 +3761,8 @@ Global
 		{8AB7327F-83BB-451D-A614-6F399DB58CFC}.Release|x86.Build.0 = Release|Any CPU
 		{8AB7327F-83BB-451D-A614-6F399DB58CFC}.Rsharp_app_release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AB7327F-83BB-451D-A614-6F399DB58CFC}.Rsharp_app_release|Any CPU.Build.0 = Release|Any CPU
-		{8AB7327F-83BB-451D-A614-6F399DB58CFC}.Rsharp_app_release|x64.ActiveCfg = Release|Any CPU
-		{8AB7327F-83BB-451D-A614-6F399DB58CFC}.Rsharp_app_release|x64.Build.0 = Release|Any CPU
+		{8AB7327F-83BB-451D-A614-6F399DB58CFC}.Rsharp_app_release|x64.ActiveCfg = Release|x64
+		{8AB7327F-83BB-451D-A614-6F399DB58CFC}.Rsharp_app_release|x64.Build.0 = Release|x64
 		{8AB7327F-83BB-451D-A614-6F399DB58CFC}.Rsharp_app_release|x86.ActiveCfg = Release|Any CPU
 		{8AB7327F-83BB-451D-A614-6F399DB58CFC}.Rsharp_app_release|x86.Build.0 = Release|Any CPU
 		{DDAC6099-3440-973D-0B26-6E14064D4C4A}.CFD_win32|Any CPU.ActiveCfg = MEMI-Desktop|Any CPU
