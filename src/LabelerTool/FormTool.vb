@@ -13,4 +13,12 @@ Public Class FormTool
     Private Sub FormTool_Load(sender As Object, e As EventArgs) Handles Me.Load
         Call SkiaDriver.Register()
     End Sub
+
+    Private Sub ToolStripButton1_Click(sender As Object, e As EventArgs) Handles ToolStripButton1.Click
+        Using file As New OpenFileDialog With {.Filter = "Excel Table(*.csv)|*.csv"}
+            If file.ShowDialog = DialogResult.OK Then
+
+            End If
+        End Using
+    End Sub
 End Class

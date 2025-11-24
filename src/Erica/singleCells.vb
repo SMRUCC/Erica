@@ -262,67 +262,8 @@ Public Module singleCells
             Return s.TryCast(Of Message)
         End If
 
-        Dim df As DataFrameResolver = DataFrameResolver.Load(s.TryCast(Of Stream))
-        Dim cells As New List(Of CellScan)
-        Dim ordinal As Index(Of String) = df.HeadTitles.Indexing
-        Dim x As Integer = ordinal("x")
-        Dim y As Integer = ordinal("y")
-        Dim physical_x As Integer = ordinal("physical_x")
-        Dim physical_y As Integer = ordinal("physical_y")
-        Dim area As Integer = ordinal("area")
-        Dim ratio As Integer = ordinal("ratio")
-        Dim size As Integer = ordinal("size")
-        Dim r1 As Integer = ordinal("r1")
-        Dim r2 As Integer = ordinal("r2")
-        Dim theta As Integer = ordinal("theta")
-        Dim weight As Integer = ordinal("weight")
-        Dim density As Integer = ordinal("density")
-        Dim mean_distance As Integer = ordinal("mean_distance")
-        Dim moran_I As Integer = ordinal("moran-I")
-        Dim p_value As Integer = ordinal("p-value")
-        Dim tile_id As Integer = ordinal("tile_id")
-
-        Call ordinal.Delete("x", "y", "physical_x", "physical_y",
-                            "area", "ratio", "size",
-                            "r1", "r2", "theta",
-                            "weight", "density", "mean_distance",
-                            "moran-I", "p-value",
-                            "tile_id")
-
-        Dim antibodies As SeqValue(Of String)() = ordinal.Where(Function(a) Not a.value.StringEmpty).ToArray
-        Dim isIHCCells As Boolean = Not antibodies.IsNullOrEmpty
-
-        Do While df.Read
-            Dim cell As CellScan = If(isIHCCells,
-                New IHCCellScan With {.antibody = New Dictionary(Of String, Double)},
-                New CellScan
-            )
-
-            For Each antibody As SeqValue(Of String) In antibodies
-                DirectCast(cell, IHCCellScan).antibody(CStr(antibody)) = df.GetDouble(CInt(antibody))
-            Next
-
-            cell.x = df.GetDouble(x)
-            cell.y = df.GetDouble(y)
-            cell.physical_x = df.GetDouble(physical_x)
-            cell.physical_y = df.GetDouble(physical_y)
-            cell.area = df.GetDouble(area)
-            cell.ratio = df.GetDouble(ratio)
-            cell.points = df.GetInt32(size)
-            cell.r1 = df.GetDouble(r1)
-            cell.r2 = df.GetDouble(r2)
-            cell.weight = df.GetDouble(weight)
-            cell.density = df.GetDouble(density)
-            cell.average_dist = df.GetDouble(mean_distance)
-            cell.moranI = df.GetDouble(moran_I)
-            cell.pvalue = df.GetDouble(p_value)
-            cell.tile_id = df.GetString(tile_id)
-            cell.theta = df.GetDouble(theta)
-
-            Call cells.Add(cell)
-        Loop
-
-        Return cells.ToArray
+        Dim cells As CellScan() = HEView.Data.TableReader(s).ToArray
+        Return cells
     End Function
 
     <RGenericOverloads("as.data.frame")>
