@@ -11,7 +11,7 @@ Public Class FormTool
     Dim allDataObjects As CellScan()
     Dim sizeOriginal As Size
     Dim polygonPoints As New List(Of Point)
-    Dim renderedBitmap As Bitmap
+    Dim renderedBitmap As Image
     Dim isDrawing As Boolean = False
     Dim currentMousePos As Point
 
@@ -39,15 +39,18 @@ Public Class FormTool
     End Sub
 
     Private Sub RenderDataToBitmap()
+        Dim factor As Double = 20
+        Dim max As Double = 1500
+
         If worldBounds.Width > worldBounds.Height Then
             ' scale by width
-            Dim w = std.Max(3000, worldBounds.Width / 10)
+            Dim w = std.Max(max, worldBounds.Width / factor)
             Dim scale As Double = worldBounds.Width / w
             Dim h = worldBounds.Height / scale
 
             bitmapSize = New Size(w, h)
         Else
-            Dim h = std.Max(3000, worldBounds.Height / 10)
+            Dim h = std.Max(max, worldBounds.Height / factor)
             Dim scale As Double = worldBounds.Height / h
             Dim w = worldBounds.Width / scale
 
@@ -61,8 +64,8 @@ Public Class FormTool
 
             For Each obj In allDataObjects
                 ' 世界坐标 -> 位图坐标
-                Dim bmpX As Single = CSng(obj.x * scaleX)
-                Dim bmpY As Single = CSng(obj.y * scaleY)
+                Dim bmpX As Single = CSng(obj.physical_x * scaleX)
+                Dim bmpY As Single = CSng(obj.physical_y * scaleY)
                 g.FillEllipse(Brushes.Blue, bmpX - 1, bmpY - 1, 2, 2)
             Next
 
