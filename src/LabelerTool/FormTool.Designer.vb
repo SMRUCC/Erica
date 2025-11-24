@@ -22,13 +22,17 @@ Partial Class FormTool
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormTool))
         ToolStrip1 = New ToolStrip()
         PictureBox1 = New PictureBox()
+        ToolStripButton1 = New ToolStripButton()
+        ToolStrip1.SuspendLayout()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' ToolStrip1
         ' 
+        ToolStrip1.Items.AddRange(New ToolStripItem() {ToolStripButton1})
         ToolStrip1.Location = New Point(0, 0)
         ToolStrip1.Name = "ToolStrip1"
         ToolStrip1.RenderMode = ToolStripRenderMode.System
@@ -47,6 +51,15 @@ Partial Class FormTool
         PictureBox1.TabIndex = 1
         PictureBox1.TabStop = False
         ' 
+        ' ToolStripButton1
+        ' 
+        ToolStripButton1.DisplayStyle = ToolStripItemDisplayStyle.Image
+        ToolStripButton1.Image = CType(resources.GetObject("ToolStripButton1.Image"), Image)
+        ToolStripButton1.ImageTransparentColor = Color.Magenta
+        ToolStripButton1.Name = "ToolStripButton1"
+        ToolStripButton1.Size = New Size(23, 22)
+        ToolStripButton1.Text = "Open Cell Table"
+        ' 
         ' FormTool
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -56,6 +69,8 @@ Partial Class FormTool
         Controls.Add(ToolStrip1)
         Name = "FormTool"
         Text = "Form1"
+        ToolStrip1.ResumeLayout(False)
+        ToolStrip1.PerformLayout()
         CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
         PerformLayout()
@@ -63,5 +78,6 @@ Partial Class FormTool
 
     Friend WithEvents ToolStrip1 As ToolStrip
     Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents ToolStripButton1 As ToolStripButton
 
 End Class
