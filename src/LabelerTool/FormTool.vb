@@ -245,7 +245,8 @@ Public Class FormTool
     Private Sub ToolStripButton3_Click(sender As Object, e As EventArgs) Handles ToolStripButton3.Click
         Using file As New SaveFileDialog With {.Filter = "Cell Table(*.csv)|*.csv"}
             If file.ShowDialog = DialogResult.OK Then
-                Call allDataObjects.Where(Function(c) Not c.label.StringEmpty).SaveTo(file.FileName)
+                allDataObjects.Where(Function(c) Not c.label.StringEmpty).SaveTo(file.FileName)
+                ToolStripStatusLabel1.Text = $"Labelled Cell data exported at {file.FileName}"
             End If
         End Using
     End Sub
