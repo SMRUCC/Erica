@@ -19,6 +19,7 @@ Public Class FormTool
 
     Dim worldBounds As RectangleF
     Dim bitmapSize As Size
+    Dim sourcefile As String
 
     Public ReadOnly Property isDrawing As Boolean
         Get
@@ -45,6 +46,7 @@ Public Class FormTool
 
                 Call RenderDataToBitmap(file.FileName)
 
+                sourcefile = file.FileName
                 Text = $"{defaultTitle} [{file.FileName}]"
                 ToolStripStatusLabel1.Text = file.FileName
                 ToolStripButton1.Checked = True
@@ -253,7 +255,15 @@ Public Class FormTool
     End Sub
 
     Private Sub ToolStripButton3_Click(sender As Object, e As EventArgs) Handles ToolStripButton3.Click
-        Using file As New SaveFileDialog With {.Filter = "Cell Table(*.csv)|*.csv"}
+        If sourcefile.StringEmpty(, True) Then
+            MessageBox.Show("请先加载数据，完成数据标注后，再进行数据导出", "没有数据", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
+        End If
+
+        Using file As New SaveFileDialog With {
+            .Filter = "Cell Table(*.csv)|*.csv",
+            .FileName = $"{sourcefile.ParentPath}/cleandata/{sourcefile.FileName}"
+        }
             If file.ShowDialog = DialogResult.OK Then
                 allDataObjects.Where(Function(c) Not c.label.StringEmpty).SaveTo(file.FileName)
                 ToolStripStatusLabel1.Text = $"Labelled Cell data exported at {file.FileName}"
