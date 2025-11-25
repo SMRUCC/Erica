@@ -34,6 +34,7 @@ Public Module Data
         }
 
         Call tbl.add("tile_id", From cell As CellScan In all Select cell.tile_id)
+        Call tbl.add("label", From cell As CellScan In all Select cell.label)
         Call tbl.add("x", From cell As CellScan In all Select cell.x)
         Call tbl.add("y", From cell As CellScan In all Select cell.y)
         Call tbl.add("physical_x", From cell As CellScan In all Select cell.physical_x)
@@ -46,6 +47,7 @@ Public Module Data
         Call tbl.add("theta", From cell As CellScan In all Select cell.theta)
         Call tbl.add("weight", From cell As CellScan In all Select cell.weight)
         Call tbl.add("density", From cell As CellScan In all Select cell.density)
+        Call tbl.add("mean_distance", From cell As CellScan In all Select cell.average_dist)
         Call tbl.add("moran-I", From cell As CellScan In all Select cell.moranI)
         Call tbl.add("p-value", From cell As CellScan In all Select cell.pvalue)
 
@@ -73,6 +75,8 @@ Public Module Data
     Public Iterator Function TableReader(s As Stream) As IEnumerable(Of CellScan)
         Dim df As DataFrameResolver = DataFrameResolver.Load(s)
         Dim ordinal As Index(Of String) = df.HeadTitles.Indexing
+        Dim tile_id As Integer = ordinal("tile_id")
+        Dim label As Integer = ordinal("label")
         Dim x As Integer = ordinal("x")
         Dim y As Integer = ordinal("y")
         Dim physical_x As Integer = ordinal("physical_x")
@@ -88,7 +92,6 @@ Public Module Data
         Dim mean_distance As Integer = ordinal("mean_distance")
         Dim moran_I As Integer = ordinal("moran-I")
         Dim p_value As Integer = ordinal("p-value")
-        Dim tile_id As Integer = ordinal("tile_id")
 
         Call ordinal.Delete("x", "y", "physical_x", "physical_y",
                             "area", "ratio", "size",
@@ -126,6 +129,7 @@ Public Module Data
             cell.pvalue = df.GetDouble(p_value)
             cell.tile_id = df.GetString(tile_id)
             cell.theta = df.GetDouble(theta)
+            cell.label = df.GetString(label)
 
             Yield cell
         Loop
