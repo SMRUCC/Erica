@@ -25,13 +25,14 @@ Partial Class FormTool
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormTool))
         ToolStrip1 = New ToolStrip()
         ToolStripButton1 = New ToolStripButton()
+        ToolStripSeparator1 = New ToolStripSeparator()
+        ToolStripButton2 = New ToolStripButton()
+        btnCompletePolygon = New ToolStripButton()
+        btnClear = New ToolStripButton()
+        txtLabel = New ToolStripTextBox()
         PictureBox1 = New PictureBox()
         StatusStrip1 = New StatusStrip()
         ToolStripStatusLabel1 = New ToolStripStatusLabel()
-        btnClear = New ToolStripButton()
-        btnCompletePolygon = New ToolStripButton()
-        ToolStripSeparator1 = New ToolStripSeparator()
-        txtLabel = New ToolStripTextBox()
         ToolStrip1.SuspendLayout()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
         StatusStrip1.SuspendLayout()
@@ -39,7 +40,7 @@ Partial Class FormTool
         ' 
         ' ToolStrip1
         ' 
-        ToolStrip1.Items.AddRange(New ToolStripItem() {ToolStripButton1, ToolStripSeparator1, btnCompletePolygon, btnClear, txtLabel})
+        ToolStrip1.Items.AddRange(New ToolStripItem() {ToolStripButton1, ToolStripSeparator1, ToolStripButton2, btnCompletePolygon, btnClear, txtLabel})
         ToolStrip1.Location = New Point(0, 0)
         ToolStrip1.Name = "ToolStrip1"
         ToolStrip1.RenderMode = ToolStripRenderMode.System
@@ -55,6 +56,44 @@ Partial Class FormTool
         ToolStripButton1.Name = "ToolStripButton1"
         ToolStripButton1.Size = New Size(23, 22)
         ToolStripButton1.Text = "Open Cell Table"
+        ' 
+        ' ToolStripSeparator1
+        ' 
+        ToolStripSeparator1.Name = "ToolStripSeparator1"
+        ToolStripSeparator1.Size = New Size(6, 25)
+        ' 
+        ' ToolStripButton2
+        ' 
+        ToolStripButton2.CheckOnClick = True
+        ToolStripButton2.DisplayStyle = ToolStripItemDisplayStyle.Image
+        ToolStripButton2.Image = CType(resources.GetObject("ToolStripButton2.Image"), Image)
+        ToolStripButton2.ImageTransparentColor = Color.Magenta
+        ToolStripButton2.Name = "ToolStripButton2"
+        ToolStripButton2.Size = New Size(23, 22)
+        ToolStripButton2.Text = "ToolStripButton2"
+        ' 
+        ' btnCompletePolygon
+        ' 
+        btnCompletePolygon.DisplayStyle = ToolStripItemDisplayStyle.Image
+        btnCompletePolygon.Image = CType(resources.GetObject("btnCompletePolygon.Image"), Image)
+        btnCompletePolygon.ImageTransparentColor = Color.Magenta
+        btnCompletePolygon.Name = "btnCompletePolygon"
+        btnCompletePolygon.Size = New Size(23, 22)
+        btnCompletePolygon.Text = "Complete Polygon"
+        ' 
+        ' btnClear
+        ' 
+        btnClear.DisplayStyle = ToolStripItemDisplayStyle.Image
+        btnClear.Image = CType(resources.GetObject("btnClear.Image"), Image)
+        btnClear.ImageTransparentColor = Color.Magenta
+        btnClear.Name = "btnClear"
+        btnClear.Size = New Size(23, 22)
+        btnClear.Text = "Clear"
+        ' 
+        ' txtLabel
+        ' 
+        txtLabel.Name = "txtLabel"
+        txtLabel.Size = New Size(100, 25)
         ' 
         ' PictureBox1
         ' 
@@ -83,34 +122,6 @@ Partial Class FormTool
         ToolStripStatusLabel1.Size = New Size(119, 17)
         ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
         ' 
-        ' btnClear
-        ' 
-        btnClear.DisplayStyle = ToolStripItemDisplayStyle.Image
-        btnClear.Image = CType(resources.GetObject("btnClear.Image"), Image)
-        btnClear.ImageTransparentColor = Color.Magenta
-        btnClear.Name = "btnClear"
-        btnClear.Size = New Size(23, 22)
-        btnClear.Text = "Clear"
-        ' 
-        ' btnCompletePolygon
-        ' 
-        btnCompletePolygon.DisplayStyle = ToolStripItemDisplayStyle.Image
-        btnCompletePolygon.Image = CType(resources.GetObject("btnCompletePolygon.Image"), Image)
-        btnCompletePolygon.ImageTransparentColor = Color.Magenta
-        btnCompletePolygon.Name = "btnCompletePolygon"
-        btnCompletePolygon.Size = New Size(23, 22)
-        btnCompletePolygon.Text = "Complete Polygon"
-        ' 
-        ' ToolStripSeparator1
-        ' 
-        ToolStripSeparator1.Name = "ToolStripSeparator1"
-        ToolStripSeparator1.Size = New Size(6, 25)
-        ' 
-        ' txtLabel
-        ' 
-        txtLabel.Name = "txtLabel"
-        txtLabel.Size = New Size(100, 25)
-        ' 
         ' FormTool
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -120,7 +131,7 @@ Partial Class FormTool
         Controls.Add(StatusStrip1)
         Controls.Add(ToolStrip1)
         Name = "FormTool"
-        Text = "Form1"
+        Text = "Cell Label Tool"
         ToolStrip1.ResumeLayout(False)
         ToolStrip1.PerformLayout()
         CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
@@ -139,5 +150,6 @@ Partial Class FormTool
     Friend WithEvents btnCompletePolygon As ToolStripButton
     Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
     Friend WithEvents txtLabel As ToolStripTextBox
+    Friend WithEvents ToolStripButton2 As ToolStripButton
 
 End Class

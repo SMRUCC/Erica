@@ -13,11 +13,18 @@ Public Class FormTool
     Dim sizeOriginal As Size
     Dim polygonPoints As New List(Of Point)
     Dim renderedBitmap As Image
-    Dim isDrawing As Boolean = False
     Dim currentMousePos As Point
 
     Dim worldBounds As RectangleF
     Dim bitmapSize As Size
+
+    Public ReadOnly Property isDrawing As Boolean
+        Get
+            Return ToolStripButton1.Checked
+        End Get
+    End Property
+
+    Const defaultTitle As String = "Cell Label Tool"
 
     Private Sub FormTool_Load(sender As Object, e As EventArgs) Handles Me.Load
         Call SkiaDriver.Register()
@@ -35,6 +42,10 @@ Public Class FormTool
                 End With
 
                 Call RenderDataToBitmap(file.FileName)
+
+                Text = $"{defaultTitle} [{file.FileName}]"
+                ToolStripStatusLabel1.Text = file.FileName
+                ToolStripButton1.Checked = True
             End If
         End Using
     End Sub
@@ -182,15 +193,15 @@ Public Class FormTool
     ' 完成多边形按钮
     Private Sub btnCompletePolygon_Click(sender As Object, e As EventArgs) Handles btnCompletePolygon.Click
         If polygonPoints.Count < 3 Then
-            MessageBox.Show("请至少绘制3个点来构成一个多边形。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            ToolStripStatusLabel1.Text = "请至少绘制3个点来构成一个多边形。"
             Return
         End If
         If String.IsNullOrWhiteSpace(txtLabel.Text) Then
-            MessageBox.Show("请输入要应用的标签。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            ToolStripStatusLabel1.Text = "请输入要应用的标签。"
             Return
         End If
 
-        isDrawing = False ' 停止绘制
+        ToolStripButton1.Checked = False ' 停止绘制
 
         ' 1. 将PictureBox上的多边形顶点转换到世界坐标系
         Dim worldPolygon As New List(Of PointF)
@@ -207,7 +218,10 @@ Public Class FormTool
             End If
         Next
 
-        MessageBox.Show($"成功为 {labeledCount} 个对象打上标签 '{txtLabel.Text}'。", "标注完成", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Dim msg As String = $"成功为 {labeledCount} 个对象打上标签 '{txtLabel.Text}'。"
+
+        ToolStripStatusLabel1.Text = msg
+        MessageBox.Show(msg, "标注完成", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
         ' (可选) 重新渲染以高亮显示已标注的点
         ' RenderDataToBitmap() ' 如果需要根据标签改变颜色，可以在这里修改渲染逻辑
@@ -217,7 +231,7 @@ Public Class FormTool
     ' 清除多边形按钮
     Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
         polygonPoints.Clear()
-        isDrawing = True
+        ToolStripButton1.Checked = True
         PictureBox1.Invalidate() ' 清除屏幕上的多边形
     End Sub
 End Class
