@@ -212,8 +212,8 @@ Public Class FormTool
         ' 2. 遍历所有原始数据，判断是否在多边形内
         Dim labeledCount As Integer = 0
         For Each obj As CellScan In allDataObjects
-            If IsPointInPolygon(New PointF(CSng(obj.x), CSng(obj.y)), worldPolygon) Then
-                obj.Label = txtLabel.Text
+            If IsPointInPolygon(New PointF(CSng(obj.physical_x), CSng(obj.physical_y)), worldPolygon) Then
+                obj.label = txtLabel.Text
                 labeledCount += 1
             End If
         Next
