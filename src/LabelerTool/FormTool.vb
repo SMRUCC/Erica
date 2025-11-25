@@ -1,9 +1,11 @@
 ﻿Imports System.Drawing.Drawing2D
 Imports System.IO
 Imports HEView
+Imports Microsoft.VisualBasic.ComponentModel.Ranges.Model
 Imports Microsoft.VisualBasic.Data.Framework
 Imports Microsoft.VisualBasic.Drawing
 Imports Microsoft.VisualBasic.Imaging
+Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
 Imports Microsoft.VisualBasic.Imaging.Driver
 Imports Microsoft.VisualBasic.Imaging.Math2D
 Imports std = System.Math
@@ -70,16 +72,24 @@ Public Class FormTool
             bitmapSize = New Size(w, h)
         End If
 
+        Dim colors As SolidBrush() = Designer.GetColors(ScalerPalette.Typhoon.Description, 50) _
+            .Select(Function(c) New SolidBrush(c)) _
+            .ToArray
+
         Using g As IGraphics = DriverLoad.CreateDefaultRasterGraphics(bitmapSize, fill_color:=Color.White)
             ' 计算从世界坐标到位图坐标的缩放比例
             Dim scaleX As Single = CSng(bitmapSize.Width / worldBounds.Width)
             Dim scaleY As Single = CSng(bitmapSize.Height / worldBounds.Height)
+            Dim weights As New DoubleRange(From cell As CellScan In allDataObjects Select cell.weight)
+            Dim index As New DoubleRange(0, colors.Length - 1)
 
-            For Each obj In allDataObjects
+            For Each obj As CellScan In allDataObjects
                 ' 世界坐标 -> 位图坐标
                 Dim bmpX As Single = CSng(obj.physical_x * scaleX)
                 Dim bmpY As Single = CSng(obj.physical_y * scaleY)
-                g.FillEllipse(Brushes.Blue, bmpX - 1, bmpY - 1, 2, 2)
+                Dim offset As Integer = weights.ScaleMapping(obj.weight, index)
+
+                Call g.FillEllipse(colors(offset), bmpX - 1, bmpY - 1, 2, 2)
             Next
 
             renderedBitmap = DirectCast(g, GdiRasterGraphics).ImageResource
