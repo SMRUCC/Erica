@@ -72,7 +72,7 @@ Public Class FormTool
             bitmapSize = New Size(w, h)
         End If
 
-        Dim colors As SolidBrush() = Designer.GetColors(ScalerPalette.Typhoon.Description, 50) _
+        Dim colors As SolidBrush() = Designer.GetColors(ScalerPalette.viridis.Description, 50) _
             .Select(Function(c) New SolidBrush(c)) _
             .ToArray
 
