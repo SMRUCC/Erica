@@ -1,0 +1,356 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Microsoft.VisualBasic.Imaging.Physics
+</name>
+</assembly>
+<members>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Boids.Boid">
+ <summary>
+ Boids flocking algorithm
+ </summary>
+ <remarks>
+ https://github.com/swharden/Csharp-Data-Visualization/tree/main/dev/old/drawing/boids
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Boids.Boid.GetSpeed">
+ <summary>
+ Velocity
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Boids.Field">
+ <summary>
+ Boids flocking algorithm
+ </summary>
+ <remarks>
+ https://github.com/swharden/Csharp-Data-Visualization/tree/main/dev/old/drawing/boids
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Force">
+ <summary>
+ 力
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.Force.strength">
+ <summary>
+ 力的大小
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.Force.angle">
+ <summary>
+ 力的方向，与水平的夹角，使用弧度
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Force.op_UnaryNegation(Microsoft.VisualBasic.Imaging.Physics.Force)">
+ <summary>
+ 这个力的反向力
+ </summary>
+ <param name="f"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Force.op_Addition(Microsoft.VisualBasic.Imaging.Physics.Force,Microsoft.VisualBasic.Imaging.Physics.Force)">
+ <summary>
+ 使用平行四边形法则进行力的合成
+ </summary>
+ <param name="f1"></param>
+ <param name="f2"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.AbstractForce">
+ <summary>
+ @author Helder Suzuki
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.Displacement">
+ <summary>
+ @author Helder Suzuki
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.ForceLayoutData">
+ <summary>
+ @author Helder Suzuki
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.ForceVector">
+ <summary>
+ @author Helder Suzuki
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.ForceVectorNodeLayoutData">
+ <summary>
+ @author Mathieu Bastian
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.ForceVectorUtils">
+ <summary>
+ @author Mathieu Jacomy
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.Node">
+ <summary>
+ the layout data model
+ </summary>
+ <remarks>
+ contains node layout position and shape size data
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.TextProperties">
+ <summary>
+ the label drawing style data
+ </summary>
+ <remarks>
+ text label size data
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.LabelAdjust">
+ <summary>
+ @author Mathieu Jacomy
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.layout.LabelAdjust.goAlgo(Microsoft.VisualBasic.Imaging.Physics.layout.Node[],System.Collections.Generic.Dictionary{Microsoft.VisualBasic.Imaging.Physics.layout.Node,Microsoft.VisualBasic.Imaging.Physics.layout.TextProperties})">
+ <summary>
+ one iteration
+ </summary>
+ <param name="nodes"></param>
+ <param name="labels"></param>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.LabelAdjustLayoutData">
+ <summary>
+ @author Mathieu Bastian
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.ProportionalDisplacement">
+ <summary>
+ The movement of the node is in the direction of the force and it's
+ proportional to is module.
+ 
+ @author Helder Suzuki
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.StepDisplacement">
+ <summary>
+ The node is moved a fixed distance (step) in the direction of the force.
+ 
+ @author Helder Suzuki
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.MassPoint">
+ <summary>
+ 质点，没有体积和大小，只有质量和电荷量的理想物理对象
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.MassPoint.Mass">
+ <summary>
+ 物体的质量，会影响重力，可能会影响摩擦力
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.MassPoint.Point">
+ <summary>
+ 用来兼容2D/3D
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.MassPoint.Charge">
+ <summary>
+ 用于计算库仑力的电荷量
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.MassPoint.Velocity">
+ <summary>
+ 速度
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.MassPoint.Acceleration">
+ <summary>
+ 加速度
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.MassPoint.World">
+ <summary>
+ 对象所处的世界的空间类型
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.MassPoint.ID">
+ <summary>
+ 当前的这个物体的唯一标识符
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.MassPoint.Displacement">
+ <summary>
+ 物体在dt时间段内以当前的速度<see cref="P:Microsoft.VisualBasic.Imaging.Physics.MassPoint.Velocity"/>之下产生一小部分的位移
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.MassPoint.op_Addition(Microsoft.VisualBasic.Imaging.Physics.MassPoint,Microsoft.VisualBasic.Imaging.Physics.Force)">
+ <summary>
+ 物体受到外部力的作用下改变了加速度
+ </summary>
+ <param name="m"></param>
+ <param name="F">这个是最终的合力</param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Math">
+ <summary>
+ Math provider for <see cref="T:Microsoft.VisualBasic.Imaging.Physics.Force"/>
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Math.X">
+ <summary>
+ Vector index for XYZ
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Math.Y">
+ <summary>
+ Vector index for XYZ
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Math.Z">
+ <summary>
+ Vector index for XYZ
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Math.Decomposition2D(Microsoft.VisualBasic.Imaging.Physics.Force)">
+ <summary>
+ 将力分解为水平和垂直两个方向上面的分力
+ </summary>
+ <param name="F"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Math.ParallelogramLaw(Microsoft.VisualBasic.Imaging.Physics.Force,Microsoft.VisualBasic.Imaging.Physics.Force)">
+ <summary>
+ 力的合成的平行四边形法则
+ </summary>
+ <param name="f1"></param>
+ <param name="f2"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Math.Sum(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Imaging.Physics.Force})">
+ <summary>
+ 使用平行四边形法则计算出合力
+ </summary>
+ <param name="F">分力</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Math.Gravity(Microsoft.VisualBasic.Imaging.Physics.MassPoint,System.Double)">
+ <summary>
+ 重力总是向下的
+ </summary>
+ <param name="m"></param>
+ <param name="g#"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Math.Friction">
+ <summary>
+ 与合力的方向相反的摩檫力
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Math.CoulombsLaw(System.Double,System.Double,System.Double,System.Double)">
+ <summary>
+ 只计算出力的大小，没有方向
+ </summary>
+ <param name="q1#"></param>
+ <param name="q2#"></param>
+ <param name="r#"></param>
+ <param name="k#"></param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Math.CoulombsLaw(Microsoft.VisualBasic.Imaging.Physics.MassPoint,Microsoft.VisualBasic.Imaging.Physics.MassPoint,System.Double)">
+ <summary>
+ 两个点电荷之间的库仑力
+ </summary>
+ <param name="m1"></param>
+ <param name="m2"></param>
+ <param name="k#"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Math.Cos(Microsoft.VisualBasic.Math.LinearAlgebra.Vector,Microsoft.VisualBasic.Math.LinearAlgebra.Vector)">
+ <summary>
+ 计算两个向量之间的alpha夹角的cos值
+ </summary>
+ <param name="a"></param>
+ <param name="b"></param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Math.RepulsiveForce(System.Double,Microsoft.VisualBasic.Math.LinearAlgebra.Vector,Microsoft.VisualBasic.Math.LinearAlgebra.Vector)">
+ <summary>
+ 排斥力模型
+ </summary>
+ <param name="strength#"></param>
+ <param name="a">空间位置坐标</param>
+ <param name="b">空间位置坐标</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Math.AttractiveForce(System.Double,Microsoft.VisualBasic.Math.LinearAlgebra.Vector,Microsoft.VisualBasic.Math.LinearAlgebra.Vector)">
+ <summary>
+ 吸引力模型
+ </summary>
+ <param name="strength#"></param>
+ <param name="a"></param>
+ <param name="b"></param>
+ <returns></returns>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Particle.density">
+ <summary>
+ Density, Near Density
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Reactions">
+ <summary>
+ How does two <see cref="T:Microsoft.VisualBasic.Imaging.Physics.MassPoint"/> object reacting with each other.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Reactions.CoulombsLaw(Microsoft.VisualBasic.Imaging.Physics.MassPoint,Microsoft.VisualBasic.Imaging.Physics.MassPoint,System.Double)">
+ <summary>
+ 两个点电荷之间的库仑力
+ </summary>
+ <param name="m1"></param>
+ <param name="m2"></param>
+ <param name="k#"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Vector2Math">
+ <summary>
+ unity math
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.World">
+ <summary>
+ Physics world reactor
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.World.Output">
+ <summary>
+ 将状态被改变的对象输出到显示设备或者存储设备之上
+ </summary>
+ <param name="objs"></param>
+ <param name="physX">调试使用</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.World.AddReaction(System.String,System.String,Microsoft.VisualBasic.Imaging.Physics.World.Reaction,System.String)">
+ <summary>
+ 添加两个对象之间的相互作用
+ </summary>
+ <param name="a$">对象a：<see cref="P:Microsoft.VisualBasic.Imaging.Physics.MassPoint.ID"/></param>
+ <param name="b$">对象b：<see cref="P:Microsoft.VisualBasic.Imaging.Physics.MassPoint.ID"/></param>
+ <param name="react">这两个对象之间如何产生力？</param>
+ <param name="trace$"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.World.React(System.UInt32)">
+ <summary>
+ 指令世界模型对象迭代计算指定的迭代计算次数
+ </summary>
+ <param name="time%">迭代的次数</param>
+</member>
+</members>
+</doc>

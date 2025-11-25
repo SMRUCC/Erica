@@ -1,0 +1,2338 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Microsoft.VisualBasic.DataMining.Framework
+</name>
+</assembly>
+<members>
+<member name="T:Microsoft.VisualBasic.DataMining.AprioriRules.Impl.Apriori">
+ <summary>
+ 关联分析程序（当某一种事务的样本较少的时候，将无法分析出关联性）
+ </summary>
+ <remarks></remarks>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.AprioriRules.ItemSet.Remove(Microsoft.VisualBasic.DataMining.AprioriRules.ItemSet)">
+ <summary>
+ GetRemaining: removes all child elements from parent
+ </summary>
+ <param name="child"></param>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.AprioriRules.Entities.Output.StrongRules">
+ <summary>
+ The output result for this AprioriRules data mining
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.AprioriRules.Entities.Rule">
+ <summary>
+ 
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.AprioriRules.Entities.Rule.X">
+ <summary>
+ combination 
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.AprioriRules.Entities.Rule.Y">
+ <summary>
+ remaining
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.AprioriRules.Entities.Rule.Confidence">
+ <summary>
+ 
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.AprioriRules.Entities.Transaction">
+ <summary>
+ a transaction record
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.AprioriRules.Entities.Transaction.Name">
+ <summary>
+ the transaction unique id
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.AprioriRules.Entities.Transaction.Items">
+ <summary>
+ the item collection that contains inside current transaction.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.AprioriRules.Entities.Transaction.#ctor(System.String)">
+ <summary>
+ use the char as transaction items, just used for debug test
+ </summary>
+ <param name="data"></param>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.AprioriRules.AprioriExport">
+ <summary>
+ ``AprioriRules`` API export module
+ </summary>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.AprioriRules.AprioriExport.AnalysisTransactions(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.AprioriRules.ItemSet},Microsoft.VisualBasic.DataMining.AprioriRules.Item[],System.Double,System.Double,System.Int32,Microsoft.VisualBasic.DataMining.AprioriRules.AprioriPredictions)">
+ <summary>
+ 
+ </summary>
+ <param name="transactions"></param>
+ <param name="items"></param>
+ <param name="minSupport">``(0,1]``</param>
+ <param name="minConfidence">``(0,1]``</param>
+ <param name="minlen">min item count in the generated strong rule</param>
+ <param name="impl"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.AprioriRules.AprioriExport.AnalysisTransactions(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.AprioriRules.Entities.Transaction},System.Double,System.Double,System.Int32,Microsoft.VisualBasic.DataMining.AprioriRules.AprioriPredictions)">
+ <summary>
+ 
+ </summary>
+ <param name="transactions"></param>
+ <param name="minSupport#">``(0,1]``</param>
+ <param name="minConfidence">``(0,1]``</param>
+ <param name="impl"></param>
+ <param name="minlen">min item count in the generated strong rule</param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.AprioriRules.Encoding">
+ <summary>
+ Transaction encoding helper.(对一个Transaction之中的独立部件编码为一个字符)
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.AprioriRules.Encoding.#ctor(System.Collections.Generic.IEnumerable{System.String})">
+ <summary>
+ 
+ </summary>
+ <param name="items"></param>
+ <remarks>
+ 因为<paramref name="items"/>的值可能会存在非常多种情况，所以在这构造函数之中会使用中文字符来进行编码
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.AprioriRules.Encoding.TransactionEncoding(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.AprioriRules.Entities.Transaction})">
+ <summary>
+ 
+ </summary>
+ <param name="data">将事务编码为字符集和</param>
+ <returns></returns>
+ <remarks></remarks>
+ 
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.AprioriRules.Item">
+ <summary>
+ mapping the <see cref="F:Microsoft.VisualBasic.DataMining.AprioriRules.Item.Item"/> string comparision to <see cref="F:Microsoft.VisualBasic.DataMining.AprioriRules.Item.Code"/> comparision
+ </summary>
+ <remarks>
+ constant value liked, so readonly field at here
+ </remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.AprioriRules.Item.Code">
+ <summary>
+ the hashcode of the <see cref="F:Microsoft.VisualBasic.DataMining.AprioriRules.Item.Item"/> string
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.AprioriRules.Item.UnicodeChar">
+ <summary>
+ Convert the <see cref="F:Microsoft.VisualBasic.DataMining.AprioriRules.Item.Code"/> as chinese character BMP unicode char.
+ </summary>
+ <returns>
+ one of the 20992 chinese BMP chars.
+ </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.AprioriRules.Item.op_Equality(Microsoft.VisualBasic.DataMining.AprioriRules.Item,Microsoft.VisualBasic.DataMining.AprioriRules.Item)">
+ <summary>
+ check equals of the <see cref="F:Microsoft.VisualBasic.DataMining.AprioriRules.Item.Code"/>
+ </summary>
+ <param name="a"></param>
+ <param name="b"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.KMeans.Bisecting.BisectingKMeans">
+ <summary>
+ Created by touhid on 12/21/15.
+ 
+ @author touhid
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Bisecting.BisectingKMeans.#ctor(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity},System.Int32,System.Int32,System.Boolean,System.Int32)">
+ <summary>
+ 
+ </summary>
+ <param name="dataList"></param>
+ <param name="k"></param>
+ <param name="iterations"></param>
+ <param name="traceback">record the traceback information for run debug?</param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Bisecting.BisectingKMeans.kMeansClustering(System.Collections.Generic.List{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity})">
+ <summary>
+ k = 2
+ </summary>
+ <param name="dataPoints"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Bisecting.BisectingKMeans.calcCluster(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity})">
+ <summary>
+ calculate the input data center as first cluster
+ </summary>
+ <param name="dataList"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.KMeans.Bisecting.Cluster">
+ <summary>
+ Created by touhid on 12/21/15.
+ 
+ @author touhid
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.KMeans.Bisecting.Cluster.centroid">
+ <summary>
+ the data point vector of the centroid node in current cluster
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.KMeans.Bisecting.Cluster.DataPoints">
+ <summary>
+ a collection of the data members inside current cluster
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.KMeans.Bisecting.Cluster.Cluster">
+ <summary>
+ current cluster class label
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity">
+ <summary>
+ A tagged numeric vector
+ </summary>
+ <remarks>
+ uid -- feature_vector
+ 
+ (计算所使用的对象实例实体模型)
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.uid">
+ <summary>
+ the unique reference id of current entity object
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.cluster">
+ <summary>
+ the cluster class label
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.entityVector">
+ <summary>
+ the point data vector
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.#ctor(System.String,System.Double[])">
+ <summary>
+ Create a new entity point data
+ </summary>
+ <param name="id"></param>
+ <param name="data"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.ToDataModel">
+ <summary>
+ 使用index序列编号来作为属性名称
+ </summary>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.Equals(Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity)">
+ <summary>
+ check all vector elements equals to another
+ </summary>
+ <param name="another"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.ToDataModel(System.String[])">
+ <summary>
+ 
+ </summary>
+ <param name="maps">名称字符串向量应该是和<see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityBase`1.entityVector"/>属性向量等长的</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.op_Equality(Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity,Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity)">
+ <summary>
+ 值相等判断
+ </summary>
+ <param name="a"></param>
+ <param name="b"></param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.op_Explicit(Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity)~System.Int32">
+ <summary>
+ get the class label of current point
+ </summary>
+ <param name="c"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.op_Explicit(Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity)~System.Double[]">
+ <summary>
+ get data vector <see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityBase`1.entityVector"/>.
+ </summary>
+ <param name="c"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.KMeans.EntityClusterModel">
+ <summary>
+ 存储在Csv文件里面的数据模型，近似等价于csv DataSet对象，
+ 只不过多带了一个用来描述cluster的<see cref="P:Microsoft.VisualBasic.DataMining.KMeans.EntityClusterModel.Cluster"/>
+ 属性标签
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.KMeans.EntityClusterModel.Cluster">
+ <summary>
+ 聚类结果的类编号
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.EntityClusterModel.FromDataSet``1(``0)">
+ <summary>
+ 用于生成聚类所需要的数据集，所以通过这个函数所构建的数据集对象的<see cref="P:Microsoft.VisualBasic.DataMining.KMeans.EntityClusterModel.Cluster"/>属性值都是空的
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="data"></param>
+ <returns></returns>
+ 
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.KMeans.Evaluation">
+ <summary>
+ 判断聚类结果优劣的两个距离判定方法
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Evaluation.calcularMinimumDistance(Microsoft.VisualBasic.DataMining.KMeans.Bisecting.Cluster[])">
+ <summary>
+ Distancia minima entre puntos de diferentes clusters
+ </summary>
+ <param name="clusters"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Evaluation.CalcularMaximumDiameter(Microsoft.VisualBasic.DataMining.KMeans.Bisecting.Cluster[])">
+ <summary>
+ Diámetro máximo entre dos puntos que pertenecen al mismo cluster.
+ </summary>
+ <param name="clusters"></param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Evaluation.Silhouette(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity})">
+ <summary>
+ Silhouette Coefficient
+ </summary>
+ <param name="result"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Evaluation.Silhouette(Microsoft.VisualBasic.DataMining.KMeans.Bisecting.Cluster[])">
+ <summary>
+ Silhouette Coefficient
+ </summary>
+ <param name="clusters">the cluster result</param>
+ <returns></returns>
+ <remarks>
+ Silhouette score is used to evaluate the quality of clusters created using clustering 
+ algorithms such as K-Means in terms of how well samples are clustered with other samples 
+ that are similar to each other. The Silhouette score is calculated for each sample of 
+ different clusters. To calculate the Silhouette score for each observation/data point, 
+ the following distances need to be found out for each observations belonging to all the 
+ clusters:
+ 
+ Mean distance between the observation And all other data points In the same cluster. This
+ distance can also be called a mean intra-cluster distance. The mean distance Is denoted by a
+ Mean distance between the observation And all other data points Of the Next nearest cluster.
+ This distance can also be called a mean nearest-cluster distance. The mean distance Is 
+ denoted by b
+ 
+ Silhouette score, S, for Each sample Is calculated Using the following formula:
+ 
+ \(S = \frac{(b - a)}{max(a, b)}\)
+ 
+ The value Of the Silhouette score varies from -1 To 1. If the score Is 1, the cluster Is
+ dense And well-separated than other clusters. A value near 0 represents overlapping clusters
+ With samples very close To the decision boundary Of the neighboring clusters. A negative 
+ score [-1, 0] indicates that the samples might have got assigned To the wrong clusters.
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Evaluation.Dunn(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity})">
+ <summary>
+ Dunn Index
+ </summary>
+ <param name="clusters"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Evaluation.Dunn(Microsoft.VisualBasic.DataMining.KMeans.Bisecting.Cluster[])">
+ <summary>
+ Dunn Index
+ </summary>
+ <param name="clusters">A multiple cluster result</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Evaluation.CalcMaxInDist(Microsoft.VisualBasic.DataMining.KMeans.Bisecting.Cluster)">
+ <summary>
+ evaluate internal a cluster
+ </summary>
+ <param name="cluster"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Evaluation.CalcMinOutDist(Microsoft.VisualBasic.DataMining.KMeans.Bisecting.Cluster,Microsoft.VisualBasic.DataMining.KMeans.Bisecting.Cluster[])">
+ <summary>
+ evaluate between two clusters
+ </summary>
+ <param name="cluster"></param>
+ <param name="clusters"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.EvaluationScore.CreateClusters(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity})">
+ <summary>
+ 
+ </summary>
+ <param name="data">
+ all of the data points inside this given collection should 
+ be tagged with the <see cref="P:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.cluster"/> labels.
+ </param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Extensions.Kmeans(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.EntityClusterModel},System.Int32,System.Boolean,System.Int32)">
+ <summary>
+ Performance the clustering operation on the entity data model.
+ </summary>
+ <param name="source"></param>
+ <param name="expected">k-centers</param>
+ <returns>
+ 输出的元素和输入相比较是乱序的
+ </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Extensions.PopulateObjects(Microsoft.VisualBasic.DataMining.KMeans.ClusterCollection{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity},Microsoft.VisualBasic.DataMining.KMeans.DataSetConvertor)">
+ <summary>
+ a helper function for convert object data
+ </summary>
+ <param name="kmeans"></param>
+ <param name="maps"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Extensions.Kmeans(System.Collections.Generic.IEnumerable{System.Drawing.PointF},System.Int32,System.Boolean,System.Int32)">
+ <summary>
+ do clustering of a collection 2D points
+ </summary>
+ <param name="points"></param>
+ <param name="expected">k-centers</param>
+ <param name="debug"></param>
+ <param name="n_threads"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.KMeans.KMeansAlgorithm`1">
+ <summary>
+ This class implement a KMeans clustering algorithm.
+ (请注意，实体对象的属性必须要长度一致)
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.KMeans.KMeansAlgorithm`1.max_iters">
+ <summary>
+ the max iteration loop number
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.KMeansAlgorithm`1.#ctor(System.Boolean,System.Int32,System.Int32,System.Boolean,System.Boolean)">
+ <param name="n_threads">
+ 默认是使用并行化的计算代码以通过牺牲内存空间的代价来获取高性能的计算，非并行化的代码比较适合低内存的设备上面运行
+ </param>
+ <param name="max_iters">
+ the max iteration loop number
+ </param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.KMeansAlgorithm`1.ClusterDataSet(System.Collections.Generic.IEnumerable{`0},System.Int32)">
+ <summary>
+ Seperates a dataset into clusters or groups with similar characteristics
+ </summary>
+ <param name="k">
+ The number of clusters or groups to form.(当这个参数值为0的时候，函数也会返回一个空集合)
+ </param>
+ <param name="source">
+ An array containing data that will be clustered, the elements number must greater than 2, at least 3 elements.
+ (里面的元素至少需要三个)
+ </param>
+ <returns>A collection of clusters of data</returns>
+ <remarks>
+ if the <paramref name="k"/> parameter value is greater than the
+ element count of the <paramref name="source"/> collection, then this api 
+ function will throw an exception
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.KMeansAlgorithm`1.ClusterDataSet(Microsoft.VisualBasic.DataMining.KMeans.ClusterCollection{`0},`0[])">
+ <summary>
+ Seperates a dataset into clusters or groups with similar characteristics
+ </summary>
+ <param name="clusters">A collection of data clusters</param>
+ <param name="data">An array containing data to be clustered</param>
+ <returns>A collection of clusters of data</returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.KMeansAlgorithm`1.minIndex(Microsoft.VisualBasic.DataMining.KMeans.ClusterCollection{`0},`0)">
+ <summary>
+ find index for non parallel code
+ </summary>
+ <param name="clusters"></param>
+ <param name="dataPoint"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.KMeans.Kmedoids">
+ <summary>
+ Partitioning around medoids(PAM)
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Kmedoids.CalculateClusterMean``1(System.Collections.Generic.IEnumerable{``0})">
+ <summary>
+ Calculates The Mean Of A Cluster OR The Cluster Center
+ 
+ ```vbnet
+ Dim cluster#(,) = {
+     {15, 32, 35.6},
+     {19, 54, 65.1}
+ }
+ Dim centroid#() = Kmeans.ClusterMean(cluster)
+
+ Call $"<br/>Cluster mean Calc: {centroid}".debug
+ ```
+ </summary>
+ <param name="cluster">
+ A two-dimensional array containing a dataset of numeric values
+ </param>
+ <returns>
+ Returns an Array Defining A Data Point Representing The Cluster Mean or Centroid
+ </returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Kmedoids.DoKMedoids(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity},System.Int32,System.Int32)">
+ <summary>
+ Partitioning around medoids(PAM)
+ </summary>
+ <param name="source"></param>
+ <param name="k"></param>
+ <param name="maxSteps"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.KMeans.Cluster`1">
+ <summary>
+ A collection of the target entity object will be a cluster
+ </summary>
+ <typeparam name="T"></typeparam>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.KMeans.Cluster`1.size">
+ <summary>
+ get member count in current cluster
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Cluster`1.op_Addition(Microsoft.VisualBasic.DataMining.KMeans.Cluster{`0},Microsoft.VisualBasic.DataMining.KMeans.Cluster{`0})">
+ <summary>
+ merge two cluster to populate a new cluster
+ </summary>
+ <param name="c1"></param>
+ <param name="c2"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.KMeans.ClusterCollection`1">
+ <summary>
+ A collection of Cluster objects or Clusters
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.KMeans.ClusterCollection`1.NumOfCluster">
+ <summary>
+ the numbers of the kmeans clusters
+ </summary>
+ <returns>k-centers</returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.KMeans.ClusterCollection`1.Item(System.Int32)">
+ <summary>
+ Returns the Cluster at this index
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.ClusterCollection`1.Add(Microsoft.VisualBasic.DataMining.KMeans.KMeansCluster{`0})">
+ <summary>
+ Adds a Cluster to the collection of Clusters
+ </summary>
+ <param name="cluster">A Cluster to be added to the collection of clusters</param>
+ 
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.KMeans.KMeansCluster`1">
+ <summary>
+ A class containing a group of data with similar characteristics (cluster), KMeans Cluster
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.KMeans.KMeansCluster`1.ClusterSum">
+ <summary>
+ The sum of all the data in the cluster
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.KMeans.KMeansCluster`1.ClusterMean">
+ <summary>
+ The mean of all the data in the cluster
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.KMeans.KMeansCluster`1.Item(System.Int32)">
+ <summary>
+ Returns the one dimensional array data located at the index
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.KMeansCluster`1.Add(`0)">
+ <summary>
+ Adds a single dimension array data to the cluster.
+ (请注意，每当使用这个方法新添加一个对象的时候，都会导致均值被重新计算)
+ </summary>
+ <param name="data">A 1-dimensional array containing data that will be added to the cluster</param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.KMeansCluster`1.refresh">
+ <summary>
+ Will keep the center member variable, but clear the list of points
+ within the cluster.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.Clustering.CanopyBuilder">
+ <summary>
+ initial for k-means
+ </summary>
+ <remarks>
+ 与传统的聚类算法(比如K-means)不同，Canopy聚类最大的特点是不需要事先指定k值(即clustering的个数)，
+ 因此具有很大的实际应用价值。与其他聚类算法相比，Canopy聚类虽然精度较低，但其在速度上有很大优势，
+ 因此可以使用Canopy聚类先对数据进行“粗”聚类，得到k值，以及大致的K个初始质心，再使用K-means进行
+ 进一步“细”聚类。所以Canopy+K-means这种形式聚类算法聚类效果良好。
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Clustering.CanopyBuilder.#ctor(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity},System.Double,System.Double)">
+ <summary>
+ 
+ </summary>
+ <param name="data"></param>
+ <param name="T1"></param>
+ <param name="T2"></param>
+ <remarks>
+ value of <paramref name="T1"/> should greater than <paramref name="T2"/>, example as:
+ 
+ T1 = 8 and T2 = 4
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Clustering.CanopyBuilder.AverageDistance(Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity[])">
+ <summary>
+ 得到平均距离
+ </summary>
+ <param name="points"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Clustering.CanopyBuilder.AverageDistance(System.Double,System.Double[])">
+ <summary>
+ 
+ </summary>
+ <param name="pointSize"></param>
+ <param name="parts">sum(parts)</param>
+ <returns></returns>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.Clustering.Mark.MARK_WEAK">
+ <summary>
+ &lt; T1
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.Clustering.Mark.MARK_STRONG">
+ <summary>
+ &lt; T2
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.Clustering.Density">
+ <summary>
+ evaluate point density
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Clustering.Density.GetDensity(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity},System.Int32,Microsoft.VisualBasic.DataMining.Clustering.IQueryDensity{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity})">
+ <summary>
+ 密度为到k个最近邻的平均距离的倒数。如果该距离小，则密度高
+ </summary>
+ <param name="dataset"></param>
+ <param name="k"></param>
+ <returns>
+ a collection of tuple [id -> density].
+ the larger of the result value, the higher density value it is
+ </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Clustering.Density.GetDensity``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``0,System.Double},System.Int32)">
+ <summary>
+ 密度为到k个最近邻的平均距离的倒数。如果该距离小，则密度高
+ </summary>
+ <param name="dataset"></param>
+ <param name="k"></param>
+ <returns>
+ a collection of tuple [id -> density].
+ the larger of the result value, the higher density value it is
+ </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Clustering.Density.GetDensity``1(Microsoft.VisualBasic.DataMining.Clustering.IQueryDensity{``0},System.Int32)">
+ <summary>
+ 密度为到k个最近邻的平均距离的倒数。如果该距离小，则密度高
+ </summary>
+ <param name="k"></param>
+ <returns>
+ a collection of tuple [id -> density].
+ the larger of the result value, the higher density value it is
+ </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.Clustering.KNN">
+ <summary>
+ KNN classifier
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.Clustering.KNN.trainingSet">
+ <summary>
+ this holds the values of the training data
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.Clustering.KNN.clusterNames">
+ <summary>
+ this holds the class associated with the values
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Clustering.KNN.#ctor(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity},System.Collections.Generic.Dictionary{System.Int32,System.String})">
+ <summary>
+ 
+ </summary>
+ <param name="trainingSet">
+ should contains the <see cref="P:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.cluster"/> index value
+ </param>
+ <param name="clusterNames">
+ the class label that associated with the <see cref="P:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.cluster"/>
+ </param>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.Clustering.Spectral">
+ <summary>
+ Spectral Clustering
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Clustering.Spectral.generate_kernel_matrix">
+ <summary>
+ Fill kernel matrix
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Clustering.Spectral.kmeans">
+ <summary>
+ kmeans on <see cref="F:Microsoft.VisualBasic.DataMining.Clustering.Spectral.eigenvectors"/> with required n <see cref="F:Microsoft.VisualBasic.DataMining.Clustering.Spectral.centers"/>.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.DBSCAN.DbscanAlgorithm`1">
+ <summary>
+ DBSCAN algorithm class, Density-based spatial clustering of applications with noise (DBSCAN) 
+ </summary>
+ <typeparam name="T">Takes dataset item row (features, preferences, vector) type</typeparam>
+ <remarks>
+ ###### DBSCAN Clustering Algorithm C# Implementation
+ 
+ > https://github.com/yusufuzun/dbscan
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.DBSCAN.DbscanAlgorithm`1.#ctor(System.Func{`0,`0,System.Double},System.Boolean,System.Action{System.Object})">
+ <summary>
+ Takes metric function to compute distances between dataset items T
+ </summary>
+ <param name="metricFunc"></param>
+ <param name="full">
+ A logical option for indicates that evaluate all neighbor points 
+ or not for test and create cluster members
+ </param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.DBSCAN.DbscanAlgorithm`1.ComputeClusterDBSCAN(`0[],System.Double,System.Int32,System.Int32[]@,System.Boolean,System.Double)">
+ <summary>
+ Performs the DBSCAN clustering algorithm.
+ </summary>
+ <param name="allPoints">Dataset</param>
+ <param name="epsilon">Desired region ball radius</param>
+ <param name="minPts">Minimum number of points to be in a region</param>
+ <param name="densityCut">
+ value in range of ``[0,1]``. a percentage location for create threshold of the density values
+ </param>
+ <returns>sets of clusters, renew the parameter</returns>
+ 
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.DBSCAN.DbscanPoint`1.ID">
+ <summary>
+ the raw data unique reference id
+ </summary>
+ <returns></returns>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.DBSCAN.DbscanSession`1.allPoints">
+ <summary>
+ Dataset
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.DBSCAN.DbscanSession`1.epsilon">
+ <summary>
+ radius of center point
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.DBSCAN.DbscanSession`1.#ctor(Microsoft.VisualBasic.DataMining.DBSCAN.DbscanAlgorithm{`0},Microsoft.VisualBasic.DataMining.DBSCAN.DbscanPoint{`0}[],System.Double,System.Int32)">
+ <summary>
+ 
+ </summary>
+ <param name="dbscan"></param>
+ <param name="allPoints"></param>
+ <param name="epsilon">Desired region ball range</param>
+ <param name="minPts">Minimum number of points to be in a region, density cutoff</param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.DBSCAN.DbscanSession`1.CheckNeighborPts(Microsoft.VisualBasic.DataMining.DBSCAN.DbscanPoint{`0})">
+ <summary>
+ this function was called by a parallel linq
+ </summary>
+ <param name="pn"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.DBSCAN.DbscanSession`1.ExpandClusterParallel(Microsoft.VisualBasic.DataMining.DBSCAN.DbscanPoint{`0}[],System.Int32,System.Int32)">
+ <summary>
+ 
+ </summary>
+ <param name="neighborPts">other points in same region with point parameter</param>
+ <param name="clusterId">given clusterId</param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.DBSCAN.DbscanSession`1.ExpandCluster(Microsoft.VisualBasic.DataMining.DBSCAN.DbscanPoint{`0}[],System.Int32,System.Int32)">
+ <summary>
+ 
+ </summary>
+ <param name="neighborPts">other points in same region with point parameter</param>
+ <param name="clusterId">given clusterId</param>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.DBSCAN.DbscanSession`1.queryCache">
+ <summary>
+ the point set index
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.DBSCAN.DbscanSession`1.RegionQuery(`0,System.Boolean)">
+ <summary>
+ Checks and searchs neighbor points for given point
+ </summary>
+ <param name="point">centered point to be searched neighbors</param>
+ <returns>result neighbors</returns>
+ 
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.FuzzyCMeans.CMeans">
+ <summary>
+ ### the cmeans algorithm module
+ 
+ **Fuzzy clustering** (also referred to as **soft clustering**) is a form of clustering in which 
+ each data point can belong to more than one cluster.
+
+ Clustering Or cluster analysis involves assigning data points to clusters (also called buckets, 
+ bins, Or classes), Or homogeneous classes, such that items in the same class Or cluster are as 
+ similar as possible, while items belonging to different classes are as dissimilar as possible. 
+ Clusters are identified via similarity measures. These similarity measures include distance, 
+ connectivity, And intensity. Different similarity measures may be chosen based on the data Or 
+ the application.
+ 
+ > https://en.wikipedia.org/wiki/Fuzzy_clustering
+ </summary>
+ <remarks>
+ Clustering problems have applications in **biology**, medicine, psychology, economics, and many other disciplines.
+
+ ##### Bioinformatics
+ 
+ In the field of bioinformatics, clustering Is used for a number of applications. One use Is as 
+ a pattern recognition technique to analyze gene expression data from microarrays Or other 
+ technology. In this case, genes with similar expression patterns are grouped into the same cluster, 
+ And different clusters display distinct, well-separated patterns of expression. Use of clustering 
+ can provide insight into gene function And regulation. Because fuzzy clustering allows genes 
+ to belong to more than one cluster, it allows for the identification of genes that are conditionally 
+ co-regulated Or co-expressed. For example, one gene may be acted on by more than one Transcription 
+ factor, And one gene may encode a protein that has more than one function. Thus, fuzzy clustering 
+ Is more appropriate than hard clustering.
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.FuzzyCMeans.CMeans.CMeans(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity},System.Int32)">
+ <summary>
+ **Fuzzy clustering** (also referred to as **soft clustering**) is a form of clustering in which 
+ each data point can belong to more than one cluster.
+ </summary>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.FuzzyCMeans.CMeans.CMeans(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity},System.Int32,System.Double)">
+ <summary>
+ **Fuzzy clustering** (also referred to as **soft clustering**) is a form of clustering in which 
+ each data point can belong to more than one cluster.
+ </summary>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.FuzzyCMeans.CMeans.CMeans(Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity[],System.Int32,System.Double,System.Double,System.Boolean,System.Int32)">
+ <summary>
+ **Fuzzy clustering** (also referred to as **soft clustering**) is a form of clustering in which 
+ each data point can belong to more than one cluster.
+ </summary>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.FuzzyCMeans.CMeans.scanRow(System.Double[][],Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity,System.Int32,System.Double)">
+ <summary>
+ 
+ </summary>
+ <param name="centers">centers for each cluster</param>
+ <param name="entity">a object entity data vector</param>
+ <param name="classCount">number of the cluster to evaluates</param>
+ <param name="m">fuzzification</param>
+ <returns>cluster membership vector of current <paramref name="entity"/> object.</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.FuzzyCMeans.FuzzyCMeansEntity">
+ <summary>
+ A numeric vector object that tagged with the fuzzy cmeans cluster membership values
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.FuzzyCMeans.FuzzyCMeansEntity.memberships">
+ <summary>
+ ``Key``键名和数组的下标一样是从0开始的
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.FuzzyCMeans.FuzzyCMeansEntity.probablyMembership">
+ <summary>
+ Max probably of <see cref="P:Microsoft.VisualBasic.DataMining.FuzzyCMeans.FuzzyCMeansEntity.memberships"/> its key value.
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HDBSCAN.Distance.CosineSimilarity">
+ <summary>
+ Computes cosine similarity between two points, d = 1 - ((X*Y) / (||X||*||Y||))
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HDBSCAN.Distance.IDistanceCalculator`1">
+ <summary>
+ An interface for classes which compute the distance between two points (where points are
+ represented as arrays of doubles).
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Distance.IDistanceCalculator`1.ComputeDistance(System.Int32,System.Int32,`0,`0)">
+ <summary>
+ Computes the distance between two points.
+ Note that larger values indicate that the two points are farther apart.
+ </summary>
+ <param name="indexOne">The index of the first attribute</param>
+ <param name="indexTwo">The index of the second attribute</param>
+ <param name="attributesOne">The attributes of the first point</param>
+ <param name="attributesTwo">The attributes of the second point</param>
+ <returns>A double for the distance between the two points</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HDBSCAN.Distance.EuclideanDistance">
+ <summary>
+ Computes the euclidean distance between two points, d = sqrt((x1-y1)^2 + (x2-y2)^2 + ... + (xn-yn)^2).
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Distance.ISparseMatrixSupport.GetMostCommonDistanceValueForSparseMatrix">
+ <summary>
+ Indicate the most common distance value for sparse matrix.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HDBSCAN.Distance.ManhattanDistance">
+ <summary>
+ Computes the manhattan distance between two points, d = |x1-y1| + |x2-y2| + ... + |xn-yn|.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HDBSCAN.Distance.PearsonCorrelation">
+ <summary>
+ Computes the euclidean distance between two points, d = 1 - (cov(X,Y) / (std_dev(X) * std_dev(Y)))
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HDBSCAN.Distance.SupremumDistance">
+ <summary>
+ Computes the supremum distance between two points, d = max[(x1-y1), (x2-y2), ... ,(xn-yn)].
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.Cluster">
+ <summary>
+ An HDBSCAN* cluster, which will have a birth level, death level, stability, and constraint 
+ satisfaction once fully constructed.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.Cluster.#ctor(System.Int32,Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.Cluster,System.Double,System.Int32)">
+ <summary>
+ Creates a new Cluster.
+ </summary>
+ <param name="label">The cluster label, which should be globally unique</param>
+ <param name="parent">The cluster which split to create this cluster</param>
+ <param name="birthLevel">The MST edge level at which this cluster first appeared</param>
+ <param name="numPoints">The initial number of points in this cluster</param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.Cluster.DetachPoints(System.Int32,System.Double)">
+ <summary>
+ Removes the specified number of points from this cluster at the given edge level, which will
+ update the stability of this cluster and potentially cause cluster death.  If cluster death
+ occurs, the number of constraints satisfied by the virtual child cluster will also be calculated.
+ </summary>
+ <param name="numPoints">The number of points to remove from the cluster</param>
+ <param name="level">The MST edge level at which to remove these points</param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.Cluster.Propagate">
+ <summary>
+ This cluster will propagate itself to its parent if its number of satisfied constraints is
+ higher than the number of propagated constraints.  Otherwise, this cluster propagates its
+ propagated descendants.  In the case of ties, stability is examined.
+ Additionally, this cluster propagates the lowest death level of any of its descendants to its
+ parent.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.Cluster.ReleaseVirtualChildCluster">
+ <summary>
+ Sets the virtual child cluster to null, thereby saving memory.  Only call this method after computing the
+ number of constraints satisfied by the virtual child cluster.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.HdbscanAlgorithm.CalculateCoreDistances(System.Func{System.Int32,System.Int32,System.Double},System.Int32,System.Int32)">
+ <summary>
+ Calculates the core distances for each point in the data set, given some value for k.
+ </summary>
+ <param name="distances">The function to get the distance</param>
+ <param name="numPoints">The number of elements in dataset</param>
+ <param name="k">Each point's core distance will be it's distance to the kth nearest neighbor</param>
+ <returns> An array of core distances</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.HdbscanAlgorithm.ConstructMst(System.Func{System.Int32,System.Int32,System.Double},System.Int32,System.Double[],System.Boolean)">
+ <summary>
+ Constructs the minimum spanning tree of mutual reachability distances for the data set, given
+ the core distances for each point.
+ </summary>
+ <param name="distances">The function to get the distance</param>
+ <param name="numPoints">The number of elements in dataset</param>
+ <param name="coreDistances">An array of core distances for each data point</param>
+ <param name="selfEdges">If each point should have an edge to itself with weight equal to core distance</param>
+ <returns> An MST for the data set using the mutual reachability distances</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.HdbscanAlgorithm.ComputeHierarchyAndClusterTree(Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.UndirectedGraph,System.Int32,System.Collections.Generic.List{Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.HdbscanConstraint},System.Collections.Generic.List{System.Int32[]},System.Double[],System.Int32[])">
+ <summary>
+ Computes the hierarchy and cluster tree from the minimum spanning tree, writing both to file, 
+ and returns the cluster tree.  Additionally, the level at which each point becomes noise is
+ computed.  Note that the minimum spanning tree may also have self edges (meaning it is not
+ a true MST).
+ </summary>
+ <param name="mst">A minimum spanning tree which has been sorted by edge weight in descending order</param>
+ <param name="minClusterSize">The minimum number of points which a cluster needs to be a valid cluster</param>
+ <param name="constraints">An optional List of Constraints to calculate cluster constraint satisfaction</param>
+ <param name="hierarchy">The hierarchy output</param>
+ <param name="pointNoiseLevels">A double[] to be filled with the levels at which each point becomes noise</param>
+ <param name="pointLastClusters">An int[] to be filled with the last label each point had before becoming noise</param>
+ <returns>The cluster tree</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.HdbscanAlgorithm.PropagateTree(System.Collections.Generic.List{Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.Cluster})">
+ <summary>
+ Propagates constraint satisfaction, stability, and lowest child death level from each child
+ cluster to each parent cluster in the tree.  This method must be called before calling
+ findProminentClusters() or calculateOutlierScores().
+ </summary>
+ <param name="clusters">A list of Clusters forming a cluster tree</param>
+ <returns>true if there are any clusters with infinite stability, false otherwise</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.HdbscanAlgorithm.FindProminentClusters(System.Collections.Generic.List{Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.Cluster},System.Collections.Generic.List{System.Int32[]},System.Int32)">
+ <summary>
+ Produces a flat clustering result using constraint satisfaction and cluster stability, and 
+ returns an array of labels.  propagateTree() must be called before calling this method.
+ </summary>
+ <param name="clusters">A list of Clusters forming a cluster tree which has already been propagated</param>
+ <param name="hierarchy">The hierarchy content</param>
+ <param name="numPoints">The number of points in the original data set</param>
+ <returns>An array of labels for the flat clustering result</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.HdbscanAlgorithm.CalculateOutlierScores(System.Collections.Generic.List{Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.Cluster},System.Double[],System.Int32[],System.Double[])">
+ <summary>
+ Produces the outlier score for each point in the data set, and returns a sorted list of outlier
+ scores.  propagateTree() must be called before calling this method.
+ </summary>
+ <param name="clusters">A list of Clusters forming a cluster tree which has already been propagated</param>
+ <param name="pointNoiseLevels">A double[] with the levels at which each point became noise</param>
+ <param name="pointLastClusters">An int[] with the last label each point had before becoming noise</param>
+ <param name="coreDistances">An array of core distances for each data point</param>
+ <returns>An List of OutlierScores, sorted in descending order</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.HdbscanAlgorithm.CreateNewCluster(System.Collections.Generic.SortedSet{System.Int32},System.Int32[],Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.Cluster,System.Int32,System.Double)">
+ <summary>
+ Removes the set of points from their parent Cluster, and creates a new Cluster, provided the
+ clusterId is not 0 (noise).
+ </summary>
+ <param name="points">The set of points to be in the new Cluster</param>
+ <param name="clusterLabels">An array of cluster labels, which will be modified</param>
+ <param name="parentCluster">The parent Cluster of the new Cluster being created</param>
+ <param name="clusterLabel">The label of the new Cluster </param>
+ <param name="edgeWeight">The edge weight at which to remove the points from their previous Cluster</param>
+ <returns>The new Cluster, or null if the clusterId was 0</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.HdbscanAlgorithm.CalculateNumConstraintsSatisfied(System.Collections.Generic.SortedSet{System.Int32},System.Collections.Generic.List{Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.Cluster},System.Collections.Generic.List{Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.HdbscanConstraint},System.Int32[])">
+ <summary>
+ Calculates the number of constraints satisfied by the new clusters and virtual children of the
+ parents of the new clusters.
+ </summary>
+ <param name="newClusterLabels">Labels of new clusters</param>
+ <param name="clusters">An List of clusters</param>
+ <param name="constraints">An List of constraints</param>
+ <param name="clusterLabels">An array of current cluster labels for points</param>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.HdbscanConstraint">
+ <summary>
+ A clustering constraint (either a must-link or cannot-link constraint between two points).
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.HdbscanConstraint.#ctor(System.Int32,System.Int32,Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.HdbscanConstraintType)">
+ <summary>
+ Creates a new constraint.
+ </summary>
+ <param name="pointA">The first point involved in the constraint</param>
+ <param name="pointB">The second point involved in the constraint</param>
+ <param name="type">The constraint type</param>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.OutlierScore">
+ <summary>
+ Simple storage class that keeps the outlier score, core distance, and id (index) for a single point.
+ OutlierScores are sorted in ascending order by outlier score, with core distances used to break
+ outlier score ties, and ids used to break core distance ties.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.OutlierScore.#ctor(System.Double,System.Double,System.Int32)">
+ <summary>
+ Creates a new OutlierScore for a given point.
+ </summary>
+ <param name="score">The outlier score of the point</param>
+ <param name="coreDistance">The point's core distance</param>
+ <param name="id">The id (index) of the point</param>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.UndirectedGraph">
+ <summary>
+ An undirected graph, with weights assigned to each edge.
+ Vertices in the graph are 0 indexed.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.UndirectedGraph.#ctor(System.Int32,System.Int32[],System.Int32[],System.Double[])">
+ <summary>
+ Constructs a new UndirectedGraph, including creating an edge list for each vertex from the 
+ vertex arrays.  For an index i, verticesA[i] and verticesB[i] share an edge with weight
+ edgeWeights[i].
+ </summary>
+ <param name="numVertices">The number of vertices in the graph (indexed 0 to numVertices-1)</param>
+ <param name="verticesA">An array of vertices corresponding to the array of edges</param>
+ <param name="verticesB">An array of vertices corresponding to the array of edges</param>
+ <param name="edgeWeights">An array of edges corresponding to the arrays of vertices</param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.UndirectedGraph.QuicksortByEdgeWeight">
+ <summary>
+ Quicksorts the graph by edge weight in descending order.
+ This quicksort implementation is iterative and in-place.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.UndirectedGraph.SelectPivotIndex(System.Int32,System.Int32)">
+ <summary>
+ Returns a pivot index by finding the median of edge weights between the startIndex, endIndex,
+ and middle.
+ </summary>
+ <param name="startIndex">The lowest index from which the pivot index should come</param>
+ <param name="endIndex">The highest index from which the pivot index should come</param>
+ <returns>A pivot index</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.UndirectedGraph.Partition(System.Int32,System.Int32,System.Int32)">
+ <summary>
+ Partitions the array in the interval [startIndex, endIndex] around the value at pivotIndex.
+ </summary>
+ <param name="startIndex">The lowest index to  partition</param>
+ <param name="endIndex">The highest index to partition</param>
+ <param name="pivotIndex">The index of the edge weight to partition around</param>
+ <returns>The index position of the pivot edge weight after the partition</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HDBSCAN.Hdbscanstar.UndirectedGraph.SwapEdges(System.Int32,System.Int32)">
+ <summary>
+ Swaps the vertices and edge weights between two index locations in the graph.
+ </summary>
+ <param name="indexOne">The first index location</param>
+ <param name="indexTwo">The second index location</param>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.Lloyds.Clustering">
+ <summary>
+ 
+ </summary>
+ <remarks>
+ https://github.com/halfjew22/Clustering/blob/master/src/com/lustig/model/Clustering.java
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.Lloyds.LloydsMethodClustering">
+ <summary>
+ Voronoi
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.ComponentModel.Discretion.Discretizer">
+ <summary>
+ 通过这个对象来执行对连续性数值的数据集的离散化操作
+ </summary>
+ <remarks>
+ 离散化是通过类似于等宽分bin来实现的
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Discretion.Discretizer.#ctor">
+ <summary>
+ json/xml serialization
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Discretion.Discretizer.GetLevel(System.Double)">
+ <summary>
+ 
+ </summary>
+ <param name="x"></param>
+ <returns>
+ full value range of this level function is [0, <see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.Discretion.Discretizer.binSize"/>],
+ source sample value range is [0, <see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.Discretion.Discretizer.binSize"/> - 1].
+ </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.ComponentModel.Discretion.NormalRangeDiscretizer">
+ <summary>
+ 对原始数据进行区间离散化
+ </summary>
+ <remarks>
+ 这种离散化处理方法比较适用于人工神经网络, 如果你的数据在归一化之后任然无法收敛
+ 可以使用区间离散化来进行归一化, 通过减少数据特征来消除无法收敛的问题
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Discretion.NormalRangeDiscretizer.#ctor(System.Collections.Generic.IEnumerable{System.Double})">
+ <summary>
+ 创建一个简易的正态分布区间
+ </summary>
+ <param name="sample"></param>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass">
+ <summary>
+ Object entity classification class
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass.color">
+ <summary>
+ Using for the data visualization.(RGB表达式, html颜色值或者名称)
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass.factor">
+ <summary>
+ the factor value, or label data, usually the <see cref="T:System.Int32"/> 
+ encoding for this class.
+ (即枚举类型)
+ </summary>
+ <returns></returns>
+ <remarks>
+ usually be an integer value, but set this property in 
+ double float data type for make compatibality to the 
+ regression problem
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass.name">
+ <summary>
+ Class Name
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass.FromEnums``1(System.String[])">
+ <summary>
+ 
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="colors$">Using the user custom colors</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass.op_Explicit(Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass)~System.Int32">
+ <summary>
+ get <see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass.factor"/> value
+ </summary>
+ <param name="factor"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass.op_GreaterThan(Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass,System.Int32)">
+ <summary>
+ <see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass.factor"/> > b
+ </summary>
+ <param name="a"></param>
+ <param name="b"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass.op_LessThan(Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass,System.Int32)">
+ <summary>
+ <see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass.factor"/> &lt; b
+ </summary>
+ <param name="a"></param>
+ <param name="b"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass.op_Subtraction(Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass,System.Double)">
+ <summary>
+ <see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass.factor"/> - x
+ </summary>
+ <param name="a"></param>
+ <param name="x"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass.op_Subtraction(System.Double,Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass)">
+ <summary>
+ x - <see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass.factor"/>
+ </summary>
+ <param name="x"></param>
+ <param name="a"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass.op_Addition(System.Double,Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass)">
+ <summary>
+ x + <see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass.factor"/>
+ </summary>
+ <param name="x"></param>
+ <param name="a"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass.op_Multiply(System.Double,Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass)">
+ <summary>
+ x * <see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass.factor"/>
+ </summary>
+ <param name="x"></param>
+ <param name="a"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass.op_UnaryNegation(Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass)">
+ <summary>
+ 0 - <see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass.factor"/>
+ </summary>
+ <param name="a"></param>
+ <returns></returns>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ClassEncoder.m_colors">
+ <summary>
+ label class enums
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ClassEncoder.m_labels">
+ <summary>
+ the input label list
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ClassEncoder.Colors">
+ <summary>
+ get unique class label list
+ </summary>
+ <returns></returns>
+ <remarks>
+ apply for save to file
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ClassEncoder.#ctor(System.Collections.Generic.IEnumerable{System.String})">
+ <summary>
+ 
+ </summary>
+ <param name="labels">
+ should not be distinct, duplicated is allowed
+ </param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ClassEncoder.AddClass(Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass)">
+ <summary>
+ 
+ </summary>
+ <param name="color"></param>
+ <returns></returns>
+ <remarks>
+ apply for load from file
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ClassEncoder.Union(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.ColorClass},System.Collections.Generic.IEnumerable{System.String})">
+ <summary>
+ union of two factor collection
+ </summary>
+ <param name="classList"></param>
+ <param name="newLabels"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.Variable.Binary.ContingencyDistance(Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.Variable.Binary,Microsoft.VisualBasic.DataMining.ComponentModel.Encoder.Variable.Binary)">
+ <summary>
+ Contingency table of two binary variable:
+ 
+ ```
+        _____Y___________
+    ___|__1__|__0__|_sum_|
+   |1  | a   | b   | a+b |
+ X |0  | c   | d   | c+d |
+   |sum| a+c | b+d | p   |
+ ```
+ </summary>
+ <param name="X"></param>
+ <param name="Y"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.ComponentModel.EntityBase`1">
+ <summary>
+ An abstract property vector 
+ </summary>
+ <typeparam name="T">只允许数值类型</typeparam>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityBase`1.entityVector">
+ <summary>
+ Properties vector of current entity.
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityBase`1.ItemValue(System.Int32)">
+ <summary>
+ Get/Set property value by index
+ </summary>
+ <param name="i"></param>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityBase`1.Length">
+ <summary>
+ Length of <see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityBase`1.entityVector"/>
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.IDataEmbedding.GetEmbedding">
+ <summary>
+ get projection result
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.ComponentModel.IntegerEntity">
+ <summary>
+ {Properties} -> Class
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.ComponentModel.Normalizer.Methods.NormalScaler">
+ <summary>
+ 归一化到[0, 1]区间内
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.ComponentModel.Normalizer.Methods.RelativeScaler">
+ <summary>
+ 直接 x / max 进行归一化, 当出现极值的时候, 此方法无效, 根据数据分布,可能会归一化到[0, 1] 或者 [-1, 1]区间内
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.ComponentModel.Normalizer.Methods.RangeDiscretizer">
+ <summary>
+ 通过对数据进行区间离散化来完成归一化
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Normalizer.Normalizations.ZScoreNormalize(Microsoft.VisualBasic.Math.Distributions.SampleDistribution,System.Double)">
+ <summary>
+ z-score
+ </summary>
+ <param name="samples">
+ the sample value of <see cref="P:Microsoft.VisualBasic.Math.Distributions.SampleDistribution.average"/> and 
+ <see cref="P:Microsoft.VisualBasic.Math.Distributions.SampleDistribution.stdErr"/> should not be empty.
+ </param>
+ <param name="x#"></param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Normalizer.Normalizations.RelativeNormalize(Microsoft.VisualBasic.Math.Distributions.SampleDistribution,System.Double)">
+ <summary>
+ 正实数和负实数是分开进行归一化的
+ </summary>
+ <param name="samples"></param>
+ <param name="x#"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.ComponentModel.Serialization.EntityVectorFile">
+ <summary>
+ helper module for IPC parallel or store the result data
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.TraceBackAlgorithm.GetTraceBack">
+ <summary>
+ 
+ </summary>
+ <returns>
+ this function is a safe function, will never returns the null value
+ </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.TraceBackAlgorithm.MeasureCurve(Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity[],Microsoft.VisualBasic.DataMining.ComponentModel.TraceBackIterator)">
+ <summary>
+ this function set entity <see cref="P:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.cluster"/> for each iteration 
+ traceback and evaluate the silhouette score for the traceback.
+ </summary>
+ <param name="data"></param>
+ <param name="traceback"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.ComponentModel.TraceBackIterator">
+ <summary>
+ A helper module for record the clustering traceback information for run algorithm debug
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.TraceBackIterator.#ctor(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.ComponentModel.DataSourceModel.NamedCollection{System.String}})">
+ <summary>
+ from json data
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.TraceBackIterator.GetTraceback">
+ <summary>
+ get cluster traceback for each points
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.TraceBackIterator.SetTraceback``1(System.Collections.Generic.IEnumerable{``0},System.Int32)">
+ <summary>
+ set <see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.IClusterPoint.Cluster"/> id to each entity of the 
+ given <see cref="N:Microsoft.VisualBasic.Data"/> collection.
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="data"></param>
+ <param name="itr"></param>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.DecisionTree.Algorithm">
+ <summary>
+ Algorithm module for train a new decision tree model
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.DecisionTree.Algorithm.Learn(Microsoft.VisualBasic.DataMining.DecisionTree.Data.DataTable,System.String)">
+ <summary>
+ Create tree of <see cref="P:Microsoft.VisualBasic.DataMining.DecisionTree.Tree.root"/>
+ </summary>
+ <param name="data"></param>
+ <param name="edgeName"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.DecisionTree.Algorithm.GetGainForAllAttributes(Microsoft.VisualBasic.DataMining.DecisionTree.Data.DataTable,System.Int32,System.Double)">
+ <summary>
+ information Gain
+ </summary>
+ <param name="data"></param>
+ <param name="colIndex"></param>
+ <param name="entropyOfDataset">
+ the total information entropy for entire dataset
+ </param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.DecisionTree.Attributes">
+ <summary>
+ Node attribute value
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.DecisionTree.Data.DataImports.AsValidateSet(Microsoft.VisualBasic.DataMining.DecisionTree.Data.DataTable)">
+ <summary>
+ Populate validation data set from table
+ </summary>
+ <param name="table"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.DecisionTree.Data.Entity">
+ <summary>
+ A row in data table.(分类用的对象实例)
+ </summary>
+ <remarks>
+ 属性向量<see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityBase`1.entityVector"/>的最后一个值总是用来表示<see cref="P:Microsoft.VisualBasic.DataMining.DecisionTree.Data.Entity.decisions"/>结果值
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.DecisionTree.Data.Entity.decisions">
+ <summary>
+ 分类结果
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.DecisionTree.Data.DataTable">
+ <summary>
+ 训练集样本数据表
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.DecisionTree.Data.DataTable.headers">
+ <summary>
+ Factor titles of <see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityBase`1.entityVector"/>
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.DecisionTree.Data.DataTable.decisions">
+ <summary>
+ 分类结果的显示标题
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.DecisionTree.Data.DataTable.rows">
+ <summary>
+ Training set data
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.DecisionTree.Data.DataTable.columns">
+ <summary>
+ Get the property fields count
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.DecisionTree.Tree">
+ <summary>
+ Implementation of the ID3 to create a decision tree
+ 
+ > https://github.com/WolfgangOfner/DecisionTree
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.DecisionTree.Tree.#ctor">
+ <summary>
+ Create a new empty ID3 based decision tree.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.DecisionTree.Tree.#ctor(Microsoft.VisualBasic.DataMining.DecisionTree.Data.DataTable)">
+ <summary>
+ Create a new decision tree and train for <see cref="P:Microsoft.VisualBasic.DataMining.DecisionTree.Tree.root"/>.
+ </summary>
+ <param name="data"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.DecisionTree.Tree.#ctor(Microsoft.VisualBasic.DataMining.DecisionTree.TreeNode)">
+ <summary>
+ Load a trained decision tree model
+ </summary>
+ <param name="model">A trained model which comes from json/xml</param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.DecisionTree.Tree.Learn(Microsoft.VisualBasic.DataMining.DecisionTree.Data.DataTable)">
+ <summary>
+ Create tree of <see cref="P:Microsoft.VisualBasic.DataMining.DecisionTree.Tree.root"/>
+ </summary>
+ <param name="data"></param>
+ <returns></returns>
+ 
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.DecisionTree.VisualDebugger">
+ <summary>
+ Display debug info on console
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Evaluation.FakeAUCGenerator.BuildOutput(System.Double[],System.Double,System.Double)">
+ <summary>
+ Create a fake output vector based on the target AUC
+ </summary>
+ <param name="labels"></param>
+ <param name="auc"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.Evaluation.PerformanceEvaluator">
+ <summary>
+ Class which evaluates an SVM model using several standard techniques.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.Evaluation.PerformanceEvaluator.ROCCurve">
+ <summary>
+ Receiver Operating Characteristic curve
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.Evaluation.PerformanceEvaluator.AuC">
+ <summary>
+ Returns the area under the ROC Curve
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.Evaluation.PerformanceEvaluator.PRCurve">
+ <summary>
+ Precision-Recall curve
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.Evaluation.PerformanceEvaluator.AP">
+ <summary>
+ The average precision
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Evaluation.PerformanceEvaluator.#ctor(System.Collections.Generic.List{Microsoft.VisualBasic.DataMining.Evaluation.RankPair})">
+ <summary>
+ Constructor.
+ </summary>
+ <param name="set">A pre-computed ranked pair set</param>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.Evaluation.RankPair">
+ <summary>
+ Class encoding a member of a ranked set of labels.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.Evaluation.RankPair.Score">
+ <summary>
+ The score for this pair.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.Evaluation.RankPair.Label">
+ <summary>
+ The Label for this pair.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Evaluation.RankPair.#ctor(System.Double,System.Double)">
+ <summary>
+ Constructor.
+ </summary>
+ <param name="score">Score for this pair</param>
+ <param name="label">Label associated with the given score</param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Evaluation.RankPair.CompareTo(Microsoft.VisualBasic.DataMining.Evaluation.RankPair)">
+ <summary>
+ Compares this pair to another.  It will end up in a sorted list in descending score order.
+ </summary>
+ <param name="other">The pair to compare to</param>
+ <returns>Whether this should come before or after the argument</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Evaluation.RankPair.ToString">
+ <summary>
+ Returns a string representation of this pair.
+ </summary>
+ <returns>A string in the for Score:Label</returns>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.Evaluation.Metrics.acc">
+ <summary>
+ <see cref="M:Microsoft.VisualBasic.DataMining.Evaluation.Metric.accuracy(System.Double[],System.Double[])"/> 
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.Evaluation.Metrics.error">
+ <summary>
+ <see cref="M:Microsoft.VisualBasic.DataMining.Evaluation.Metric.error(System.Double[],System.Double[])"/> 
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.Evaluation.Metrics.mse">
+ <summary>
+ <see cref="M:Microsoft.VisualBasic.DataMining.Evaluation.Metric.mean_square_error(System.Double[],System.Double[])"/> 
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.Evaluation.Metrics.mae">
+ <summary>
+ <see cref="M:Microsoft.VisualBasic.DataMining.Evaluation.Metric.mean_absolute_error(System.Double[],System.Double[])"/> 
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.Evaluation.Metrics.auc">
+ <summary>
+ <see cref="M:Microsoft.VisualBasic.DataMining.Evaluation.Metric.auc(System.Double[],System.Double[])"/> 
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.Evaluation.NamespaceDoc">
+ <summary>
+ 模型质量评估工具模块
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.Evaluation.RegressionClassify">
+ <summary>
+ The regression classifier result.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.Evaluation.RegressionClassify.errors">
+ <summary>
+ the absolute value of the error value
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Evaluation.RegressionROC.ROC(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.Evaluation.RegressionClassify},Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,System.Double,System.Int32)">
+ <summary>
+ Evaluate the regression model ROC
+ </summary>
+ <param name="test"></param>
+ <param name="range">the value range of the label</param>
+ <param name="n"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.Evaluation.ROC">
+ <summary>
+ The ROC math module
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Evaluation.ROC.AUC(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.Evaluation.Validation})">
+ <summary>
+ 使用梯形面积法计算AUC的结果值
+ </summary>
+ <param name="validates"></param>
+ <returns></returns>
+ <remarks>
+ https://blog.revolutionanalytics.com/2016/11/calculating-auc.html
+ 
+ ```r
+ simple_auc &lt;- function(TPR, FPR){
+    # inputs already sorted, best scores first 
+    dFPR &lt;- c(diff(FPR), 0)
+    dTPR &lt;- c(diff(TPR), 0)
+    sum(TPR * dFPR) + sum(dTPR * dFPR) / 2;
+ }
+
+ with(roc_df, simple_auc(TPR, FPR))
+ ```
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Evaluation.ROC.SimpleAUC(Microsoft.VisualBasic.Math.LinearAlgebra.Vector,Microsoft.VisualBasic.Math.LinearAlgebra.Vector)">
+ <summary>
+ 
+ </summary>
+ <param name="TPR"></param>
+ <param name="FPR"></param>
+ <returns></returns>
+ <remarks>
+ two input vector must be sorted
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Evaluation.ROC.BestThreshold(Microsoft.VisualBasic.Math.LinearAlgebra.Vector,Microsoft.VisualBasic.Math.LinearAlgebra.Vector)">
+ <summary>
+ get the index of best threshold 
+ </summary>
+ <param name="TPR">sensibility</param>
+ <param name="FPR"></param>
+ <returns></returns>
+ <remarks>
+ Calculate the distance to the ideal point (0,1) for each row
+ We use the euclidean distance: sqrt((1-TPR)^2 + (FPR)^2)
+ 
+ NA value will be ignored from this function automatically.
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Evaluation.ROC.AUC(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.Evaluation.Validate},System.String[])">
+ <summary>
+ Rank排序法计算AUC面积
+ </summary>
+ <param name="validates"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.Evaluation.Validate">
+ <summary>
+ 一个包含有多维度验证结果输出的样本验证结果
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.Evaluation.Validate.width">
+ <summary>
+ 验证的结果的维度的数量, <see cref="P:Microsoft.VisualBasic.DataMining.Evaluation.Validate.actuals"/>和<see cref="P:Microsoft.VisualBasic.DataMining.Evaluation.Validate.predicts"/>这两个向量应该都是等长的
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Evaluation.Validate.ROC(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.Evaluation.Validate},Microsoft.VisualBasic.Text.Xml.Models.Sequence,System.String[])">
+ <summary>
+ populate ROC validation for each output labels
+ </summary>
+ <param name="data"></param>
+ <param name="threshold"></param>
+ <param name="outputLabels">
+ tag the output names
+ </param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.Evaluation.Validation">
+ <summary>
+ 验证结果描述
+ 
+ ``灵敏度 = 真阳性人数 / (真阳性人数 + 假阴性人数) * 100%``
+ ``特异度 = 真阴性人数 / (真阴性人数 + 假阳性人数) * 100%``
+ </summary>
+ <remarks>
+ https://www.jianshu.com/p/f0c7c1ad9091
+ </remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.Evaluation.Validation.Specificity">
+ <summary>
+ TNR
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.Evaluation.Validation.Sensibility">
+ <summary>
+ Recall, TPR
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.Evaluation.Validation.Precision">
+ <summary>
+ PPV
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.Evaluation.Validation.BER">
+ <summary>
+ balanced error rate
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.Evaluation.Validation.NPV">
+ <summary>
+ Negative predictive value
+ </summary>
+ <returns></returns>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.Evaluation.Validation.Threshold">
+ <summary>
+ 进行当前的预测鉴定分析的百分比等级，默认是0.5，即 50%
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Evaluation.Validation.Calc``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Boolean},System.Double)">
+ <summary>
+ 
+ </summary>
+ <typeparam name="T">
+ + ``true`` 表示阳性
+ + ``false`` 表示阴性
+ </typeparam>
+ <param name="entity"></param>
+ <param name="getValidate">得到实际的分类结果</param>
+ <param name="getPredict">得到预测的分类结果</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Evaluation.Validation.ROC``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Double,System.Boolean},System.Func{``0,System.Double,System.Boolean},Microsoft.VisualBasic.Language.Variant{Microsoft.VisualBasic.Text.Xml.Models.Sequence,System.Func{``0,System.Double}})">
+ <summary>
+ 生ROC曲线的绘制数据(这个函数产生的曲线默认是阈值在[0,1]之间的)
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="entity"></param>
+ <param name="getValidate">``func x, threshold => yes/no``</param>
+ <param name="getPredict"></param>
+ <returns></returns>
+ <remarks>
+ 在一个二分类模型中，对于所得到的连续结果，假设已确定一个阈值，比如说 0.6，
+ 大于这个值的实例划归为正类，小于这个值则划到负类中。如果减小阈值，减到0.5，
+ 固然能识别出更多的正类，也就是提高了识别出的正例占所有正例的比例，即TPR，
+ 但同时也将更多的负实例当作了正实例，即提高了FPR。为了形象化这一变化，
+ 在此引入ROC。
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.DFL_Driver.I_FactorElement">
+ <summary>
+ This object represents the factor which decides the node state changes.(决定<see cref="T:Microsoft.VisualBasic.DataMining.DFL_Driver.dflNode"></see>的状态的因素)
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.DFL_Driver.I_FactorElement._Weight">
+ <summary>
+ <see cref="F:Microsoft.VisualBasic.DataMining.DFL_Driver.I_FactorElement._Weight"></see>越大,则<see cref="F:Microsoft.VisualBasic.DataMining.DFL_Driver.I_FactorElement._ABS_Weight"></see>越小，即事件发生的阈值越小
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.DFL_Driver.I_FactorElement._ABS_Weight">
+ <summary>
+  1 - <see cref="M:System.Math.Abs(System.Decimal)"></see>(<see cref="F:Microsoft.VisualBasic.DataMining.DFL_Driver.I_FactorElement._Weight"></see>)
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.DFL_Driver.I_FactorElement.Weight">
+ <summary>
+ Weight = [-1,1]. (可以带有符号，介于-1到1之间)
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.DFL_Driver.I_FactorElement.FunctionalState">
+ <summary>
+ Does this factor effects on the node states changes? value zero is no effects.
+ (当前的这个因素是否会影响目标节点的状态值的改变，0表示不影响)
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.DFL_Driver.I_FactorElement.Internal_getEventProbabilities">
+ <summary>
+ 计算公式为 (1-w)， 即本函数返回的值越低，则事件越容易发生，请注意使用 rnd >= Internal_getEventProbabilities() 来描述事件发生
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.DFL_Driver.I_FactorElement.get_InteractionQuantity">
+ <summary>
+ 假若事件发生的话，这个函数决定了<see cref="P:Microsoft.VisualBasic.DataMining.DFL_Driver.I_FactorElement.FunctionalState"></see>所返回的计算值
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.DFL_Driver.I_FactorElement.ShadowCopy(Microsoft.VisualBasic.DataMining.DFL_Driver.I_FactorElement,Microsoft.VisualBasic.DataMining.DFL_Driver.dflNode)">
+ <summary>
+ <see cref="T:Microsoft.VisualBasic.DataMining.DFL_Driver.dflNode"></see>对象初始化的时候所使用的方法
+ </summary>
+ <param name="data"></param>
+ <param name="Target"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.DFL_Driver.dflNode">
+ <summary>
+ A node in the fuzzy logic network.(模糊逻辑网络之中的一个节点)
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.DFL_Driver.dflNode.get_FactorsCollectionWeight">
+ <summary>
+ 获取当前节点上面的调控因子的数量的总和
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.Kernel.Classifier.Bayesian">
+ <summary>
+ 朴素贝叶斯分类器
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.Kernel.Classifier.Bayesian.Entities">
+ <summary>
+ 原始的数据集合
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Kernel.Classifier.Bayesian.P(Microsoft.VisualBasic.DataMining.ComponentModel.IntegerEntity,System.Int32)">
+ <summary>
+ P(X|Y=y)
+ </summary>
+ <param name="X"></param>
+ <param name="Y"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Kernel.Classifier.Bayesian.P(System.Int32[],System.Int32)">
+ <summary>
+ P(X|Y=y)
+ </summary>
+ <param name="X">Subject Condition</param>
+ <param name="Y">Target Classify</param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.Kernel.Classifier.Neuron">
+ <summary>
+ 朴素神经元分类器,只能够进行一些简单的分类工作
+ </summary>
+ <remarks>
+ 这个对象并没有什么卵用,只是起着理解基本工作原理的作用存在这个模块之中
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.Kernel.Classifier.Neuron.OutputFunction">
+ <summary>
+ Weights, Entity, OutputValue
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.Kernel.BayesianBeliefNetwork.BeliefNode">
+ <summary>
+ 贝叶斯信念网络中的一个节点
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.Kernel.BayesianBeliefNetwork.BeliefNode.Parents">
+ <summary>
+ 本节点的父节点
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.Kernel.BayesianBeliefNetwork.BeliefNode.CP_Table">
+ <summary>
+ CP Table，用于把各节点和它的直接父节点相关联起来的一个概率表
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.Kernel.BayesianBeliefNetwork.BeliefNetwork">
+ <summary>
+ 贝叶斯信念网络
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Kernel.BayesianBeliefNetwork.BeliefNetwork.SetNodes(System.Int32[])">
+ <summary>
+ 
+ </summary>
+ <param name="Array">Array的元素个数必须与节点的数目相等</param>
+ <remarks></remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Kernel.BayesianBeliefNetwork.BeliefNetwork.CreateFrom(System.String)">
+ <summary>
+ 
+ </summary>
+ <param name="File">网络数据的文件路径</param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Kernel.BayesianBeliefNetwork.BElim.GetBelief(System.Int32[],System.Int32[])">
+ <summary>
+ 计算条件概率: P(x|conditions)，对于计算对象x和计算条件condition二者的元素必须要错开。对于错开部分的空的元素请使用-1来填充
+ </summary>
+ <param name="x"></param>
+ <param name="conditions"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.MarginalLikelihoodAnalysis">
+ <summary>
+ @author Marc Suchard
+ @author Alexei Drummond
+ 
+ Source translated from ``model_P.c`` (a component of BAli-Phy by Benjamin Redelings and Marc Suchard
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.MarginalLikelihoodAnalysis.analysisType">
+ <summary>
+ "harmonic" for harmonic mean, 
+ "smoothed" for smoothed harmonic mean, 
+ "aicm" for AICM, 
+ "arithmetic" for arithmetic mean
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.MarginalLikelihoodAnalysis.#ctor(System.Collections.Generic.List{System.Double},System.Int32,Microsoft.VisualBasic.DataMining.AnalysisTypes,System.Int32)">
+ <summary>
+ Constructor
+ </summary>
+ <param name="sample"> </param>
+ <param name="burnin">          used for 'toString' display purposes only </param>
+ <param name="analysisType"> </param>
+ <param name="bootstrapLength"> a value of zero will turn off bootstrapping </param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.MarginalLikelihoodAnalysis.logMarginalLikelihoodArithmetic(System.Collections.Generic.List{System.Double})">
+ <summary>
+ Calculates the log marginal likelihood of a model using the arithmetic mean estimator
+ </summary>
+ <param name="v"> a posterior sample of logLikelihoods </param>
+ <returns> the log marginal likelihood </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.MarginalLikelihoodAnalysis.logMarginalLikelihoodHarmonic(System.Collections.Generic.List{System.Double})">
+ <summary>
+ Calculates the log marginal likelihood of a model using Newton and Raftery's harmonic mean estimator
+ </summary>
+ <param name="v"> a posterior sample of logLikelihoods </param>
+ <returns> the log marginal likelihood </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.MarginalLikelihoodAnalysis.logMarginalLikelihoodAICM(System.Collections.Generic.List{System.Double})">
+ <summary>
+ Calculates the AICM of a model using method-of-moments from Raftery et al. (2007)
+ </summary>
+ <param name="v"> a posterior sample of logLikelihoods </param>
+ <returns> the AICM (lower values are better) </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.MarginalLikelihoodAnalysis.logMarginalLikelihoodSmoothed(System.Collections.Generic.IList{System.Double},System.Double,System.Double)">
+ <summary>
+ Calculates the log marginal likelihood of a model using Newton and Raftery's smoothed estimator
+ </summary>
+ <param name="v">     a posterior sample of logLikelihood </param>
+ <param name="delta"> proportion of pseudo-samples from the prior </param>
+ <param name="Pdata"> current estimate of the log marginal likelihood </param>
+ <returns> the log marginal likelihood </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.SelfOrganizingMap">
+ <summary>
+ SOM: Self-Organizing Map
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.SelfOrganizingMap.depth">
+ <summary>
+ data channel depth
+ </summary>
+ <returns></returns>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.SelfOrganizingMap.neuronWeights">
+ <summary>
+ weight matrix
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.SelfOrganizingMap.#ctor(System.Int32,System.Int32)">
+ <summary>
+ 
+ </summary>
+ <param name="numberOfNeurons">number of the neurons</param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.SelfOrganizingMap.embeddings">
+ <summary>
+ 
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.SelfOrganizingMap.train(System.Double[][]@,System.Double,System.Double,System.Int32)">
+ <summary>
+ 
+ </summary>
+ <param name="pixels">dataset for run the training, data should be an rectangle array, 
+ with 2nd dimension size should be equals to <see cref="P:Microsoft.VisualBasic.DataMining.SelfOrganizingMap.depth"/>.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.SelfOrganizingMap.clusterId">
+ <summary>
+ matrix data clustering
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.Statistics">
+ <summary>
+ Set of statistics functions.
+ </summary>
+ 
+ <remarks>The class represents collection of simple functions used
+ in statistics.</remarks>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Statistics.Mean(System.Int32[])">
+ <summary>
+ Calculate mean value.
+ </summary>
+ 
+ <param name="values">Histogram array.</param>
+ 
+ <returns>Returns mean value.</returns>
+ 
+ <remarks><para>The input array is treated as histogram, i.e. its
+ indexes are treated as values of stochastic function, but
+ array values are treated as "probabilities" (total amount of
+ hits).</para>
+ 
+ <para>Sample usage:</para>
+ <code>
+ // create histogram array
+ int[] histogram = new int[] { 1, 1, 2, 3, 6, 8, 11, 12, 7, 3 };
+ // calculate mean value
+ double mean = Statistics.Mean( histogram );
+ // output it (5.759)
+ Console.WriteLine( "mean = " + mean.ToString( "F3" ) );
+ </code>
+ </remarks>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Statistics.StdDev(System.Int32[])">
+ <summary>
+ Calculate standard deviation.
+ </summary>
+ <param name="values">Histogram array.</param>
+ <returns>Returns value of standard deviation.</returns>
+ <remarks>
+ The input array is treated as histogram, i.e. its
+ indexes are treated as values of stochastic function, but
+ array values are treated as "probabilities" (total amount of
+ hits).
+ 
+ Sample usage:
+ 
+ ```vbnet
+ ' create histogram array
+ Dim histogram As Integer() = New Integer() { 1, 1, 2, 3, 6, 8, 11, 12, 7, 3 }
+ ' calculate standard deviation value
+ Dim stdDev = Statistics.StdDev( histogram )
+ '' output it (1.999)
+ Console.WriteLine( "std.dev. = " &amp; stdDev.ToString( "F3" ) )
+ ```
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Statistics.StdDev(System.Int32[],System.Double)">
+ <summary>
+ Calculate standard deviation.
+ </summary>
+ 
+ <param name="values">Histogram array.</param>
+ <param name="mean">Mean value of the histogram.</param>
+ 
+ <returns>Returns value of standard deviation.</returns>
+ 
+ <remarks><para>The input array is treated as histogram, i.e. its
+ indexes are treated as values of stochastic function, but
+ array values are treated as "probabilities" (total amount of
+ hits).</para>
+ 
+ <para>The method is an equevalent to the <see cref="M:Microsoft.VisualBasic.DataMining.Statistics.StdDev(System.Int32[])"/> method,
+ but it relieas on the passed mean value, which is previously calculated
+ using <see cref="M:Microsoft.VisualBasic.DataMining.Statistics.Mean(System.Int32[])"/> method.</para>
+ </remarks>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Statistics.Median(System.Int32[])">
+ <summary>
+ Calculate median value.
+ </summary>
+ 
+ <param name="values">Histogram array.</param>
+ 
+ <returns>Returns value of median.</returns>
+ 
+ <remarks>
+ <para>The input array is treated as histogram, i.e. its
+ indexes are treated as values of stochastic function, but
+ array values are treated as "probabilities" (total amount of
+ hits).</para>
+ 
+ <para><note>The median value is calculated accumulating histogram's
+ values starting from the <b>left</b> point until the sum reaches 50% of
+ histogram's sum.</note></para>
+ 
+ <para>Sample usage:</para>
+ <code>
+ // create histogram array
+ int[] histogram = new int[] { 1, 1, 2, 3, 6, 8, 11, 12, 7, 3 };
+ // calculate median value
+ int median = Statistics.Median( histogram );
+ // output it (6)
+ Console.WriteLine( "median = " + median );
+ </code>
+ </remarks>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Statistics.GetRange(System.Int32[],System.Double)">
+ <summary>
+ Get range around median containing specified percentage of values.
+ </summary>
+ 
+ <param name="values">Histogram array.</param>
+ <param name="percent">Values percentage around median.</param>
+ 
+ <returns>Returns the range which containes specifies percentage
+ of values.</returns>
+ 
+ <remarks>
+ <para>The input array is treated as histogram, i.e. its
+ indexes are treated as values of stochastic function, but
+ array values are treated as "probabilities" (total amount of
+ hits).</para>
+ 
+ <para>The method calculates range of stochastic variable, which summary probability
+ comprises the specified percentage of histogram's hits.</para>
+ 
+ <para>Sample usage:</para>
+ <code>
+ // create histogram array
+ int[] histogram = new int[] { 1, 1, 2, 3, 6, 8, 11, 12, 7, 3 };
+ // get 75% range around median
+ IntRange range = Statistics.GetRange( histogram, 0.75 );
+ // output it ([4, 8])
+ Console.WriteLine( "range = [" + range.Min + ", " + range.Max + "]" );
+ </code>
+ </remarks>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Statistics.Mode(System.Int32[])">
+ <summary>
+ Calculate mode value.
+ </summary>
+ 
+ <param name="values">Histogram array.</param>
+ 
+ <returns>Returns mode value of the histogram array.</returns>
+ 
+ <remarks>
+ <para>The input array is treated as histogram, i.e. its
+ indexes are treated as values of stochastic function, but
+ array values are treated as "probabilities" (total amount of
+ hits).</para>
+ 
+ <para><note>Returns the minimum mode value if the specified histogram is multimodal.</note></para>
+
+ <para>Sample usage:</para>
+ <code>
+ // create array
+ int[] values = new int[] { 1, 1, 2, 3, 6, 8, 11, 12, 7, 3 };
+ // calculate mode value
+ int mode = Statistics.Mode( values );
+ // output it (7)
+ Console.WriteLine( "mode = " + mode );
+ </code>
+ </remarks>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ValueMapping.ModalNumber(System.Int32[])">
+ <summary>
+ Gets the modal number of the ranking mapping data set.(求取众数)
+ </summary>
+ <param name="data">The ranked mapping encoding value.(经过Rank Mapping处理过后的编码值)</param>
+ <returns></returns>
+ <remarks>
+ 当不存在相同的分组元素数目的时候，会直接取第一个元素的值作为众数
+ 当存在相同的分组元素数目的时候，会取最大的元素值作为众数
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ValueMapping.Discretization(System.Collections.Generic.IEnumerable{System.Double},System.Int32)">
+ <summary>
+ 执行连续数值类型的数据的离散化操作，这个操作常用于决策树的构建
+ </summary>
+ <param name="data"></param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ValueMapping.Z(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.EntityClusterModel})">
+ <summary>
+ z-score transform of the data vector
+ </summary>
+ <param name="a"></param>
+ <returns></returns>
+</member>
+</members>
+</doc>

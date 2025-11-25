@@ -1,0 +1,45 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Microsoft.VisualBasic.DataMining.DensityQuery
+</name>
+</assembly>
+<members>
+<member name="M:Microsoft.VisualBasic.DataMining.DensityQuery.Density2D.Density``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String},System.Func{``0,System.Int32},System.Func{``0,System.Int32},System.Drawing.Size,System.Boolean)">
+ <summary>
+ get density value of geometry points
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="data"></param>
+ <param name="getName"></param>
+ <param name="getX"></param>
+ <param name="getY"></param>
+ <param name="gridSize"></param>
+ <param name="parallel"></param>
+ <returns>
+ the resulted density value is in range of ``[0,1]``.
+ </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.DensityQuery.SLIC">
+ <summary>
+ SLIC (Simple Linear Iterative Clustering) clusters pixels using pixel channels and image plane space
+ to efficiently generate compact, nearly uniform superpixels. The simplicity of approach makes it
+ extremely easy To use a lone parameter specifies the number Of superpixels And the efficiency Of
+ the algorithm makes it very practical.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.DensityQuery.SLIC.#ctor(Microsoft.VisualBasic.Imaging.BitmapImage.BitmapBuffer)">
+ <summary>
+ argb
+ </summary>
+ <param name="bitmap"></param>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.DensityQuery.SLICPixel.color">
+ <summary>
+ a general vector for store the pixel color data in multiple data mode
+ </summary>
+ <returns></returns>
+</member>
+</members>
+</doc>

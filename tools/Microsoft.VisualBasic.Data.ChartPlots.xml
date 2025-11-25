@@ -1,0 +1,2264 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Microsoft.VisualBasic.Data.ChartPlots
+</name>
+</assembly>
+<members>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.DataProvider">
+ <summary>
+ Data provider
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.DataProvider.Surface(System.Func{System.Double,System.Double,System.ValueTuple{System.Double,System.Double}},Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,System.Single,System.Single,System.Boolean,Microsoft.VisualBasic.Language.List{Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Scatter3DPoint})">
+ <summary>
+ 生成函数计算结果的三维表面
+ </summary>
+ <param name="f"></param>
+ <param name="x"></param>
+ <param name="y"></param>
+ <param name="xsteps!"></param>
+ <param name="ysteps!"></param>
+ <param name="parallel"></param>
+ <param name="matrix"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.DataProvider.Evaluate(System.Func{System.Double,System.Double,System.Double},Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,System.Single,System.Single,System.Boolean,Microsoft.VisualBasic.Language.List{Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Scatter3DPoint})">
+ <summary>
+ Data provider base on the two variable.(这个函数可以同时为3D绘图或者ScatterHeatmap提供绘图数据)
+ </summary>
+ <param name="f">``z = f(x,y)``</param>
+ <param name="x">x取值范围</param>
+ <param name="y">y取值范围</param>
+ <param name="xsteps!"></param>
+ <param name="ysteps!"></param>
+ <param name="matrix">假若想要获取得到原始的矩阵数据，这个列表对象还需要实例化之后再传递进来</param>
+ <returns>Populate data by x steps.(即每一次输出的一组数据的X都是相同的)</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.DataProvider.Grid(System.Func{System.Double,System.Double,System.Double},Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,System.Single,System.Single,Microsoft.VisualBasic.Imaging.Pen)">
+ <summary>
+ Grid generator for function plot
+ </summary>
+ <param name="f"></param>
+ <param name="x"></param>
+ <param name="y"></param>
+ <param name="xsteps!"></param>
+ <param name="ysteps!"></param>
+ <param name="pen"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.DataProvider.Grid(System.Func{System.Double,System.Double,System.Double},Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,System.String,System.Single,System.Single)">
+ <summary>
+ Grid generator for function plot
+ </summary>
+ <param name="f"></param>
+ <param name="x"></param>
+ <param name="y"></param>
+ <param name="xsteps!"></param>
+ <param name="ysteps!"></param>
+ <param name="mapNameZ"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Device.Element3D">
+ <summary>
+ 因为先绘制坐标轴再绘制系列点，会没有太多层次感，所以在这里首先需要将这些需要绘制的原件转换为这个元素对象，然后做一次Z排序生成绘图顺序
+ 最后再调用<see cref="M:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Device.Element3D.Draw(Microsoft.VisualBasic.Imaging.IGraphics,Microsoft.VisualBasic.Imaging.Drawing2D.GraphicsRegion,Microsoft.VisualBasic.Imaging.d3js.scale.LinearScale,Microsoft.VisualBasic.Imaging.d3js.scale.LinearScale)"/>方法进行3D图表的绘制
+ </summary>
+ <remarks>
+ An abstract model of the 3d <see cref="P:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Device.Element3D.Location"/>
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Device.Polygon">
+ <summary>
+ 一个三维空间之中的面
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Device.Line.#ctor(Microsoft.VisualBasic.Imaging.Drawing3D.Point3D,Microsoft.VisualBasic.Imaging.Drawing3D.Point3D)">
+ <summary>
+ 线段的<see cref="P:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Device.Element3D.Location"/>位置数据会自动从<paramref name="a"/>和
+ <paramref name="b"/>计算出来
+ </summary>
+ <param name="a"></param>
+ <param name="b"></param>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Device.ShapePoint.Point2D(System.Drawing.Size)">
+ <summary>
+ Project the 3D point to the location on 2D plot canvas
+ </summary>
+ <param name="frameSize">The size of 2D plot canvas</param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Device.RenderEngine">
+ <summary>
+ 将生成的绘图元素在这个引擎模块之中进行排序操作，然后进行图表的绘制
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Device.RenderEngine.RenderAs3DChart(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Device.Element3D},Microsoft.VisualBasic.Imaging.IGraphics,Microsoft.VisualBasic.Imaging.Drawing3D.Camera,Microsoft.VisualBasic.Imaging.Drawing2D.GraphicsRegion,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme)">
+ <summary>
+ 
+ </summary>
+ <param name="elements"></param>
+ <param name="canvas"></param>
+ <param name="camera"></param>
+ <param name="region"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Device.RenderEngine.drawLabels(Microsoft.VisualBasic.Imaging.d3js.Layout.Label[],Microsoft.VisualBasic.Imaging.d3js.Layout.Anchor[],Microsoft.VisualBasic.Imaging.IGraphics,Microsoft.VisualBasic.Imaging.Drawing2D.GraphicsRegion,Microsoft.VisualBasic.Imaging.Font,System.Int32,Microsoft.VisualBasic.Imaging.SolidBrush)">
+ <summary>
+ layout and then draw labels
+ </summary>
+ <param name="labels"></param>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Model.AxisDraw">
+ <summary>
+ 在这个模块之中生成Axis的绘制元素
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Impl.Scatter3D.#ctor(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Serial3D},Microsoft.VisualBasic.Imaging.Drawing3D.Camera,System.String,System.Boolean,System.Double,System.Single,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme)">
+ <summary>
+ 
+ </summary>
+ <param name="serials"></param>
+ <param name="camera"></param>
+ <param name="arrowFactor"></param>
+ <param name="showHull"></param>
+ <param name="hullAlpha">``[0, 255]``</param>
+ <param name="hullBspline"></param>
+ <param name="theme"></param>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Scatter">
+ <summary>
+ 3D scatter charting
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Scatter.Plot(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Serial3D},Microsoft.VisualBasic.Imaging.Drawing3D.Camera,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.Int32,System.Single,Microsoft.VisualBasic.Imaging.Driver.Drivers)">
+ <summary>
+ plot scatter 3D
+ </summary>
+ <param name="serials"></param>
+ <param name="camera"></param>
+ <param name="bg$"></param>
+ <param name="padding$"></param>
+ <param name="axisLabelFontCSS$"></param>
+ <param name="boxStroke$"></param>
+ <param name="axisStroke$"></param>
+ <param name="showHull">show convex hull for each <paramref name="serials"/> data.</param>
+ <returns></returns>
+ <remarks>
+ 首先要生成3维图表的模型元素，然后将这些元素混合在一起，最后按照Z深度的排序结果顺序绘制出来，才能够生成一幅有层次感的3维图表
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Scatter.Plot(System.Func{System.Double,System.Double,System.Double},Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,Microsoft.VisualBasic.Imaging.Drawing3D.Camera,System.Single,System.Single,System.String,Microsoft.VisualBasic.Imaging.Font,System.String,System.String)">
+ <summary>
+ 绘制三维散点图
+ </summary>
+ <param name="func"></param>
+ <param name="x"></param>
+ <param name="y"></param>
+ <param name="camera"></param>
+ <param name="xsteps!"></param>
+ <param name="ysteps!"></param>
+ <param name="lineColor$"></param>
+ <param name="font"></param>
+ <param name="bg$"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.ScatterHeatmap.GetPlotFunction(System.Func{System.Double,System.Double,System.ValueTuple{System.Double,System.Double}},Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,System.Int32,System.Int32,System.String,System.String,System.Int32,System.String,System.Boolean,Microsoft.VisualBasic.Language.List{Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Scatter3DPoint},System.String,Microsoft.VisualBasic.Imaging.Font,System.Boolean)">
+ <summary>
+ DEBUG模式之下会将网格给绘制出来，这个在Release模式之下是不会出现的。
+ </summary>
+ <param name="f"></param>
+ <param name="xrange"></param>
+ <param name="yrange"></param>
+ <param name="xn%"></param>
+ <param name="yn%"></param>
+ <param name="legendTitle$"></param>
+ <param name="mapName$"></param>
+ <param name="mapLevels%"></param>
+ <param name="bg$"></param>
+ <param name="parallel"></param>
+ <param name="matrix"></param>
+ <param name="axisFont$"></param>
+ <param name="legendFont"></param>
+ <param name="showLegend"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.ScatterHeatmap.Plot``1(System.Collections.Generic.IEnumerable{``0},Microsoft.VisualBasic.Imaging.Drawing3D.Camera,System.String,System.String,System.Int32,System.String,System.String,Microsoft.VisualBasic.Imaging.Font)">
+ <summary>
+ 3D heatmap plot from matrix data
+ </summary>
+ <param name="matrix"></param>
+ <param name="Camera"></param>
+ <param name="legendTitle$"></param>
+ <param name="mapName$"></param>
+ <param name="mapLevels%"></param>
+ <param name="bg$"></param>
+ <param name="axisFont$"></param>
+ <param name="legendFont"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Serial3D">
+ <summary>
+ Scatter serial data in 3D
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Serial3D.Points">
+ <summary>
+ The point data which tagged a name label, if the label is empty, then will not display on the plot.
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.AlignmentPlot">
+ <summary>
+ Visualize and comparing two discrete signals.
+ </summary>
+ <remarks>
+ (以条形图的方式可视化绘制两个离散的信号的比对的图形)
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.AlignmentPlot.PlotAlignment(System.ValueTuple{System.Double,System.Double}[],System.ValueTuple{System.Double,System.Double}[],Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Single,System.String,System.Boolean,System.String,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.YlabelPosition,System.Double,System.Boolean,System.String,Microsoft.VisualBasic.Data.ChartPlots.BarPlot.RectangleStyling,System.Boolean,System.Boolean,System.Boolean,System.String,System.String,System.String,System.String,Microsoft.VisualBasic.ComponentModel.DataSourceModel.NamedValue{System.Double}[],System.String,Microsoft.VisualBasic.Imaging.Driver.Drivers)">
+ <summary>
+ 以条形图的方式可视化绘制两个离散的信号的比对的图形
+ </summary>
+ <param name="query">The query signals</param>
+ <param name="subject">The subject signal values</param>
+ <param name="cla">Color expression for <paramref name="query"/></param>
+ <param name="clb">Color expression for <paramref name="subject"/></param>
+ <param name="displayX">是否在信号的柱子上面显示出X坐标的信息</param>
+ <param name="htmlLabel">Draw axis label using html render?? default is no.</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.AlignmentPlot.PlotAlignmentGroups(Microsoft.VisualBasic.Data.ChartPlots.BarPlot.AlignmentPlot.Signal[],Microsoft.VisualBasic.Data.ChartPlots.BarPlot.AlignmentPlot.Signal[],Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Single,System.String,System.Boolean,System.String,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.YlabelPosition,System.Double,Microsoft.VisualBasic.ComponentModel.DataSourceModel.NamedValue{System.Double}[],System.Double,System.String,System.Single,System.String,System.String,Microsoft.VisualBasic.Data.ChartPlots.BarPlot.RectangleStyling,System.Boolean,System.Boolean,System.String,System.Boolean,System.String,System.String,Microsoft.VisualBasic.Imaging.Driver.Drivers)">
+ <summary>
+ 以条形图的方式可视化绘制两个离散的信号的比对的图形，由于绘制的时候是分别对<paramref name="query"/>和<paramref name="subject"/>
+ 信号数据使用For循环进行绘图的，所以数组最后一个位置的元素会在最上层
+ 并且绘制图例的时候，使用的是最上层的信号的颜色
+ </summary>
+ <param name="query">The query signals</param>
+ <param name="subject">The subject signal values</param>
+ <param name="displayX">是否在信号的柱子上面显示出X坐标的信息</param>
+ <param name="format">the number format of the X axis ticks</param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.BarPlotAPI">
+ <summary>
+ 这个不像<see cref="N:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram"/>用于描述若干组连续的数据，这个是将数据按照标签分组来表述出来的
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.BarPlotAPI.Plot(Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BarDataGroup,System.Drawing.Size,System.String,System.String,System.Boolean,System.Boolean,System.Nullable{System.Boolean},System.Boolean,System.Drawing.Point,Microsoft.VisualBasic.MIME.Html.CSS.Stroke,Microsoft.VisualBasic.Imaging.Font,System.Int32,Microsoft.VisualBasic.Imaging.Driver.Drivers)">
+ <summary>
+ Bar data plot
+ </summary>
+ <param name="data">Data groups</param>
+ <param name="size">image output size</param>
+ <param name="padding">margin blank of the plots region</param>
+ <param name="bg$">Background color expression</param>
+ <param name="showGrid">Show axis grid?</param>
+ <param name="stacked">Bar plot is stacked of each sample?</param>
+ <param name="stackReordered">reorder bar data? Only works in stacked mode</param>
+ <param name="showLegend">Show data legend?</param>
+ <param name="legendPos">Position of the data legend on the image</param>
+ <param name="legendBorder">legend shape border style.</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.BarPlotAPI.FromData(System.Collections.Generic.IEnumerable{System.Double})">
+ <summary>
+ Creates sample groups from a data vector
+ </summary>
+ <param name="data"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.BarPlotAPI.Plot2(Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BarDataGroup,System.Drawing.Size,System.String,System.String,System.Boolean,System.Boolean,System.Boolean,System.Drawing.Point,Microsoft.VisualBasic.MIME.Html.CSS.Stroke)">
+ <summary>
+ Plot bar plot in different direction compare with <see cref="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.BarPlotAPI.Plot(Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BarDataGroup,System.Drawing.Size,System.String,System.String,System.Boolean,System.Boolean,System.Nullable{System.Boolean},System.Boolean,System.Drawing.Point,Microsoft.VisualBasic.MIME.Html.CSS.Stroke,Microsoft.VisualBasic.Imaging.Font,System.Int32,Microsoft.VisualBasic.Imaging.Driver.Drivers)"/>
+ </summary>
+ <param name="data"></param>
+ <param name="size"></param>
+ <param name="padding"></param>
+ <param name="bg$"></param>
+ <param name="showGrid"></param>
+ <param name="stacked"></param>
+ <param name="showLegend"></param>
+ <param name="legendPos"></param>
+ <param name="legendBorder"></param>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BarDataGroup.Serials">
+ <summary>
+ 与<see cref="P:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BarDataSample.data"/>里面的数据顺序是一致的
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BarDataGroup.Samples">
+ <summary>
+ 分组数据
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BarDataGroup.Desc">
+ <summary>
+ 按照百分比降序排序
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BarDataGroup.Reorder(System.String[])">
+ <summary>
+ 如果系列在这里面，则会一次排在前面，否则任然是按照原始的顺序排布
+ </summary>
+ <param name="orders$"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BarDataSample">
+ <summary>
+ Named value of double vector.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BarDataSample.tag">
+ <summary>
+ 分组名称
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BarDataSample.data">
+ <summary>
+ 当前分组下的每一个序列的数据值
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BarDataSample.StackedSum">
+ <summary>
+ The sum of <see cref="P:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BarDataSample.data"/>
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BarPlotDataExtensions.Takes(Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BarDataGroup,System.Int32,System.String,System.String)">
+ <summary>
+ 有时候绘图的数据的系列数量太多了，尝试使用这个函数将数据进行减少到可以接受的程序
+ 所有被删除的数据都会被合并到``other``系列分组之中
+ </summary>
+ <param name="data"></param>
+ <param name="n%"></param>
+ <param name="schema$">对结果进行重新着色，如果这个参数为空值，则不会进行重新着色</param>
+ <param name="otherColor">
+ 如果<paramref name="schema"/>为空字符串的话，则不会进行重新着色，但是会对新合并的``other``使用这个颜色进行着色
+ </param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BarPlotDataExtensions.Normalize(Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BarDataGroup)">
+ <summary>
+ 将每一个分组内的数据都归一化为100%
+ </summary>
+ <param name="data"></param>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BiDirectionData.Factor1">
+ <summary>
+ left
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BiDirectionData.Factor2">
+ <summary>
+ right
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BiDirectionData.samples">
+ <summary>
+ data samples
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.Constructor.FromDistributes(System.Collections.Generic.IEnumerable{System.Double},System.Single,System.String)">
+ <summary>
+ 这个应该是生成直方图的数据
+ </summary>
+ <param name="data"></param>
+ <param name="base!"></param>
+ <param name="serialColor$"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistogramData">
+ <summary>
+ {x, y}，一个柱子的绘图数据
+ </summary>
+ <remarks>
+ <see cref="F:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistogramData.x1"/>到<see cref="F:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistogramData.x2"/>之间的距离是直方图的宽度
+ </remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistogramData.x1">
+ <summary>
+ 数据区域范围的下限
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistogramData.x2">
+ <summary>
+ 数据区域范围的上限
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistogramData.y">
+ <summary>
+ 频数
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistogramData.pointY">
+ <summary>
+ 一般为平均值
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistogramData.width">
+ <summary>
+ delta between <see cref="F:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistogramData.x1"/> and <see cref="F:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistogramData.x2"/>
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistProfile">
+ <summary>
+ The histogram serial data.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistProfile.legend">
+ <summary>
+ The legend plot definition
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistProfile.#ctor(Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,System.Func{System.Double,System.Double},System.Double)">
+ <summary>
+ 仅仅在这里初始化了<see cref="F:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistProfile.data"/>
+ </summary>
+ <param name="range"></param>
+ <param name="func"></param>
+ <param name="steps#"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistProfile.#ctor(System.Collections.Generic.IEnumerable{System.Double},Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange)">
+ <summary>
+ 仅仅在这里初始化了<see cref="F:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistProfile.data"/>
+ </summary>
+ <param name="data"></param>
+ <param name="xrange"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.Extensions.NewModel(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Math.Distributions.BinBox.DataBinBox{System.Double}},Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendObject)">
+ <summary>
+ Tag值为直方图的高，value值为直方图的平均值连线
+ Syntax helper
+ </summary>
+ <param name="hist"></param>
+ <param name="legend"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.Histogram">
+ <summary>
+ 对经由函数生成的连续数据的图形表述
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.Histogram.Plot(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistogramData},System.String,System.String,System.String,System.String,System.Boolean)">
+ <summary>
+ 
+ </summary>
+ <param name="data"></param>
+ <param name="color$">histogram bar fill color</param>
+ <param name="bg$">Output image background color</param>
+ <param name="size"></param>
+ <param name="showGrid"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.Histogram.Plot(System.Collections.Generic.IEnumerable{System.Double},Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,System.String,System.String,System.String,System.String,System.Boolean)">
+ <summary>
+ 
+ </summary>
+ <param name="data">
+ 向量之中的每一个数值表示某个指定的区间内的数据，即直方图的高度
+ </param>
+ <param name="xrange"></param>
+ <param name="color$"></param>
+ <param name="bg$"></param>
+ <param name="size"></param>
+ <param name="showGrid"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.Histogram.Plot(Microsoft.VisualBasic.ComponentModel.DataSourceModel.NamedValue{Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange},System.String,System.Double,System.String,System.String,System.String,System.String,System.Boolean)">
+ <summary>
+ 
+ </summary>
+ <param name="xrange">For generates the variable value sequence for evaluate the <paramref name="expression"/></param>
+ <param name="expression$">Math expression in string format</param>
+ <param name="steps#">for <see cref="M:Microsoft.VisualBasic.Math.VBMath.seq(Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,System.Double)"/> function</param>
+ <param name="color$">The histogram bar fill color</param>
+ <param name="bg$"></param>
+ <param name="size"></param>
+ <param name="showGrid"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.Histogram.Plot(Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistogramGroup,System.String,System.String,System.String,System.Boolean,System.Drawing.Point,Microsoft.VisualBasic.MIME.Html.CSS.Stroke,System.Boolean,System.Int32,System.Boolean,System.Boolean,System.String,System.String,System.String,System.String,System.String,System.String,System.Double,System.String,System.String,System.Int32,Microsoft.VisualBasic.Imaging.Driver.Drivers)">
+ <summary>
+ 
+ </summary>
+ <param name="groups"></param>
+ <param name="bg$"></param>
+ <param name="size"></param>
+ <param name="showGrid"></param>
+ <param name="legendPos">The legend position on the output image.</param>
+ <param name="legendBorder"></param>
+ <param name="alpha">Fill color alpha value, [0, 255]</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.Histogram.HistogramPlot(System.Collections.Generic.IEnumerable{System.Double},System.Single,System.String,System.String,System.String,System.String,System.String,System.Boolean,Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistogramData[]@,System.String,System.String,System.String,System.Double,System.String,System.String,System.Boolean,System.Int32)">
+ <summary>
+ 绘制频数
+ </summary>
+ <param name="data"></param>
+ <param name="step">
+ The step width value for create the input <paramref name="data"/> bin box.
+ </param>
+ <param name="serialsTitle$"></param>
+ <param name="color$"></param>
+ <param name="bg$"></param>
+ <param name="size"></param>
+ <param name="showGrid"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.Histogram.HistogramPlot(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Math.Distributions.BinBox.DataBinBox{System.Double}},System.String,System.String,System.String,System.String,System.String,System.Boolean,Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistogramData[]@,System.String,System.String,System.String,System.Boolean,System.Double,System.String,System.String,Microsoft.VisualBasic.ComponentModel.DataSourceModel.NamedValue{Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange}[],System.Int32,Microsoft.VisualBasic.Imaging.Driver.Drivers)">
+ <summary>
+ 绘制频数
+ </summary>
+ <param name="data"></param>
+ <param name="serialsTitle$"></param>
+ <param name="color$"></param>
+ <param name="bg$"></param>
+ <param name="size"></param>
+ <param name="showGrid"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistogramPlot.DrawSample(Microsoft.VisualBasic.Imaging.IGraphics,System.Drawing.Rectangle,Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistProfile,Microsoft.VisualBasic.ComponentModel.DataSourceModel.NamedValue{System.Drawing.Color},Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.DataScaler,System.Int32,System.Boolean,System.Boolean)">
+ <summary>
+ Draw histogram with <see cref="F:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistProfile.data"/>.
+ </summary>
+ <param name="g"></param>
+ <param name="region"></param>
+ <param name="hist"></param>
+ <param name="ann"></param>
+ <param name="scaler"></param>
+ <param name="alpha"></param>
+ <param name="drawRect"></param>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.LevelBarplot">
+ <summary>
+ 只针对单组数据的条形图绘制
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.BiDirectionBarPlot">
+ <summary>
+ compare two data set
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.PlotAlignmentGroup.bw">
+ <summary>
+ the width of the spectrum bar
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.PlotAlignmentGroup.DrawLegeneds(Microsoft.VisualBasic.Imaging.IGraphics,System.Drawing.Rectangle)">
+ <summary>
+ 
+ </summary>
+ <param name="g"></param>
+ <param name="rect">it is the canvas plot region</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.StackedBarPlot.Plot(Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BarDataGroup,System.String,System.String,System.String,System.Single,System.String,System.Single,System.Single,System.Int32,System.String,System.String,System.String,System.String)">
+ <summary>
+ 绘制百分比堆积的条形图
+ </summary>
+ <param name="data"></param>
+ <param name="size$"></param>
+ <param name="padding$"></param>
+ <param name="bg$"></param>
+ <param name="percentStacked!"></param>
+ <param name="YaxisTitle$"></param>
+ <param name="interval!"></param>
+ <param name="columnCount%"></param>
+ <param name="legendLabelFontCSS$"></param>
+ <param name="tickFontCSS$"></param>
+ <param name="groupLabelFontCSS$"></param>
+ <param name="axisLabelFontCSS$"></param>
+ <returns></returns>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.StyledBarplot.BarSerial.Brush">
+ <summary>
+ 颜色表达式或者图片资源的文件路径
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.StyledBarplot.Plot(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.ChartPlots.BarPlot.StyledBarplot.BarSerial},System.String,System.String,System.String,System.Double,System.String,System.Int32)">
+ <summary>
+ 进行更加复杂的样式的条形图的绘图操作
+ </summary>
+ <param name="data">这个数据集之中是没有同组比较数据的</param>
+ <param name="size"></param>
+ <param name="padding$"></param>
+ <param name="interval">The interval distance between the bars, percentage of the width</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.StyledBarplot.ColorRendering(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.ChartPlots.BarPlot.StyledBarplot.BarSerial},System.String)">
+ <summary>
+ 使用这个函数进行条形图之中的系列的颜色的渲染
+ </summary>
+ <param name="data">
+ 系列数据，其中的<see cref="F:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.StyledBarplot.BarSerial.Brush"/>将会被填充为颜色谱之中的某一个颜色值
+ </param>
+ <param name="schema$"><see cref="T:Microsoft.VisualBasic.Imaging.Drawing2D.Colors.Designer"/>的颜色谱名称</param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.ViolinPlot">
+ <summary>
+ ## 小提琴图
+ 
+ + 高度为数据的分布位置
+ + 宽度为对应的百分位上的数据点的数量
+ + 长度为最小值与最大值之间的差值
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.ViolinPlot.Plot``1(System.Collections.Generic.IEnumerable{``0},System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.String,System.String,System.String,System.String,System.Double,System.Boolean)">
+ <summary>
+ 
+ </summary>
+ <param name="dataset">数据集中的样本数据可以不必等长</param>
+ <param name="size"></param>
+ <param name="margin"></param>
+ <param name="bg"></param>
+ <param name="colorset"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.ViolinPlot.Plot(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.ComponentModel.DataSourceModel.NamedCollection{System.Double}},System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Int32,System.Boolean,System.String,System.String,System.String,System.String,System.Double,System.Boolean,System.Int32,Microsoft.VisualBasic.Imaging.Driver.Drivers)">
+ <summary>
+ 
+ </summary>
+ <param name="dataset">数据集中的样本数据可以不必等长</param>
+ <param name="size"></param>
+ <param name="margin"></param>
+ <param name="bg"></param>
+ <param name="colorset"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.BoxPlot.BoxData">
+ <summary>
+ Group data model for box plot
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.BoxPlot.BoxData.Groups">
+ <summary>
+ The sample groups
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.BoxPlot.BoxData.SerialName">
+ <summary>
+ The serials name
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.BoxPlot.BoxData.GroupNames">
+ <summary>
+ Get all of the name property values from <see cref="P:Microsoft.VisualBasic.Data.ChartPlots.BoxPlot.BoxData.Groups"/>
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.BoxPlot.BoxPlot">
+ <summary>
+ ```
+ min, q1, q2, q3, max
+       _________
+  +----|   |   |----+
+       ---------
+ ```
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Contour.HeatMap.ContourHeatMapPlot">
+ <summary>
+ Contour heatmap 
+ 
+ A contour plot is a graphical technique for representing a 3-dimensional 
+ surface by plotting constant z slices, called contours, on a 2-dimensional 
+ format. That is, given a value for z, lines are drawn for connecting the 
+ ``(x,y)`` coordinates where that z value occurs.
+ 
+ The contour plot Is an alternative To a 3-D surface plot.
+ 
+ ###### 等高线图
+ 
+ 和普通的heatmap相比，这里的坐标轴是连续的数值变量，而普通的heatmap，其坐标轴都是离散的分类变量
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Contour.HeatMap.ContourHeatMapPlot.GetColor(System.Double[],Microsoft.VisualBasic.Imaging.SolidBrush[]@)">
+ <summary>
+ 
+ </summary>
+ <param name="data"></param>
+ <param name="colorReturns">从这里返回绘制legend所需要的数据</param>
+ <returns></returns>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Contour.HeatMap.FormulaEvaluate.formula">
+ <summary>
+ evaluate of the z from [x, y]
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Contour.HeatMap.FormulaEvaluate.Evaluate(System.Double,System.Double)">
+ <summary>
+ 得到通过计算返回来的数据
+ </summary>
+ <param name="x"></param>
+ <param name="y"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Contour.HeatMap.MatrixEvaluate`1">
+ <summary> 
+ 直接返回矩阵数据
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Contour.HeatMap.MatrixEvaluate`1.matrix">
+ <summary>
+ [x -> [y, z]]
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Contour.HeatMap.MatrixEvaluate`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Drawing.SizeF)">
+ <summary>
+ 
+ </summary>
+ <param name="matrix">
+ id is the x axis value
+ properties in one data set object is the y vector and z vector
+ </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Contour.HeatMap.MatrixEvaluate`1.Evaluate(System.Double,System.Double)">
+ <summary>
+ query data by binary search
+ </summary>
+ <param name="x"></param>
+ <param name="y"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Contour.HeatMap.Utils.Compile(System.String)">
+ <summary>
+ Compile the math expression as a lambda expression for producing numeric values.
+ </summary>
+ <param name="exp$">A string math function expression: ``f(x,y)``</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Contour.HeatMap.Utils.Plot(System.String,Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,System.String,System.Int32,System.String,System.String,System.String,System.Int32,System.String,System.String,System.Single,System.Single,Microsoft.VisualBasic.Language.List{System.Data.DataSet}@)">
+ <summary>
+ 
+ </summary>
+ <param name="exp$"></param>
+ <param name="xrange"></param>
+ <param name="yrange"></param>
+ <param name="colorMap$"></param>
+ <param name="mapLevels%"></param>
+ <param name="bg$"></param>
+ <param name="size"></param>
+ <param name="legendTitle$"></param>
+ <param name="legendFont"></param>
+ <param name="xsteps!"></param>
+ <param name="ysteps!"></param>
+ <param name="matrix">
+ 请注意：假若想要获取得到原始的矩阵数据，这个列表对象还需要实例化之后再传递进来，否则仍然会返回空集合
+ </param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Contour.HeatMap.Utils.Plot(System.Func{System.Double,System.Double,System.Double},Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,System.String,System.Int32,System.String,System.String,System.String,System.Int32,System.String,System.String,System.Single,System.Single,System.Boolean,Microsoft.VisualBasic.Language.List{System.Data.DataSet}@,System.Double,System.Double,System.String,System.String,System.Double,System.String)">
+ <summary>
+ steps步长值默认值为长度平分到每一个像素点
+ </summary>
+ <param name="fun"></param>
+ <param name="xrange"></param>
+ <param name="yrange"></param>
+ <param name="colorMap$">
+ Default using colorbrewer ``Spectral:c10`` schema.
+ </param>
+ <param name="size">3000, 2400</param>
+ <param name="xsteps!"></param>
+ <param name="matrix">
+ 请注意：假若想要获取得到原始的矩阵数据，这个列表对象还需要实例化之后再传递进来，否则仍然会返回空集合
+ </param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Contour.HeatMap.Utils.CreatePlot``1(System.Collections.Generic.IEnumerable{``0},System.String,System.Int32,System.String,System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.Double,System.Double,System.String,System.Single,System.Single)">
+ <summary>
+ 
+ </summary>
+ <param name="matrix">[x => [y, z]]</param>
+ <param name="colorMap$"></param>
+ <param name="mapLevels%"></param>
+ <param name="bg$"></param>
+ <param name="padding$"></param>
+ <param name="unit%"></param>
+ <param name="legendTitle$"></param>
+ <param name="legendFont$"></param>
+ <param name="tickFont$"></param>
+ <param name="xlabel$"></param>
+ <param name="ylabel$"></param>
+ <param name="minZ#"></param>
+ <param name="maxZ#"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Contour.HeatMap.Utils.Plot``1(System.Collections.Generic.IEnumerable{``0},System.String,System.Int32,System.String,System.String,System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.Double,System.Double)">
+ <summary>
+ 从现有的矩阵数据之中绘制等高线图
+ </summary>
+ <param name="matrix"></param>
+ <param name="colorMap$"></param>
+ <param name="mapLevels%"></param>
+ <param name="bg$"></param>
+ <param name="size$"></param>
+ <param name="padding$"></param>
+ <param name="legendTitle$"></param>
+ <param name="legendFont"></param>
+ <param name="xlabel$"></param>
+ <param name="ylabel$"></param>
+ <param name="minZ#"></param>
+ <param name="maxZ#"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Contour.HeatMap.Utils.__getData(Microsoft.VisualBasic.Data.ChartPlots.Contour.HeatMap.EvaluatePoints,System.Drawing.Size,Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,System.Single@,System.Single@,System.Boolean,Microsoft.VisualBasic.Language.List{Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Scatter3DPoint}@,System.Int32)">
+ <summary>
+ 返回去的数据是和<paramref name="size"/>每一个像素点相对应的
+ </summary>
+ <param name="fun"></param>
+ <param name="size"></param>
+ <param name="xrange"></param>
+ <param name="yrange"></param>
+ <param name="xsteps!"></param>
+ <param name="ysteps!"></param>
+ <param name="parallel">
+ 对于例如ODEs计算这类比较重度的计算，可以考虑在这里使用并行
+ </param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Fractions.FractionData">
+ <summary>
+ 扇形/金字塔的数据模型
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Fractions.FractionData.Percentage">
+ <summary>
+ 值范围为``[0, 1]``, 对象在整体中所占的百分比
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Fractions.FractionData.Name">
+ <summary>
+ 对象的名称标签
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Fractions.FractionData.Color">
+ <summary>
+ 扇形、金字塔梯形的填充颜色
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Fractions.FractionData.Value">
+ <summary>
+ 与占整体的百分比相对应的实际数量
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Fractions.PieChart.PlotPie(Microsoft.VisualBasic.Imaging.IGraphics@,System.Drawing.Point,Microsoft.VisualBasic.Data.ChartPlots.Fractions.FractionData[],Microsoft.VisualBasic.Imaging.Font,Microsoft.VisualBasic.Imaging.Font,System.Drawing.Rectangle@,System.Single,System.Double,System.Double,Microsoft.VisualBasic.Data.ChartPlots.Fractions.ValueLabels,System.Nullable{System.Boolean})">
+ <summary>
+ 
+ </summary>
+ <param name="g"></param>
+ <param name="data"></param>
+ <param name="valueLabelFont"></param>
+ <param name="font"></param>
+ <param name="layoutRect"></param>
+ <param name="r!"></param>
+ <param name="shadowDistance#"></param>
+ <param name="shadowAngle#"></param>
+ <param name="valueLabel"></param>
+ <param name="legendAlt">
+ nothing means no legend drawing
+ </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Fractions.PieChart.Plot(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.ChartPlots.Fractions.FractionData},System.String,System.String,System.String,Microsoft.VisualBasic.Data.ChartPlots.Fractions.ValueLabels,System.String,System.Boolean,System.String,Microsoft.VisualBasic.MIME.Html.CSS.Stroke,System.Single,System.Int32,System.String,System.Double,System.Double,System.Int32,Microsoft.VisualBasic.Imaging.Driver.Drivers)">
+ <summary>
+ Plot pie chart
+ </summary>
+ <param name="data"></param>
+ <param name="size"></param>
+ <param name="bg"></param>
+ <param name="legendAlt">不再绘制出传统的legend，而是将标签信息跟随pie的位置而变化</param>
+ <param name="legendBorder"></param>
+ <param name="minRadius">
+ 当这个参数值大于0的时候，除了扇形的面积会不同外，半径也会不同，这个参数指的是最小的半径
+ </param>
+ <param name="reorder">
+ 是否按照数据比例重新对数据排序？
+ +  0 : 不需要
+ +  1 : 从小到大排序
+ + -1 : 从大到小排序 
+ </param>
+ <returns></returns>
+ <remarks>
+ ''' 生成饼图的文本的布局位置
+ 
+ + 根据startAngle + 0.5 * sweepAngle来判断文本的位置
+ +   0 -  90  右下
+ +  90 - 180  左下
+ + 180 - 270  左上
+ + 270 - 360  右上
+ + 文本的位置应该是startAngle + 0.5 * sweepAngle的更加大的半径的一个圆的位置
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Fractions.PieChart.FromData(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.ComponentModel.DataSourceModel.NamedValue{System.Int32}},System.String[])">
+ <summary>
+ 
+ </summary>
+ <param name="data">每个标记的数量，函数会自动根据这些数量计算出百分比</param>
+ <param name="colors"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Fractions.PieChart.Fractions(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.ComponentModel.DataSourceModel.NamedValue{System.Int32}},System.String)">
+ <summary>
+ 
+ </summary>
+ <param name="data">每个标记的数量，函数会自动根据这些数量计算出百分比</param>
+ <param name="schema"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Fractions.PieChart.FromPercentages(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.ComponentModel.DataSourceModel.NamedValue{System.Double}},System.Drawing.Color[])">
+ <summary>
+ 
+ </summary>
+ <param name="data">手工计算出来的百分比</param>
+ <param name="colors">Default is using schema of <see cref="F:Microsoft.VisualBasic.Imaging.Drawing2D.Colors.DesignerTerms.Office2016"/></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Fractions.Pyramid.Plot(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.ChartPlots.Fractions.FractionData},System.Drawing.Size,System.String,System.String,Microsoft.VisualBasic.MIME.Html.CSS.Stroke,System.Double)">
+ <summary>
+ 绘制金字塔图，用来表示占比的数据可视化
+ </summary>
+ <param name="data"></param>
+ <param name="size"></param>
+ <param name="padding$"></param>
+ <param name="bg$"></param>
+ <param name="legendBorder"></param>
+ <param name="wp#"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Fractions.RadarChart">
+ <summary>
+ 雷达图
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Fractions.RadarChart.PlotSingleLayer(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.ChartPlots.Fractions.FractionData},System.String,System.String,System.String,System.String,System.String,System.String,System.Int32,Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,System.Single,System.Single,System.String,System.String,System.Boolean,System.Int32)">
+ <summary>
+ 函数使用的是<see cref="P:Microsoft.VisualBasic.Data.ChartPlots.Fractions.FractionData.Value"/>的数据来进行作图
+ </summary>
+ <param name="serials"></param>
+ <param name="size$"></param>
+ <param name="margin$"></param>
+ <param name="bg$"></param>
+ <param name="regionFill$"></param>
+ <param name="serialColorSchema$"></param>
+ <param name="labelTextColor$"></param>
+ <param name="colorAlpha%"></param>
+ <param name="axisRange"></param>
+ <param name="shapeBorderWidth!"></param>
+ <param name="pointRadius!"></param>
+ <param name="labelFontCSS$"></param>
+ <param name="axisStrokeStyle$"></param>
+ <param name="spline"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Fractions.RadarChart.Plot(Microsoft.VisualBasic.ComponentModel.DataSourceModel.NamedValue{Microsoft.VisualBasic.Data.ChartPlots.Fractions.FractionData[]}[],System.String,System.String,System.String,System.String,System.String,System.String,System.Int32,Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,System.Single,System.Single,System.String,System.String,System.Boolean,System.Int32,System.Int32)">
+ <summary>
+ 这个函数是用于绘制多层的雷达图
+ </summary>
+ <param name="serials">函数使用的是<see cref="P:Microsoft.VisualBasic.Data.ChartPlots.Fractions.FractionData.Value"/>的数据来进行作图</param>
+ <param name="size$"></param>
+ <param name="margin$"></param>
+ <param name="bg$"></param>
+ <param name="regionFill$"></param>
+ <param name="serialColorSchema$"></param>
+ <param name="colorAlpha%"></param>
+ <param name="axisRange"></param>
+ <param name="shapeBorderWidth!"></param>
+ <param name="pointRadius!"></param>
+ <param name="labelFontCSS$"></param>
+ <param name="axisStrokeStyle$"></param>
+ <param name="spline%">
+ 如果这个参数设置为``False``的话，那么项目之间的连接将会直接使用直线进行连接
+ 这个函数参数的默认值为``True``程序会使用两个相邻的项目的坐标点中间的平均值
+ 处作为贝塞尔曲线的控制点进行插值曲线化处理
+ </param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Fractions.TreeMap.Plot(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.ChartPlots.Fractions.FractionData},System.Drawing.Size,System.String,System.String)">
+ <summary>
+ 
+ </summary>
+ <param name="data"></param>
+ <param name="size"></param>
+ <param name="bg$"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.Axis.DrawString(Microsoft.VisualBasic.Imaging.IGraphics,System.String,Microsoft.VisualBasic.Imaging.Font,Microsoft.VisualBasic.Imaging.Brush,System.Single,System.Single,System.Single)">
+ <summary>
+ 绘制按照任意角度旋转的文本
+ </summary>
+ <param name="g"></param>
+ <param name="text"></param>
+ <param name="font"></param>
+ <param name="brush"></param>
+ <param name="x!"></param>
+ <param name="y!"></param>
+ <param name="angle!"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.Axis.DrawAxis(Microsoft.VisualBasic.Imaging.IGraphics@,Microsoft.VisualBasic.Imaging.Drawing2D.GraphicsRegion,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.DataScaler,System.Boolean,System.Drawing.Point,System.String,System.String,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.XAxisLayoutStyles,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.YAxisLayoutStyles,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.String,System.String,System.String,System.Double,Microsoft.VisualBasic.Imaging.Driver.Drivers)">
+ <summary>
+ 一般而言，``X``坐标轴是绘制在<paramref name="region"/>的底部的
+ </summary>
+ <param name="g"></param>
+ <param name="region"></param>
+ <param name="scaler"></param>
+ <param name="showGrid"></param>
+ <param name="offset"></param>
+ <param name="xlabel"></param>
+ <param name="ylabel"></param>
+ <param name="xlayout"></param>
+ <param name="ylayout"></param>
+ <param name="labelFont"></param>
+ <param name="axisStroke"></param>
+ <param name="gridFill"></param>
+ <param name="htmlLabel"></param>
+ <param name="XtickFormat"></param>
+ <param name="YtickFormat"></param>
+ <param name="tickFontStyle"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.Axis.DrawAxis(Microsoft.VisualBasic.Imaging.IGraphics@,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.DataScaler,Microsoft.VisualBasic.Imaging.Drawing2D.GraphicsRegion,System.Boolean,System.Drawing.Point,System.String,System.String,System.String,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.XAxisLayoutStyles,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.YAxisLayoutStyles,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.String,System.String,System.Double,Microsoft.VisualBasic.Imaging.Driver.Drivers)">
+ <summary>
+ 
+ </summary>
+ <param name="g"></param>
+ <param name="scaler">Drawing Point data auto scaler</param>
+ <param name="showGrid">Show axis grid on the plot region?</param>
+ <param name="xlayout">修改y属性</param>
+ <param name="ylayout">修改x属性</param>
+ <param name="gridX">空值表示不进行绘制</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.Axis.DrawY(Microsoft.VisualBasic.Imaging.IGraphics@,Microsoft.VisualBasic.Imaging.Pen,System.String,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.YScaler,System.Double,Microsoft.VisualBasic.Math.LinearAlgebra.Vector,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.YAxisLayoutStyles,System.Drawing.Point,System.String,Microsoft.VisualBasic.Imaging.Brush,Microsoft.VisualBasic.Imaging.Font,Microsoft.VisualBasic.Imaging.Brush,System.Boolean,System.Boolean,System.String)">
+ <summary>
+ 
+ </summary>
+ <param name="g"></param>
+ <param name="pen"></param>
+ <param name="label$"></param>
+ <param name="X0">
+ 当X等于零的时候的横坐标轴的值，这个参数只有在<paramref name="layout"/>的值为
+ <see cref="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.YAxisLayoutStyles.ZERO"/>的时候才会需要.
+ </param>
+ <param name="scaler"></param>
+ <param name="layout"></param>
+ <param name="offset"></param>
+ <param name="labelFont$"></param>
+ <param name="tickFont"></param>
+ <param name="showAxisLine"></param>
+ <param name="htmlLabel">
+ Parameter <paramref name="label"/> is using html text format, function will using html renderer to draw this label
+ </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.Axis.__plotLabel(System.String,System.String,System.Boolean)">
+ <summary>
+ 绘制坐标轴标签html文本
+ </summary>
+ <param name="label$"></param>
+ <param name="css$"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.Axis.DrawLabel(System.String,System.String,System.String,System.String,System.Int32)">
+ <summary>
+ 这个函数不是将文本作为html来进行渲染，而是直接使用gdi进行绘图，如果需要将文本
+ 作为html渲染出来，则需要使用TextRender.DrawHtmlText方法
+ </summary>
+ <param name="label$"></param>
+ <param name="css$"><see cref="T:Microsoft.VisualBasic.MIME.Html.CSS.CSSFont"/></param>
+ <param name="fcolor">Brush color or texture.</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.Axis.DrawLabel(System.String,Microsoft.VisualBasic.Imaging.Font,System.String,System.String)">
+ <summary>
+ 这个函数不是将文本作为html来进行渲染，而是直接使用gdi进行绘图，如果需要将文本
+ 作为html渲染出来，则需要使用TextRender.DrawHtmlText方法
+ </summary>
+ <param name="label$"></param>
+ <param name="font"></param>
+ <param name="fcolor$"></param>
+ <param name="size$">
+ 假若程序是运行在低内存的机器之上，则大小值应该尽量设置小些，避免内存被浪费，
+ 测试发现在32bit系统上经常会出现OutOfmemory的错误，将这个大小值改小之后
+ 一切恢复正常
+ </param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.Axis.DrawX(Microsoft.VisualBasic.Imaging.IGraphics@,Microsoft.VisualBasic.Imaging.Pen,System.String,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.DataScaler,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.XAxisLayoutStyles,System.Double,System.Drawing.Point,System.String,Microsoft.VisualBasic.Imaging.Brush,Microsoft.VisualBasic.Imaging.Font,Microsoft.VisualBasic.Imaging.Brush,System.Int32,System.Boolean,System.Boolean,System.String,System.Double)">
+ <summary>
+ 
+ </summary>
+ <param name="g"></param>
+ <param name="pen"></param>
+ <param name="label$"></param>
+ <param name="scaler"></param>
+ <param name="layout"></param>
+ <param name="offset"></param>
+ <param name="labelFont$"></param>
+ <param name="tickFont"></param>
+ <param name="overridesTickLine%"></param>
+ <param name="noTicks"></param>
+ <param name="htmlLabel">
+ Parameter <paramref name="label"/> is using html text format, function will using html renderer to draw this label
+ </param>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.AxisValue">
+ <summary>
+ 手工指定Axis的数据
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.AxisValue.Range">
+ <summary>
+ 最大值和最小值
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.AxisValue.Tick">
+ <summary>
+ 数值标签出现的间隔
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.AxisValue.Title">
+ <summary>
+ 坐标轴的标题
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.AxisData">
+ <summary>
+ 横纵坐标轴的画图数据
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.AxisProvider">
+ <summary>
+ 
+ </summary>
+ <remarks>
+ ```vbnet
+ Dim axis$ = "(min,max),tick=steps,n=parts"
+ 
+ ' example as
+ Dim axis$ = "(0,100),tick=10"
+ Dim axis$ = "(100,1000),n=10"
+ ```
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.AxisProvider.TryParse(System.String)">
+ <summary>
+ (min,max), tick=xxx, n=xxx
+ </summary>
+ <param name="s"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.AxisScalling.CreateAxisTicks(Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,System.Int32,System.Int32,System.Double,System.Double,System.Double)">
+ <summary>
+ 
+ </summary>
+ <param name="range"></param>
+ <param name="ticks%"></param>
+ <param name="decimalDigits">
+ if the value range its max value is a very small positive number, 
+ then you should set this parameter to -1!
+ </param>
+ <param name="w_steps#"></param>
+ <param name="w_min#"></param>
+ <param name="w_max#"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.AxisScalling.AxisExpression(System.Double[])">
+ <summary>
+ <see cref="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.AxisProvider"/>
+ </summary>
+ <param name="ticks#"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.AxisScalling.CreateAxisTicks(System.Double,System.Double,System.Int32,System.Int32,System.Double,System.Double,System.Double)">
+ <summary>
+ ### An Algorithm for Creating and Selecting Graph Axes
+ > http://austinclemens.com/blog/2016/01/09/an-algorithm-for-creating-a-graphs-axes/
+ </summary>
+ <param name="ticks%"></param>
+ <param name="decimalDigits%"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.AxisScalling.GetAxisValues(System.Double,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+ <summary>
+ 
+ </summary>
+ <param name="max#"></param>
+ <param name="parts%"></param>
+ <param name="min#"></param>
+ <param name="absoluteScalling">
+ 这个主要是相对于<paramref name="min"/>的计算而言的，当这个不为真的视乎，scalling函数会将较小的min值直接设置为0，反之不会
+ </param>
+ <returns></returns>
+ <remarks>
+ + 0-10
+ + 0-100
+ + 0-1000
+ + 0-1E30
+ + 0-1E-30
+ + 0-1
+ + 0-0.1
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.AxisScalling.__max(System.Double,System.Double)">
+ <summary>
+ 
+ </summary>
+ <param name="max#">必须始终是正数</param>
+ <param name="min#"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.AxisScalling.GetAxisValues(Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,System.Int32,System.Boolean)">
+ <summary>
+ 
+ </summary>
+ <param name="range"></param>
+ <param name="ticks%"></param>
+ <param name="absoluteScalling">
+ 从最小值开始还是从零开始计算？
+ </param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.XAxis.Draw(Microsoft.VisualBasic.Imaging.IGraphics,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.XAxisLayoutStyles,System.Double,System.Drawing.PointF)">
+ <summary>
+ 
+ </summary>
+ <param name="g"></param>
+ <param name="layout"></param>
+ <param name="y0">the plot location of y value when y axis value is ZERO</param>
+ <param name="offset"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.XAxis.drawLabel(Microsoft.VisualBasic.Imaging.IGraphics,System.Drawing.Size,System.Double,System.Drawing.Point)">
+ <summary>
+ 
+ </summary>
+ <param name="g"></param>
+ <param name="size">the plot region size</param>
+ <param name="d"></param>
+ <param name="zero"></param>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.DataScaler">
+ <summary>
+ 将用户数据转换为作图的时候所需要的空间数据
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.DataScaler.X">
+ <summary>
+ X坐标轴主要是为了兼容数值类型的连续映射以及标签类型的坐标值的离散映射
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.DataScaler.#ctor(System.Boolean)">
+ <summary>
+ 
+ </summary>
+ <param name="rev">是否需要将Y坐标轴上下翻转颠倒</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.DataScaler.Translate(System.Double,System.Double)">
+ <summary>
+ translate the realworld data into the view model world point 2D 
+ </summary>
+ <param name="x#"></param>
+ <param name="y#"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.DataScalerExtensions.TupleScaler(System.ValueTuple{Microsoft.VisualBasic.Imaging.d3js.scale.LinearScale,Microsoft.VisualBasic.Imaging.d3js.scale.LinearScale},System.Int32)">
+ <summary>
+ Translate the x/y value as a geom point.
+ </summary>
+ <param name="scaler"></param>
+ <param name="bottom">
+ 如果是正常的坐标系，那么这个值就必须是一个正数，值为绘图区域的<paramref name="bottom"/>的y值，
+ 否则获取得到的y值将会是颠倒过来的，除非将<see cref="T:Microsoft.VisualBasic.Imaging.IGraphics"/>的旋转矩阵给颠倒了
+ </param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.TermScaler.#ctor(System.Boolean)">
+ <summary>
+ 
+ </summary>
+ <param name="rev">是否需要将Y坐标轴上下翻转颠倒</param>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.YScaler.region">
+ <summary>
+ The charting region in <see cref="T:System.Drawing.Rectangle"/> data structure.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.YScaler.reversed">
+ <summary>
+ 是否需要将Y坐标轴上下翻转颠倒
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.YScaler.TranslateY(System.Double)">
+ <summary>
+ 
+ </summary>
+ <param name="y#"></param>
+ <returns></returns>
+ <remarks>
+ ###### 2018-1-16
+ 
+ 因为绘图的时候有margin的，故而Y不是从零开始的，而是从margin的top开始的
+ 所以需要额外的加上一个top值
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.YScaler.TranslateHeight(System.Double)">
+ <summary>
+ 从原始数据计算出绘图的实际高度
+ </summary>
+ <param name="y"></param>
+ <returns></returns>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.XAxisLayoutStyles.Bottom">
+ <summary>
+ (默认样式) x轴位于图表的底部
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.XAxisLayoutStyles.Top">
+ <summary>
+ X轴位于图表的顶端
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.XAxisLayoutStyles.Centra">
+ <summary>
+ x轴位于图表的中部
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.XAxisLayoutStyles.ZERO">
+ <summary>
+ X轴位于Y轴纵坐标值为零的位置
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.YAxisLayoutStyles.Left">
+ <summary>
+ (默认样式) y轴位于图表的左侧
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.YAxisLayoutStyles.Centra">
+ <summary>
+ y轴位于图表的中部
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.YAxisLayoutStyles.Right">
+ <summary>
+ y轴位于图表的右侧
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.YAxisLayoutStyles.ZERO">
+ <summary>
+ y轴位于X轴横坐标值等于零的位置
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.YAxisLayoutStyles.None">
+ <summary>
+ 不进行Y轴的绘制
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.FontStyle.layout">
+ <summary>
+ 这个是按照百分比进行定位的
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Layout">
+ <summary>
+ an abstract object plot layout object model
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Layout.GetLocation(Microsoft.VisualBasic.Imaging.Drawing2D.GraphicsRegion,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.LayoutDependency)">
+ <summary>
+ get object plot location
+ </summary>
+ <param name="canvas"></param>
+ <param name="dependency">
+ a list of object with its ``[top-left]`` layout information. 
+ this objects table should always contains an ``canvas`` 
+ object layout information.
+ </param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.LayoutDependency.#ctor(Microsoft.VisualBasic.Imaging.Drawing2D.GraphicsRegion)">
+ <summary>
+ create a new blank layout dependency
+ </summary>
+ <param name="canvas"></param>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Absolute">
+ <summary>
+ 绝对位置定位
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.PercentageRelative">
+ <summary>
+ 百分比相对定位
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme">
+ <summary>
+ The plot style theme definition 
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.background">
+ <summary>
+ 背景色
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.padding">
+ <summary>
+ 绘图区域的位置与布局
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.mainCSS">
+ <summary>
+ 大标题字体样式
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.subtitleCSS">
+ <summary>
+ 副标题字体样式
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.legendTitleCSS">
+ <summary>
+ 图例标题字体样式
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.legendTickCSS">
+ <summary>
+ 这个是为绘制colorMap的图例的标尺准备的
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.legendLabelCSS">
+ <summary>
+ 图例标签字体样式
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.legendSplitSize">
+ <summary>
+ divided the legend elements into multiple block group by this element number value.
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.legendLayout">
+ <summary>
+ 图例的布局位置
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.legendBoxStroke">
+ <summary>
+ 图例的边框线条样式
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.tagCSS">
+ <summary>
+ 在图表之中的某一个数据点的显示字体样式
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.tagFormat">
+ <summary>
+ 在图表上的数字标签的格式
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.tagLinkStroke">
+ <summary>
+ 数据点与数据标签之间的连接线的样式
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.pointSize">
+ <summary>
+ 数据点的大小值
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.xAxisLayout">
+ <summary>
+ X坐标轴的布局
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.flipAxis">
+ <summary>
+ Swapping X- and Y-Axes?
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.yAxisLayout">
+ <summary>
+ Y坐标轴的布局
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.axisLabelCSS">
+ <summary>
+ 坐标轴上的标签的字体样式
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.axisTickCSS">
+ <summary>
+ 坐标轴上的标尺的字体样式
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.XaxisTickFormat">
+ <summary>
+ 一般为F2或者G3
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.drawLegend">
+ <summary>
+ 是否显示图例
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.drawGrid">
+ <summary>
+ 是否再作图区显示网格？
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.lineStroke">
+ <summary>
+ 绘制的线条的样式
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.gridFill">
+ <summary>
+ the background of the charting plot region
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.HeatMapPlot.GetBrushes">
+ <summary>
+ get brush from <see cref="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.HeatMapPlot.colors"/>
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.HeatMapPlot.GetColors">
+ <summary>
+ get interpolated <see cref="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.HeatMapPlot.colors"/>
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendObject">
+ <summary>
+ 图例
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendObject.style">
+ <summary>
+ The shape of this legend
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendObject.title">
+ <summary>
+ The legend label
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendObject.color">
+ <summary>
+ The color of the legend <see cref="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendObject.style"/> shape.
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendObject.fontstyle">
+ <summary>
+ CSS expression, which can be parsing by <see cref="T:Microsoft.VisualBasic.MIME.Html.CSS.CSSFont"/>, drawing font of <see cref="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendObject.title"/> 
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendObject.GetFont(Microsoft.VisualBasic.MIME.Html.CSS.CSSEnvirnment)">
+ <summary>
+ <see cref="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendObject.fontstyle"/> to <see cref="T:Microsoft.VisualBasic.Imaging.Font"/>
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendObject.MeasureTitle(Microsoft.VisualBasic.Imaging.IGraphics)">
+ <summary>
+ 计算标题文本的绘制大小
+ </summary>
+ <param name="g"></param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendPlotExtensions.ParseLegendStyle(System.String,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendStyles)">
+ <summary>
+ 从字符串表达式之中解析出<see cref="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendStyles"/>
+ </summary>
+ <param name="str"></param>
+ <param name="defaultStyle"></param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendPlotExtensions.LegendStyls(System.String)">
+ <summary>
+ 
+ </summary>
+ <param name="expr$">``a,b,c,d...``</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendPlotExtensions.DrawLegendShape(Microsoft.VisualBasic.Imaging.IGraphics,System.Drawing.PointF,System.Drawing.SizeF,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendStyles,Microsoft.VisualBasic.Imaging.Brush,Microsoft.VisualBasic.MIME.Html.CSS.Stroke,System.Int32,System.Drawing.PointF@,System.Single)">
+ <summary>
+ 
+ </summary>
+ <param name="g">Canvas device</param>
+ <param name="pos">The top left location of the shape rectangle</param>
+ <param name="gSize">The shape size</param>
+ <param name="style">The shape style</param>
+ <param name="color">The shape color</param>
+ <param name="border">The shape polygon border, nothing means no border line will be draw.</param>
+ <param name="radius%"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendPlotExtensions.DrawLegend(Microsoft.VisualBasic.Imaging.IGraphics@,System.Drawing.PointF,System.Drawing.SizeF,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendObject,Microsoft.VisualBasic.MIME.Html.CSS.Stroke,System.Int32,Microsoft.VisualBasic.Imaging.Brush,System.Single)">
+ <summary>
+ 函数返回最大的那个rectange的大小
+ </summary>
+ <param name="g"></param>
+ <param name="pos"></param>
+ <param name="l"></param>
+ <param name="canvas">图例之中的图形的大小都是根据这个参数值来自动调整的</param>
+ <param name="border">绘制每一个图例的边</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendPlotExtensions.DrawLegends(Microsoft.VisualBasic.Imaging.IGraphics@,System.Drawing.PointF,System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendObject},System.String,System.String,System.Int32,Microsoft.VisualBasic.MIME.Html.CSS.Stroke,Microsoft.VisualBasic.MIME.Html.CSS.Stroke,System.Boolean,System.Int32,Microsoft.VisualBasic.Imaging.Brush)">
+ <summary>
+ <paramref name="gsize"/>的默认值是(120,45)
+ </summary>
+ <param name="g"></param>
+ <param name="topLeft"></param>
+ <param name="legends"></param>
+ <param name="fillBg">
+ The background color of the legend area, by default is transparent
+ </param>
+ <param name="gSize">
+ 单个legend图形的绘图区域的大小，图例之中的shap的大小都是根据这个参数来进行限制自动调整的
+ </param>
+ <param name="d%">Interval distance between the legend graphics.</param>
+ <param name="regionBorder">整个图例的绘图区域的边框的绘制设置，如果这个参数值是空值，则不会做边框的绘制</param>
+ <param name="radius">这个是用于圆角矩形的图例图形的绘制参数</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendPlotExtensions.MaxLegendSize(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendObject},Microsoft.VisualBasic.Imaging.IGraphics)">
+ <summary>
+ 这个函数返回legend之中的图例的标题字符串的最大绘制大小 
+ </summary>
+ <param name="legends"></param>
+ <param name="g"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendStyles">
+ <summary>
+ Vector shapes that drawing of this legend.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendStyles.Rectangle">
+ <summary>
+ 矩形
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendStyles.Circle">
+ <summary>
+ 圆形
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendStyles.SolidLine">
+ <summary>
+ 实线
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendStyles.DashLine">
+ <summary>
+ 虚线
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendStyles.Diamond">
+ <summary>
+ 菱形
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendStyles.Triangle">
+ <summary>
+ 三角形
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendStyles.Hexagon">
+ <summary>
+ 六边形
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendStyles.Pentacle">
+ <summary>
+ 五角星
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendStyles.Square">
+ <summary>
+ 正方形
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendStyles.RoundRectangle">
+ <summary>
+ 圆角矩形
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Mapper">
+ <summary>
+ 将数据坐标转换为绘图坐标
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Mapper.xAxis">
+ <summary>
+ 坐标轴的数据
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Mapper.yAxis">
+ <summary>
+ 坐标轴的数据
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Mapper.dx">
+ <summary>
+ x,y轴分别的最大值和最小值的差值
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Mapper.dy">
+ <summary>
+ x,y轴分别的最大值和最小值的差值
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Mapper.#ctor(Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.AxisProvider,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.AxisProvider,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Scaling,System.Boolean,System.Boolean,System.Boolean)">
+ <summary>
+ 
+ </summary>
+ <param name="x"></param>
+ <param name="y"></param>
+ <param name="range">所获取得到的绘图所使用的系列的数据</param>
+ <param name="ignoreAxis"></param>
+ <param name="ignoreX"></param>
+ <param name="ignoreY"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Mapper.ForEach(Microsoft.VisualBasic.MIME.Html.CSS.CSSEnvirnment,Microsoft.VisualBasic.MIME.Html.CSS.Padding)">
+ <summary>
+ 返回的系列是已经被转换过的，直接使用来进行画图
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Mapper.ForEach_histSample(Microsoft.VisualBasic.MIME.Html.CSS.CSSEnvirnment,Microsoft.VisualBasic.MIME.Html.CSS.Padding)">
+ <summary>
+ 返回的系列是已经被转换过的，直接使用来进行画图
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Mapper.YScaler(System.Drawing.Size,Microsoft.VisualBasic.MIME.Html.CSS.Padding,System.Double)">
+ <summary>
+ 
+ </summary>
+ <param name="size"></param>
+ <param name="margin"></param>
+ <param name="avg">当这个参数值是一个有效的数字的时候，返回的Y将会以这个平均值为零点</param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Plot">
+ <summary>
+ the chartting plot framework in sciBASIC 
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Plot.main">
+ <summary>
+ the main title string
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Plot.Plot(System.Drawing.SizeF,System.Int32,Microsoft.VisualBasic.Imaging.Driver.Drivers)">
+ <summary>
+ function for make plot
+ </summary>
+ <param name="size"></param>
+ <param name="dpi"></param>
+ <param name="driver"></param>
+ <returns>this function returns a graphics plot wrapper object that supports save png/svg/pdf file</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Plot.Plot(System.String,System.Int32,Microsoft.VisualBasic.Imaging.Driver.Drivers)">
+ <summary>
+ function for make plot
+ </summary>
+ <param name="size$"></param>
+ <param name="ppi"></param>
+ <param name="driver"></param>
+ <returns>this function returns a graphics plot wrapper object that supports save png/svg/pdf file</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Plot.Plot(Microsoft.VisualBasic.Imaging.IGraphics@,System.Drawing.Rectangle)">
+ <summary>
+ make plot with a specific given layout information
+ </summary>
+ <param name="g"></param>
+ <param name="layout">
+ 一般而言，这个属性是<see cref="M:Microsoft.VisualBasic.Imaging.Drawing2D.GraphicsRegion.PlotRegion(Microsoft.VisualBasic.MIME.Html.CSS.CSSEnvirnment)"/>的属性值
+ </param>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Plot.Plot(Microsoft.VisualBasic.Imaging.IGraphics@,Microsoft.VisualBasic.Imaging.Drawing2D.GraphicsRegion)">
+ <summary>
+ make plot with a specific given layout information
+ </summary>
+ <param name="g"></param>
+ <param name="canvas"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Plot.DrawLegends(Microsoft.VisualBasic.Imaging.IGraphics,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendObject[],System.Boolean,Microsoft.VisualBasic.Imaging.Drawing2D.GraphicsRegion)">
+ <summary>
+ custom layout via <see cref="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme.legendLayout"/>
+ </summary>
+ <param name="g"></param>
+ <param name="legends"></param>
+ <param name="showBorder"></param>
+ <param name="canvas"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Plot.DrawMainTitle(Microsoft.VisualBasic.Imaging.IGraphics,System.Drawing.Rectangle,System.Double,System.Boolean)">
+ <summary>
+ draw main title upon the chart plot region
+ </summary>
+ <param name="g"></param>
+ <param name="plotRegion">the chart plot region</param>
+ <param name="offsetFactor"></param>
+ <param name="commentText"></param>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.ProfileGroup">
+ <summary>
+ The plot data group
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.ProfileGroup.Serials">
+ <summary>
+ The color profile of the plot elements
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Scaling">
+ <summary>
+ 获取绘图数据的实际范围
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Scaling.dx">
+ <summary>
+ x,y轴分别的最大值和最小值的差值
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Scaling.dy">
+ <summary>
+ x,y轴分别的最大值和最小值的差值
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Scaling.type">
+ <summary>
+ 数据集类型
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Scaling.xrange">
+ <summary>
+ x值的实际范围
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Scaling.yrange">
+ <summary>
+ y值的实际范围
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Scaling.#ctor(Microsoft.VisualBasic.Data.ChartPlots.SerialData[],System.Boolean)">
+ <summary>
+ 线条
+ </summary>
+ <param name="array"></param>
+ <param name="absoluteScaling"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Scaling.#ctor(Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistogramGroup,System.Boolean)">
+ <summary>
+ 连续的条型数据
+ </summary>
+ <param name="data"></param>
+ <param name="absoluteScaling"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Scaling.#ctor(Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.BarDataGroup,System.Boolean,System.Boolean)">
+ <summary>
+ 分类的条型数据
+ </summary>
+ <param name="hist"></param>
+ <param name="stacked"></param>
+ <param name="horizontal"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Scaling.#ctor(System.Collections.Generic.IEnumerable{System.Double},System.Boolean)">
+ <summary>
+ 
+ </summary>
+ <param name="data"></param>
+ <param name="horizontal">
+ 所进行绘制的条形图是否是水平的？
+ </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Scaling.Scaling(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.ChartPlots.SerialData},System.Func{Microsoft.VisualBasic.Data.ChartPlots.PointData,System.Single},System.Boolean,System.Single@)">
+ <summary>
+ 返回dx或者dy
+ </summary>
+ <param name="absoluteScaling">
+ 假若值为真，则当min和max都是正数的时候，从min=0开始
+ 当min和max都是负数的时候，从max=0结束
+ 当min和max的符号不同的时候，只能够使用相对scalling
+ </param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Scaling.__scaling(System.Single[],System.Single@,System.Boolean)">
+ <summary>
+ 返回``max-min``
+ </summary>
+ <param name="array!"></param>
+ <param name="min!"></param>
+ <param name="absoluteScaling"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Scaling.Scaling(Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistogramGroup,System.Func{Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistogramData,System.Single[]},System.Single@,System.Boolean)">
+ <summary>
+ 返回dx或者dy
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Bubble">
+ <summary>
+ the bubble plots
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Bubble.Plot(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.ChartPlots.SerialData},System.String,System.String,System.String,System.Boolean,System.Boolean,Microsoft.VisualBasic.MIME.Html.CSS.Stroke,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.Drawing.PointF,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.YAxisLayoutStyles,System.String,Microsoft.VisualBasic.Imaging.Driver.Drivers)">
+ <summary>
+ <see cref="F:Microsoft.VisualBasic.Data.ChartPlots.PointData.value"/>是Bubble的半径大小
+ </summary>
+ <param name="data"></param>
+ <param name="size"></param>
+ <param name="bg"></param>
+ <param name="legend"></param>
+ <param name="xAxis"><see cref="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.AxisProvider"/></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Bubble.Plot(Microsoft.VisualBasic.Imaging.IGraphics,Microsoft.VisualBasic.Data.ChartPlots.SerialData,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.DataScaler,Microsoft.VisualBasic.Imaging.Font,Microsoft.VisualBasic.Language.List{Microsoft.VisualBasic.Imaging.d3js.Layout.Label},Microsoft.VisualBasic.Language.List{Microsoft.VisualBasic.Imaging.d3js.Layout.Anchor}@,Microsoft.VisualBasic.Imaging.Pen,System.Func{System.Double,System.Double})">
+ <summary>
+ Just plot the scatter bubble
+ </summary>
+ <param name="g"></param>
+ <param name="s"></param>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Annotation.X">
+ <summary>
+ [<see cref="P:System.Drawing.PointF.X"/>] from <see cref="F:Microsoft.VisualBasic.Data.ChartPlots.SerialData.pts"/>::<see cref="F:Microsoft.VisualBasic.Data.ChartPlots.PointData.pt"/>
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Annotation.Font">
+ <summary>
+ Font style for <see cref="F:Microsoft.VisualBasic.Data.ChartPlots.Annotation.Text"/>, which can be generated by <see cref="T:Microsoft.VisualBasic.MIME.Html.CSS.CSSFont"/>
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Annotation.size">
+ <summary>
+ Size region for <see cref="F:Microsoft.VisualBasic.Data.ChartPlots.Annotation.Legend"/> Drawing
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Annotation.PointNull">
+ <summary>
+ The target annotation data point is null!
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.PointData">
+ <summary>
+ 绘图的点的数据
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.PointData.pt">
+ <summary>
+ 坐标数据不需要进行额外的转换，绘图函数内部会自动进行mapping转换的
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.PointData.errPlus">
+ <summary>
+ 正负误差
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.PointData.errMinus">
+ <summary>
+ 正负误差
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.PointData.tag">
+ <summary>
+ 正负误差
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.PointData.value">
+ <summary>
+ 正负误差
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.PointData.Statics">
+ <summary>
+ 可能会有数据点在<see cref="F:Microsoft.VisualBasic.Data.ChartPlots.PointData.errPlus"/>或者<see cref="F:Microsoft.VisualBasic.Data.ChartPlots.PointData.errMinus"/>范围内，或者范围外
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.PointData.axisLabel">
+ <summary>
+ 坐标轴的值模式为字符串模式的时候
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.SerialData">
+ <summary>
+ 一条曲线的绘图数据模型
+ </summary>
+ <remarks>
+ [x, y]
+ </remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.SerialData.pts">
+ <summary>
+ 绘图的点的数据，请注意，这里面的点之间是有顺序之分的
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.SerialData.pointSize">
+ <summary>
+ 点的半径大小
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.SerialData.color">
+ <summary>
+ 线条的颜色
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.SerialData.DataAnnotations">
+ <summary>
+ 对一系列特定的数据点的注释数据
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.SerialData.x">
+ <summary>
+ get x axis data 
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.SerialData.AddMarker(System.Single,System.String,System.String,System.String,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendStyles)">
+ <summary>
+ 由于在绘图的时候，需要按照标题查找原始数据，所以请确保绘图的曲线的系列数据之中的<see cref="P:Microsoft.VisualBasic.Data.ChartPlots.SerialData.title"/>不会重复
+ </summary>
+ <param name="x!"></param>
+ <param name="title$"></param>
+ <param name="color$"></param>
+ <param name="font$"></param>
+ <param name="style"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Scatter.PlotHeatmap``1(System.Collections.Generic.IEnumerable{``0},System.String,System.String,System.String,System.String,System.Int32,System.Drawing.Size,System.String,System.String,System.String,System.String,System.String,System.Int32)">
+ <summary>
+ 
+ </summary>
+ <param name="data"></param>
+ <param name="fieldX$"></param>
+ <param name="fieldY$"></param>
+ <param name="valueField$"></param>
+ <param name="colorSchema$"></param>
+ <param name="levels%"></param>
+ <param name="size"></param>
+ <param name="padding$"></param>
+ <param name="xlabel$">
+ 如果这个参数为默认的空值，则函数会使用<paramref name="fieldX"/>的值作为标签值，
+ 但是如果为空字符串，则这个坐标轴的标签将不会被显示出来
+ </param>
+ <param name="ylabel$"></param>
+ <param name="legendTitle$"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Scatter.Jitter(Microsoft.VisualBasic.Math.LinearAlgebra.Vector,System.Double)">
+ <summary>
+ A jitter function to randomly assign the x-axis 
+ positions for each x-parameter
+ </summary>
+ <param name="a"></param>
+ <param name="width_jit"></param>
+ <returns></returns>
+ <remarks>
+ this method can be affected by the <see cref="M:Microsoft.VisualBasic.Math.RandomExtensions.SetSeed(System.Int32)"/> method.
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Scatter.Plot(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.ChartPlots.SerialData},Microsoft.VisualBasic.Imaging.IGraphics,Microsoft.VisualBasic.Imaging.Drawing2D.GraphicsRegion,System.String,System.Boolean,System.Boolean,System.Drawing.Point,System.String,System.Boolean,Microsoft.VisualBasic.MIME.Html.CSS.Stroke,Microsoft.VisualBasic.MIME.Html.CSS.Stroke,System.Boolean,System.Boolean,System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.String,System.String,System.Double[],System.Double[],Microsoft.VisualBasic.Imaging.Drawing2D.Shapes.Line[],System.Boolean,System.Double,System.Boolean,Microsoft.VisualBasic.Math.Interpolation.Splines,System.Boolean,System.String,System.String,System.String,System.String,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.XAxisLayoutStyles,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.YAxisLayoutStyles,System.String,System.String,System.String,System.Int32,System.String[],System.String,System.String,System.String,System.String,System.Boolean,System.Double,System.Int32,System.Int32)">
+ <summary>
+ Scatter plot function.(绘图函数，默认的输出大小为``4300px,2000px``)
+ </summary>
+ <param name="c"></param>
+ <param name="bg"></param>
+ <param name="fill">是否对曲线下的区域进行填充？这个参数只有在<paramref name="drawLine"/>开启的情况下才会发生作用</param>
+ <param name="drawLine">
+ 是否绘制两个点之间的连接线段，当这个参数为False的时候，将不会绘制连线，就相当于绘制散点图了，而非折线图
+ </param>
+ <param name="legendSize">默认为(120,40)</param>
+ <param name="preferPositive"><see cref="M:Microsoft.VisualBasic.Data.ChartPlots.Scatter.CreateAxisTicks(Microsoft.VisualBasic.Data.ChartPlots.SerialData[],System.Boolean,System.Double,System.Double)"/></param>
+ <param name="hullConvexList">
+ a list of <see cref="P:Microsoft.VisualBasic.Data.ChartPlots.SerialData.title"/> for draw hull convex polygon.
+ </param>
+ <param name="interplot">
+ 是否对线条或者多边形数据进行插值圆滑处理
+ </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Scatter.Plot(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.ChartPlots.SerialData},System.String,System.String,System.String,System.Boolean,System.Boolean,System.Drawing.Point,System.String,System.Boolean,Microsoft.VisualBasic.MIME.Html.CSS.Stroke,Microsoft.VisualBasic.MIME.Html.CSS.Stroke,System.Boolean,System.Boolean,System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.String,System.String,System.Double[],System.Double[],Microsoft.VisualBasic.Imaging.Drawing2D.Shapes.Line[],System.Boolean,System.Double,System.Boolean,Microsoft.VisualBasic.Math.Interpolation.Splines,System.Boolean,System.String,System.String,System.String,System.String,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.XAxisLayoutStyles,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.YAxisLayoutStyles,System.String,System.String,System.String,System.Int32,System.String[],System.String,System.String,System.String,System.String,System.Boolean,System.Int32,System.Int32,System.Int32,Microsoft.VisualBasic.Imaging.Driver.Drivers)">
+ <summary>
+ Scatter plot function.(绘图函数，默认的输出大小为``4300px,2000px``)
+ </summary>
+ <param name="c"></param>
+ <param name="size"></param>
+ <param name="bg"></param>
+ <param name="fill">是否对曲线下的区域进行填充？这个参数只有在<paramref name="drawLine"/>开启的情况下才会发生作用</param>
+ <param name="drawLine">
+ 是否绘制两个点之间的连接线段，当这个参数为False的时候，将不会绘制连线，就相当于绘制散点图了，而非折线图
+ </param>
+ <param name="legendSize">默认为(120,40)</param>
+ <param name="preferPositive"><see cref="M:Microsoft.VisualBasic.Data.ChartPlots.Scatter.CreateAxisTicks(Microsoft.VisualBasic.Data.ChartPlots.SerialData[],System.Boolean,System.Double,System.Double)"/></param>
+ <param name="hullConvexList">
+ a list of <see cref="P:Microsoft.VisualBasic.Data.ChartPlots.SerialData.title"/> for draw hull convex polygon.
+ </param>
+ <param name="interplot">
+ 是否对线条或者多边形数据进行插值圆滑处理
+ </param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Scatter.PlotFunction(Microsoft.VisualBasic.ComponentModel.DataSourceModel.NamedValue{Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange},System.String,System.Double,System.String,System.Single,System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Double,System.String)">
+ <summary>
+ 
+ </summary>
+ <param name="range">这个参数之中的Name属性是为了设置表达式计算之中的变量的目的</param>
+ <param name="expression$"></param>
+ <param name="steps#"></param>
+ <param name="lineColor$"></param>
+ <param name="lineWidth!"></param>
+ <param name="bg$"></param>
+ <param name="yline#">
+ Combine with y line for visualize the numeric solve of the equation.
+ </param>
+ <param name="ylineColor$"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Plots.Scatter2D">
+ <summary>
+ A scatter plot (also called a scatterplot, scatter graph, scatter chart, 
+ scattergram, or scatter diagram)[3] is a type of plot or mathematical 
+ diagram using Cartesian coordinates to display values for typically two 
+ variables for a set of data. If the points are coded (color/shape/size), 
+ one additional variable can be displayed. The data are displayed as a 
+ collection of points, each having the value of one variable determining 
+ the position on the horizontal axis and the value of the other variable 
+ determining the position on the vertical axis.[4]
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.ChartPlots.Plots.Scatter2D.verbose">
+ <summary>
+ show debug message if verbose
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.Plots.Scatter2D.DrawScatter(Microsoft.VisualBasic.Imaging.IGraphics,System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.ChartPlots.PointData},Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.DataScaler,System.Boolean,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.LegendStyles,System.Single,System.Func{Microsoft.VisualBasic.Data.ChartPlots.PointData,Microsoft.VisualBasic.Imaging.Brush},Microsoft.VisualBasic.MIME.Html.CSS.Stroke,System.String,System.Boolean)">
+ <summary>
+ 
+ </summary>
+ <param name="g"></param>
+ <param name="scatter"></param>
+ <param name="scaler"></param>
+ <param name="fillPie"></param>
+ <param name="shape"></param>
+ <param name="pointSize"></param>
+ <param name="getPointBrush"></param>
+ <param name="strokeCss"></param>
+ <returns>
+ this function will populate out a collection of the translated points 
+ for draw hull polygon if needed.
+ </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.VennPlot">
+ <summary>
+ + 圆的半径大小直接与集合的大小相关
+ + 圆的交集部分的面积大小与两个集合之间的重合度相关
+   1. 当没有重合度的时候，两个圆心距离为r1+r2，完全没有交集部分
+   2. 当完全重合的时候，两个圆心距离为0，最小的集合的圆将会完全容纳在大一些的集合的圆之中
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.VennPlot.Venn2(Microsoft.VisualBasic.Data.ChartPlots.VennSet,Microsoft.VisualBasic.Data.ChartPlots.VennSet,System.String,System.String,System.String,System.Double,System.String,System.String,System.Int32)">
+ <summary>
+ 绘制两个集合间的文氏图
+ </summary>
+ <param name="opacity">
+ 为了更加清楚的显示出交集区域，在这里会使用一个统一的透明度值
+ </param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.ChartPlots.VennPlot.Venn3(Microsoft.VisualBasic.Data.ChartPlots.VennSet,Microsoft.VisualBasic.Data.ChartPlots.VennSet,Microsoft.VisualBasic.Data.ChartPlots.VennSet,System.String,System.String,System.String,System.Double,System.String,System.String,System.Int32)">
+ <summary>
+ 绘制三个集合之间的文氏图
+ </summary>
+ <param name="a"></param>
+ <param name="b"></param>
+ <param name="c"></param>
+ <param name="size$"></param>
+ <param name="margin$"></param>
+ <param name="bg$"></param>
+ <param name="opacity#"></param>
+ <param name="strokeCSS$"></param>
+ <param name="regionTitleFontCSS$"></param>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.VennSet.Name">
+ <summary>
+ 对当前的这个集合的唯一标记字符串
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.VennSet.Title">
+ <summary>
+ 显示标题(可能不唯一)
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.VennSet.Size">
+ <summary>
+ 集合之中的元素数量
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.ChartPlots.VennSet.intersections">
+ <summary>
+ 当前的这个集合与其他的集合之间的交集大小
+ </summary>
+ <returns></returns>
+</member>
+</members>
+</doc>

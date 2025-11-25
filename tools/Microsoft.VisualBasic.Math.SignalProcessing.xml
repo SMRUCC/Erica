@@ -1,0 +1,1818 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Microsoft.VisualBasic.Math.SignalProcessing
+</name>
+</assembly>
+<members>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Alignment.Join(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Math.SignalProcessing.GeneralSignal},System.Double,System.Boolean)">
+ <summary>
+ 
+ </summary>
+ <param name="signals"></param>
+ <param name="steps#"></param>
+ <param name="maxgenerality">
+ max generality or max features when union these signal points
+ </param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.SignalClustering">
+ <summary>
+ Try to make time serial signal data into multiple clusters
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.ColorSpectrum.WavelengthToColor(System.Double)">
+ <summary>
+ takes wavelength in nm And returns an rgba value
+ </summary>
+ <param name="wavelength">wavelength (nm, range in [380,780])</param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.COW.CowAlignment`1">
+ <summary>
+ Do alignment of the time signal peaks between multiple sample data files, 
+ example as the signal peak data is the ms1 ion peak which is generated 
+ from the LCMS sample MS1 data
+ </summary>
+ <remarks>
+ http://prime.psc.riken.jp/compms/msdial/main.html
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.COW.CowAlignment`1.CorrelationOptimizedWarping(System.Collections.Generic.List{`0},System.Collections.Generic.List{`0},System.Int32,System.Int32,System.Int32,Microsoft.VisualBasic.Math.SignalProcessing.COW.BorderLimit)">
+ <summary>
+ This is the alignment program of correlation optimized warping. (see Nielsen et.al. J. Chromatogr. A 805, 17–35 (1998).)
+ This program returns the chromatogram information as the list of ChromatogramPeak containing scan number, retention time, m/z, intensity.
+ As long as you use 'Constant' enum as the borderlimit, you do not have to mind maxSlack (second arg).
+ Now I'm making some border limits but please do not use others except for 'Constant' yet.
+ </summary>
+ <param name="minSlack">The first argument, minSlack, should be 1 or 2 as long as ODS columns or GC are used.</param>
+ <param name="maxSlack">The second argument is please the same as the first argument.</param>
+ <param name="segmentSize">The third argument, segment size, should be set to the data point number of detected peaks (recommended).</param>
+ <param name="referenceChromatogram">The sample chromatogram will be aligned to the reference chromatogram.</param>
+ <param name="sampleChromatogram"></param>
+ <param name="borderLimit">The border limit please should be set to constant.</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.COW.CowAlignment`1.LinearAlignment(System.Double,System.Collections.Generic.List{System.Double[]},System.Collections.Generic.List{System.Double[]})">
+ <summary>
+ This is the simple alignment program (maybe can be used to GC).
+ The sample chromatogram will be aligned to reference chromatogram so that the correlation coefficient should be maximum withing moveTime param.
+ See Jonsson, P. et al. Anal. Chem. 76, 1738–45 (2004).
+ </summary>
+ <param name="moveTime"></param>
+ <param name="referenceChromatogram"></param>
+ <param name="sampleChromatogram"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.COW.CowParameter">
+ <summary>
+ This is the parameters of correlation optimized warping algorithm.
+ Please see Nielsen et.al. J. Chromatogr. A 805, 17–35 (1998).
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.COW.CowParameter.AutomaticParameterDefinder(System.Collections.Generic.List{System.Double[]})">
+ <summary>
+ The point of dynamic programming based alignment is to get the suitable reference chromatogram.
+ Selecting the reference chromatogram which should look like 'center' of chromatograms will be better to get nice alignment results.
+ So, this program is used to get the suitable reference chromatogram from imported chromatograms.
+ Please see Tsugawa et. al. Front. Genet. 5:471, 2015
+ </summary>
+ <param name="chromatograms"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.COW.TraceDirection">
+ <summary>
+ This class is not used in MS-DIAL and MS-FINDER programs.
+ This class is now being used in MRM-PROBS and MRM-DIFF programs.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.COW.FunctionElement">
+ <summary>
+ This class is used in dynamic programming algorithm of CowAlignment.cs.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.COW.FunctionMatrix">
+ <summary>
+ This class is used in dynamic programming algorithm of CowAlignment.cs
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.COW.IPeak2D.ID">
+ <summary>
+ the unique reference id of current signal peak
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.COW.IPeak2D.Dimension1">
+ <summary>
+ the signal peak dimension 1 data
+ </summary>
+ <returns></returns>
+ <remarks>
+ in LCMS signal processing, usually could be the [Mass] data.
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.COW.IPeak2D.Dimension2">
+ <summary>
+ the signal peak dimension 2 data
+ </summary>
+ <returns></returns>
+ <remarks>
+ in LCMS signal processing, usually could be the [RT] time data.
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.COW.IPeak2D.Intensity">
+ <summary>
+ the signal intensity value
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.COW.IDelegateCreatePeak2D`1">
+ <summary>
+ Function to create a signal peak object
+ </summary>
+ <param name="id"><see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.COW.IPeak2D.ID"/></param>
+ <param name="dim1"><see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.COW.IPeak2D.Dimension1"/></param>
+ <param name="dim2"><see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.COW.IPeak2D.Dimension2"/></param>
+ <param name="intensity"><see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.COW.IPeak2D.Intensity"/></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Extensions.SNRatio(System.Double,System.Double)">
+ <summary>
+ 信噪比就是信号的平均功率和噪声的平均功率之比，即：S/N。
+ 用分贝（dB）作为度量单位，即信噪比（dB）= 10 * log10(S/N) (dB)
+ 例如：当S/N=10时，信噪比为10dB；当S/N=1000时，信噪比为30dB。
+ </summary>
+ <param name="signal"></param>
+ <param name="noise"></param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Extensions.ShannonTransferRate(System.Double,System.Double,System.Double)">
+ <summary>
+ ### 香农公式
+ 
+ 香农(Shannon)用信息论的理论推导出了带宽受限且有高斯白噪声干扰的信道的极限、无差错的信息传输速率。
+ 信道的极限信息传输速率 C 可表达为
+ 
+ ``C = W log2(1+S/N) b/s``
+
+ 信道的带宽或信道中的信噪比越大，则信息的极限传输速率就越高。 只要信息传输速率低于信道的极限信息传输速率，就一定可以找到某种办法来实现无差错的传输。 实际信道上能够达到的信息传输速率要比香农的极限传输速率低不少。
+ </summary>
+ <param name="bandWidth">为信道的带宽（以 Hz 为单位）</param>
+ <param name="signal">为信道内所传信号的平均功率</param>
+ <param name="noise">为信道内部的高斯噪声功率</param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Extensions.AnalogDigitConvert(System.Collections.Generic.List{System.Single},System.Int32,System.Int32)">
+ <summary>
+ 
+ </summary>
+ <param name="analogSignal"></param>
+ <param name="samplingRate"></param>
+ <param name="bitDepth">
+ `bitDepth`在ADC（模数转换）中指的是用于量化模拟信号的位数。它决定了ADC的分辨率，即能够区分不同模拟信号强度的能力。
+ `bitDepth`的取值范围通常取决于特定的应用和所需的精度。
+ 
+ 常见的`bitDepth`取值包括：
+ 
+ - **8位（8-bit）**：提供256个不同的量化级别。这在一些低端或对精度要求不高的应用中使用，例如早期的计算机声卡。
+ - **10位（10-bit）**：提供1024个量化级别。这种精度在消费级和专业音频设备中越来越常见。
+ - **12位（12-bit）**：提供4096个量化级别。常用于医疗设备和一些高端音频设备。
+ - **16位（16-bit）**：提供65536个量化级别。这是CD音频的标准，也被广泛用于专业音频和数字音频工作站。
+ - **24位（24-bit）**：提供16777216个量化级别。这种高精度常用于专业音频录音和制作，因为它提供了更高的动态范围和更低的噪声水平。
+ - **32位（32-bit）**：提供超过43亿个量化级别。这种超高精度通常用于专业音频处理和科学测量。
+ 
+ 在音频应用中，16位和24位是最常见的`bitDepth`设置。更高的`bitDepth`可以提供更好的声音质量和更大的动态范围，
+ 但也意味着更大的数据文件和处理需求。选择合适的`bitDepth`取决于具体的应用场景和所需的音频质量。
+ </param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.FFT.TFftAlgorithm">
+ <summary>
+ Quick Fourier Transformation. 
+ Some ideas to make the Discrete Fourier Transformation a bit quicker and implemented a lean version of the DFT algorithm.
+ </summary>
+ <remarks>
+ http://www.codeproject.com/Articles/590638/Quick-Fourier-Transformation
+ 
+ 离散傅里叶变换(discrete Fourier transform) 傅里叶分析方法是信号分析的最基本方法，傅里叶变换是傅里叶分析的核心，
+ 通过它把信号从时间域变换到频率域，进而研究信号的频谱结构和变化规律。
+ 在形式上，变换两端（时域和频域上）的序列是有限长的，而实际上这两组序列都应当被认为是离散周期信号的主值序列。
+ 即使对有限长的离散信号作DFT，也应当将其看作其周期延拓的变换。在实际应用中通常采用快速傅里叶变换计算DFT。
+ 
+ 下面给出离散傅里叶变换的变换对： 对于N点序列，它的离散傅里叶变换（DFT）为 其中是自然对数的底数，是虚数单位单位。
+ 通常以符号表示这一变换，即 离散傅里叶变换的逆变换（IDFT）为： 可以记为： 实际上，DFT和IDFT变换式中和式前面的
+ 归一化系数并不重要。有时会将这两个系数都改成。
+ 
+ 
+ 
+ The FFT produce frequency samples (or spectral bin). A frequency sample is a complex number with real and imaginary part. 
+ The imaginary part give the phase and the real part give the amplitude. We have to compute the magnitude in dB from this 
+ to produce a nice spectrogram. The magnitude of a spectral bin is simply the amount of energy for the corresponding 
+ frequency.
+ (FFT产生对波形的频率的采样，一个频率采样是一个复数集合，虚数部分记录了相位，实数部分则记录了振幅。我们必须计算声贝的大小从而产生一个比较不错的分析数据)
+ </remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.SignalProcessing.FFT.TFftAlgorithm.a">
+ <summary>
+ The real value is the cosinus part
+ </summary>
+ <remarks>
+ Compute magnitudes
+ 
+ Now we can compute the magnitude from complex values. This is done with the good old Pythagorean theorem. 
+ Each complex number can be represented in a two-dimensional space. 
+ 
+ The real part is a, and the imaginary part is b.
+ 
+ Magnitudes are stored in a two dimentional array magnitudes[x,y] where x is the nth FFT performed by 
+ SampleTagger and y is the nth magnitude in range [0,fft_size/2]
+ </remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.SignalProcessing.FFT.TFftAlgorithm.b">
+ <summary>
+ The imag value is the sinus part
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.TFftAlgorithm.#ctor(System.Int32)">
+ <summary>
+ 使用本构造函数所创建的FFT对象，需要在后续的代码之中手动设置<see cref="F:Microsoft.VisualBasic.Math.SignalProcessing.FFT.TFftAlgorithm.y"></see>的值
+ </summary>
+ <param name="order"><see cref="F:Microsoft.VisualBasic.Math.SignalProcessing.FFT.TFftAlgorithm.y"></see>的值的数目</param>
+ <remarks></remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.TFftAlgorithm.FourierTransformation">
+ <summary>
+ Fourier transformation calculation of the Fourier components
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.TFftAlgorithm.InvDFT">
+ <summary>
+ invers Fourier transformation, rebuild the signal in real numbers
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.FFT.DoubleFFT_1D">
+ <summary>
+ https://github.com/cobaltblueocean/Mercury.Language.Extensions
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.DoubleFFT_1D.#ctor(System.Int32)">
+ <summary>
+ Creates new instance of DoubleFFT_1D.
+ 
+ </summary>
+ <param name="n"></param>
+            size of data
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.DoubleFFT_1D.ComplexForward(System.Double[])">
+ <summary>
+ Computes 1D forward DFT of complex data leaving the result in
+ <code>a</code>d Complex number is stored as two double values in
+ sequence: the real and imaginary part, i.ed the size of the input array
+ must be greater or equal 2*nd The physical layout of the input data has
+ to be as follows:&lt;br>
+ 
+ <pre>
+ a[2*k] = Re[k],
+ a[2*k+1] = Im[k], 0&lt;=k&lt;n
+ </pre>
+ 
+ </summary>
+ <param name="a"> data to transform</param>
+            
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.DoubleFFT_1D.ComplexForward(System.Double[],System.Int32)">
+ <summary>
+ Computes 1D forward DFT of complex data leaving the result in
+ <code>a</code>d Complex number is stored as two double values in
+ sequence: the real and imaginary part, i.ed the size of the input array
+ must be greater or equal 2*nd The physical layout of the input data has
+ to be as follows:&lt;br>
+ 
+ <pre>
+ a[offa+2*k] = Re[k],
+ a[offa+2*k+1] = Im[k], 0&lt;=k&lt;n
+ </pre>
+ 
+ </summary>
+ <param name="a"></param>
+            data to transform
+ <param name="offa"></param>
+            index of the first element in array <code>a</code>  
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.DoubleFFT_1D.ComplexInverse(System.Double[],System.Boolean)">
+ <summary>
+ Computes 1D inverse DFT of complex data leaving the result in
+ <code>a</code>d Complex number is stored as two double values in
+ sequence: the real and imaginary part, i.ed the size of the input array
+ must be greater or equal 2*nd The physical layout of the input data has
+ to be as follows:&lt;br>
+ 
+ <pre>
+ a[2*k] = Re[k],
+ a[2*k+1] = Im[k], 0&lt;=k&lt;n
+ </pre>
+ 
+ </summary>
+ <param name="a">
+            data to transform</param>
+ <param name="scale">
+            if true then scaling is performed</param> 
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.DoubleFFT_1D.ComplexInverse(System.Double[],System.Int32,System.Boolean)">
+ <summary>
+ Computes 1D inverse DFT of complex data leaving the result in
+ <code>a</code>d Complex number is stored as two double values in
+ sequence: the real and imaginary part, i.ed the size of the input array
+ must be greater or equal 2*nd The physical layout of the input data has
+ to be as follows:&lt;br>
+ 
+ <pre>
+ a[offa+2*k] = Re[k],
+ a[offa+2*k+1] = Im[k], 0&lt;=k&lt;n
+ </pre>
+ 
+ </summary>
+ <param name="a">
+            data to transform</param>
+ <param name="offa">
+            index of the first element in array <code>a</code></param>
+ <param name="isScale">
+            if true then scaling is performed    </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.DoubleFFT_1D.RealForward(System.Double[])">
+ <summary>
+ Computes 1D forward DFT of real data leaving the result in <code>a</code>
+ d The physical layout of the output data is as follows:&lt;br>
+ 
+ if n is even then
+ 
+ <pre>
+ a[2*k] = Re[k], 0&lt;=k&lt;n/2
+ a[2*k+1] = Im[k], 0&lt;k&lt;n/2
+ a[1] = Re[n/2]
+ </pre>
+ 
+ if n is odd then
+ 
+ <pre>
+ a[2*k] = Re[k], 0&lt;=k&lt;(n+1)/2
+ a[2*k+1] = Im[k], 0&lt;k&lt;(n-1)/2
+ a[1] = Im[(n-1)/2]
+ </pre>
+ 
+ This method computes only half of the elements of the real transformd The
+ other half satisfies the symmetry conditiond If you want the full real
+ forward transform, use <code>realForwardFull</code>d To get back the
+ original data, use <code>realInverse</code> on the output of this method.
+ 
+ </summary>
+ <param name="a">
+            data to transform   </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.DoubleFFT_1D.RealForward(System.Double[],System.Int32)">
+ <summary>
+ Computes 1D forward DFT of real data leaving the result in <code>a</code>
+ d The physical layout of the output data is as follows:&lt;br>
+ 
+ if n is even then
+ 
+ <pre>
+ a[offa+2*k] = Re[k], 0&lt;=k&lt;n/2
+ a[offa+2*k+1] = Im[k], 0&lt;k&lt;n/2
+ a[offa+1] = Re[n/2]
+ </pre>
+ 
+ if n is odd then
+ 
+ <pre>
+ a[offa+2*k] = Re[k], 0&lt;=k&lt;(n+1)/2
+ a[offa+2*k+1] = Im[k], 0&lt;k&lt;(n-1)/2
+ a[offa+1] = Im[(n-1)/2]
+ </pre>
+ 
+ This method computes only half of the elements of the real transformd The
+ other half satisfies the symmetry conditiond If you want the full real
+ forward transform, use <code>realForwardFull</code>d To get back the
+ original data, use <code>realInverse</code> on the output of this method.
+ 
+ </summary>
+ <param name="a">
+            data to transform</param>
+ <param name="offa">
+            index of the first element in array <code>a</code> </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.DoubleFFT_1D.RealForwardFull(System.Double[])">
+ <summary>
+ Computes 1D forward DFT of real data leaving the result in <code>a</code>
+ d This method computes the full real forward transform, i.ed you will get
+ the same result as from <code>complexForward</code> called with all
+ imaginary parts equal 0d Because the result is stored in <code>a</code>,
+ the size of the input array must greater or equal 2*n, with only the
+ first n elements filled with real datad To get back the original data,
+ use <code>complexInverse</code> on the output of this method.
+ 
+ </summary>
+ <param name="a"></param>
+            data to transform
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.DoubleFFT_1D.RealForwardFull(System.Double[],System.Int32)">
+ <summary>
+ Computes 1D forward DFT of real data leaving the result in <code>a</code>
+ d This method computes the full real forward transform, i.ed you will get
+ the same result as from <code>complexForward</code> called with all
+ imaginary part equal 0d Because the result is stored in <code>a</code>,
+ the size of the input array must greater or equal 2*n, with only the
+ first n elements filled with real datad To get back the original data,
+ use <code>complexInverse</code> on the output of this method.
+ 
+ </summary>
+ <param name="a"></param>
+            data to transform
+ <param name="offa"></param>
+            index of the first element in array <code>a</code>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.DoubleFFT_1D.RealInverse(System.Double[],System.Boolean)">
+ <summary>
+ Computes 1D inverse DFT of real data leaving the result in <code>a</code>
+ d The physical layout of the input data has to be as follows:&lt;br>
+ 
+ if n is even then
+ 
+ <pre>
+ a[2*k] = Re[k], 0&lt;=k&lt;n/2
+ a[2*k+1] = Im[k], 0&lt;k&lt;n/2
+ a[1] = Re[n/2]
+ </pre>
+ 
+ if n is odd then
+ 
+ <pre>
+ a[2*k] = Re[k], 0&lt;=k&lt;(n+1)/2
+ a[2*k+1] = Im[k], 0&lt;k&lt;(n-1)/2
+ a[1] = Im[(n-1)/2]
+ </pre>
+ 
+ This method computes only half of the elements of the real transformd The
+ other half satisfies the symmetry conditiond If you want the full real
+ inverse transform, use <code>realInverseFull</code>.
+ 
+ </summary>
+ <param name="a">data to transform</param>
+            
+ 
+ <param name="scale">if true then scaling is performed</param>   
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.DoubleFFT_1D.RealInverse(System.Double[],System.Int32,System.Boolean)">
+ <summary>
+ Computes 1D inverse DFT of real data leaving the result in <code>a</code>
+ d The physical layout of the input data has to be as follows:&lt;br>
+ 
+ if n is even then
+ 
+ <pre>
+ a[offa+2*k] = Re[k], 0&lt;=k&lt;n/2
+ a[offa+2*k+1] = Im[k], 0&lt;k&lt;n/2
+ a[offa+1] = Re[n/2]
+ </pre>
+ 
+ if n is odd then
+ 
+ <pre>
+ a[offa+2*k] = Re[k], 0&lt;=k&lt;(n+1)/2
+ a[offa+2*k+1] = Im[k], 0&lt;k&lt;(n-1)/2
+ a[offa+1] = Im[(n-1)/2]
+ </pre>
+ 
+ This method computes only half of the elements of the real transformd The
+ other half satisfies the symmetry conditiond If you want the full real
+ inverse transform, use <code>realInverseFull</code>.
+ 
+ </summary>
+ <param name="a">
+            data to transform</param>
+ <param name="offa">
+            index of the first element in array <code>a</code></param>
+ <param name="isScale">
+            if true then scaling is performed  </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.DoubleFFT_1D.RealInverseFull(System.Double[],System.Boolean)">
+ <summary>
+ Computes 1D inverse DFT of real data leaving the result in <code>a</code>
+ d This method computes the full real inverse transform, i.ed you will get
+ the same result as from <code>complexInverse</code> called with all
+ imaginary part equal 0d Because the result is stored in <code>a</code>,
+ the size of the input array must greater or equal 2*n, with only the
+ first n elements filled with real data.
+ 
+ </summary>
+ <param name="a"></param>
+            data to transform
+ <param name="isScale">
+            if true then scaling is performed</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.DoubleFFT_1D.RealInverseFull(System.Double[],System.Int32,System.Boolean)">
+ <summary>
+ Computes 1D inverse DFT of real data leaving the result in <code>a</code>
+ d This method computes the full real inverse transform, i.ed you will get
+ the same result as from <code>complexInverse</code> called with all
+ imaginary part equal 0d Because the result is stored in <code>a</code>,
+ the size of the input array must greater or equal 2*n, with only the
+ first n elements filled with real data.
+ 
+ </summary>
+ <param name="a"> data to transform</param>
+           
+ <param name="offa">index of the first element in array <code>a</code></param>
+            
+ <param name="isScale">if true then scaling is performed</param>
+            
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.FFT.FourierTransform">
+ <summary>
+ Fourier transformation.
+ </summary>
+ 
+ <remarks>The class implements one dimensional and two dimensional
+ Discrete and Fast Fourier Transformation.</remarks>
+ 
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.FFT.FourierTransform.Direction">
+ <summary>
+ Fourier transformation direction.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.SignalProcessing.FFT.FourierTransform.Direction.Forward">
+ <summary>
+ Forward direction of Fourier transformation.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.SignalProcessing.FFT.FourierTransform.Direction.Backward">
+ <summary>
+ Backward direction of Fourier transformation.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.FourierTransform.DFT(System.Numerics.Complex[],Microsoft.VisualBasic.Math.SignalProcessing.FFT.FourierTransform.Direction)">
+ <summary>
+ One dimensional Discrete Fourier Transform.
+ </summary>
+ 
+ <param name="data">Data to transform.</param>
+ <param name="direction">Transformation direction.</param>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.FourierTransform.DFT2(System.Numerics.Complex[0:,0:],Microsoft.VisualBasic.Math.SignalProcessing.FFT.FourierTransform.Direction)">
+ <summary>
+ Two dimensional Discrete Fourier Transform.
+ </summary>
+ 
+ <param name="data">Data to transform.</param>
+ <param name="direction">Transformation direction.</param>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.FourierTransform.FFT(System.Numerics.Complex[],Microsoft.VisualBasic.Math.SignalProcessing.FFT.FourierTransform.Direction)">
+ <summary>
+ One dimensional Fast Fourier Transform.
+ </summary>
+ 
+ <param name="data">Data to transform.</param>
+ <param name="direction">Transformation direction.</param>
+ 
+ <remarks><para><note>The method accepts <paramref name="data"/> array of 2<sup>n</sup> size
+ only, where <b>n</b> may vary in the [1, 14] range.</note></para></remarks>
+ 
+ <exception cref="T:System.ArgumentException">Incorrect data length.</exception>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.FourierTransform.FFT2(System.Numerics.Complex[0:,0:],Microsoft.VisualBasic.Math.SignalProcessing.FFT.FourierTransform.Direction)">
+ <summary>
+ Two dimensional Fast Fourier Transform.
+ </summary>
+ 
+ <param name="data">Data to transform.</param>
+ <param name="direction">Transformation direction.</param>
+ 
+ <remarks><para><note>The method accepts <paramref name="data"/> array of 2<sup>n</sup> size
+ only in each dimension, where <b>n</b> may vary in the [1, 14] range. For example, 16x16 array
+ is valid, but 15x15 is not.</note></para></remarks>
+ 
+ <exception cref="T:System.ArgumentException">Incorrect data length.</exception>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.FourierTransform.GetReversedBits(System.Int32)">
+ <summary>
+ Get array, indicating which data members should be swapped before FFT
+ </summary>
+ <param name="numberOfBits"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.FourierTransform.GetComplexRotation(System.Int32,Microsoft.VisualBasic.Math.SignalProcessing.FFT.FourierTransform.Direction)">
+ <summary>
+ Get rotation of complex number
+ </summary>
+ <param name="numberOfBits"></param>
+ <param name="direction__1"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.FourierTransform.ReorderData(System.Numerics.Complex[])">
+ <summary>
+ Reorder data for FFT using
+ </summary>
+ <param name="data"></param>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.FFT.TransformCore">
+ <summary>
+ Core utility class to provide general utility methods
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Plans">
+ <summary>
+ Plans Description
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Filters.ContinuousPadder">
+ <summary>
+ Pads data to left and/or right, starting from the first (last) non-zero cell
+ and extending it to the beginning (end) of data. More specifically:
+ <para>
+ <ul>
+ <li>
+ Let <tt>l</tt> be the index of the first non-zero element in data (for left
+ padding),</li>
+ <li>let <tt>r</tt> be the index of the last non-zero element in data (for
+ right padding)</li>
+ </ul>
+ then for every element <tt>e</tt> which index is <tt>i</tt> such that:
+ <ul>
+ <li>
+ <tt>0</tt>, <tt>e</tt> is replaced with element <tt>data[l]</tt>
+ (left padding)</li>
+ <li>
+ <tt>r <i/> <data.length/></tt>, <tt>e</tt> is replaced with element
+ <tt>data[r]</tt> (right padding)</li>
+ </ul>
+ </para>
+ Example:
+ <para>
+ Given data: <tt>[0,0,0,1,2,1,3,1,2,4,0]</tt> result of applying
+ ContinuousPadder is: <tt>[1,1,1,1,2,1,3,1,2,4,0]</tt> in case of
+ <seealso cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Filters.ContinuousPadder.PaddingLeft"/>; <tt>[0,0,0,1,2,1,3,1,2,4,4]</tt> in
+ case of <seealso cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Filters.ContinuousPadder.PaddingRight"/>;
+ </para>
+ 
+ @author Marcin Rzeźnicki
+ 
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Filters.ContinuousPadder.PaddingLeft">
+ 
+ <returns> {@code paddingLeft} </returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Filters.ContinuousPadder.PaddingRight">
+ 
+ <returns> {@code paddingRight} </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.ContinuousPadder.#ctor">
+ <summary>
+ Default construcot. Both left and right padding are turned on
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.ContinuousPadder.#ctor(System.Boolean,System.Boolean)">
+ 
+ <param name="paddingLeft">
+            enables or disables left padding </param>
+ <param name="paddingRight">
+            enables or disables right padding </param>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Filters.DataFilter">
+ <summary>
+ This interface represents types which are able to filter data, for example:
+ eliminate redundant points.
+ 
+ @author Marcin Rzeźnicki </summary>
+ 
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Filters.Linearizer">
+ <summary>
+ Linearizes data by seeking points with relative difference greater than
+ <seealso cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Filters.Linearizer.TruncateRatio"/> and replacing them with points
+ lying on line between the first and the last of such points. Strictly:
+ <para>
+ let <tt>delta(i)</tt> be function which assigns to an element at index
+ <tt>i (data[i])</tt>, for <tt>0
+ data.length</tt>, value of
+ <tt>|(data[i] - data[i+1])/data[i]|</tt>. Then for each range <tt>(j,k)</tt>
+ of data, such that
+ <tt>delta(j) > <seealso cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Filters.Linearizer.TruncateRatio"/></tt> and
+ <tt>delta(k)
+  <seealso cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Filters.Linearizer.TruncateRatio"/></tt>, <tt>data[x] = ((data[k] -
+ data[j])/(k - j)) * (x - k) + data[j])</tt> for <tt>j </tt>.
+ </para>
+ 
+ @author Marcin Rzeźnicki
+ 
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.Linearizer.#ctor">
+ <summary>
+ Default constructor. <seealso cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Filters.Linearizer.TruncateRatio"/> is 0.5
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.Linearizer.#ctor(System.Single)">
+ 
+ <param name="truncateRatio">
+            maximum relative difference of subsequent data points above
+            which linearization begins </param>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Filters.Linearizer.TruncateRatio">
+ 
+ <returns> {@code truncateRatio} </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Filters.MeanValuePadder">
+ <summary>
+ Pads data to left and/or right.:
+ 
+ <para>
+ <ul>
+ <li>
+ Let <tt>l</tt> be the index of the first non-zero element in data (for left
+ padding),</li>
+ <li>let <tt>r</tt> be the index of the last non-zero element in data (for
+ right padding)</li>
+ </ul>
+ then for every element <tt>e</tt> which index is <tt>i</tt> such that:
+ <ul>
+ <li>
+ <tt>0 </tt>, <tt>e</tt> is replaced with arithmetic mean of
+ <tt>data[l]..data[l + window_length/2 - 1]</tt> (left padding)</li>
+ <li>
+ <tt>r <i/> <data.length/></tt>, <tt>e</tt> is replaced with arithmetic mean of
+ <tt>data[r - window_length/2 + 1]..data[r]</tt> (right padding)</li>
+ </ul>
+ </para>
+ Example:
+ <para>
+ Given data: <tt>[0,0,0,1,2,1,3,1,2,4,0]</tt> result of applying
+ MeanValuePadder with <seealso cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Filters.MeanValuePadder.WindowLength"/> = 4 is:
+ <tt>[1.5,1.5,1.5,1,2,1,3,1,2,4,0]</tt> in case of {@link #isPaddingLeft()
+ left padding}; <tt>[0,0,0,1,2,1,3,1,2,4,3]</tt> in case of
+ <seealso cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Filters.MeanValuePadder.PaddingRight"/>;
+ </para>
+ 
+ @author Marcin Rzeźnicki
+ 
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.MeanValuePadder.#ctor(System.Int32)">
+ 
+ <param name="windowLength">
+            window length of filter which will be used to smooth data.
+            Padding will use half of {@code windowLength} length. In this
+            way padding will be suited to smoothing operation </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.MeanValuePadder.#ctor(System.Int32,System.Boolean,System.Boolean)">
+ 
+ <param name="windowLength">
+            window length of filter which will be used to smooth data.
+            Padding will use half of {@code windowLength} length. In this
+            way padding will be suited to smoothing operation </param>
+ <param name="paddingLeft">
+            enables or disables left padding </param>
+ <param name="paddingRight">
+            enables or disables left padding </param>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Filters.MeanValuePadder.WindowLength">
+ 
+ <returns> {@code windowLength} </returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Filters.MeanValuePadder.PaddingLeft">
+ 
+ <returns> {@code paddingLeft} </returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Filters.MeanValuePadder.PaddingRight">
+ 
+ <returns> {@code paddingRight} </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Filters.Preprocessor">
+ <summary>
+ This interface represents types which are able to perform data processing in
+ place. Useful examples include: eliminating zeros, padding etc.
+ 
+ @author Marcin Rzeźnicki </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.Preprocessor.apply(System.Double[])">
+ <summary>
+ Data processing method. Called on Preprocessor instance when its
+ processing is needed
+ </summary>
+ <param name="data"> </param>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Filters.RamerDouglasPeuckerFilter">
+ <summary>
+ Filters data using Ramer-Douglas-Peucker algorithm with specified tolerance
+ <a href="http://en.wikipedia.org/wiki/Ramer-Douglas-Peucker_algorithm">Ramer-Douglas-Peucker algorithm</a>
+ 
+ @author Rzeźnik </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.RamerDouglasPeuckerFilter.#ctor(System.Double)">
+ 
+ <param name="epsilon">
+            epsilon in Ramer-Douglas-Peucker algorithm (maximum distance
+            of a point in data between original curve and simplified
+            curve) </param>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Filters.RamerDouglasPeuckerFilter.Epsilon">
+ 
+ <returns> {@code epsilon} </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter">
+ <summary>
+ Savitzky-Golay filter implementation. For more information see
+ http://www.nrbook.com/a/bookcpdf/c14-8.pdf. This implementation,
+ however, does not use FFT
+ 
+ @author Marcin Rzeźnicki
+ 
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.computeSGCoefficients(System.Int32,System.Int32,System.Int32)">
+ <summary>
+ Computes Savitzky-Golay coefficients for given parameters
+ </summary>
+ <param name="nl">
+            numer of past data points filter will use </param>
+ <param name="nr">
+            number of future data points filter will use </param>
+ <param name="degree">
+            order of smoothin polynomial </param>
+ <returns> Savitzky-Golay coefficients </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.#ctor(System.Int32,System.Int32)">
+ <summary>
+ Constructs Savitzky-Golay filter which uses specified numebr of
+ surrounding data points
+ </summary>
+ <param name="nl">
+            numer of past data points filter will use </param>
+ <param name="nr">
+            numer of future data points filter will use </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.appendDataFilter(Microsoft.VisualBasic.Math.SignalProcessing.Filters.DataFilter)">
+ <summary>
+ Appends data filter
+ </summary>
+ <param name="dataFilter">
+            dataFilter </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.appendPreprocessor(Microsoft.VisualBasic.Math.SignalProcessing.Filters.Preprocessor)">
+ <summary>
+ Appends data preprocessor
+ </summary>
+ <param name="p">
+            preprocessor </param>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.Nl">
+ 
+ <returns> number of past data points that this filter uses </returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.Nr">
+ 
+ <returns> number of future data points that this filter uses </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.insertDataFilter(Microsoft.VisualBasic.Math.SignalProcessing.Filters.DataFilter,System.Int32)">
+ <summary>
+ Inserts data filter
+ </summary>
+ <param name="dataFilter">
+            data filter </param>
+ <param name="index">
+            where it should be placed in data filters queue </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.insertPreprocessor(Microsoft.VisualBasic.Math.SignalProcessing.Filters.Preprocessor,System.Int32)">
+ <summary>
+ Inserts preprocessor
+ </summary>
+ <param name="p">
+            preprocessor </param>
+ <param name="index">
+            where it should be placed in preprocessors queue </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.removeDataFilter(Microsoft.VisualBasic.Math.SignalProcessing.Filters.DataFilter)">
+ <summary>
+ Removes data filter
+ </summary>
+ <param name="dataFilter">
+            data filter to be removed </param>
+ <returns> {@code true} if data filter existed and was removed, {@code
+         false} otherwise </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.removeDataFilter(System.Int32)">
+ <summary>
+ Removes data filter
+ </summary>
+ <param name="index">
+            which data filter to remove </param>
+ <returns> removed data filter </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.removePreprocessor(System.Int32)">
+ <summary>
+ Removes preprocessor
+ </summary>
+ <param name="index">
+            which preprocessor to remove </param>
+ <returns> removed preprocessor </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.removePreprocessor(Microsoft.VisualBasic.Math.SignalProcessing.Filters.Preprocessor)">
+ <summary>
+ Removes preprocessor
+ </summary>
+ <param name="p">
+            preprocessor to be removed </param>
+ <returns> {@code true} if preprocessor existed and was removed, {@code
+         false} otherwise </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.smooth(System.Double[],System.Double[])">
+ <summary>
+ Smooths data by using Savitzky-Golay filter. This method will use 0 for
+ any element beyond {@code data} which will be needed for computation (you
+ may want to use some <seealso cref="T:Microsoft.VisualBasic.Math.SignalProcessing.Filters.Preprocessor"/>)
+ </summary>
+ <param name="data">
+            data for filter </param>
+ <param name="coeffs">
+            filter coefficients </param>
+ <returns> filtered data </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.smooth(System.Double[],System.Double[],System.Double[],System.Double[])">
+ <summary>
+ Smooths data by using Savitzky-Golay filter. Smoothing uses {@code
+ leftPad} and/or {@code rightPad} if you want to augment data on
+ boundaries to achieve smoother results for your purpose. If you do not
+ need this feature you may pass empty arrays (filter will use 0s in this
+ place, so you may want to use appropriate preprocessor)
+ </summary>
+ <param name="data">
+            data for filter </param>
+ <param name="leftPad">
+            left padding </param>
+ <param name="rightPad">
+            right padding </param>
+ <param name="coeffs">
+            filter coefficients </param>
+ <returns> filtered data </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.smooth(System.Double[],System.Double[],System.Double[],System.Int32,System.Double[][])">
+ <summary>
+ Smooths data by using Savitzky-Golay filter. Smoothing uses {@code
+ leftPad} and/or {@code rightPad} if you want to augment data on
+ boundaries to achieve smoother results for your purpose. If you do not
+ need this feature you may pass empty arrays (filter will use 0s in this
+ place, so you may want to use appropriate preprocessor). If you want to
+ use different (probably non-symmetrical) filter near both ends of
+ (padded) data, you will be using {@code bias} and {@code coeffs}. {@code
+ bias} essentially means
+ "how many points of pad should be left out when smoothing". Filters
+ taking this condition into consideration are passed in {@code coeffs}.
+ <tt>coeffs[0]</tt> is used for unbiased data (that is, for
+ <tt>data[bias]..data[data.length-bias-1]</tt>). Its length has to be
+ <tt>nr + nl + 1</tt>. Filters from range
+ <tt>coeffs[coeffs.length - 1]</tt> to
+ <tt>coeffs[coeffs.length - bias]</tt> are used for smoothing first
+ {@code bias} points (that is, from <tt>data[0]</tt> to
+ <tt>data[bias]</tt>) correspondingly. Filters from range
+ <tt>coeffs[1]</tt> to <tt>coeffs[bias]</tt> are used for smoothing last
+ {@code bias} points (that is, for
+ <tt>data[data.length-bias]..data[data.length-1]</tt>). For example, if
+ you use 5 past points and 5 future points for smoothing, but have only 3
+ meaningful padding points - you would use {@code bias} equal to 2 and
+ would pass in {@code coeffs} param filters taking 5-5 points (for regular
+ smoothing), 5-4, 5-3 (for rightmost range of data) and 3-5, 4-5 (for
+ leftmost range). If you do not wish to use pads completely for
+ symmetrical filter then you should pass <tt>bias = nl = nr</tt>
+ </summary>
+ <param name="data">
+            data for filter </param>
+ <param name="leftPad">
+            left padding </param>
+ <param name="rightPad">
+            right padding </param>
+ <param name="bias">
+            how many points of pad should be left out when smoothing </param>
+ <param name="coeffs">
+            array of filter coefficients </param>
+ <returns> filtered data </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.smooth(System.Double[],System.Int32,System.Int32,System.Double[])">
+ <summary>
+ Runs filter on data from {@code from} (including) to {@code to}
+ (excluding). Data beyond range spanned by {@code from} and {@code to}
+ will be used for padding
+ </summary>
+ <param name="data">
+            data for filter </param>
+ <param name="from">
+            inedx of the first element of data </param>
+ <param name="to">
+            index of the first element omitted </param>
+ <param name="coeffs">
+            filter coefficients </param>
+ <returns> filtered data </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.smooth(System.Double[],System.Int32,System.Int32,System.Int32,System.Double[][])">
+ <summary>
+ Runs filter on data from {@code from} (including) to {@code to}
+ (excluding). Data beyond range spanned by {@code from} and {@code to}
+ will be used for padding. See
+ <seealso cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.smooth(System.Double[],System.Double[])"/> for usage
+ of {@code bias}
+ </summary>
+ <param name="data">
+            data for filter </param>
+ <param name="from">
+            inedx of the first element of data </param>
+ <param name="to">
+            index of the first element omitted </param>
+ <param name="bias">
+            how many points of pad should be left out when smoothing </param>
+ <param name="coeffs">
+            filter coefficients </param>
+ <returns> filtered data </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.smooth(System.Single[],System.Double[])">
+ <summary>
+ See <seealso cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.smooth(System.Double[],System.Double[])"/>. This method converts {@code
+ data} to double for computation and then converts it back to float
+ </summary>
+ <param name="data">
+            data for filter </param>
+ <param name="coeffs">
+            filter coefficients </param>
+ <returns> filtered data </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.smooth(System.Single[],System.Single[],System.Single[],System.Double[])">
+ <summary>
+ See <seealso cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.smooth(System.Double[],System.Double[])"/>. This method
+ converts {@code data} {@code leftPad} and {@code rightPad} to double for
+ computation and then converts back to float
+ </summary>
+ <param name="data">
+            data for filter </param>
+ <param name="leftPad">
+            left padding </param>
+ <param name="rightPad">
+            right padding </param>
+ <param name="coeffs">
+            filter coefficients </param>
+ <returns> filtered data </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.smooth(System.Single[],System.Single[],System.Single[],System.Int32,System.Double[][])">
+ <summary>
+ See <seealso cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.smooth(System.Double[],System.Double[])"/>. This
+ method converts {@code data} {@code leftPad} and {@code rightPad} to
+ double for computation and then converts back to float
+ </summary>
+ <param name="data">
+            data for filter </param>
+ <param name="leftPad">
+            left padding </param>
+ <param name="rightPad">
+            right padding </param>
+ <param name="bias">
+            how many points of pad should be left out when smoothing </param>
+ <param name="coeffs">
+            array of filter coefficients </param>
+ <returns> filtered data </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.smooth(System.Single[],System.Int32,System.Int32,System.Double[])">
+ <summary>
+ See <seealso cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.smooth(System.Double[],System.Double[])"/>. This method converts
+ {@code data} to double for computation and then converts it back to float
+ </summary>
+ <param name="data">
+            data for filter </param>
+ <param name="from">
+            inedx of the first element of data </param>
+ <param name="to">
+            index of the first element omitted </param>
+ <param name="coeffs">
+            filter coefficients </param>
+ <returns> filtered data </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.smooth(System.Single[],System.Int32,System.Int32,System.Int32,System.Double[][])">
+ <summary>
+ See <seealso cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.SGFilter.smooth(System.Double[],System.Double[])"/>. This method
+ converts {@code data} to double for computation and then converts it back
+ to float
+ </summary>
+ <param name="data">
+            data for filter </param>
+ <param name="from">
+            inedx of the first element of data </param>
+ <param name="to">
+            index of the first element omitted </param>
+ <param name="bias">
+            how many points of pad should be left out when smoothing </param>
+ <param name="coeffs">
+            filter coefficients </param>
+ <returns> filtered data </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Filters.TrendRemover">
+ <summary>
+ De-trends data by setting straight line between the first and the last point
+ and subtracting it from data. Having applied filters to data you should
+ reverse detrending by using <seealso cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.TrendRemover.retrend(System.Double[],System.Double[])"/>
+ 
+ @author Marcin Rzeźnicki
+ 
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.TrendRemover.retrend(System.Double[],System.Double[])">
+ <summary>
+ Reverses the effect of <seealso cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.TrendRemover.apply(System.Double[])"/> by modifying {@code
+ newData}
+ </summary>
+ <param name="newData">
+            processed data </param>
+ <param name="data">
+            original data </param>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Filters.ZeroEliminator">
+ <summary>
+ Eliminates zeros from data - starting from the first non-zero element, ending
+ at the last non-zero element. More specifically:
+ 
+ Example:
+ <para>
+ Given data: <tt>[0,0,0,1,2,0,3,0,0,4,0]</tt> result of applying
+ ZeroEliminator is: <tt>[0,0,0,1,2,2,3,3,3,4,0]</tt> if
+ isAlignToLeft is true;
+ <tt>[0,0,0,1,2,3,3,4,4,4,0]</tt> - otherwise
+ </para>
+ 
+ @author Marcin Rzeźnicki
+ 
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.ZeroEliminator.#ctor">
+ <summary>
+ Default constructor: {@code alignToLeft} is {@code false}
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.ZeroEliminator.#ctor(System.Boolean)">
+ 
+ <param name="alignToLeft">
+            if {@code true} zeros will be replaced with non-zero element
+            to the left, if {@code false} - to the right </param>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Filters.ZeroEliminator.AlignToLeft">
+ 
+ <returns> {@code alignToLeft} </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.GeneralSignal">
+ <summary>
+ 
+ </summary>
+ <remarks>
+ a tuple of the signal vector data <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.GeneralSignal.Measures"/> and <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.GeneralSignal.Strength"/>
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.GeneralSignal.Measures">
+ <summary>
+ usually is the time in unit second.(x axis)
+ </summary>
+ <returns></returns>
+ <remarks>
+ x axis
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.GeneralSignal.Strength">
+ <summary>
+ the signal strength.(y axis)
+ </summary>
+ <returns></returns>
+ <remarks>
+ y axis
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.GeneralSignal.reference">
+ <summary>
+ the unique reference id, or the variable name
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.GeneralSignal.GetByRange(System.Double,System.Double)">
+ <summary>
+ take signal subset by a given range of <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.GeneralSignal.Measures"/>
+ </summary>
+ <param name="min">min of take by <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.GeneralSignal.Measures"/></param>
+ <param name="max#">max of take by <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.GeneralSignal.Measures"/></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.KalmanFilter.Algorithm.kalman1_init(Microsoft.VisualBasic.Math.SignalProcessing.KalmanFilter.kalman1_state,System.Single,System.Single)">
+ <summary>
+ Initializes the 1-dimensional Kalman filter state structure
+ </summary>
+ <param name="state">The Kalman filter state structure to initialize</param>
+ <param name="init_x">Initial state value (x0)</param>
+ <param name="init_p">Initial error covariance estimate (p0)</param>
+ <remarks>
+ Default configuration:
+ <list type="bullet">
+ <item><description>State transition matrix (A) = 1.0</description></item>
+ <item><description>Observation matrix (H) = 1.0</description></item>
+ <item><description>Process noise covariance (q) = 200.0</description></item>
+ <item><description>Measurement noise covariance (r) = 500.0</description></item>
+ </list>
+ Note: These parameters should be tuned for specific applications
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.KalmanFilter.Algorithm.kalman1_filter(Microsoft.VisualBasic.Math.SignalProcessing.KalmanFilter.kalman1_state,System.Single)">
+ <summary>
+ Performs 1-dimensional Kalman filtering
+ </summary>
+ <param name="state">Kalman filter state structure</param>
+ <param name="z_measure">Measurement value</param>
+ <returns>Filtered state estimate</returns>
+ <remarks>
+ Implements standard Kalman filter equations:
+ 1. Prediction step (state and covariance)
+ 2. Measurement update (Kalman gain, state correction, covariance update)
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.KalmanFilter.Algorithm.kalman2_init(Microsoft.VisualBasic.Math.SignalProcessing.KalmanFilter.kalman2_state,System.Single[],System.Single[][])">
+ <summary>
+ Initializes the 2-dimensional Kalman filter state structure
+ </summary>
+ <param name="state">The Kalman filter state structure to initialize</param>
+ <param name="init_x">Initial state vector [x0, x1]</param>
+ <param name="init_p">Initial error covariance matrix (2x2)</param>
+ <remarks>
+ Default configuration:
+ <list type="bullet">
+ <item><description>State transition matrix (A) = [[1, 0.1], [0, 1]]</description></item>
+ <item><description>Observation matrix (H) = [1, 0]</description></item>
+ <item><description>Process noise covariance (q) = [1e-6, 1e-6]</description></item>
+ <item><description>Measurement noise covariance (r) = 1e-6</description></item>
+ </list>
+ Note: These parameters should be tuned for specific applications
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.KalmanFilter.Algorithm.kalman2_filter(Microsoft.VisualBasic.Math.SignalProcessing.KalmanFilter.kalman2_state,System.Single)">
+ <summary>
+ Performs 2-dimensional Kalman filtering
+ </summary>
+ <param name="state">Kalman filter state structure</param>
+ <param name="z_measure">Measurement value</param>
+ <returns>Primary state estimate (x[0])</returns>
+ <remarks>
+ Updates both state vector elements (typically [position, velocity] or [angle, angular velocity])
+ and covariance matrix. Implements:
+ <list type="number">
+ <item><description>State prediction</description></item>
+ <item><description>Covariance prediction</description></item>
+ <item><description>Kalman gain calculation</description></item>
+ <item><description>State correction</description></item>
+ <item><description>Covariance update</description></item>
+ </list>
+ Returns the first element of the updated state vector (x[0])
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.KalmanFilter.kalman1_state">
+ <summary>
+ Represents the state of a 1-dimensional Kalman filter
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.KalmanFilter.kalman2_state">
+ <summary>
+ Represents the state of a 2-dimensional Kalman filter
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.HungarianAlgorithm.HungarianAlgorithm">
+ <summary>
+ Hungarian Algorithm.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.HungarianAlgorithm.HungarianAlgorithm.FindAssignments(Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.NumericMatrix)">
+ <summary>
+ Finds the optimal assignments for a given matrix of agents and 
+ costed tasks such that the total cost is minimized.
+ </summary>
+ <param name="costs">A cost matrix; the element at row <em>i</em> 
+ and column <em>j</em> represents the cost of agent <em>i</em> 
+ performing task <em>j</em>.</param>
+ <returns>A matrix of assignments; the value of element <em>i</em> 
+ is the column of the task assigned to agent <em>i</em>.</returns>
+ <exception cref="T:System.ArgumentNullException"><paramref name="costs"/> is null.</exception>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.HungarianAlgorithm.HungarianAlgorithm.FindAssignments(System.Double[][])">
+ <summary>
+ Finds the optimal assignments for a given matrix of agents and 
+ costed tasks such that the total cost is minimized.
+ </summary>
+ <param name="costs">A cost matrix; the element at row <em>i</em> 
+ and column <em>j</em> represents the cost of agent <em>i</em> 
+ performing task <em>j</em>.</param>
+ <returns>A matrix of assignments; the value of element <em>i</em> 
+ is the column of the task assigned to agent <em>i</em>.</returns>
+ <exception cref="T:System.ArgumentNullException"><paramref name="costs"/> is null.</exception>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.NDtw.Dtw">
+ <summary>
+ Dynamic Time Warping (DTW) algorithm implementation
+ 
+ In time series analysis, dynamic time warping (DTW) is an algorithm for
+ measuring similarity between two temporal sequences, which may vary in 
+ speed. For instance, similarities in walking could be detected using DTW, 
+ even if one person was walking faster than the other, or if there were 
+ accelerations and decelerations during the course of an observation. DTW 
+ has been applied to temporal sequences of video, audio, and graphics data 
+ — indeed, any data that can be turned into a one-dimensional sequence can 
+ be analyzed with DTW. A well-known application has been automatic speech 
+ recognition, to cope with different speaking speeds. Other applications 
+ include speaker recognition and online signature recognition. It can also
+ be used in partial shape matching applications.
+
+ In general, DTW Is a method that calculates an optimal match between two 
+ given sequences (e.g. time series) with certain restriction And rules:
+
+ + Every index from the first sequence must be matched With one Or more 
+   indices from the other sequence, And vice versa
+ + The first index from the first sequence must be matched With the first 
+   index from the other sequence (but it does Not have To be its only 
+   match)
+ + The last index from the first sequence must be matched With the last index 
+   from the other sequence (but it does Not have To be its only match)
+ + The mapping Of the indices from the first sequence To indices from the 
+   other sequence must be monotonically increasing, And vice versa, i.e. If 
+   j > i are indices from the first sequence, then there must Not be two indices 
+   l > k in the other sequence, such that index i Is matched with index l And 
+   index j Is matched with index k, And vice versa.
+ </summary>
+ <remarks>
+ https://github.com/doblak/ndtw
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.NDtw.Dtw.#ctor(System.Double[],System.Double[],Microsoft.VisualBasic.Math.SignalProcessing.NDtw.DistanceMeasure,System.Boolean,System.Boolean,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
+ <summary>
+ Initialize class that performs single variable DTW calculation for given series and settings.
+ </summary>
+ <param name="x">Series A, array of values.</param>
+ <param name="y">Series B, array of values.</param>
+ <param name="distanceMeasure">Distance measure used (how distance for value pair 
+ (p,q) of signal elements is calculated from multiple variables).</param>
+ <param name="boundaryConstraintStart">Apply boundary constraint at (1, 1).</param>
+ <param name="boundaryConstraintEnd">Apply boundary constraint at (m, n).</param>
+ <param name="slopeStepSizeDiagonal">Diagonal steps in local window for calculation. 
+ Results in Ikatura paralelogram shaped dtw-candidate space. Use in combination with 
+ slopeStepSizeAside parameter. Leave null for no constraint.</param>
+ <param name="slopeStepSizeAside">Side steps in local window for calculation. Results 
+ in Ikatura paralelogram shaped dtw-candidate space. Use in combination with
+ slopeStepSizeDiagonal parameter. Leave null for no constraint.</param>
+ <param name="sakoeChibaMaxShift">Sakoe-Chiba max shift constraint (side steps). 
+ Leave null for no constraint.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.NDtw.Dtw.#ctor(Microsoft.VisualBasic.Math.SignalProcessing.GeneralSignal[],Microsoft.VisualBasic.Math.SignalProcessing.NDtw.DistanceMeasure,System.Boolean,System.Boolean,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},Microsoft.VisualBasic.Math.SignalProcessing.NDtw.Preprocessing.IPreprocessor)">
+ <summary>
+ Initialize class that performs multivariate DTW calculation for given series and settings.
+ </summary>
+ <param name="seriesVariables">Array of series value pairs for different variables with additional 
+ options for data preprocessing and weights.</param>
+ <param name="distanceMeasure">Distance measure used (how distance for value pair (p,q) of signal 
+ elements is calculated from multiple variables).</param>
+ <param name="boundaryConstraintStart">Apply boundary constraint at (1, 1).</param>
+ <param name="boundaryConstraintEnd">Apply boundary constraint at (m, n).</param>
+ <param name="slopeStepSizeDiagonal">Diagonal steps in local window for calculation. Results in 
+ Ikatura paralelogram shaped dtw-candidate space. Use in combination with slopeStepSizeAside 
+ parameter. Leave null for no constraint.</param>
+ <param name="slopeStepSizeAside">Side steps in local window for calculation. Results in Ikatura 
+ paralelogram shaped dtw-candidate space. Use in combination with slopeStepSizeDiagonal parameter.
+ Leave null for no constraint.</param>
+ <param name="sakoeChibaMaxShift">
+ Sakoe-Chiba max shift constraint (side steps). Leave null for no constraint.
+ </param>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.NDtw.Preprocessing.CentralizationPreprocessor">
+ <summary>
+ f(x) = x - mean
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.NDtw.Preprocessing.IPreprocessor">
+ <summary>
+ signal processor for scale the signal intensity value
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.NDtw.Preprocessing.IPreprocessor.Function(System.Double[])">
+ <summary>
+ apply of the data processor function
+ </summary>
+ <param name="data"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.NDtw.Preprocessing.NonePreprocessor">
+ <summary>
+ signal data processor that do nothing
+ 
+ f(x) = x
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.NDtw.Preprocessing.NonePreprocessor.Preprocess(System.Double[])">
+ <summary>
+ do nothing at here
+ </summary>
+ <param name="data"></param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.NDtw.Preprocessing.NormalizationPreprocessor.#ctor">
+ <summary>
+ Initialize to use normalization to range [0, 1]
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.NDtw.Preprocessing.NormalizationPreprocessor.#ctor(System.Double,System.Double)">
+ <summary>
+ Initialize to use normalization to range [minBoundary, maxBoundary]
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.NDtw.Preprocessing.StandardizationPreprocessor">
+ <summary>
+ f(x) = (x - mean) / std dev
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.PeakFinding.ElevationAlgorithm">
+ <summary>
+ 通过累加线的高度落差进行峰识别
+ 
+ 1. 首先计算出信号的累加线
+ 2. 然后删除所有的坡度小于给定角度值的平行段
+ 3. 剩下的片段就是信号峰对应的时间s区间
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.PeakFinding.ElevationAlgorithm.#ctor(System.Double,System.Double)">
+ <summary>
+ 
+ </summary>
+ <param name="angle">这个是一个角度值，取值区间为[0,90]</param>
+ <param name="baselineQuantile"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.PeakFinding.Implement.AccumulateLine(Microsoft.VisualBasic.ComponentModel.TagData.ITimeSignal[],System.Double)">
+ <summary>
+ 通过这个函数得到的累加线是一个单调递增曲线
+ </summary>
+ <param name="signals">应该是按照时间升序排序过了的</param>
+ <param name="baseline"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.PeakFinding.Implement.SignalBaseline``1(System.Collections.Generic.IEnumerable{``0},System.Double)">
+ <summary>
+ Detection of the signal base line based on the quantile method.
+ </summary>
+ <param name="signals"></param>
+ <param name="quantile">一般建议值为0.65</param>
+ <returns>the intensity value cutoff for the noise/baseline</returns>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.SignalProcessing.PeakFinding.SignalPeak.integration">
+ <summary>
+ the integration area percentage, value [0,100]
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.PIDController.Calculate(System.Double,System.Double,System.Double)">
+ <summary>
+ 核心计算函数（带抗饱和和噪声抑制）
+ </summary>
+ <param name="setpoint"></param>
+ <param name="measurement"></param>
+ <param name="deltaTime"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.PIDController.Reset">
+ <summary>
+ 重置控制器状态
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.BinSampler">
+ <summary>
+ signal data aggregate helper
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.BinSampler.Range">
+ <summary>
+ the signal x axis range
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.BinSampler.AggregateSignal(System.Double,System.Func{System.Collections.Generic.IEnumerable{System.Double},System.Double})">
+ <summary>
+ 
+ </summary>
+ <param name="dt">
+ the signal x axis resolution
+ </param>
+ <param name="aggregate">
+ default is sum intensity data
+ </param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.EmGaussian.GaussianFit">
+ <summary>
+ em-gaussian fit of a single data, fit time/spectrum/other sequential 
+ data with a set of gaussians by expectation-maximization algoritm.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.EmGaussian.GaussianFit.fit(System.Double[],System.Int32)">
+ <summary>
+ 
+ </summary>
+ <param name="samples">the signal data should be normalized to range [0,1]</param>
+ <param name="npeaks"></param>
+ <returns></returns>
+ 
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.EmGaussian.Opts.maxNumber">
+ <summary>
+ max number of components in case of auto-detection
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.EmGaussian.Opts.maxIterations">
+ <summary>
+ max number of iterations
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.EmGaussian.Opts.tolerance">
+ <summary>
+ min difference of likelihood
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.EmGaussian.TimeBins.Compose(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Math.SignalProcessing.EmGaussian.Variable},System.Double,System.Double,System.Int32)">
+ <summary>
+ compose a signal data based on a collection of the gauss peak data
+ </summary>
+ <param name="peaks"></param>
+ <param name="xmin"></param>
+ <param name="xmax"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.EmGaussian.TimeBins.Compose(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Math.SignalProcessing.EmGaussian.Variable},System.Double[])">
+ <summary>
+ compose a signal data based on a collection of the gauss peak data
+ </summary>
+ <param name="peaks"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.EmGaussian.Variable">
+ <summary>
+ A possible signle peak
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.SignalProcessing.EmGaussian.Variable.argument_size">
+ <summary>
+ height,center,width,offset
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.EmGaussian.Variable.#ctor(Microsoft.VisualBasic.Math.SignalProcessing.EmGaussian.Variable)">
+ <summary>
+ make data copy
+ </summary>
+ <param name="clone"></param>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Interpolation">
+ <summary>
+ make the signal data interpolation
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Resampler">
+ <summary>
+ data signal resampler for continuous signals
+ </summary>
+ <remarks>
+ usually used for align two signal data
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Resampler.enumerateMeasures">
+ <summary>
+ populate the <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.GeneralSignal.Measures"/> of the raw signal
+ </summary>
+ <returns></returns>
+ <remarks>
+ example as get the raw time vector from this property
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Signal">
+ <summary>
+ A vector of the <see cref="T:Microsoft.VisualBasic.Math.SignalProcessing.TimeSignal"/>
+ </summary>
+ <remarks>
+ a <see cref="T:Microsoft.VisualBasic.Math.SignalProcessing.TimeSignal"/> point collection
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Signal.intensities">
+ <summary>
+ Get the signal intensity vector of current signal data
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Arithmetic.ArithmeticSignal">
+ <summary>
+ Advanced Signal class for operations on two Signals.
+ Extend this class and implement the calculate method 
+ which is used by all the other methods.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Arithmetic.ArithmeticSignal.calculate(System.Double,System.Double,System.Double,System.Double)">
+ <summary>
+ Calculates the desired operation of the two operand's values at given frequency and phase </summary>
+ <param name="freq1">  the first signal's frequency </param>
+ <param name="phase1">	the first signal's phase </param>
+ <param name="freq2">  the seconds signal's frequency </param>
+ <param name="phase2">	the seconds signal's phase </param>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Arithmetic.ArithmeticSignal.GraphData">
+ <summary>
+ Generates a GraphViewData array with Signal.GRAPH_SAMPLES entries.
+ This method uses the internal phase and frequency values of its operand members. </summary>
+ <returns>    	the samples </returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Arithmetic.ArithmeticSignal.AudioBytes">
+ <summary>
+ Generates a byte array with Signal.BUFFER_SIZE samples to be played back, resembling the sound of the signal.
+ This method uses the internal phase and frequency values of its operand members. </summary>
+ <returns>the samples </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.DumpsSignal">
+ <summary>
+ 
+ </summary>
+ <remarks>
+ Inspired by Lee Byron's test data generator.
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.DumpsSignal.bumps(System.Int32,System.Int32)">
+ <summary>
+ Generate signal data for test
+ </summary>
+ <param name="length">信号的长度，点的数量</param>
+ <param name="m">信号的叠加次数</param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Signal">
+ <summary>
+ Basic Signal class for providing all kinds of signal-data to the GUI.
+ Extend this class and implement the calculate method which is used 
+ by all the other methods.
+ 
+ > https://github.com/dks-rub/signalgenerator
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Signal.calculate(System.Double,System.Double)">
+ <summary>
+ Calculates the signals value at given frequency and phase </summary>
+ <param name="freq">   the signal's frequency </param>
+ <param name="phase">	the signal's phase </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Signal.calculate">
+ <summary>
+ Calculates the signals value with the last used frequency and phase
+ </summary>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Signal.GetGraphData(System.Double,System.Double)">
+ <summary>
+ Generates a GraphViewData array with GRAPH_SAMPLES entries.
+ This method also sets the internal phase and frequency to those passed in the parameters. </summary>
+ <param name="freq">   the signal's frequency </param>
+ <param name="phase">	the signal's phase </param>
+ <returns>    	the samples </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Signal.CalcAudioBytes(System.Double,System.Double)">
+ <summary>
+ Generates a byte array with BUFFER_SIZE samples to be played back, resembling the sound of the signal.
+ This method also sets the internal phase and frequency to those passed in the parameters. </summary>
+ <param name="freq">   the signal's frequency </param>
+ <param name="phase">	the signal's phase </param>
+ <returns>    	the samples </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.TimeSignal">
+ <summary>
+ a single scatter point in a time signal
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.TimeSignal.#ctor(Microsoft.VisualBasic.ComponentModel.TagData.ITimeSignal)">
+ <summary>
+ make signal tick data copy
+ </summary>
+ <param name="tick"></param>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.WaveletTransform.Transform">
+ <summary>
+ ###### WaveletTransform
+ 
+ > https://github.com/green-rail/WaveletTransform
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.WaveletTransform.Wavelet.#ctor(System.String,System.Double[])">
+ <summary>
+ For orthogonal wavelets
+ </summary>
+ <param name="name$"></param>
+ <param name="DecLowPass#"></param>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.WaveletTransformExtensions">
+ <summary>
+ 小波变换工具
+ </summary>
+ <remarks>
+ 
+ The first DWT was invented by the Hungarian mathematician Alfréd Haar. For an input represented by a 
+ list of 2n numbers, the Haar wavelet transform may be considered to simply pair up input values, 
+ storing the difference and passing the sum. This process is repeated recursively, pairing up the sums 
+ to provide the next scale: finally resulting in 2n-1 differences and one final sum.
+ 
+ Suppose you are given N values
+ 
+ x = (x1, x2, … xN)
+ 
+ where N is even.(X向量的元素的个数必须是偶数)
+ 
+ We take pair-wise average of numbers
+ 
+ sk = (x2k + x2k+1)/2 for k=0, …, N/2 -1
+ 
+ For example,
+ 
+ x = (6, 12, 15, 15, 14, 12, 120, 116) -> s = (9, 15, 13, 118)
+ 
+ We need second list of data d so that the original list x can be recovered from s and d.
+ 
+ For dk (called directed distances), we have:
+ 
+ dk = (x2k - x2k+1)/2 for k=0, …, N/2 -1
+ 
+ The process is invertible since:
+ 
+ sk + dk = (x2k + x2k+1)/2 + (x2k - x2k+1)/2 = x2k
+ 
+ sk - dk = (x2k + x2k+1)/2 - (x2k - x2k+1)/2 = x2k+1
+ 
+ 
+ So we map x = (x1, x2, … , xN) to (s | d) = (s1, … , sN/2 | d1, … , dN/2).
+ 
+ Using our example values, we have:
+ 
+ (6, 12, 15, 15, 14, 12, 120, 116) -> (9, 15, 13, 118 | -3, 0, 1, 2)
+ 
+ This process is repeated recursively for s:
+ 
+ (9, 15, 13, 118 | -3, 0, 1, 2) -> (12, 65.5 | -3, -52.5 | -3, 0, 1, 2)
+ 
+ (12, 65.5 | -3, -52.5 | -3, 0, 1, 2) -> (38.75 | -26.75 | -3, -52.5 | -3, 0, 1, 2)
+ 
+ So final result is:
+ 
+ (38.75, -26.75, -3, -52.5, -3, 0, 1, 2)
+ 
+ Why might people prefer the data in this form?
+ 
+ We can identify large changes in the differences portion d of the transform.
+ It is easier to quantize the data in this form.
+ The transform concentrates the information (energy) in the signal in fewer values.
+ And the obvious answer: fewer digits!!
+ In case of images, we need 2D FWT. First, we perform 1D FWT for all rows, and next, for all columns. 
+ For color Images, we deal with RGB components of color, and perform Haar Transform for each component 
+ separately. Any component (R G B) has values from 0 to 255 to before transformation we scale this 
+ values. For displaying image after transformation, we scale back transformed values.
+ 
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.WaveletTransformExtensions.FWT(System.Double[]@)">
+ <summary>
+   Discrete Haar Wavelet Transform
+ </summary>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.WaveletTransformExtensions.FWT(System.Double[0:,0:]@,System.Int32)">
+ <summary>
+   Discrete Haar Wavelet 2D Transform
+ </summary>
+ <param name="iterations">Iteration must be Integer from 1 to</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.WaveletTransformExtensions.IWT(System.Double[]@)">
+ <summary>
+   Inverse Haar Wavelet Transform
+ </summary>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.WaveletTransformExtensions.IWT(System.Double[0:,0:]@,System.Int32)">
+ <summary>
+   Inverse Haar Wavelet 2D Transform
+ </summary>
+ <param name="iterations">Iteration must be Integer from 1 to</param>
+</member>
+</members>
+</doc>

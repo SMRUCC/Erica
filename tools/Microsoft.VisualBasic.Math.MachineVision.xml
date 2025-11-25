@@ -1,0 +1,414 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Microsoft.VisualBasic.Math.MachineVision
+</name>
+</assembly>
+<members>
+<member name="T:Microsoft.VisualBasic.Math.MachineVision.CCL.CCLabeling">
+ <summary>
+ Connected Component Labeling
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.CCL.CCLabeling.TwoPassProcess(Microsoft.VisualBasic.Imaging.BitmapImage.BitmapBuffer,System.Drawing.Color,System.Int32)">
+ <summary>
+ 使用Two-Pass算法处理图像
+ </summary>
+ <param name="input">输入图像缓冲区</param>
+ <param name="background">背景颜色（通常为白色）</param>
+ <param name="tolerance">颜色容差</param>
+ <returns>标记后的多边形列表</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.CCL.CCLabeling.FindRoot(System.Int32,System.Collections.Generic.Dictionary{System.Int32,System.Int32})">
+ <summary>
+ 查找根节点（带路径压缩）
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.CCL.CCLabeling.Process(Microsoft.VisualBasic.Imaging.BitmapImage.BitmapBuffer,System.Nullable{System.Drawing.Color},System.Int32)">
+ <summary>
+ 
+ </summary>
+ <param name="input"></param>
+ <param name="background">
+ the background color usually be white color
+ </param>
+ <param name="tolerance"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis">
+ <summary>
+ A collection of static methods for analyzing and comparing 2D curves.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.Curve">
+ <summary>
+ Represents a curve as a list of points.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.ShapeSimilarityOpts">
+ <summary>
+ Options for shape similarity calculation.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.ProcrustesNormalizeCurveOpts">
+ <summary>
+ Options for Procrustes curve normalization.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.SubdivideCurveOpts">
+ <summary>
+ Options for curve subdivision.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.RebalanceCurveOpts">
+ <summary>
+ Options for curve rebalancing.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.ArrSum(System.Collections.Generic.IList{System.Double})">
+ <summary>
+ Sums all elements in a list of numbers.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.ArrAverage(System.Collections.Generic.IList{System.Double})">
+ <summary>
+ Calculates the average of a list of numbers.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.Subtract(System.Drawing.Point,System.Drawing.Point)">
+ <summary>
+ Subtracts point v2 from v1.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.Magnitude(System.Drawing.Point)">
+ <summary>
+ Calculates the magnitude (length) of a vector from the origin.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.FrechetDist(Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.Curve,Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.Curve)">
+ <summary>
+ Discrete Frechet distance between 2 curves.
+ Based on http://www.kr.tuwien.ac.at/staff/eiter/et-archive/cdtr9464.pdf
+ Modified to be iterative and have better memory usage.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.ShapeSimilarity(Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.Curve,Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.Curve,Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.ShapeSimilarityOpts)">
+ <summary>
+ Estimate how similar the shapes of 2 curves are to each other,
+ accounting for translation, scale, and rotation.
+ </summary>
+ <param name="curve1">The first curve.</param>
+ <param name="curve2">The second curve.</param>
+ <param name="options">Options for the similarity calculation.</param>
+ <returns>A value between 1 and 0 depending on how similar the shapes are, where 1 means identical.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.ProcrustesNormalizeCurve(Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.Curve,Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.ProcrustesNormalizeCurveOpts)">
+ <summary>
+ Translate and scale curve by Procrustes Analysis.
+ Optionally runs RebalanceCurve first (default true).
+ From https://en.wikipedia.org/wiki/Procrustes_analysis
+ </summary>
+ <param name="curve">The curve to normalize.</param>
+ <param name="options">Options for normalization.</param>
+ <returns>The normalized curve.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.FindProcrustesRotationAngle(Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.Curve,Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.Curve)">
+ <summary>
+ Find the angle to rotate `curve` to match the rotation of `relativeCurve` using procrustes analysis.
+ From https://en.wikipedia.org/wiki/Procrustes_analysis
+ `curve` and `relativeCurve` must have the same number of points.
+ `curve` and `relativeCurve` should both be run through ProcrustesNormalizeCurve first.
+ </summary>
+ <param name="curve">The curve to rotate.</param>
+ <param name="relativeCurve">The curve to match rotation with.</param>
+ <returns>The rotation angle in radians.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.ProcrustesNormalizeRotation(Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.Curve,Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.Curve)">
+ <summary>
+ Rotate `curve` to match the rotation of `relativeCurve` using procrustes analysis.
+ From https://en.wikipedia.org/wiki/Procrustes_analysis
+ `curve` and `relativeCurve` must have the same number of points.
+ `curve` and `relativeCurve` should both be run through ProcrustesNormalizeCurve first.
+ </summary>
+ <param name="curve">The curve to rotate.</param>
+ <param name="relativeCurve">The curve to match rotation with.</param>
+ <returns>The rotated curve.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.PointDistance(System.Drawing.Point,System.Drawing.Point)">
+ <summary>
+ Calculate the distance between 2 points.
+ </summary>
+ <param name="point1">The first point.</param>
+ <param name="point2">The second point.</param>
+ <returns>The Euclidean distance.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.CurveLength(Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.Curve)">
+ <summary>
+ Calculate the length of the curve.
+ </summary>
+ <param name="points">The curve as a list of points.</param>
+ <returns>The total length of the curve.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.ExtendPointOnLine(System.Drawing.Point,System.Drawing.Point,System.Double)">
+ <summary>
+ Return a new point, p3, which is on the same line as p1 and p2, but dist away from p2.
+ p1, p2, p3 will always lie on the line in that order (as long as dist is positive).
+ </summary>
+ <param name="p1">The first point defining the line.</param>
+ <param name="p2">The second point defining the line.</param>
+ <param name="dist">The distance from p2 to the new point.</param>
+ <returns>The new point.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.SubdivideCurve(Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.Curve,Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.SubdivideCurveOpts)">
+ <summary>
+ Break up long segments in the curve into smaller segments of len maxLen or smaller.
+ </summary>
+ <param name="curve">The input curve.</param>
+ <param name="options">Options for subdivision.</param>
+ <returns>The subdivided curve.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.RebalanceCurve(Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.Curve,Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.RebalanceCurveOpts)">
+ <summary>
+ Redraw the curve using `numPoints` points equally spaced along the length of the curve.
+ This may result in a slightly different shape than the original if `numPoints` is low.
+ </summary>
+ <param name="curve">The input curve.</param>
+ <param name="options">Options for rebalancing.</param>
+ <returns>The rebalanced curve.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.RotateCurve(Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis.Curve,System.Double)">
+ <summary>
+ Rotate the curve around the origin.
+ </summary>
+ <param name="curve">The curve to rotate.</param>
+ <param name="theta">The angle to rotate by, in radians.</param>
+ <returns>The rotated curve.</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.MachineVision.FrameData">
+ <summary>
+ A frame data of the <see cref="T:Microsoft.VisualBasic.Math.MachineVision.Detection"/>.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.MachineVision.FrameData`1.Item(System.Int32)">
+ <summary>
+ get detection object by its index in current frame
+ </summary>
+ <param name="index"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.FrameData`1.SetIndex(System.Int32)">
+ <summary>
+ Just set the given index value to the <see cref="P:Microsoft.VisualBasic.Math.MachineVision.FrameData`1.FrameID"/>
+ </summary>
+ <param name="id"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.ConfusionChars.GetTuple">
+ <summary>
+ load default in-memory data
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.MachineVision.OcrText.score">
+ <summary>
+ the cor text detection confidence score
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.MachineVision.OcrText.polygon">
+ <summary>
+ polygon of the text box
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.MachineVision.OcrTextMatches">
+ <summary>
+ Make text matches of the ocr text data
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.OcrTextMatches.MatchGroup(Microsoft.VisualBasic.Math.MachineVision.Trajectory,System.String,Microsoft.VisualBasic.Math.MachineVision.ConfusionChars)">
+ <summary>
+ Get text matches score of the ocr text data
+ </summary>
+ <param name="group"></param>
+ <param name="target"></param>
+ <param name="confusion"></param>
+ <returns>
+ the text similarity matches score, higher is better. The score is calculated by Levenshtein distance, 
+ which is a measure of the similarity between two strings.
+ </returns>
+ <remarks>
+ The score is calculated by Levenshtein distance, which is a measure of the similarity between two strings.
+ The distance is the number of single-character edits (insertions, deletions, or substitutions) required to change one string into the other.
+ </remarks>
+ <seealso cref="M:Microsoft.VisualBasic.Text.Similarity.Evaluations.LevenshteinEvaluate(System.String,System.String,System.Boolean,System.Double,Microsoft.VisualBasic.ComponentModel.Algorithm.DynamicProgramming.Levenshtein.DistResult@,System.Boolean,Microsoft.VisualBasic.ComponentModel.DataStructures.GenericLambda{System.Char}.IEquals)"/>
+ <seealso cref="M:Microsoft.VisualBasic.Math.MachineVision.ConfusionChars.Check(System.Char,System.Char)"/>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.MachineVision.PointWithNormal">
+ <summary>
+ 一个带法向量的点
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.MachineVision.PointWithNormal.Normal">
+ <summary>
+ 法向量，应为单位向量
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.MachineVision.FPFHDescriptor">
+ <summary>
+ FPFH (Fast Point Feature Histograms)
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.MachineVision.FPFHDescriptor.Histogram">
+ <summary>
+ FPFH 直方图，例如，将每个角度特征分成11个bin，共33维
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.FPFHCalculator.ComputeDescriptors(System.Collections.Generic.List{Microsoft.VisualBasic.Math.MachineVision.PointWithNormal},System.Double,System.Int32)">
+ <summary>
+ 为一组点计算 FPFH 描述子
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.FPFHCalculator.ComputeSPFH(Microsoft.VisualBasic.Math.MachineVision.PointWithNormal,System.Collections.Generic.List{Microsoft.VisualBasic.Math.MachineVision.PointWithNormal},System.Double,System.Int32)">
+ <summary>
+ 计算单个点的简化点特征直方图 (SPFH)
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.MachineVision.PointWithDescriptor">
+ <summary>
+ A point structure that includes its feature descriptor.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.MachineVision.PointWithDescriptor.Descriptor">
+ <summary>
+ (distance to centroid, angle)
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.MachineVision.PointWithDescriptor.properties">
+ <summary>
+ other property that used for weight score which is generated from the raw data
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.PointWithDescriptor.GenerateCandidateMatches(Microsoft.VisualBasic.Math.MachineVision.PointWithDescriptor[]@,Microsoft.VisualBasic.Math.MachineVision.PointWithDescriptor[]@)">
+ <summary>
+ Generates a list of candidate matches by finding the nearest neighbor in descriptor space.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.PointWithDescriptor.ComputeDescriptors(Microsoft.VisualBasic.Imaging.Math2D.Polygon2D)">
+ <summary>
+ Computes a simple (distance, angle) descriptor for each point relative to the polygon's centroid.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.PointWithDescriptor.ComputeDescriptors``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Double[]})">
+ <summary>
+ 
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="shape"></param>
+ <param name="getMetadata">should be normalized to [0,1]</param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.MachineVision.RANSACPointAlignment">
+ <summary>
+ A static utility class for aligning two 2D polygons using the RANSAC algorithm.
+ This version is optimized for correctness and includes a proper least-squares refinement step.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.RANSACPointAlignment.AlignPolygons``1(``0[],``0[],System.Func{``0,System.Double[]},System.Int32,System.Double)">
+ <summary>
+ Aligns a source polygon to a target polygon using RANSAC.
+ </summary>
+ <param name="sourcePoly">The polygon to be transformed.</param>
+ <param name="targetPoly">The polygon to align to.</param>
+ <param name="iterations">The number of RANSAC iterations.</param>
+ <param name="distanceThreshold">The distance threshold to consider a point an inlier.</param>
+ <returns>The best-fit Transform object.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.RANSACPointAlignment.AlignPolygons(Microsoft.VisualBasic.Imaging.Math2D.Polygon2D,Microsoft.VisualBasic.Imaging.Math2D.Polygon2D,System.Int32,System.Double)">
+ <summary>
+ Aligns a source polygon to a target polygon using RANSAC.
+ </summary>
+ <param name="sourcePoly">The polygon to be transformed.</param>
+ <param name="targetPoly">The polygon to align to.</param>
+ <param name="iterations">The number of RANSAC iterations.</param>
+ <param name="distanceThreshold">The distance threshold to consider a point an inlier.</param>
+ <returns>The best-fit Transform object.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.RANSACPointAlignment.MakeAlignment(System.ValueTuple{System.Drawing.PointF,System.Drawing.PointF}[],System.Int32,System.Double)">
+ <summary>
+ Aligns a source polygon to a target polygon using RANSAC.
+ </summary>
+ <param name="iterations">The number of RANSAC iterations.</param>
+ <param name="distanceThreshold">The distance threshold to consider a point an inlier.</param>
+ <returns>The best-fit Transform object.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.RANSACPointAlignment.ComputeAffineFrom3Pairs(System.Drawing.PointF,System.Drawing.PointF,System.Drawing.PointF,System.Drawing.PointF,System.Drawing.PointF,System.Drawing.PointF)">
+ <summary>
+ Computes an affine transform from exactly three point pairs.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.RANSACPointAlignment.RefineTransformWithLeastSquares(System.ValueTuple{System.Drawing.PointF,System.Drawing.PointF}[],Microsoft.VisualBasic.Imaging.Math2D.AffineTransform,System.Double)">
+ <summary>
+ Refines the transformation using all inliers with a least-squares fit for an affine transform.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.RANSACPointAlignment.SolveLeastSquaresAffine(System.ValueTuple{System.Drawing.PointF,System.Drawing.PointF}[]@,System.Double@,System.Double@,System.Double@,System.Double@,System.Double@,System.Double@)">
+ <summary>
+ Solves the least-squares problem for affine transformation parameters.
+ This function is unchanged from your original, as it was mathematically correct.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.MachineVision.ShapeContextDescriptor">
+ <summary>
+ 一个点的 Shape Context 描述子
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.MachineVision.ShapeContextDescriptor.Histogram">
+ <summary>
+ 对数极坐标直方图，例如，5个径向bin * 12个角度bin = 60维向量
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.ShapeContextCalculator.ComputeDescriptors(System.Collections.Generic.List{System.Drawing.PointF},System.Int32,System.Int32)">
+ <summary>
+ 为一组点计算 Shape Context 描述子
+ </summary>
+ <param name="points">输入点集</param>
+ <param name="radialBins">径向bin数量</param>
+ <param name="angularBins">角度bin数量</param>
+ <returns>描述子列表</returns>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.MachineVision.Tracker.currentTrajectories">
+ <summary>
+ current tracking objects
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.MachineVision.Tracker.nextID">
+ <summary>
+ the global object id
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.MachineVision.Tracker.MAX_INACTIVE_FRAMES">
+ <summary>
+ 轨迹最大不活跃帧数
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.MachineVision.Tracker.objects">
+ <summary>
+ Contains all objects for make tracking
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.MachineVision.Trajectory">
+ <summary>
+ Trajectory of a object
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.MachineVision.Trajectory.Update(Microsoft.VisualBasic.Math.MachineVision.Detection)">
+ <summary>
+ Add last position to the current object trajectory
+ </summary>
+ <param name="detection"></param>
+</member>
+</members>
+</doc>

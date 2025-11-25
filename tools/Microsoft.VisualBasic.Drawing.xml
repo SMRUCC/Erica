@@ -1,0 +1,429 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Microsoft.VisualBasic.Drawing
+</name>
+</assembly>
+<members>
+<member name="T:Microsoft.VisualBasic.Drawing.ANSI">
+ <summary>
+ Display images in ansii escape sequences
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.ANSI.GenerateImagePreview(Microsoft.VisualBasic.Imaging.Image,System.Int32)">
+ <summary>
+ previews of the image on the terminal using ANSI escape codes.
+ </summary>
+ <param name="img"></param>
+ <param name="terminalWidth"></param>
+ <returns>This function generates a string that represents the image in 
+ a format suitable for terminal display.
+ </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Drawing.Graphics">
+ <summary>
+ A wrapper of the skia sharp canvas object for raster image drawing
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Drawing.Graphics.m_surface">
+ <summary>
+ image save must dispose the canvas at first
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Drawing.Interop">
+ <summary>
+ Helper for interop with gdi+ in .net-windows
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Interop.CastSkiaBitmap(Microsoft.VisualBasic.Imaging.Bitmap)">
+ <summary>
+ 
+ </summary>
+ <param name="bitmap"></param>
+ <returns></returns>
+ <remarks>
+ the transparent will be lost when cast memory bitmap to skia bitmap object
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Interop.SkiaToGdiPlusImage(SkiaSharp.SKImage)">
+ <summary>
+ Convert the skia image to gdi+ image
+ </summary>
+ <param name="skImage"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Interop.CreatePaint(Microsoft.VisualBasic.Imaging.Pen)">
+ <summary>
+ Create the stroke pen paint style
+ </summary>
+ <param name="pen"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.SkiaImage.SetTransparent">
+ <summary>
+ this method will try to replace the black pixel to transparent
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.SkiaImage.FromFile(System.IO.Stream)">
+ <summary>
+ load skia sharp image from a given stream data
+ </summary>
+ <param name="s"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.SkiaImage.FromFile(System.String)">
+ <summary>
+ Load skia image object from a given image file
+ </summary>
+ <param name="path"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.SkiaImage.ConvertToBitmapStream">
+ <summary>
+ this will lost the transparent information of the skia image, and convert the skia image to a memory bitmap
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.SkiaImage.GetMemoryBitmap">
+ <summary>
+ keeps the transparent information of the skia image, and convert the skia image to a memory bitmap
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Drawing.SkiaGraphics">
+ <summary>
+ the abstract wrapper for the skiasharp library
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Drawing.SkiaGraphics.Size">
+ <summary>
+ the graphics size of current skia canvas
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.SvgGraphics.GetSvgText">
+ <summary>
+ get the svg file of the current graphics
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.SvgGraphics.Save(System.IO.Stream)">
+ <summary>
+ 
+ </summary>
+ <param name="file"></param>
+ <remarks>
+ this function will release the svg canvas
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.ExtensionMethods.AtomicLength(Microsoft.VisualBasic.Drawing.Tiff.Tags.TagDataType)">
+ <summary>
+ Gets the length, in bytes, of a given TIFF tag datatype.
+ </summary>
+ <param name="type"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.ExtensionMethods.ToASCIIArray(System.String)">
+ <summary>
+ Returns a string as a nul-terminated ASCII char array
+ </summary>
+ <param name="str"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Drawing.Tiff.Tags.BaselineTags">
+ <summary>
+ Baseline TIFF tag IDs, as taken from https://www.awaresystems.be/imaging/tiff/tifftags/baseline.html
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Drawing.Tiff.Tags.ExifTags">
+ <summary>
+ EXIF IFD tag IDs, as taken from https://www.awaresystems.be/imaging/tiff/tifftags/privateifd/exif.html
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Drawing.Tiff.Tags.ExtensionTags">
+ <summary>
+ TIFF Extension tag IDs, taken from https://www.awaresystems.be/imaging/tiff/tifftags/extension.html
+ JPEG tags invalidated by Tech Note 2 are intentionally omitted.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Drawing.Tiff.Tags.GPSTags">
+ <summary>
+ GPS IFD tag IDs, taken from https://www.awaresystems.be/imaging/tiff/tifftags/privateifd/gps.html
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Drawing.Tiff.Tags.PrivateTags">
+ <summary>
+ TIFF Private Tag IDs, as taken from https://www.awaresystems.be/imaging/tiff/tifftags/private.html
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Drawing.Tiff.Tags.Tag">
+ <summary>
+ Represents a raw un-parsed tag as read from a TIFF IFD
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Drawing.Tiff.Tags.TagType`1">
+ <summary>
+ Represents a parsed tag with a defined type and fetched pointer values (if any).
+ </summary>
+ <typeparam name="T"></typeparam>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.Tags.TagType`1.GetValue``1(System.Int32)">
+ <summary>
+ Attempts to fetch a value and cast it to the given type.
+ </summary>
+ <typeparam name="V"></typeparam>
+ <param name="index"></param>
+ <returns></returns>
+</member>
+<member name="F:Microsoft.VisualBasic.Drawing.Tiff.Tags.TagDataType.Byte">
+ <summary>
+ 8-bit unsigned int (char/byte)
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Drawing.Tiff.Tags.TagDataType.ASCII">
+ <summary>
+ 7-bit nul-terminated string
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Drawing.Tiff.Tags.TagDataType.Short">
+ <summary>
+ 16-bit unsigned int (Uint16/ushort)
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Drawing.Tiff.Tags.TagDataType.Long">
+ <summary>
+ 32-bit unsigned int (UInt32/uint)
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Drawing.Tiff.Tags.TagDataType.Rational">
+ <summary>
+ 64-bit unsigned rational/decimal
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Drawing.Tiff.Tags.TagDataType.SByte">
+ <summary>
+ 8-bit signed int (no .Net equivalent)
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Drawing.Tiff.Tags.TagDataType.Undefined">
+ <summary>
+ Array of special-purpose bytes
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Drawing.Tiff.Tags.TagDataType.SShort">
+ <summary>
+ 16-bit signed int (Int16/short)
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Drawing.Tiff.Tags.TagDataType.SLong">
+ <summary>
+ 32-bit signed int (Int32/int)
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Drawing.Tiff.Tags.TagDataType.SRational">
+ <summary>
+ 64-bit signed rational/decimal
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Drawing.Tiff.Tags.TagDataType.Float">
+ <summary>
+ 32-bit single precision float (float)
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Drawing.Tiff.Tags.TagDataType.Double">
+ <summary>
+ 64-bit single precision float (double)
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Drawing.Tiff.Tags.TagDataType.IFD">
+ <summary>
+ 32-bit unsigned pointer to a sub IFD, as in a pyramid TIFF
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.Tiff.#ctor(System.String)">
+ <summary>
+ Loads a TIFF file from disk.
+ </summary>
+ <param name="fileName"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.Tiff.SeekToNewWord(Microsoft.VisualBasic.Drawing.Tiff.TiffStreamWriter)">
+ <summary>
+ Advance the stream to a new word boundary, padding if necessary
+ </summary>
+ <param name="tiffStream"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.TiffStreamBase.CheckEndian(System.Byte[])">
+ <summary>
+ If the active endianness conflicts with our architecture, reverse the entire byte array.
+ </summary>
+ <param name="bytes"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.TiffStreamReader.#ctor(System.Boolean)">
+ <summary>
+ Initializes a new TiffStream.
+ </summary>
+ <param name="forceBigEndian">Optionally, force TiffStream to use Big-Endian mode for writing a new TIFF.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.TiffStreamReader.#ctor(System.IO.Stream,System.Boolean)">
+ <summary>
+ Initializes a new TiffStream from the given stream.
+ </summary>
+ <param name="stream"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.TiffStreamReader.ReadStrips(System.UInt32)">
+ <summary>
+ Read all image strips from the given IFD
+ </summary>
+ <param name="ifdOffset"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.TiffStreamReader.ReadTag">
+ <summary>
+ read a general tag data
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.TiffStreamReader.ParseTag(Microsoft.VisualBasic.Drawing.Tiff.Tags.Tag)">
+ <summary>
+ Attempts to parse the given Tag into an appropriate Tag&lt;T> and returns a boxed Tag value
+ </summary>
+ <param name="tag"></param>
+ <returns></returns>    
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.TiffStreamReader.ReadHeader">
+ <summary>
+ Reads and validates the TIFF header from the underlying stream, and returns the offset of the first IFD (IFD0).
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Drawing.Tiff.TiffStreamWriter">
+ <summary>
+ Supports basic read/write functionality for a TIFF stream.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.TiffStreamWriter.#ctor(System.Boolean)">
+ <summary>
+ Initializes a new TiffStream.
+ </summary>
+ <param name="forceBigEndian">Optionally, force TiffStream to use Big-Endian mode for writing a new TIFF.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.TiffStreamWriter.#ctor(System.IO.Stream,System.Boolean)">
+ <summary>
+ Initializes a new TiffStream from the given stream.
+ </summary>
+ <param name="stream"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.TiffStreamWriter.WriteIFD(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Drawing.Tiff.Tags.Tag})">
+ <summary>
+ Write and finalize the given tags to a new IFD at the end of the stream.
+ </summary>
+ <param name="tags"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.TiffStreamWriter.WriteStrips(System.UInt32,Microsoft.VisualBasic.Drawing.Tiff.Types.Strip[])">
+ <summary>
+ Write image strip data for the given IFD, and update strip tags
+ </summary>
+ <param name="ifdOffset"></param>
+ <param name="strips"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.TiffStreamWriter.UpdateTags(Microsoft.VisualBasic.Drawing.Tiff.Tags.Tag[])">
+ <summary>
+ Update a finalized tag. Method will throw if the number or type of items has changed.
+ </summary>
+ <param name="tags"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.TiffStreamWriter.UpdateIFDPointer(System.UInt32,System.UInt32)">
+ <summary>
+ Updates the pointer for the next IFD record.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.TiffStreamWriter.WriteTagPlaceholder(Microsoft.VisualBasic.Drawing.Tiff.Tags.Tag)">
+ <summary>
+ Writes an initial tag placeholder, and updates the offset property if the tag object.
+ </summary>
+ <param name="tag"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.TiffStreamWriter.FinalizeTag(Microsoft.VisualBasic.Drawing.Tiff.Tags.Tag,System.Boolean)">
+ <summary>
+ Writes the actual data payload for a tag and updates the placeholder value (if necessary)
+ </summary>
+ <param name="tag"></param>
+ <param name="rewrite">Signals that a previously finalized tag should be overwritten without allocating more space.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.TiffStreamWriter.FinalizeTag``1(Microsoft.VisualBasic.Drawing.Tiff.Tags.TagType{``0},System.Boolean)">
+ <summary>
+ Writes the actual data payload for a tag and updates the pointer value (if necessary)
+ </summary>
+ <param name="tag"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.TiffStreamWriter.WriteHeader">
+ <summary>
+ Writes a standard TIFF header at the beginning of the stream.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.TiffStreamWriter.SeekWord">
+ <summary>
+ Advance the stream (if necessary) to the next word boundary.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.Tiff.TiffStreamWriter.SeekWord(System.UInt32,System.IO.SeekOrigin)">
+ <summary>
+ Seeks to the given offset, and then +1 if the offset is odd.
+ </summary>
+ <param name="offset"></param>
+ <param name="origin"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Drawing.Tiff.Types.Strip">
+ <summary>
+ In TIFF (Tagged Image File Format), a **strip** is a fundamental data organization method that
+  divides an image into horizontal sections for efficient storage and access. Here’s a concise
+  explanation based on authoritative sources:
+ 
+  ### 1. **Definition and Purpose**  
+ 
+  A strip is a contiguous block of pixel data representing one or more consecutive rows of an image.
+  Instead of storing the entire image as a single unit, TIFF splits it into multiple strips to
+  optimize memory usage and I/O operations. This design allows applications to load only specific
+  portions of an image (e.g., when editing or viewing a section) without processing the entire
+  file.
+ 
+  ### 2. **Technical Implementation**  
+ 
+  - **Strip Identification**: Each strip is defined by metadata tags in the TIFF file header:  
+ 
+    - `StripOffsets`: Specifies the starting byte position of each strip in the file.  
+    - `StripByteCounts`: Indicates the size (in bytes) of each strip.  
+ 
+    These tags enable random access to any strip during reading/writing.  
+ 
+  - **RowsPerStrip**: A critical tag (`RowsPerStrip`) determines how many rows of pixels each strip
+  contains. For example, a 4000-row image with `RowsPerStrip=100` would have 40 strips. Smaller values
+  reduce memory overhead but increase metadata size; larger values improve compression efficiency.
+ 
+  ### 3. **Advantages**  
+ 
+  - **Memory Efficiency**: Only the required strip(s) are loaded into memory, crucial for large images (e.g., medical scans or satellite photos).  
+  - **Partial Processing**: Enables operations like cropping or region-based editing without full-image decompression.  
+  - **Compression Flexibility**: Strips can be individually compressed (e.g., using LZW or Deflate), balancing speed and file size.
+ 
+  ### 4. **Comparison with Tiles**  
+ 
+  While strips divide images horizontally, **tiles** (another TIFF option) split data into rectangular
+  blocks. Strips suit linear workflows (e.g., printing), whereas tiles excel in localized access
+  (e.g., GIS applications).
+ 
+  ### 5. **Practical Considerations**  
+ 
+  - **Data Alignment**: Strip boundaries must align with pixel data types (e.g., 8-bit data requires `uint8` arrays) to prevent corruption during processing.  
+  - **Performance**: Optimal `RowsPerStrip` values depend on use cases—smaller strips for interactive tools, larger for batch processing.
+ 
+  For deeper technical details, refer to the TIFF 6.0 specification or libraries like `libtiff`/`tifffile`.
+ </summary>
+</member>
+</members>
+</doc>

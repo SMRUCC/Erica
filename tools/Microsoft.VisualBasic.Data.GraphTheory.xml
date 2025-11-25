@@ -1,0 +1,1969 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Microsoft.VisualBasic.Data.GraphTheory
+</name>
+</assembly>
+<members>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter">
+ <summary>
+ ## Dijkstra:Shortest Route Calculation - Object Oriented
+ 
+ > Michael Demeersseman, 4 Jan 2008
+ > http://www.codeproject.com/Articles/22647/Dijkstra-Shortest-Route-Calculation-Object-Oriente
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter.links">
+ <summary>
+ 存在方向的
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter.#ctor(Microsoft.VisualBasic.Data.GraphTheory.Graph,System.Boolean)">
+ <summary>
+ Create a new Dijkstra shortest path router model
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter.GetLocation(System.String)">
+ <summary>
+ Get graph node element by label id
+ </summary>
+ <param name="label$"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter.CalculateMinCost(Microsoft.VisualBasic.Data.GraphTheory.Vertex)">
+ <summary>
+ Calculates the shortest route to all the other locations.
+ (这个函数会枚举出从出发点<paramref name="startPos"/>到网络之中的所有节点的最短路径)
+ </summary>
+ <param name="startPos"></param>
+ <returns>List of all locations and their shortest route</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Calculator`1">
+ <summary>
+ calculates all-pairs shortest paths or shortest paths from a single node
+ </summary>
+ <typeparam name="Link"></typeparam>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Calculator`1.#ctor(System.Int32,System.Collections.Generic.IEnumerable{`0},System.Func{`0,System.Double},System.Func{`0,System.Double},System.Func{`0,System.Double})">
+ <summary>
+ 
+ </summary>
+ <param name="n">number of nodes</param>
+ <param name="es">array of edges</param>
+ <param name="getSourceIndex"></param>
+ <param name="getTargetIndex"></param>
+ <param name="getLength"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Calculator`1.DistanceMatrix">
+ <summary>
+ compute shortest paths for graph over n nodes with edges an array of source/target pairs
+ edges may optionally have a length attribute.  1 is the default.
+ Uses Johnson's algorithm.
+ </summary>
+ <returns>return the distance matrix</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Calculator`1.DistancesFromNode(System.Int32)">
+ <summary>
+ get shortest paths from a specified start node
+ </summary>
+ <param name="start">start node index</param>
+ <returns>array of path lengths</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Calculator`1.PathFromNodeToNodeWithPrevCost(System.Int32,System.Int32,System.Func{System.Int32,System.Int32,System.Int32,System.Double})">
+ <summary>
+ find shortest path from start to end, with the opportunity at
+ each edge traversal to compute a custom cost based on the
+ previous edge.  For example, to penalise bends.
+ </summary>
+ <param name="start"></param>
+ <param name="[end]"></param>
+ <param name="prevCost"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Route">
+ <summary>
+ 从出发点到终点所经过的路径
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.FastUnfolding.FastUnfolding">
+ <summary>
+ Fast unfolding of communities in large networks.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.FastUnfolding.FastUnfolding.#ctor(Microsoft.VisualBasic.Data.GraphTheory.Analysis.FastUnfolding.KeyMaps)">
+ <summary>
+ 
+ </summary>
+ <param name="map_dict">
+ the network data: [a -> b[]]
+ </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.FastUnfolding.FastUnfolding.rebuildMap(System.Collections.Generic.Dictionary{System.String,System.String},Microsoft.VisualBasic.Data.GraphTheory.Analysis.FastUnfolding.KeyMaps)">
+ <summary>
+ 将一个社区作为一个节点重新构造图
+ </summary>
+ <param name="tag_dict"></param>
+ <param name="map_dict"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.FastUnfolding.Utils.Modularity(System.Collections.Generic.Dictionary{System.String,System.String},Microsoft.VisualBasic.Data.GraphTheory.Analysis.FastUnfolding.KeyMaps)">
+ <summary>
+ 根据tag和图的连接方式计算模块度
+ </summary>
+ <param name="tags"></param>
+ <param name="map_dict"></param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.GraphAnalysis.FindShortestPath(Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter,System.String,System.String)">
+ <summary>
+ Calculation of the shortest path between x points
+ </summary>
+ <param name="finder"></param>
+ <param name="start$"></param>
+ <param name="ends$"></param>
+ <returns></returns>
+ <remarks>
+ http://www.codeproject.com/Articles/22647/Dijkstra-Shortest-Route-Calculation-Object-Oriente
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.GraphAnalysis.BetweennessCentrality(Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter)">
+ <summary>
+ 中介中心度，计算经过一个点的最短路径的数量。经过一个点的最短路径的数量越多，就说明它的中介中心度越高。
+ </summary>
+ <returns></returns>
+ 
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.Builder.global_edge">
+ <summary>
+ 全局初始的临接表  只保存一次，永久不变，不参与后期运算
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.Edge.v">
+ <summary>
+ v表示连接点的编号,w表示此边的权值
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.Edge.next">
+ <summary>
+ next负责连接和此点相关的边
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity">
+ <summary>
+ A fast algorithm To find communities In large network
+ </summary>
+ <remarks>
+ Blondel V D, Guillaume J L, Lambiotte R, et al. Fast 
+ unfolding of communities in large networks[J]. Journal 
+ of Statistical Mechanics, 2008, 2008(10)155-168.
+ </remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.n">
+ <summary>
+ number of vertex
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.m">
+ <summary>
+ number of edges
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.cluster">
+ <summary>
+ community
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.edge">
+ <summary>
+ 邻接表
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.head">
+ <summary>
+ 头节点下标
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.top">
+ <summary>
+ 已用E的个数
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.resolution">
+ <summary>
+ 1/2m 全局不变
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.node_weight">
+ <summary>
+ 节点的权重值
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.totalEdgeWeight">
+ <summary>
+ 总边权值
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.cluster_weight">
+ <summary>
+ 簇的权值
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.eps">
+ <summary>
+ 误差
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.global_n">
+ <summary>
+ 最初始的n
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.global_cluster">
+ <summary>
+ 最后的结果，i属于哪个簇
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.new_edge">
+ <summary>
+ 新的邻接表
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.maxIterations">
+ <summary>
+ 最大迭代次数
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.GetClusterCount">
+ <summary>
+ get the number of the cluster class the graph it has currently.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.TryMoveNode(System.Int32)">
+ <summary>
+ 尝试将i加入某个簇
+ </summary>
+ <param name="i"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.rebuildGraph">
+ <summary>
+ rebuild graph
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.SolveClusters(System.Int32)">
+ <summary>
+ 
+ </summary>
+ <param name="max_clusters">
+ set the limits of the max number of the node class we finally have.
+ </param>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Analysis.MorganFingerprint.IMorganAtom.Type">
+ <summary>
+ the node type
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.MorganFingerprint.GraphMorganFingerprint`2">
+ <summary>
+ Morgan fingerprints, also known as circular fingerprints, are a type of molecular fingerprint 
+ used in cheminformatics to represent the structure of chemical compounds. The algorithm steps 
+ for generating Morgan fingerprints are as follows:
+ 
+ 1. **Initialization**:
+  - Start with the initial set of atoms in the molecule.
+  - Assign a unique identifier (e.g., integer) to each atom.
+  
+ 2. **Atom Environment Encoding**:
+  - For each atom, encode its immediate environment, which includes the atom type and the types of its directly connected neighbors.
+  - This information can be represented as a string or a hash.
+  
+ 3. **Iterative Expansion**:
+  - Expand the environment encoding iteratively to include atoms further away from the starting atom.
+  - In each iteration, update the encoding to include the types of atoms that are two, three, etc., bonds away from the starting atom.
+  
+ 4. **Hashing**:
+  - Convert the environment encoding into a fixed-size integer using a hashing function. This integer represents the fingerprint of the atom's environment.
+  - Different atoms in the molecule will have different fingerprints based on their environments.
+  
+ 5. **Circular Fingerprint Generation**:
+  - For each atom, generate a series of fingerprints that represent its environment at different radii (number of bonds away).
+  - The final fingerprint for an atom is a combination of these series of fingerprints.
+  
+ 6. **Molecular Fingerprint**:
+  - Combine the fingerprints of all atoms in the molecule to create the final molecular fingerprint.
+  - This can be done by taking the bitwise OR of all atom fingerprints, resulting in a single fingerprint that represents the entire molecule.
+  
+ 7. **Optional Folding**:
+  - To reduce the size of the fingerprint, an optional folding step can be applied. This involves 
+    dividing the fingerprint into chunks and performing a bitwise XOR operation within each chunk.
+    
+ 8. **Result**:
+  - The final result is a binary vector (or a list of integers) that represents the Morgan fingerprint 
+    of the molecule. This fingerprint can be used for similarity searching, clustering, and other 
+    cheminformatics tasks.
+    
+ Morgan fingerprints are particularly useful because they capture the circular nature of molecular
+ environments, meaning that the path taken to reach an atom is not as important as the environment 
+ around it. This makes them effective for comparing the similarity of molecules based on their 
+ structural features.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Analysis.MorganFingerprint.GraphMorganFingerprint`2.FingerprintLength">
+ <summary>
+ the size of the fingerprint data
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.MorganFingerprint.GraphMorganFingerprint`2.HashLabelKey(System.String)">
+ <summary>
+ A helper function for create hashcode of the string label in the graph
+ </summary>
+ <param name="key"></param>
+ <returns></returns>
+ <remarks>
+ 在 .NET 中，字符串的 `GetHashCode()` 方法返回的哈希值**并不能保证在不同时间、操作系统或硬件上保持一致**。以下是具体原因和背景分析：
+
+ ---
+ 
+ ### 1. **实现依赖性与版本差异**
+ - **不同 .NET 版本可能生成不同的哈希值**  
+   微软明确声明，`GetHashCode()` 的实现可能因公共语言运行时（CLR）的版本变化而调整，例如从 .NET Framework 4.x 到 .NET Core 或 .NET 5+ 的升级。这种调整可能是出于性能优化或哈希分布均匀性的考虑。
+   
+ - **哈希随机化（.NET Core 2.1+）**  
+   从 .NET Core 2.1 开始，默认启用了哈希随机化机制，即使同一程序在不同时间运行，同一字符串的哈希值也可能不同。此设计旨在防止哈希碰撞攻击，增强安全性。
+ 
+ ---
+ 
+ ### 2. **跨操作系统与硬件的差异**
+ - **操作系统的影响**  
+   .NET 的不同运行时（如 .NET Framework 仅支持 Windows，而 .NET Core 支持跨平台）在实现哈希算法时可能采用不同策略。例如，Windows 和 Linux 上的哈希计算结果可能不一致。
+ 
+ - **硬件架构的差异**  
+   32 位与 64 位系统的内存寻址方式不同，可能影响 `GetHashCode()` 的默认行为（如对象地址计算）。此外，CPU 架构（x86/x64/ARM）也可能导致哈希值差异。
+ 
+ ---
+ 
+ ### 3. **设计原则与使用场景限制**
+ - **仅保证同一进程内的唯一性**  
+   `GetHashCode()` 的主要设计目标是支持哈希表等数据结构的高效查找，其核心保证是：**在同一进程的同一执行周期内，相同内容的字符串返回相同的哈希值**。但跨进程、跨机器或持久化存储时，这一保证失效。
+ 
+ - **哈希冲突的可能性**  
+   即使在同一环境中，不同字符串可能生成相同的哈希值（哈希碰撞）。例如，字符串 `"FB"` 和 `"Ea"` 在某些情况下哈希值相同。
+ 
+ ---
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Analysis.MorganFingerprint.MorganGraph`2.Atoms">
+ <summary>
+ vertex nodes
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Analysis.MorganFingerprint.MorganGraph`2.Graph">
+ <summary>
+ the graph structure for make morgan fingerprint embedding
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.GraphMatrix">
+ <summary>
+ 可以用来构建<see cref="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.PageRank"/>计算所需要的index矩阵
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.GraphMatrix.#ctor(Microsoft.VisualBasic.Data.GraphTheory.Graph)">
+ <summary>
+ 
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.GraphMatrix.GetEdgeCount">
+ <summary>
+ 对于文本处理的时候，textrank的这部分数据可能会比较有用
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.PageRank">
+ <summary>
+ 无权重的``pagerank``计算模块.(https://github.com/jeffersonhwang/pagerank)
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.PageRank.#ctor(System.Collections.Generic.List{System.Int32}[],System.Double,System.Double,System.Int32)">
+ <summary>
+ ``outGoingLinks(i)`` contains the indices of the pages pointed to by page i.
+ (每一行都是指向第i行的页面的index值的集合)
+ </summary>
+ <param name="linkMatrix"><see cref="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.GraphMatrix"/></param>
+ <param name="alpha"></param>
+ <param name="convergence"></param>
+ <param name="checkSteps"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.PageRank.ComputePageRank">
+ <summary>
+ Convenience wrap for the link matrix transpose and the generator.
+ See <see cref="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.PageRank.PageRankGenerator(System.Collections.Generic.List{System.Int32}[],Microsoft.VisualBasic.Math.LinearAlgebra.Vector,System.Collections.Generic.List{System.Int32},System.Double,System.Double,System.Int32)"/> method for parameter descriptions
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.PageRank.TransposeLinkMatrix(System.Collections.Generic.List{System.Int32}[])">
+ <summary>
+ Transposes the link matrix which contains the links from each page. 
+ Returns a Tuple of:  
+ 
+ + 1) pages pointing to a given page, 
+ + 2) how many links each page contains, and
+ + 3) which pages contain no links at all. 
+ 
+ We want to know is which pages
+ </summary>
+ <param name="outGoingLinks">``outGoingLinks(i)`` contains the indices of the pages pointed to by page i</param>
+ <returns>A tuple of (incomingLinks, numOutGoingLinks, leafNodes)</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.PageRank.PageRankGenerator(System.Collections.Generic.List{System.Int32}[],Microsoft.VisualBasic.Math.LinearAlgebra.Vector,System.Collections.Generic.List{System.Int32},System.Double,System.Double,System.Int32)">
+ <summary>
+ Computes an approximate page rank vector of N pages to within some convergence factor.
+ </summary>
+ <param name="at">At a sparse square matrix with N rows. At[i] contains the indices of pages jj linking to i</param>
+ <param name="leafNodes">contains the indices of pages without links</param>
+ <param name="numLinks">iNumLinks[i] is the number of links going out from i.</param>
+ <param name="alpha">a value between 0 and 1. Determines the relative importance of "stochastic" links.</param>
+ <param name="convergence">a relative convergence criterion. Smaller means better, but more expensive.</param>
+ <param name="checkSteps">check for convergence after so many steps</param>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.WeightedPRNode">
+ <summary>
+ Weighted pagerank node
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.WeightedPRGraph.AddEdge(System.Int32,System.Int32,System.Double)">
+ <summary>
+ Link creates a weighted edge between a source-target node pair.
+ If the edge already exists, the weight is incremented.
+ </summary>
+ <param name="i%">The source</param>
+ <param name="j%">The target</param>
+ <param name="weight#">Weight value of this edge, default is no weight.</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.WeightedPRGraph.AddEdge(System.String,System.String,System.Double)">
+ <summary>
+ <paramref name="u"/>和<paramref name="v"/>都是<see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Vertex.label"/>
+ </summary>
+ <param name="u">the source node</param>
+ <param name="v">the target node</param>
+ <param name="weight"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.WeightedPageRank">
+ <summary>
+ Package pagerank implements the **weighted** PageRank algorithm.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.WeightedPageRank.Rank(Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.WeightedPRGraph,System.Double,System.Double)">
+ <summary>
+ Package pagerank implements the **weighted** PageRank algorithm.
+ 
+ Rank computes the PageRank of every node in the directed graph.
+ This method will run as many iterations as needed, until the graph converges.
+ </summary>
+ <param name="a#">(alpha) Is the damping factor, usually set to 0.85.</param>
+ <param name="e#">(epsilon) Is the convergence criteria, usually set to a tiny value.</param>
+ <returns></returns>
+ 
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Ullmann.T">
+ <summary>
+ The target graph
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Ullmann.Q">
+ <summary>
+ the query graph
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Ullmann.#ctor(System.Int32[][],System.Int32[][])">
+ <summary>
+ 
+ </summary>
+ <param name="largeGraphMatrix">target graph, should be a graph with larger vertex count</param>
+ <param name="searchGraphMatrix">query graph, should be a graph with smaller vertex count</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Ullmann.FindIsomorphisms">
+ <summary>
+ get vertex node mapping result, which could be explained via the <see cref="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Ullmann.ExplainNodeMapping(System.Collections.Generic.IEnumerable{System.Int32[]},System.String[],System.String[])"/> function.
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Dijkstra.PQDijkstra.DijkstraFast">
+ <summary> 
+ Implements a generalized Dijkstra's algorithm to calculate 
+ both minimum distance and minimum path. 
+ </summary> 
+ <remarks> 
+ For this algorithm, all nodes should be provided, and handled 
+ in the delegate methods, including the start and finish nodes. 
+ </remarks> 
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Dijkstra.PQDijkstra.DijkstraFast.NearbyNodesHint">
+ <summary> 
+ An optional delegate that can help optimize the algorithm 
+ by showing it a subset of nodes to consider. Very useful 
+ for limited connectivity graphs. (like pixels on a screen!) 
+ </summary> 
+ <param name="startingNode"> 
+ The node that is being traveled away FROM. 
+ </param> 
+ <returns> 
+ An array of nodes that might be reached from the  
+ <paramref name="startingNode"/>. 
+ </returns> 
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Dijkstra.PQDijkstra.DijkstraFast.InternodeTraversalCost">
+ <summary> 
+ Determines the cost of moving from a given node to another given node. 
+ </summary> 
+ <param name="start"> 
+ The node being moved away from. 
+ </param> 
+ <param name="finish"> 
+ The node that may be moved to. 
+ </param> 
+ <returns> 
+ The cost of the transition from <paramref name="start"/> to 
+ <paramref name="finish"/>, or <see cref="F:System.Int32.MaxValue"/> 
+ if the transition is impossible (i.e. there is no edge between  
+ the two nodes). 
+ </returns> 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Dijkstra.PQDijkstra.DijkstraFast.#ctor(System.Int32,Microsoft.VisualBasic.Data.GraphTheory.Dijkstra.PQDijkstra.DijkstraFast.InternodeTraversalCost,Microsoft.VisualBasic.Data.GraphTheory.Dijkstra.PQDijkstra.DijkstraFast.NearbyNodesHint)">
+ <summary> 
+ Creates an instance of the <see cref="N:Microsoft.VisualBasic.Data.GraphTheory.Dijkstra"/> class. 
+ </summary> 
+ <param name="totalNodeCount"> 
+ The total number of nodes in the graph. 
+ </param> 
+ <param name="traversalCost"> 
+ The delegate that can provide the cost of a transition between 
+ any two nodes. 
+ </param> 
+ <param name="hint"> 
+ An optional delegate that can provide a small subset of nodes 
+ that a given node may be connected to. 
+ </param> 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Dijkstra.PQDijkstra.DijkstraFast.Results.#ctor(System.Int32[],System.Single[])">
+ <summary> 
+ Prepares a Dijkstra results package. 
+ </summary> 
+ <param name="minimumPath__1"> 
+ The minimum path array, where each array element index corresponds  
+ to a node designation, and the array element value is a pointer to 
+ the node that should be used to travel to this one. 
+ </param> 
+ <param name="minimumDistance__2"> 
+ The minimum distance from the starting node to the given node. 
+ </param> 
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Dijkstra.PQDijkstra.DijkstraFast.Results.MinimumPath">
+ The minimum path array, where each array element index corresponds  
+ to a node designation, and the array element value is a pointer to 
+ the node that should be used to travel to this one. 
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Dijkstra.PQDijkstra.DijkstraFast.Results.MinimumDistance">
+ The minimum distance from the starting node to the given node. 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Dijkstra.PQDijkstra.Finder.GetRelativePosition(System.Int32,System.Int32)">
+ <summary>
+ a function to get relative position from one node to another
+ </summary>
+ <param name="start"></param>
+ <param name="finish"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Dijkstra.PQDijkstra.PQDijkstraProvider.getInternodeTraversalCost(System.Int32,System.Int32)">
+ <summary>
+ get costs. If there is no connection, then cost is maximum.(»ñÈ¡)
+ </summary>
+ <param name="start"></param>
+ <param name="finish"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Dijkstra.PQDijkstra.PQDijkstraProvider.GetNearbyNodes(System.Int32)">
+ <summary>
+ »ñÈ¡ÓëÄ¿±ê½ÚµãÖ±½ÓÏàÁÚµÄËùÓÐµÄ½ÚµãµÄ±àºÅ
+ </summary>
+ <param name="startingNode"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Dijkstra.PQDijkstra.PQDijkstraProvider.#ctor(System.Int32)">
+ <summary>
+ ÍøÂçÖ®ÖÐµÄ½ÚµãµÄ×ÜÊýÄ¿
+ </summary>
+ <param name="totalNodes"></param>
+ <remarks></remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.EMD.Edge">
+ <summary>
+ @author Telmo Menezes (telmo@telmomenezes.com)
+ 
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.EMD.Feature2D">
+ <summary>
+ @author Telmo Menezes (telmo@telmomenezes.com)
+ 
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.EMD.JFastEMD">
+ <summary>
+ Earth Mover's Distance
+ 
+ @author Telmo Menezes (telmo@telmomenezes.com)
+ @author Ofir Pele
+ 
+ </summary>
+ <remarks>
+ https://github.com/telmomenezes/JFastEMD
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.EMD.JFastEMD.distance(Microsoft.VisualBasic.Data.GraphTheory.EMD.Signature,Microsoft.VisualBasic.Data.GraphTheory.EMD.Signature,System.Double)">
+ <summary>
+ This interface is similar to Rubner's interface. See:
+ http://www.cs.duke.edu/~tomasi/software/emd.htm
+ 
+ To get the same results as Rubner's code you should set extra_mass_penalty to 0,
+ and divide by the minimum of the sum of the two signature's weights. However, I
+ suggest not to do this as you lose the metric property and more importantly, in my
+ experience the performance is better with emd_hat. for more on the difference
+ between emd and emd_hat, see the paper:
+ A Linear Time Histogram Metric for Improved SIFT Matching
+ Ofir Pele, Michael Werman
+ ECCV 2008
+ 
+ To get shorter running time, set the ground distance function to
+ be a thresholded distance. For example: min(L2, T). Where T is some threshold.
+ Note that the running time is shorter with smaller T values. Note also that
+ thresholding the distance will probably increase accuracy. Finally, a thresholded
+ metric is also a metric. See paper:
+ Fast and Robust Earth Mover's Distances
+ Ofir Pele, Michael Werman
+ ICCV 2009
+ 
+ If you use this code, please cite the papers.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.EMD.Run.emdDist(System.Double[],System.Double[],System.Int32,System.Double)">
+ <summary>
+ A Linear Time Histogram Metric for Improved SIFT Matching
+ Ofir Pele, Michael Werman
+ ECCV 2008
+ bibTex:
+ @INPROCEEDINGS{Pele-eccv2008,
+ author = {Ofir Pele and Michael Werman},
+ title = {A Linear Time Histogram Metric for Improved SIFT Matching},
+ booktitle = {ECCV},
+ year = {2008}
+ }
+ Fast and Robust Earth Mover's Distances
+ Ofir Pele, Michael Werman
+ ICCV 2009
+ @INPROCEEDINGS{Pele-iccv2009,
+ author = {Ofir Pele and Michael Werman},
+ title = {Fast and Robust Earth Mover's Distances},
+ booktitle = {ICCV},
+ year = {2009}
+ }
+ </summary>
+ <param name="map1">vector 1</param>
+ <param name="map2">vector 2</param>
+ <param name="bins">any positive integer number</param>
+ <param name="extraMassPenalty">
+ penalty for extra mass. 0 for no penalty, -1 for the default, other positive values to specify the penalty;
+ An extraMassPenalty of -1 means that the extra mass penalty is the maximum distance found between two features.
+ </param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.EMD.Signature">
+ <summary>
+ Signatures can be used to represent sparse n-dimensional matrices. They are a collection of 
+ features and their respective weights. Feature is an interface that you must implement for
+ your specific application.
+ 
+ @author Telmo Menezes (telmo@telmomenezes.com)
+ 
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Extensions.VisitTree``1(Microsoft.VisualBasic.Data.GraphTheory.Tree{``0},System.Collections.Generic.IEnumerable{System.String})">
+ <summary>
+ Visit tree node by a given path token
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="tree"></param>
+ <param name="path">Collection of <see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Vertex.label"/></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Extensions.BacktrackingRoot``1(Microsoft.VisualBasic.Data.GraphTheory.Tree{``0})">
+ <summary>
+ Travel to root node from current tree node.
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="tree"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Extensions.CreateGraph``2(Microsoft.VisualBasic.Data.GraphTheory.Tree{``0,``1})">
+ <summary>
+ Inline extension of function calls <see cref="M:Microsoft.VisualBasic.Data.GraphTheory.Extensions.Add``2(Microsoft.VisualBasic.Data.GraphTheory.Graph,Microsoft.VisualBasic.Data.GraphTheory.Tree{``0,``1})"/>
+ </summary>
+ <typeparam name="T"></typeparam>
+ <typeparam name="K"></typeparam>
+ <param name="tree"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Extensions.Add``2(Microsoft.VisualBasic.Data.GraphTheory.Graph,Microsoft.VisualBasic.Data.GraphTheory.Tree{``0,``1})">
+ <summary>
+ Convert a tree to graph
+ </summary>
+ <typeparam name="T"></typeparam>
+ <typeparam name="K"></typeparam>
+ <param name="g"></param>
+ <param name="tree"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Extensions.Reverse(Microsoft.VisualBasic.Data.GraphTheory.VertexEdge)">
+ <summary>
+ Swap the location of <see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Edge`1.U"/> and <see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Edge`1.V"/> in <paramref name="edge"/>.
+ </summary>
+ <param name="edge"></param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Extensions.Grid(System.ValueTuple{Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange,Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange},System.Drawing.SizeF)">
+ <summary>
+ Generate 2D grid data model by a given [x,y] range value.
+ </summary>
+ <param name="xy"></param>
+ <param name="steps">如果这个参数为空的话，默认分为50份</param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.KNN">
+ <summary>
+ KNN search handler for phenograph
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.KNN.cutoff">
+ <summary>
+ knn score cutoff
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.KNN.FindNeighbors(Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.GeneralMatrix,System.Int32)">
+ <summary>
+ the output keeps the same order as the given input <paramref name="data"/>
+ </summary>
+ <param name="data"></param>
+ <param name="k"></param>
+ <returns>
+ the generates index value keeps the same order with input original <paramref name="data"/> matrix rows.
+ </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.ScoreMetric.eval(System.Double[],System.Double[])">
+ <summary>
+ the score function should produce a positive score value,
+ higher score value is better
+ </summary>
+ <param name="x"></param>
+ <param name="y"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Edge`1">
+ <summary>
+ Direction: ``<see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Edge`1.U"/> -> <see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Edge`1.V"/>``.
+ (节点之间的边)
+ </summary>
+ <remarks>
+ 如果边对象是一个有向边的话，那么<see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Edge`1.U"/>就是父节点，<see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Edge`1.V"/>就是<see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Edge`1.U"/>的子节点
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Edge`1.U">
+ <summary>
+ The source node
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Edge`1.V">
+ <summary>
+ The target node
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Edge`1.ID">
+ <summary>
+ ReadOnly unique-ID
+ </summary>
+ <returns></returns>
+ <remarks>
+ 唯一标识符使用的是<see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Edge`1.V"/>的ID属性，而不是使用Label生成的
+ </remarks> 
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Graph">
+ <summary>
+ A graph ``G = (V, E)`` consists of a set V of vertices and a set E edges, that is, unordered
+ pairs Of vertices. Unless explicitly stated otherwise, we assume that the graph Is simple,
+ that Is, it has no multiple edges And no self-loops.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Graph`3">
+ <summary>
+ A graph ``G = (V, E)`` consists of a set V of vertices and a set E edges, that is, unordered
+ pairs Of vertices. Unless explicitly stated otherwise, we assume that the graph Is simple,
+ that Is, it has no multiple edges And no self-loops.
+ (使用迭代器来访问这个图之中的边连接的集合)
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.linkIndex">
+ <summary>
+ directed edge index
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.vertices">
+ <summary>
+ <see cref="F:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.vertices"/>和<see cref="F:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.buffer"/>哈希表分别使用了两种属性来对节点进行索引的建立：
+ 
+ + <see cref="F:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.vertices"/>使用<see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Vertex.label"/>来建立字符串索引
+ + <see cref="F:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.buffer"/>使用<see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Vertex.ID"/>来建立指针的索引
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.buffer">
+ <summary>
+ Visit nodes directly by index number
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.size">
+ <summary>
+ ``[numof(vertex), numof(edges)]``
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.vertex">
+ <summary>
+ 这个图之中的所有的节点的集合. 请注意，这个只读属性是一个枚举集合，
+ 所以为了减少性能上的损失，不可以过多的使用下标来访问集合元素
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.graphEdges">
+ <summary>
+ get the enumeration of the internal edge list data.
+ (获取得到这个图中的所有的节点的边的集合，请注意，
+ 这个只读属性是一个枚举集合，所以为了减少性能上的损失，
+ 不可以过多的使用下标来访问集合元素.)
+ </summary>
+ <returns>
+ 因为在这里使用了一个<see cref="T:System.Collections.Generic.SortedDictionary`2"/>来进行
+ 存储，所以这个属性所返回的网络边连接的顺序与添加的时候的顺序会不一致
+ </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.QueryEdge(System.String,System.String)">
+ <summary>
+ query edges by directed node tuple.
+ </summary>
+ <param name="from"></param>
+ <returns>
+ returns nothing if target node is not exists in the index
+ </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.GetConnectedVertex">
+ <summary>
+ 返回所有至少具有一条边连接的节点的集合
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.AddVertex(`0)">
+ <summary>
+ <see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Vertex.label"/> should contains its index value before this method was called.
+ (如果已经存在目标ID的节点，则无操作)
+ </summary>
+ <param name="u"></param>
+ <returns></returns>
+ <remarks>
+ the input node vertex <paramref name="u"/> must have the <see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Vertex.ID"/> 
+ index value assigned before calling this function for add into the current 
+ graph object.
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.ExistVertex(System.String)">
+ <summary>
+ 通过<see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Vertex.label"/>作为主键进行查询目标节点是否存在于当前的图对象之中
+ </summary>
+ <param name="name"><see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Vertex.label"/></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.ExistEdge(System.String,System.String)">
+ <summary>
+ query edge item exists or not by edge id
+ </summary>
+ <param name="u"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.ExistEdge(`1)">
+ <summary>
+ query edge item exists or not by edge id
+ </summary>
+ <param name="edge"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.AddVertex(System.String)">
+ <summary>
+ 假若目标<paramref name="label"/>已经存在于顶点列表<see cref="F:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.vertices"/>之中，
+ 那么将不会添加新的节点而是直接返回原来已经存在的节点
+ </summary>
+ <param name="label$"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.Insert(`1)">
+ <summary>
+ just add edges
+ </summary>
+ <param name="edge">
+ vertex nodes in this given edge object 
+ will be added into the graph if not 
+ exists.
+ </param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.AddEdges(System.String,System.String[])">
+ <summary>
+ 这个函数使用起来比较方便，但是要求节点都必须要存在于列表之中
+ </summary>
+ <param name="src$"></param>
+ <param name="targets$"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.AddEdge(System.String,System.String,System.Double)">
+ <summary>
+ <paramref name="u"/> and <paramref name="v"/> is the property ``<see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Vertex.label"/>``
+ </summary>
+ <param name="u$"></param>
+ <param name="v$"></param>
+ <param name="weight#"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.CreateEdge(System.String,System.String,System.Double)">
+ <summary>
+ 这个函数仅仅是使用图对象中的node数据来创建edge对象，并不会添加edge到图中的edge列表中
+ </summary>
+ <param name="u$"></param>
+ <param name="v$"></param>
+ <param name="weight#"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.Delete(`0,`0)">
+ <summary>
+ 只会删除边，并不会删除节点<paramref name="U"/>和<paramref name="V"/>
+ </summary>
+ <param name="U"></param>
+ <param name="V"></param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.GetEnumerator">
+ <summary>
+ 因为图的主要关注点是放在节点对象的相互关系之上，所以在这里图对象是表现为一个边连接的集合
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Vertex">
+ <summary>
+ Vertex in a graph
+ </summary>
+ <remarks>
+ 图之中的节点
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Vertex.label">
+ <summary>
+ The unique id of this node
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Vertex.ID">
+ <summary>
+ Array index.
+ </summary>
+ <returns></returns>
+ <remarks>
+ (使用数字表示的唯一标识符)
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Vertex.Equals(System.Object)">
+ <summary>
+ just test equals by the <see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Vertex.ID"/> is the same or not.
+ </summary>
+ <param name="obj"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Grid">
+ <summary>
+ 网格也可以看作为一种网络
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Grid.#ctor(System.Drawing.Size,System.Drawing.SizeF)">
+ <summary>
+ 
+ </summary>
+ <param name="size">实际的物理大小，而非网格之中的单元格数量</param>
+ <param name="steps"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Grid.Index(System.Double,System.Double)">
+ <summary>
+ 返回数据点在网格之中的``X,Y``方格的顶点编号
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Grid.Index(System.Drawing.PointF)">
+ <summary>
+ 返回数据点在网格之中的``X,Y``方格的顶点编号
+ </summary>
+ <param name="p"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Grid`1">
+ <summary>
+ a generic grid graph for fast query of the 2D geometry data
+ </summary>
+ <typeparam name="T"></typeparam>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Grid`1.matrix2D">
+ <summary>
+ [x => [y => pixel]]
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Grid`1.width">
+ <summary>
+ get the max value of x axis
+ </summary>
+ <returns></returns>
+ <remarks>
+ this assuming that all x axis value is positive
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Grid`1.height">
+ <summary>
+ get the max value of y axis
+ </summary>
+ <returns></returns>
+ <remarks>
+ this assuming that all y axis value is positive
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Grid`1.GetPoint(System.Int32,System.Int32)">
+ <summary>
+ get target cell data via a given pixel point
+ </summary>
+ <param name="x"></param>
+ <param name="y"></param>
+ <returns>
+ nothing will be returns if there is no data on the given ``[x,y]`` pixel point.
+ </returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Grid`1.size">
+ <summary>
+ counts of all non-empty cell.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Grid`1.#ctor(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.GraphTheory.GridGraph.GridCell{`0}},System.Func{`0,System.Drawing.Point})">
+ <summary>
+ this constructor will removed duplicated pixels
+ </summary>
+ <param name="points"></param>
+ <param name="toPoint">
+ just works for the <see cref="M:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Grid`1.Add(`0)"/> method, this 
+ parameter can be omit is the grid is readonly.
+ </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Grid`1.EnumerateData">
+ <summary>
+ populate all of the cell data in current grid graph
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Grid`1.GetData(System.Int32,System.Int32,System.Boolean@)">
+ <summary>
+ get target cell data via a given pixel point
+ </summary>
+ <param name="x"></param>
+ <param name="y"></param>
+ <param name="hit"></param>
+ <returns>
+ nothing will be returns if there is no data on the given ``[x,y]`` pixel point.
+ </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Grid`1.Check(System.Int32,System.Int32)">
+ <summary>
+ check of the given point is existed?
+ </summary>
+ <param name="x"></param>
+ <param name="y"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Grid`1.Query(System.Int32,System.Int32,System.Int32)">
+ <summary>
+ get a range of nearby cell data via a given pixel point data 
+ and query size of the cell block rectangle.
+ </summary>
+ <param name="x"></param>
+ <param name="y"></param>
+ <param name="gridSize"></param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Grid`1.Query(System.Int32,System.Int32,System.Drawing.Size)">
+ <summary>
+ Query a block of the data points
+ 
+ [<paramref name="x"/>, <paramref name="y"/>] is the center point of the target rectangle region.
+ </summary>
+ <param name="x"></param>
+ <param name="y"></param>
+ <param name="gridSize"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Grid`1.CreateReadOnly(System.Collections.Generic.IEnumerable{`0},System.Func{`0,System.Drawing.Point})">
+ <summary>
+ Create a new readonly spatial graph
+ </summary>
+ <param name="data"></param>
+ <param name="getSpatial"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Grid`1.Create(System.Collections.Generic.IEnumerable{`0},System.Func{`0,System.Drawing.Point})">
+ <summary>
+ duplicated pixels will be removed from this constructor function
+ </summary>
+ <param name="data"></param>
+ <param name="getPixel"></param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Grid`1.Create``1(System.Collections.Generic.IEnumerable{``0})">
+ <summary>
+ a generic grid constructor for <see cref="T:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.IPoint2D"/>
+ </summary>
+ <typeparam name="Point"></typeparam>
+ <param name="data"></param>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.GridCell`1.index">
+ <summary>
+ 二维数组之中的索引 
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.IPoint2D">
+ <summary>
+ 2d point data model in readonly
+ </summary>
+ <remarks>
+ <see cref="T:Microsoft.VisualBasic.Imaging.RasterPixel"/> is not a readonly 2d point data model
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Spatial3D`1">
+ <summary>
+ a generic grid graph for fast query of the 3D geometry data
+ </summary>
+ <typeparam name="T"></typeparam>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Spatial3D`1.matrix2D">
+ <summary>
+ [z => 2d grid space]
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Spatial3D`1.size">
+ <summary>
+ counts of all non-empty cell.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Spatial3D`1.GetData(System.Int32,System.Int32,System.Int32,System.Boolean@)">
+ <summary>
+ implements the 3d spatial data lookup helper
+ </summary>
+ <param name="x"></param>
+ <param name="y"></param>
+ <param name="z"></param>
+ <param name="hit"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Spatial3D`1.ZLayers">
+ <summary>
+ get the grid index for each layer on z axis
+ </summary>
+ <returns>a collection of the 2d grid object which are re-order by z axis
+ from zero to max(z). order in asc</returns>
+ <remarks>
+ the populate out layer has already been re-ordered by the z-axis order.
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.SequenceGraphTransform">
+ <summary>
+ Sequence Graph Transform (SGT) — Sequence Embedding for Clustering, Classification, and Search
+ 
+ Sequence Graph Transform (SGT) is a sequence embedding function. SGT extracts 
+ the short- and long-term sequence features and embeds them in a finite-dimensional 
+ feature space. The long and short term patterns embedded in SGT can be tuned 
+ without any increase in the computation.
+ 
+ > https://github.com/cran2367/sgt/blob/25bf28097788fbbf9727abad91ec6e59873947cc/python/sgt-package/sgt/sgt.py
+ </summary>
+ <remarks>
+ Compute embedding of a single or a collection of discrete item
+ sequences. A discrete item sequence is a sequence made from a set
+ discrete elements, also known as alphabet set. For example,
+ suppose the alphabet set is the set of roman letters,
+ {A, B, ..., Z}. This set is made of discrete elements. Examples of
+ sequences from such a set are AABADDSA, UADSFJPFFFOIHOUGD, etc.
+ Such sequence datasets are commonly found in online industry,
+ for example, item purchase history, where the alphabet set is
+ the set of all product items. Sequence datasets are abundant in
+ bioinformatics as protein sequences.
+ Using the embeddings created here, classification and clustering
+ models can be built for sequence datasets.
+ Read more in https://arxiv.org/pdf/1608.03533.pdf
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.SequenceGraphTransform.feature_names">
+ <summary>
+ the feature name is the combination of <see cref="P:Microsoft.VisualBasic.Data.GraphTheory.SequenceGraphTransform.alphabets"/>
+ </summary>
+ <returns></returns>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.SequenceGraphTransform.mode">
+ <summary>
+ algorithm applied for check position
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.SequenceGraphTransform.#ctor(System.Char[],System.Double,System.Boolean,Microsoft.VisualBasic.Data.GraphTheory.SequenceGraphTransform.Modes)">
+ <summary>
+ 
+ </summary>
+ <param name="alphabets">Optional, except if mode is Spark.
+ The set of alphabets that make up all
+ the sequences in the dataset. If not passed, the
+ alphabet set is automatically computed as the
+ unique set of elements that make all the sequences.
+ A list or 1d-array of the set of elements that make up the
+ sequences. For example, np.array(["A", "B", "C"].
+ If mode is 'spark', the alphabets are necessary.
+ </param>
+ <param name="kappa">
+ Tuning parameter, kappa > 0, to change the extraction of
+ long-term dependency. Higher the value the lesser
+ the long-term dependency captured in the embedding.
+ Typical values for kappa are 1, 5, 10.</param>
+ <param name="lengthsensitive">Default False. This is set to true if the embedding of
+ should have the information of the length of the sequence.
+ If set to false then the embedding of two sequences with
+ similar pattern but different lengths will be the same.
+ lengthsensitive = false is similar to length-normalization.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.SequenceGraphTransform.get_positions(System.String,System.Char[])">
+ <summary>
+ Compute index position elements in the sequence
+ given alphabets Set.        
+ </summary>
+ <param name="sequence"></param>
+ <param name="alphabets"></param>
+ <returns>
+ Return list Of tuples [(value, position)]
+ </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.SequenceGraphTransform.set_alphabets(System.String[])">
+ <summary>
+ set the alphabet data
+ </summary>
+ <param name="corpus"></param>
+ <returns></returns>
+ <remarks>
+ 1. set the alphabet vector
+ 2. then set the feature names for the transformation output
+ 3. finally create the graph matrix index in this function
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.SequenceGraphTransform.__set_feature_name(System.Char[])">
+ <summary>
+ 
+ </summary>
+ <param name="alphabets"></param>
+ <returns>
+ returns an array of x,y combination result
+ </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.SequenceGraphTransform.fit(System.String)">
+ <summary>
+ Extract Sequence Graph Transform features using Algorithm-2.
+ </summary>
+ <param name="sequence"></param>
+ <returns>
+ sgt matrix or vector (depending on Flatten==False or True)
+ </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.SequenceGraphTransform.SafeStrip(System.String)">
+ <summary>
+ Strip of the unexpected alphabets that not existed in current embedding index
+ </summary>
+ <param name="seq"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.SequenceGraphTransform.CombinePartial(System.Int32[],System.Int32[])">
+ <summary>
+ for save the memory and make the algorithm faster when deal with a long sequence data
+ </summary>
+ <param name="U"></param>
+ <param name="V"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.AbstractTree`2">
+ <summary>
+ An abstract tree data model
+ </summary>
+ <typeparam name="T">the data type of the reference key its associated data.</typeparam>
+ <typeparam name="K">the data type of the reference key</typeparam>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.AbstractTree`2.Childs">
+ <summary>
+ Childs table, key is the property <see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Vertex.label"/>
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.AbstractTree`2.ChildNodes">
+ <summary>
+ a collection of the direct childs in current tree node
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.AbstractTree`2.Parent">
+ <summary>
+ 
+ </summary>
+ <returns></returns>
+ <remarks>
+ 在序列化之中会需要忽略掉这个属性，否则会产生无限递归
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.AbstractTree`2.Child(`1)">
+ <summary>
+ Get child node with a reference key
+ </summary>
+ <param name="key"></param>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.AbstractTree`2.Count">
+ <summary>
+ Not null child count in this tree node.
+ </summary>
+ <returns></returns>
+ <remarks>
+ 请注意，这个属性并不是返回的<see cref="P:Microsoft.VisualBasic.Data.GraphTheory.AbstractTree`2.Childs"/>的元素数量，
+ 而是返回当前树节点下的所有的子节点的数量
+ </remarks>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.AbstractTree`2.CountLeafs">
+ <summary>
+ 计算出所有的叶节点的总数，包括自己的child的叶节点
+ </summary>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.AbstractTree`2.CountLeafs(`0,System.Int32)">
+ <summary>
+ 对某一个节点的所有的叶节点进行计数
+ </summary>
+ <param name="node"></param>
+ <param name="count"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.HuffmanTree.HuffmanNeuron">
+ <summary>
+ Created by fangy on 13-12-20.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.HuffmanTree.HuffmanNode">
+ <summary>
+ Created by fangy on 13-12-17.
+ 哈夫曼树结点接口
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.HuffmanTree.HuffmanTreeTools">
+ <summary>
+ Created by fangy on 13-12-17.
+ 哈夫曼树
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor.ApproximateNearNeighbor">
+ <summary>
+ K Nearest Neighbour Search
+ 
+ Uses a kd-tree to find the p number of near neighbours for each point in an input/output dataset.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor.ApproximateNearNeighbor.PopulateVectors(Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.GeneralMatrix)">
+ <summary>
+ Convert the matrix rows as the indexed vector
+ </summary>
+ <param name="data"></param>
+ <returns></returns>
+ <remarks>
+ the vector is indexed via the input matrix row index
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor.ApproximateNearNeighbor.FindNeighbors(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor.TagVector},System.Int32)">
+ <summary>
+ the output keeps the same order as the given input <paramref name="data"/>
+ </summary>
+ <param name="data"></param>
+ <param name="k"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor.KNeighbors">
+ <summary>
+ k neighbors of a item row
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor.KNeighbors.size">
+ <summary>
+ the score cutoff maybe applied, so the neighbors size may smaller than the given k
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor.TagVector">
+ <summary>
+ a matrix row data is a vector
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor.TagVector.index">
+ <summary>
+ the row index inside the original matrix rows
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor.TagVector.vector">
+ <summary>
+ the vector row data
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor.TagVector.tag">
+ <summary>
+ maybe is the unique reference id tag
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor.VectorAccessor.#ctor(System.Int32)">
+ <summary>
+ create an accessor for access the n-dimension vector
+ </summary>
+ <param name="m"></param>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdNodeAccessor`1">
+ <summary>
+ Helper class for access the node data by different dimensions
+ </summary>
+ <typeparam name="T"></typeparam>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdNodeAccessor`1.metric(`0,`0)">
+ <summary>
+ measuring of the node distance
+ </summary>
+ <param name="a"></param>
+ <param name="b"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdNodeAccessor`1.nodeIs(`0,`0)">
+ <summary>
+ test node equals?
+ </summary>
+ <param name="a"></param>
+ <param name="b"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdNodeAccessor`1.activate">
+ <summary>
+ create a new instance of target object
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdNodeHeapItem`1">
+ <summary>
+ A KD-tree node bind with the distance with the target query point.
+ </summary>
+ <typeparam name="T"></typeparam>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdNodeHeapItem`1.node">
+ <summary>
+ the node KNN query result
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdNodeHeapItem`1.distance">
+ <summary>
+ the distance value to the query point
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdTree`1">
+ <summary>
+ KDTree is a class supporting KD-tree insertion, deletion, equality search,
+ range search, and nearest neighbor(s) using double-precision floating-point
+ keys. Splitting dimension is chosen naively, by depth modulo K. Semantics are
+ as follows:
+ 
+ + Two different keys containing identical numbers should retrieve the same
+ value from a given KD-tree. Therefore keys are cloned when a node is
+ inserted. 
+ + As with Hashtables, values inserted into a KD-tree are <I>not</I> cloned.
+ Modifying a value between insertion and retrieval will therefore modify the
+ value stored in the tree.
+ 
+ @author Simon Levy, Bjoern Heckel
+ @version %I%, %G%
+ @since JDK1.2
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdTree`1.dimensions">
+ <summary>
+ 
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdTree`1.dimSize">
+ <summary>
+ how many dimensions we're working with here
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdTree`1.counts">
+ <summary>
+ total number of nodes 
+ </summary>
+ <returns>
+ count nodes number from the <see cref="F:Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdTree`1.root"/>
+ </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdTree`1.nearest(`0,System.Int32,System.Nullable{System.Double})">
+ <summary>
+ Find KD-tree node whose key is identical to key. Uses algorithm
+ translated from 352.srch.c of Gonnet &amp; Baeza-Yates.
+ </summary>
+ <param name="point">
+ key for KD-tree node
+ </param>
+ <param name="maxDistance"></param>
+ <param name="maxNodes">
+ k
+ </param>
+ <returns>KNN search result</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdTree`1.nearestSearch(Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdTreeNode{`0},Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdTreeNode{`0},System.Int32,Microsoft.VisualBasic.Language.List{Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdNodeHeapItem{`0}},System.Int32)">
+ <summary>
+ 
+ </summary>
+ <param name="point">
+ the user query target point
+ </param>
+ <param name="node">
+ the parent node for search
+ </param>
+ <param name="result"></param>
+ <param name="maxNodes"></param>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdTreeNode`1">
+ <summary>
+ K-D Tree node class
+ </summary>
+ <typeparam name="T"></typeparam>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdTreeNode`1.data">
+ <summary>
+ payload
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdTreeNode`1.dimension">
+ <summary>
+ axis dimension
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdUtils.AverageDistance``1(Microsoft.VisualBasic.Data.GraphTheory.KdTree.KdTree{``0},System.Int32,System.Int32,System.Double[]@)">
+ <summary>
+ take sampling of some nodes and then evaluated the near neighbor distance
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="kdtree"></param>
+ <param name="sample">
+ number of the random samples 
+ </param>
+ <param name="k">
+ k for knn search based on the kd-tree
+ </param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.TermTree`1">
+ <summary>
+ A tree with string term as key
+ </summary>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.TermTree`1.Add(System.String,`0)">
+ <summary>
+ 
+ </summary>
+ <param name="path">Path tokens should seperated with delimiter ``/``.</param>
+ <param name="value"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Tree`2">
+ <summary>
+ Tree node with data.
+ </summary>
+ <typeparam name="T"></typeparam>
+ <remarks>
+ (可以直接被使用的树对象类型)
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Tree`1">
+ <summary>
+ 使用字符串<see cref="T:System.String"/>作为键名的树节点
+ </summary>
+ <typeparam name="T">the value type of the ``Data`` property</typeparam>
+ <remarks>
+ 在这里如果直接继承<see cref="T:Microsoft.VisualBasic.Data.GraphTheory.Tree`2"/>类型的话，会导致child的类型错误
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Tree`1.Add(Microsoft.VisualBasic.Data.GraphTheory.Tree{`0})">
+ <summary>
+ add target <paramref name="child"/> node into current childs 
+ collection and the assign the target <paramref name="child"/> 
+ parent to current node.
+ </summary>
+ <param name="child"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Tree`1.PopulateAllNodes">
+ <summary>
+ 
+ </summary>
+ <returns>
+ the first element is the tree root node
+ </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Trie`1">
+ <summary>
+ 朴素字典树（Trie）
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Trie`1.Add(System.String)">
+ <summary>
+ 建立字典树
+ </summary>
+ <param name="word"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Trie`1.PopulateWordsByPrefix(System.String)">
+ <summary>
+ populate words by a given prefix string.
+ </summary>
+ <param name="prefix">The prefix string</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Trie`1.Contains(System.String)">
+ <summary>
+ 查找某一个单词或者前缀是否在这颗字典树之中
+ </summary>
+ <param name="word"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Trie`1.Count(System.String)">
+ <summary>
+ 获取某一个单词/前缀在字典树之中的计数
+ </summary>
+ <param name="word"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.CharacterNode`1">
+ <summary>
+ 在字典树之中，一个字母构成一个节点
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.CharacterNode`1.Ends">
+ <summary>
+ 以这个字符结束的单词的数目
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.MinimumSpanningTree.Kruskal">
+ <summary>
+ Minimum spanning tree via Kruskal algorithm
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.NamespaceDoc">
+ <summary>
+ 图对象的操作API，并不包括有I/O操作函数，这个模块仅仅是提供对象的逻辑操作的方法集合
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.BipartiteMatching.Edge.fromVertex">
+ <summary>
+ an edge is composed of 2 vertices
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.BipartiteMatching.Edge.m_capacity">
+ <summary>
+ edges also have a capacity &amp; a flow
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.BipartiteMatching.Edge.getOtherEndNode(System.Int32)">
+ <summary>
+ Given an end-node, Returns the other end-node (completes the edge)
+ </summary>
+ <param name="vertex"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.BipartiteMatching.Edge.ToString">
+ <summary>
+ Prints edge using Array indexes, not human readable ID's like "S" or "T"
+ </summary>
+ <returns></returns>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.BipartiteMatching.graph">
+ <summary>
+ Graph is represented as an ArrayList of Edges
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.BipartiteMatching.getStringVertexIdFromArrayIndex">
+ <summary>
+ convert between array indexes (starting from 0) &amp; human readable vertex names
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.BipartiteMatching.vertexCount">
+ <summary>
+ How many vertices are in the graph
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.BipartiteMatching.edgeTo">
+ <summary>
+ These fields are updated by fordFulkersonMaxFlow and when finding augmentation paths
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.BipartiteMatching.isVertexMarked">
+ <summary>
+ array of all vertices, updated each time an augmentation path is found
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.BipartiteMatching.#ctor(System.Int32,System.Collections.Generic.List{System.String})">
+ <summary>
+ Constructor initializes graph edge list with number of vertexes, string equivalents for array indexes &amp; adds empty ArrayLists to the graph for how many vertices ther are
+ </summary>
+ <param name="vertexCount"></param>
+ <param name="getStringVertexIdFromArrayIndex"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.BipartiteMatching.connectSourceToLeftHalf(System.Int32,System.Int32[])">
+ <summary>
+ Adds edges from the source to all vertices in the left half
+ </summary>
+ <param name="source"></param>
+ <param name="leftHalfVertices"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.BipartiteMatching.connectSinkToRightHalf(System.Int32,System.Int32[])">
+ <summary>
+ Adds edges from all vertices in right half to sink
+ </summary>
+ <param name="sink"></param>
+ <param name="rightHalfVertices"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.BipartiteMatching.fordFulkersonMaxFlow(System.Int32,System.Int32)">
+ <summary>
+ Finds max flow / min cut of a graph
+ </summary>
+ <param name="source"></param>
+ <param name="sink"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.BipartiteMatching.existsAugmentingPath(System.Int32,System.Int32)">
+ <summary>
+ Calls dfs to find an augmentation path &amp; check if it reached the sink
+ </summary>
+ <param name="source"></param>
+ <param name="sink"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Network.Edge`1">
+ <summary>
+ interaction edge is a tuple of two node vertex object
+ </summary>
+ <typeparam name="T"></typeparam>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Network.IndexEdge">
+ <summary>
+ an edge link: [u, v]
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Network.IndexEdge.U">
+ <summary>
+ index of the vertex u source
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Network.IndexEdge.V">
+ <summary>
+ index of the vertex v target
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Network.Extensions">
+ <summary>
+ Graph network api module extensions
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Network.Extensions.EndPoints``2(Microsoft.VisualBasic.Data.GraphTheory.Network.NetworkGraph{``0,``1})">
+ <summary>
+ 查找出网络模型之中可能的网络端点
+ </summary>
+ <param name="network"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Network.Extensions.IteratesSubNetworks``3(Microsoft.VisualBasic.Data.GraphTheory.Network.NetworkGraph{``0,``1},System.Boolean,System.Double)">
+ <summary>
+ 枚举出所输入的网络数据模型之中的所有互不相连的子网络
+ </summary>
+ <param name="network"></param>
+ <param name="edgeCut">
+ all of the edge weight less than this 
+ cutff value will be ignored.
+ </param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Network.NamespaceDoc">
+ <summary>
+ 在这个命名空间之中包含有网络的数据模型API，网络布局，I/O和可视化模块都保留在gr模块之中
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Network.NetworkGraph`2">
+ <summary>
+ The base type of the network graph
+ </summary>
+ <typeparam name="Node"></typeparam>
+ <typeparam name="Edge"></typeparam>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Network.NetworkGraph`2.#ctor(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IEnumerable{`1})">
+ <summary>
+ Network model copy
+ </summary>
+ <param name="nodes"></param>
+ <param name="edges"></param>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Network.INode">
+ <summary>
+ Node model in the network
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Network.ExtensionsAPI.GetNullDirectedGuid(Microsoft.VisualBasic.Data.GraphTheory.Network.INetworkEdge,System.Boolean)">
+ <summary>
+ 返回没有方向性的统一标识符
+ </summary>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Network.ExtensionsAPI.GetDirectedGuid(Microsoft.VisualBasic.Data.GraphTheory.Network.INetworkEdge,System.Boolean)">
+ <summary>
+ 带有方向的互作关系字符串
+ </summary>
+ <returns></returns>
+ 
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Network.Node">
+ <summary>
+ A network node model
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Network.Node.degree">
+ <summary>
+ Node connection counts: [point_to_this_node, point_from_this_node]
+ </summary>
+ <returns></returns>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Network.SubNetworkComponents`3.edges">
+ <summary>
+ enable id data cache
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.PQTree">
+ 
+ <summary>
+ @author santi
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.PQTree.direction">
+ <summary>
+ left/right
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.PQTree.label">
+ <summary>
+ empty, partial, full
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.SparseGraph.IInteraction">
+ <summary>
+ interaction edge tuple of vertex reference id
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.SparseGraph.IInteraction.source">
+ <summary>
+ U
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.SparseGraph.IInteraction.target">
+ <summary>
+ V
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.SparseGraph.Copy(Microsoft.VisualBasic.Data.GraphTheory.SparseGraph.ISparseGraph)">
+ <summary>
+ make graph structure data copy
+ </summary>
+ <param name="g"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Utils.Build``2(Microsoft.VisualBasic.Data.GraphTheory.Tree{``0,``1},System.Boolean)">
+ <summary>
+ Tree to string
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="tree"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Utils.Summary``3(Microsoft.VisualBasic.Data.GraphTheory.Tree{``0,``1},System.Reflection.PropertyInfo[])">
+ <summary>
+ Summary this tree model its nodes as csv table
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="tree"></param>
+ <param name="schema"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Utils.SummaryMe``3(Microsoft.VisualBasic.Data.GraphTheory.Tree{``0,``1},System.Reflection.PropertyInfo[])">
+ <summary>
+ 这个函数不会对<see cref="P:Microsoft.VisualBasic.Data.GraphTheory.AbstractTree`2.Childs"/>进行递归
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="this"></param>
+ <param name="schema"></param>
+ <returns></returns>
+</member>
+</members>
+</doc>
