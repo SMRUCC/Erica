@@ -72,6 +72,8 @@ Public Class FormTool
             renderedBitmap = DirectCast(g, GdiRasterGraphics).ImageResource
         End Using
 
+        Call renderedBitmap.SaveAs("./renderedBitmap.png")
+
         PictureBox1.BackgroundImage = renderedBitmap.CTypeGdiImage
     End Sub
 
