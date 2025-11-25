@@ -265,7 +265,7 @@ Public Class FormTool
             .FileName = $"{sourcefile.ParentPath}/cleandata/{sourcefile.FileName}"
         }
             If file.ShowDialog = DialogResult.OK Then
-                allDataObjects.Where(Function(c) Not c.label.StringEmpty).SaveTo(file.FileName)
+                allDataObjects.Where(Function(c) Not c.label.StringEmpty).Tabular.WriteCsv(file.FileName)
                 ToolStripStatusLabel1.Text = $"Labelled Cell data exported at {file.FileName}"
             End If
         End Using
