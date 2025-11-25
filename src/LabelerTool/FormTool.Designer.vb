@@ -24,17 +24,20 @@ Partial Class FormTool
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormTool))
         ToolStrip1 = New ToolStrip()
+        ToolStripLabel2 = New ToolStripLabel()
         ToolStripButton1 = New ToolStripButton()
         ToolStripSeparator1 = New ToolStripSeparator()
         ToolStripButton2 = New ToolStripButton()
-        btnCompletePolygon = New ToolStripButton()
         btnClear = New ToolStripButton()
+        ToolStripLabel1 = New ToolStripLabel()
         txtLabel = New ToolStripTextBox()
+        btnCompletePolygon = New ToolStripButton()
         PictureBox1 = New PictureBox()
         StatusStrip1 = New StatusStrip()
         ToolStripStatusLabel1 = New ToolStripStatusLabel()
-        ToolStripLabel1 = New ToolStripLabel()
-        ToolStripLabel2 = New ToolStripLabel()
+        ToolStripSeparator2 = New ToolStripSeparator()
+        ToolStripLabel3 = New ToolStripLabel()
+        ToolStripButton3 = New ToolStripButton()
         ToolStrip1.SuspendLayout()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
         StatusStrip1.SuspendLayout()
@@ -42,13 +45,19 @@ Partial Class FormTool
         ' 
         ' ToolStrip1
         ' 
-        ToolStrip1.Items.AddRange(New ToolStripItem() {ToolStripLabel2, ToolStripButton1, ToolStripSeparator1, ToolStripButton2, btnClear, ToolStripLabel1, txtLabel, btnCompletePolygon})
+        ToolStrip1.Items.AddRange(New ToolStripItem() {ToolStripLabel2, ToolStripButton1, ToolStripSeparator1, ToolStripButton2, btnClear, ToolStripLabel1, txtLabel, btnCompletePolygon, ToolStripSeparator2, ToolStripLabel3, ToolStripButton3})
         ToolStrip1.Location = New Point(0, 0)
         ToolStrip1.Name = "ToolStrip1"
         ToolStrip1.RenderMode = ToolStripRenderMode.System
         ToolStrip1.Size = New Size(1134, 25)
         ToolStrip1.TabIndex = 0
         ToolStrip1.Text = "ToolStrip1"
+        ' 
+        ' ToolStripLabel2
+        ' 
+        ToolStripLabel2.Name = "ToolStripLabel2"
+        ToolStripLabel2.Size = New Size(113, 22)
+        ToolStripLabel2.Text = "Open Cell Table File:"
         ' 
         ' ToolStripButton1
         ' 
@@ -74,15 +83,6 @@ Partial Class FormTool
         ToolStripButton2.Size = New Size(23, 22)
         ToolStripButton2.Text = "Drawing Polygon"
         ' 
-        ' btnCompletePolygon
-        ' 
-        btnCompletePolygon.DisplayStyle = ToolStripItemDisplayStyle.Image
-        btnCompletePolygon.Image = CType(resources.GetObject("btnCompletePolygon.Image"), Image)
-        btnCompletePolygon.ImageTransparentColor = Color.Magenta
-        btnCompletePolygon.Name = "btnCompletePolygon"
-        btnCompletePolygon.Size = New Size(23, 22)
-        btnCompletePolygon.Text = "Complete Polygon"
-        ' 
         ' btnClear
         ' 
         btnClear.DisplayStyle = ToolStripItemDisplayStyle.Image
@@ -92,10 +92,25 @@ Partial Class FormTool
         btnClear.Size = New Size(23, 22)
         btnClear.Text = "Clear"
         ' 
+        ' ToolStripLabel1
+        ' 
+        ToolStripLabel1.Name = "ToolStripLabel1"
+        ToolStripLabel1.Size = New Size(113, 22)
+        ToolStripLabel1.Text = "Tissue Region Label:"
+        ' 
         ' txtLabel
         ' 
         txtLabel.Name = "txtLabel"
         txtLabel.Size = New Size(100, 25)
+        ' 
+        ' btnCompletePolygon
+        ' 
+        btnCompletePolygon.DisplayStyle = ToolStripItemDisplayStyle.Image
+        btnCompletePolygon.Image = CType(resources.GetObject("btnCompletePolygon.Image"), Image)
+        btnCompletePolygon.ImageTransparentColor = Color.Magenta
+        btnCompletePolygon.Name = "btnCompletePolygon"
+        btnCompletePolygon.Size = New Size(23, 22)
+        btnCompletePolygon.Text = "Complete Polygon"
         ' 
         ' PictureBox1
         ' 
@@ -124,17 +139,25 @@ Partial Class FormTool
         ToolStripStatusLabel1.Size = New Size(42, 17)
         ToolStripStatusLabel1.Text = "Ready!"
         ' 
-        ' ToolStripLabel1
+        ' ToolStripSeparator2
         ' 
-        ToolStripLabel1.Name = "ToolStripLabel1"
-        ToolStripLabel1.Size = New Size(113, 22)
-        ToolStripLabel1.Text = "Tissue Region Label:"
+        ToolStripSeparator2.Name = "ToolStripSeparator2"
+        ToolStripSeparator2.Size = New Size(6, 25)
         ' 
-        ' ToolStripLabel2
+        ' ToolStripLabel3
         ' 
-        ToolStripLabel2.Name = "ToolStripLabel2"
-        ToolStripLabel2.Size = New Size(113, 22)
-        ToolStripLabel2.Text = "Open Cell Table File:"
+        ToolStripLabel3.Name = "ToolStripLabel3"
+        ToolStripLabel3.Size = New Size(118, 22)
+        ToolStripLabel3.Text = "Export Labelled Data:"
+        ' 
+        ' ToolStripButton3
+        ' 
+        ToolStripButton3.DisplayStyle = ToolStripItemDisplayStyle.Image
+        ToolStripButton3.Image = CType(resources.GetObject("ToolStripButton3.Image"), Image)
+        ToolStripButton3.ImageTransparentColor = Color.Magenta
+        ToolStripButton3.Name = "ToolStripButton3"
+        ToolStripButton3.Size = New Size(23, 22)
+        ToolStripButton3.Text = "Export Labelled Data"
         ' 
         ' FormTool
         ' 
@@ -167,5 +190,8 @@ Partial Class FormTool
     Friend WithEvents ToolStripButton2 As ToolStripButton
     Friend WithEvents ToolStripLabel1 As ToolStripLabel
     Friend WithEvents ToolStripLabel2 As ToolStripLabel
+    Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
+    Friend WithEvents ToolStripLabel3 As ToolStripLabel
+    Friend WithEvents ToolStripButton3 As ToolStripButton
 
 End Class

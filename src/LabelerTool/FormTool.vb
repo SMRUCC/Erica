@@ -1,6 +1,7 @@
 ﻿Imports System.Drawing.Drawing2D
 Imports System.IO
 Imports HEView
+Imports Microsoft.VisualBasic.Data.Framework
 Imports Microsoft.VisualBasic.Drawing
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.Driver
@@ -239,5 +240,13 @@ Public Class FormTool
         If isDrawing Then
             ToolStripStatusLabel1.Text = "Drawing Polygon"
         End If
+    End Sub
+
+    Private Sub ToolStripButton3_Click(sender As Object, e As EventArgs) Handles ToolStripButton3.Click
+        Using file As New SaveFileDialog With {.Filter = "Cell Table(*.csv)|*.csv"}
+            If file.ShowDialog = DialogResult.OK Then
+                Call allDataObjects.Where(Function(c) Not c.label.StringEmpty).SaveTo(file.FileName)
+            End If
+        End Using
     End Sub
 End Class
