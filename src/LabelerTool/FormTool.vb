@@ -234,4 +234,10 @@ Public Class FormTool
         ToolStripButton1.Checked = True
         PictureBox1.Invalidate() ' 清除屏幕上的多边形
     End Sub
+
+    Private Sub ToolStripButton2_CheckStateChanged(sender As Object, e As EventArgs) Handles ToolStripButton2.CheckStateChanged
+        If isDrawing Then
+            ToolStripStatusLabel1.Text = "Drawing Polygon"
+        End If
+    End Sub
 End Class

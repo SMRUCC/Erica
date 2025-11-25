@@ -33,6 +33,8 @@ Partial Class FormTool
         PictureBox1 = New PictureBox()
         StatusStrip1 = New StatusStrip()
         ToolStripStatusLabel1 = New ToolStripStatusLabel()
+        ToolStripLabel1 = New ToolStripLabel()
+        ToolStripLabel2 = New ToolStripLabel()
         ToolStrip1.SuspendLayout()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
         StatusStrip1.SuspendLayout()
@@ -40,11 +42,11 @@ Partial Class FormTool
         ' 
         ' ToolStrip1
         ' 
-        ToolStrip1.Items.AddRange(New ToolStripItem() {ToolStripButton1, ToolStripSeparator1, ToolStripButton2, btnCompletePolygon, btnClear, txtLabel})
+        ToolStrip1.Items.AddRange(New ToolStripItem() {ToolStripLabel2, ToolStripButton1, ToolStripSeparator1, ToolStripButton2, btnClear, ToolStripLabel1, txtLabel, btnCompletePolygon})
         ToolStrip1.Location = New Point(0, 0)
         ToolStrip1.Name = "ToolStrip1"
         ToolStrip1.RenderMode = ToolStripRenderMode.System
-        ToolStrip1.Size = New Size(848, 25)
+        ToolStrip1.Size = New Size(1134, 25)
         ToolStrip1.TabIndex = 0
         ToolStrip1.Text = "ToolStrip1"
         ' 
@@ -70,7 +72,7 @@ Partial Class FormTool
         ToolStripButton2.ImageTransparentColor = Color.Magenta
         ToolStripButton2.Name = "ToolStripButton2"
         ToolStripButton2.Size = New Size(23, 22)
-        ToolStripButton2.Text = "ToolStripButton2"
+        ToolStripButton2.Text = "Drawing Polygon"
         ' 
         ' btnCompletePolygon
         ' 
@@ -102,7 +104,7 @@ Partial Class FormTool
         PictureBox1.Dock = DockStyle.Fill
         PictureBox1.Location = New Point(0, 25)
         PictureBox1.Name = "PictureBox1"
-        PictureBox1.Size = New Size(848, 643)
+        PictureBox1.Size = New Size(1134, 742)
         PictureBox1.SizeMode = PictureBoxSizeMode.Zoom
         PictureBox1.TabIndex = 1
         PictureBox1.TabStop = False
@@ -110,23 +112,35 @@ Partial Class FormTool
         ' StatusStrip1
         ' 
         StatusStrip1.Items.AddRange(New ToolStripItem() {ToolStripStatusLabel1})
-        StatusStrip1.Location = New Point(0, 668)
+        StatusStrip1.Location = New Point(0, 767)
         StatusStrip1.Name = "StatusStrip1"
-        StatusStrip1.Size = New Size(848, 22)
+        StatusStrip1.Size = New Size(1134, 22)
         StatusStrip1.TabIndex = 2
         StatusStrip1.Text = "StatusStrip1"
         ' 
         ' ToolStripStatusLabel1
         ' 
         ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        ToolStripStatusLabel1.Size = New Size(119, 17)
-        ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
+        ToolStripStatusLabel1.Size = New Size(42, 17)
+        ToolStripStatusLabel1.Text = "Ready!"
+        ' 
+        ' ToolStripLabel1
+        ' 
+        ToolStripLabel1.Name = "ToolStripLabel1"
+        ToolStripLabel1.Size = New Size(113, 22)
+        ToolStripLabel1.Text = "Tissue Region Label:"
+        ' 
+        ' ToolStripLabel2
+        ' 
+        ToolStripLabel2.Name = "ToolStripLabel2"
+        ToolStripLabel2.Size = New Size(113, 22)
+        ToolStripLabel2.Text = "Open Cell Table File:"
         ' 
         ' FormTool
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(848, 690)
+        ClientSize = New Size(1134, 789)
         Controls.Add(PictureBox1)
         Controls.Add(StatusStrip1)
         Controls.Add(ToolStrip1)
@@ -151,5 +165,7 @@ Partial Class FormTool
     Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
     Friend WithEvents txtLabel As ToolStripTextBox
     Friend WithEvents ToolStripButton2 As ToolStripButton
+    Friend WithEvents ToolStripLabel1 As ToolStripLabel
+    Friend WithEvents ToolStripLabel2 As ToolStripLabel
 
 End Class
