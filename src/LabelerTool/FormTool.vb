@@ -1,4 +1,5 @@
-﻿Imports System.IO
+﻿Imports System.Drawing.Drawing2D
+Imports System.IO
 Imports HEView
 Imports Microsoft.VisualBasic.Drawing
 Imports Microsoft.VisualBasic.Imaging
@@ -121,11 +122,102 @@ Public Class FormTool
         Return rect
     End Function
 
-    Private Sub ToolStripButton2_Click(sender As Object, e As EventArgs) Handles ToolStripButton2.Click
-        Using file As New OpenFileDialog With {.Filter = "image file(*.png)|*.png"}
-            If file.ShowDialog = DialogResult.OK Then
-                PictureBox1.BackgroundImage = System.Drawing.Image.FromStream(New MemoryStream(file.FileName.ReadBinary))
+    ' 【核心】判断点是否在多边形内部 (射线法)
+    Private Function IsPointInPolygon(point As PointF, polygon As List(Of PointF)) As Boolean
+        If polygon.Count < 3 Then Return False
+
+        Dim p1 As PointF, p2 As PointF
+        Dim isInside As Boolean = False
+
+        For i As Integer = 0 To polygon.Count - 1
+            p1 = polygon(i)
+            p2 = polygon((i + 1) Mod polygon.Count)
+
+            If point.Y > std.Min(p1.Y, p2.Y) AndAlso point.Y <= std.Max(p1.Y, p2.Y) AndAlso
+               point.X <= std.Max(p1.X, p2.X) AndAlso
+               p1.Y <> p2.Y Then
+                Dim xinters As Single = (point.Y - p1.Y) * (p2.X - p1.X) / (p2.Y - p1.Y) + p1.X
+                If p1.X = p2.X OrElse point.X <= xinters Then
+                    isInside = Not isInside
+                End If
             End If
-        End Using
+        Next
+
+        Return isInside
+    End Function
+
+    ' --- 5. 事件处理 ---
+
+    ' 鼠标点击：添加多边形顶点
+    Private Sub PictureBox1_MouseDown(sender As Object, e As MouseEventArgs) Handles PictureBox1.MouseDown
+        If Not isDrawing Then Return
+        If e.Button = MouseButtons.Left Then
+            polygonPoints.Add(e.Location)
+            PictureBox1.Invalidate() ' 触发重绘
+        End If
+    End Sub
+
+    ' 绘制事件：绘制背景图和用户的多边形
+    Private Sub PictureBox1_Paint(sender As Object, e As PaintEventArgs) Handles PictureBox1.Paint
+        ' 先绘制背景位图
+        If PictureBox1.Image IsNot Nothing Then
+            e.Graphics.DrawImage(PictureBox1.Image, GetImageDisplayRect(PictureBox1))
+        End If
+
+        ' 再绘制多边形
+        If polygonPoints.Count > 0 Then
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias
+            Using pen As New System.Drawing.Pen(Color.Red, 2)
+                If polygonPoints.Count > 1 Then
+                    e.Graphics.DrawLines(pen, polygonPoints.ToArray())
+                End If
+                ' 绘制顶点
+                For Each p In polygonPoints
+                    e.Graphics.FillEllipse(System.Drawing.Brushes.Red, p.X - 3, p.Y - 3, 6, 6)
+                Next
+            End Using
+        End If
+    End Sub
+
+    ' 完成多边形按钮
+    Private Sub btnCompletePolygon_Click(sender As Object, e As EventArgs) Handles btnCompletePolygon.Click
+        If polygonPoints.Count < 3 Then
+            MessageBox.Show("请至少绘制3个点来构成一个多边形。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Return
+        End If
+        If String.IsNullOrWhiteSpace(txtLabel.Text) Then
+            MessageBox.Show("请输入要应用的标签。", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Return
+        End If
+
+        isDrawing = False ' 停止绘制
+
+        ' 1. 将PictureBox上的多边形顶点转换到世界坐标系
+        Dim worldPolygon As New List(Of PointF)
+        For Each p In polygonPoints
+            worldPolygon.Add(PictureBoxToWorldPoint(p))
+        Next
+
+        ' 2. 遍历所有原始数据，判断是否在多边形内
+        Dim labeledCount As Integer = 0
+        For Each obj As CellScan In allDataObjects
+            If IsPointInPolygon(New PointF(CSng(obj.x), CSng(obj.y)), worldPolygon) Then
+                obj.Label = txtLabel.Text
+                labeledCount += 1
+            End If
+        Next
+
+        MessageBox.Show($"成功为 {labeledCount} 个对象打上标签 '{txtLabel.Text}'。", "标注完成", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+        ' (可选) 重新渲染以高亮显示已标注的点
+        ' RenderDataToBitmap() ' 如果需要根据标签改变颜色，可以在这里修改渲染逻辑
+        ' PictureBox1.Invalidate()
+    End Sub
+
+    ' 清除多边形按钮
+    Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
+        polygonPoints.Clear()
+        isDrawing = True
+        PictureBox1.Invalidate() ' 清除屏幕上的多边形
     End Sub
 End Class

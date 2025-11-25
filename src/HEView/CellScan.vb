@@ -12,6 +12,7 @@ Imports std = System.Math
 Public Class CellScan : Implements Layout2D
 
     Public Property tile_id As String
+    Public Property label As String
     Public Property x As Double
     Public Property y As Double
 
