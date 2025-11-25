@@ -12,7 +12,6 @@ Public Class FormTool
     Dim allDataObjects As CellScan()
     Dim sizeOriginal As Size
     Dim polygonPoints As New List(Of Point)
-    Dim renderedBitmap As Image
     Dim currentMousePos As Point
 
     Dim worldBounds As RectangleF
@@ -53,6 +52,7 @@ Public Class FormTool
     Private Sub RenderDataToBitmap(sourcedata As String)
         Dim factor As Double = 20
         Dim max As Double = 1500
+        Dim renderedBitmap As Image
 
         If worldBounds.Width > worldBounds.Height Then
             ' scale by width
@@ -92,7 +92,7 @@ Public Class FormTool
 
     ' 【核心】将 PictureBox 坐标转换为世界坐标
     Private Function PictureBoxToWorldPoint(p As Point) As PointF
-        If PictureBox1.Image Is Nothing Then Return Nothing
+        If PictureBox1.BackgroundImage Is Nothing Then Return Nothing
 
         ' 1. 获取PictureBox上图像的实际显示区域和缩放比
         Dim imgRect As Rectangle = GetImageDisplayRect(PictureBox1)
@@ -113,7 +113,7 @@ Public Class FormTool
     ' 辅助函数：获取PictureBox在Zoom模式下，图片的实际显示矩形
     Private Function GetImageDisplayRect(pb As PictureBox) As Rectangle
         Dim rect As New Rectangle()
-        Dim img As Bitmap = renderedBitmap
+        Dim img As System.Drawing.Image = PictureBox1.BackgroundImage
 
         If img Is Nothing Then Return rect
 
@@ -171,8 +171,8 @@ Public Class FormTool
     ' 绘制事件：绘制背景图和用户的多边形
     Private Sub PictureBox1_Paint(sender As Object, e As PaintEventArgs) Handles PictureBox1.Paint
         ' 先绘制背景位图
-        If PictureBox1.Image IsNot Nothing Then
-            e.Graphics.DrawImage(PictureBox1.Image, GetImageDisplayRect(PictureBox1))
+        If PictureBox1.BackgroundImage IsNot Nothing Then
+            e.Graphics.DrawImage(PictureBox1.BackgroundImage, GetImageDisplayRect(PictureBox1))
         End If
 
         ' 再绘制多边形
