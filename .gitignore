@@ -397,3 +397,6 @@ test/deconv/HR2MSI mouse urinary bladder S096_top3-STdeconvolve2.csv
 test/deconv/HR2MSI mouse urinary bladder S096_top3-STdeconvolve.csv
 test/deconv/parallel/HR2MSI mouse urinary bladder S096_top3-STdeconvolve2.csv
 test/deconv/parallel/HR2MSI mouse urinary bladder S096_top3-STdeconvolve.csv
+*.so
+*.dylib
+*.exe
