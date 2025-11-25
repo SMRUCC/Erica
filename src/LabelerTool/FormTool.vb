@@ -33,12 +33,12 @@ Public Class FormTool
                     worldBounds = New RectangleF(0, 0, .width.Max, .height.Max)
                 End With
 
-                Call RenderDataToBitmap()
+                Call RenderDataToBitmap(file.FileName)
             End If
         End Using
     End Sub
 
-    Private Sub RenderDataToBitmap()
+    Private Sub RenderDataToBitmap(sourcedata As String)
         Dim factor As Double = 20
         Dim max As Double = 1500
 
@@ -72,9 +72,10 @@ Public Class FormTool
             renderedBitmap = DirectCast(g, GdiRasterGraphics).ImageResource
         End Using
 
-        Call renderedBitmap.SaveAs("./renderedBitmap.png")
+        sourcedata = $"{sourcedata.ParentPath}/{sourcedata.BaseName}_renderedBitmap.png"
 
-        PictureBox1.BackgroundImage = renderedBitmap.CTypeGdiImage
+        renderedBitmap.SaveAs(sourcedata)
+        PictureBox1.BackgroundImage = System.Drawing.Image.FromStream(New MemoryStream(sourcedata.ReadBinary))
     End Sub
 
     ' 【核心】将 PictureBox 坐标转换为世界坐标
@@ -119,4 +120,12 @@ Public Class FormTool
 
         Return rect
     End Function
+
+    Private Sub ToolStripButton2_Click(sender As Object, e As EventArgs) Handles ToolStripButton2.Click
+        Using file As New OpenFileDialog With {.Filter = "image file(*.png)|*.png"}
+            If file.ShowDialog = DialogResult.OK Then
+                PictureBox1.BackgroundImage = System.Drawing.Image.FromStream(New MemoryStream(file.FileName.ReadBinary))
+            End If
+        End Using
+    End Sub
 End Class
