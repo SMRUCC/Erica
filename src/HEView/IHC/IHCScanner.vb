@@ -125,8 +125,6 @@ Public Class IHCScanner
                 .ToArray
             Dim tile_id As String = xy.JoinBy("_")
 
-            Call bitmap.Save($"Z:/test/{tile_id}.bmp")
-
             ' for each cell
             For j As Integer = 0 To lookups.Length - 1
                 Dim cell As IHCCellScan = lookups(j).Clone(New IHCCellScan)

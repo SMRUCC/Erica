@@ -32,12 +32,12 @@ Partial Class FormTool
         ToolStripLabel1 = New ToolStripLabel()
         txtLabel = New ToolStripTextBox()
         btnCompletePolygon = New ToolStripButton()
-        PictureBox1 = New PictureBox()
-        StatusStrip1 = New StatusStrip()
-        ToolStripStatusLabel1 = New ToolStripStatusLabel()
         ToolStripSeparator2 = New ToolStripSeparator()
         ToolStripLabel3 = New ToolStripLabel()
         ToolStripButton3 = New ToolStripButton()
+        PictureBox1 = New PictureBox()
+        StatusStrip1 = New StatusStrip()
+        ToolStripStatusLabel1 = New ToolStripStatusLabel()
         ToolStrip1.SuspendLayout()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
         StatusStrip1.SuspendLayout()
@@ -112,6 +112,26 @@ Partial Class FormTool
         btnCompletePolygon.Size = New Size(23, 22)
         btnCompletePolygon.Text = "Complete Polygon"
         ' 
+        ' ToolStripSeparator2
+        ' 
+        ToolStripSeparator2.Name = "ToolStripSeparator2"
+        ToolStripSeparator2.Size = New Size(6, 25)
+        ' 
+        ' ToolStripLabel3
+        ' 
+        ToolStripLabel3.Name = "ToolStripLabel3"
+        ToolStripLabel3.Size = New Size(118, 22)
+        ToolStripLabel3.Text = "Export Labelled Data:"
+        ' 
+        ' ToolStripButton3
+        ' 
+        ToolStripButton3.DisplayStyle = ToolStripItemDisplayStyle.Image
+        ToolStripButton3.Image = CType(resources.GetObject("ToolStripButton3.Image"), Image)
+        ToolStripButton3.ImageTransparentColor = Color.Magenta
+        ToolStripButton3.Name = "ToolStripButton3"
+        ToolStripButton3.Size = New Size(23, 22)
+        ToolStripButton3.Text = "Export Labelled Data"
+        ' 
         ' PictureBox1
         ' 
         PictureBox1.BackColor = Color.Black
@@ -139,26 +159,6 @@ Partial Class FormTool
         ToolStripStatusLabel1.Size = New Size(42, 17)
         ToolStripStatusLabel1.Text = "Ready!"
         ' 
-        ' ToolStripSeparator2
-        ' 
-        ToolStripSeparator2.Name = "ToolStripSeparator2"
-        ToolStripSeparator2.Size = New Size(6, 25)
-        ' 
-        ' ToolStripLabel3
-        ' 
-        ToolStripLabel3.Name = "ToolStripLabel3"
-        ToolStripLabel3.Size = New Size(118, 22)
-        ToolStripLabel3.Text = "Export Labelled Data:"
-        ' 
-        ' ToolStripButton3
-        ' 
-        ToolStripButton3.DisplayStyle = ToolStripItemDisplayStyle.Image
-        ToolStripButton3.Image = CType(resources.GetObject("ToolStripButton3.Image"), Image)
-        ToolStripButton3.ImageTransparentColor = Color.Magenta
-        ToolStripButton3.Name = "ToolStripButton3"
-        ToolStripButton3.Size = New Size(23, 22)
-        ToolStripButton3.Text = "Export Labelled Data"
-        ' 
         ' FormTool
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -168,6 +168,7 @@ Partial Class FormTool
         Controls.Add(StatusStrip1)
         Controls.Add(ToolStrip1)
         Name = "FormTool"
+        StartPosition = FormStartPosition.CenterParent
         Text = "Cell Label Tool"
         ToolStrip1.ResumeLayout(False)
         ToolStrip1.PerformLayout()

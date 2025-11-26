@@ -33,7 +33,7 @@ Namespace My
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.LabelerTool.FormTool
+            Me.MainForm = Global.LabelerTool.FormMain
         End Sub
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
