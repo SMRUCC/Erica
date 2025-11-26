@@ -43,11 +43,10 @@ Public Class DziImageBuffer
     ''' <remarks>
     ''' the grayscale image for each tile also created in the dzi tile constructor function
     ''' </remarks>
-    Public Shared Iterator Function LoadBuffer(dzi As DziImage,
-                                               level As Integer,
-                                               dir As IFileSystemEnvironment,
+    Public Shared Iterator Function LoadBuffer(dzi As DziImage, level As Integer, dir As IFileSystemEnvironment,
                                                Optional skipBlank As Boolean = False,
-                                               Optional flipBackground As Boolean = False) As IEnumerable(Of DziImageBuffer)
+                                               Optional flipBackground As Boolean = False,
+                                               Optional tolerance As Integer = 9) As IEnumerable(Of DziImageBuffer)
 
         Dim imagefiles As String() = dir.EnumerateFiles("/", "*.jpg", "*.png", "*.jpeg", "*.bmp").ToArray
 
@@ -70,7 +69,7 @@ Public Class DziImageBuffer
                 Dim pixels As Color() = bitmap.GetPixelsAll.ToArray
 
                 For i As Integer = 0 To pixels.Length - 1
-                    If pixels(i).Equals(Color.Black, tolerance:=0) OrElse pixels(i).IsTransparent Then
+                    If pixels(i).Equals(Color.Black, tolerance:=tolerance) OrElse pixels(i).IsTransparent Then
                         pixels(i) = Color.White
                     End If
                 Next
