@@ -262,7 +262,7 @@ Public Class FormTool
 
         Using file As New SaveFileDialog With {
             .Filter = "Cell Table(*.csv)|*.csv",
-            .FileName = $"{sourcefile.ParentPath}/cleandata/{sourcefile.FileName}"
+            .FileName = $"{sourcefile.FileName}"
         }
             If file.ShowDialog = DialogResult.OK Then
                 Dim slice = allDataObjects.Where(Function(c) Not c.label.StringEmpty).ToArray
