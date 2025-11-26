@@ -25,6 +25,7 @@
     <RemoveIntegerChecks>True</RemoveIntegerChecks>
     <Optimize>False</Optimize>
     <DebugType>full</DebugType>
+    <DefineDebug>True</DefineDebug>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -33,6 +34,7 @@
     <DebugType>full</DebugType>
     <OutputPath>../../tools/</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <DefineDebug>True</DefineDebug>
   </PropertyGroup>
 
   <ItemGroup>

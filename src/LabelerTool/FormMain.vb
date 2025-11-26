@@ -13,7 +13,7 @@ Public Class FormMain
                 Dim pixels As Color() = bitmap.GetPixelsAll.ToArray
 
                 For i As Integer = 0 To pixels.Length - 1
-                    If pixels(i).Equals(Color.Black, tolerance:=0) OrElse pixels(i).IsTransparent Then
+                    If pixels(i).Equals(Color.Black, tolerance:=9) OrElse pixels(i).IsTransparent Then
                         pixels(i) = Color.White
                     End If
                 Next
