@@ -61,6 +61,7 @@ Partial Class FormMain
         ' 
         ' PictureBox1
         ' 
+        PictureBox1.BackColor = Color.Black
         PictureBox1.BackgroundImageLayout = ImageLayout.Zoom
         PictureBox1.Dock = DockStyle.Fill
         PictureBox1.Location = New Point(0, 24)

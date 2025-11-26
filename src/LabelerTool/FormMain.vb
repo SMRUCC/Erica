@@ -20,6 +20,7 @@ Public Class FormMain
 
                 Using s As New MemoryStream
                     bitmap = New BitmapBuffer(pixels, bitmap.Size)
+                    bitmap = New BitmapBuffer(bitmap).Grayscale
                     bitmap.Save(s)
                     s.Seek(Scan0, SeekOrigin.Begin)
 
