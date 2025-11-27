@@ -35,7 +35,7 @@ Partial Class FormRotateParameters
         GroupBox1.Controls.Add(Label1)
         GroupBox1.Location = New Point(3, 3)
         GroupBox1.Name = "GroupBox1"
-        GroupBox1.Size = New Size(295, 105)
+        GroupBox1.Size = New Size(295, 68)
         GroupBox1.TabIndex = 0
         GroupBox1.TabStop = False
         GroupBox1.Text = "Input Parameters"
@@ -58,7 +58,7 @@ Partial Class FormRotateParameters
         ' 
         ' Button1
         ' 
-        Button1.Location = New Point(223, 114)
+        Button1.Location = New Point(223, 77)
         Button1.Name = "Button1"
         Button1.Size = New Size(75, 23)
         Button1.TabIndex = 1
@@ -69,11 +69,12 @@ Partial Class FormRotateParameters
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(307, 143)
+        ClientSize = New Size(307, 105)
         Controls.Add(Button1)
         Controls.Add(GroupBox1)
         FormBorderStyle = FormBorderStyle.FixedToolWindow
         Name = "FormRotateParameters"
+        StartPosition = FormStartPosition.CenterParent
         Text = "Set Transform Parameters"
         GroupBox1.ResumeLayout(False)
         GroupBox1.PerformLayout()
