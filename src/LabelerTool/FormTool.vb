@@ -283,6 +283,12 @@ Public Class FormTool
             allDataObjects = CellScan.ApplyTransform(allDataObjects, input.Argument)
 
             With Rasterizer.MeasureRasterRange(allDataObjects)
+                For Each cell In allDataObjects
+                    cell.physical_x -= .width.Min
+                    cell.physical_y -= .height.Min
+                Next
+            End With
+            With Rasterizer.MeasureRasterRange(allDataObjects)
                 worldBounds = New RectangleF(0, 0, .width.Max, .height.Max)
             End With
 

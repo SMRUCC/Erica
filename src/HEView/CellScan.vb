@@ -80,6 +80,7 @@ Public Class CellScan : Implements Layout2D
             .x = x
             .y = y
             .theta = theta
+            .label = label
         End With
 
         Return target
