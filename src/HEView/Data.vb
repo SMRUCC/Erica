@@ -98,7 +98,7 @@ Public Module Data
                             "r1", "r2", "theta",
                             "weight", "density", "mean_distance",
                             "moran-I", "p-value",
-                            "tile_id")
+                            "tile_id", "label")
 
         Dim antibodies As SeqValue(Of String)() = ordinal.Where(Function(a) Not a.value.StringEmpty).ToArray
         Dim isIHCCells As Boolean = Not antibodies.IsNullOrEmpty
