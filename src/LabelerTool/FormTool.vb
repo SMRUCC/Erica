@@ -275,4 +275,18 @@ Public Class FormTool
             End If
         End Using
     End Sub
+
+    Private Sub ToolStripButton4_Click(sender As Object, e As EventArgs) Handles ToolStripButton4.Click
+        Dim input As New FormRotateParameters
+
+        If input.ShowDialog = DialogResult.OK Then
+            allDataObjects = CellScan.ApplyTransform(allDataObjects, input.Argument)
+
+            With Rasterizer.MeasureRasterRange(allDataObjects)
+                worldBounds = New RectangleF(0, 0, .width.Max, .height.Max)
+            End With
+
+            Call RenderDataToBitmap(sourcefile)
+        End If
+    End Sub
 End Class

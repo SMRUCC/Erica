@@ -38,6 +38,8 @@ Partial Class FormTool
         PictureBox1 = New PictureBox()
         StatusStrip1 = New StatusStrip()
         ToolStripStatusLabel1 = New ToolStripStatusLabel()
+        ToolStripSeparator3 = New ToolStripSeparator()
+        ToolStripButton4 = New ToolStripButton()
         ToolStrip1.SuspendLayout()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
         StatusStrip1.SuspendLayout()
@@ -45,7 +47,7 @@ Partial Class FormTool
         ' 
         ' ToolStrip1
         ' 
-        ToolStrip1.Items.AddRange(New ToolStripItem() {ToolStripLabel2, ToolStripButton1, ToolStripSeparator1, ToolStripButton2, btnClear, ToolStripLabel1, txtLabel, btnCompletePolygon, ToolStripSeparator2, ToolStripLabel3, ToolStripButton3})
+        ToolStrip1.Items.AddRange(New ToolStripItem() {ToolStripLabel2, ToolStripButton1, ToolStripSeparator1, ToolStripButton2, btnClear, ToolStripLabel1, txtLabel, btnCompletePolygon, ToolStripSeparator2, ToolStripLabel3, ToolStripButton3, ToolStripSeparator3, ToolStripButton4})
         ToolStrip1.Location = New Point(0, 0)
         ToolStrip1.Name = "ToolStrip1"
         ToolStrip1.RenderMode = ToolStripRenderMode.System
@@ -159,6 +161,20 @@ Partial Class FormTool
         ToolStripStatusLabel1.Size = New Size(42, 17)
         ToolStripStatusLabel1.Text = "Ready!"
         ' 
+        ' ToolStripSeparator3
+        ' 
+        ToolStripSeparator3.Name = "ToolStripSeparator3"
+        ToolStripSeparator3.Size = New Size(6, 25)
+        ' 
+        ' ToolStripButton4
+        ' 
+        ToolStripButton4.DisplayStyle = ToolStripItemDisplayStyle.Image
+        ToolStripButton4.Image = CType(resources.GetObject("ToolStripButton4.Image"), Image)
+        ToolStripButton4.ImageTransparentColor = Color.Magenta
+        ToolStripButton4.Name = "ToolStripButton4"
+        ToolStripButton4.Size = New Size(23, 22)
+        ToolStripButton4.Text = "ToolStripButton4"
+        ' 
         ' FormTool
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -194,5 +210,7 @@ Partial Class FormTool
     Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
     Friend WithEvents ToolStripLabel3 As ToolStripLabel
     Friend WithEvents ToolStripButton3 As ToolStripButton
+    Friend WithEvents ToolStripSeparator3 As ToolStripSeparator
+    Friend WithEvents ToolStripButton4 As ToolStripButton
 
 End Class
