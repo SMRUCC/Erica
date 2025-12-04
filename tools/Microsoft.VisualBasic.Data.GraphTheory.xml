@@ -25,6 +25,20 @@ Microsoft.VisualBasic.Data.GraphTheory
  Create a new Dijkstra shortest path router model
  </summary>
 </member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter.FromNetwork``2(Microsoft.VisualBasic.Data.GraphTheory.Network.NetworkGraph{``0,``1},System.Boolean)">
+ <summary>
+ Create a router object from the network graph object
+ </summary>
+ <typeparam name="TNode"></typeparam>
+ <typeparam name="TEdge"></typeparam>
+ <param name="g"></param>
+ <param name="undirected"></param>
+ <returns></returns>
+ <remarks>
+ this function keeps the raw vector node object, but the edge is replaced as <see cref="T:Microsoft.VisualBasic.Data.GraphTheory.VertexEdge"/>. 
+ but the edge still can be get from the source graph via its unique reference <see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Edge`1.ID"/>
+ </remarks>
+</member>
 <member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter.GetLocation(System.String)">
  <summary>
  Get graph node element by label id
@@ -35,10 +49,12 @@ Microsoft.VisualBasic.Data.GraphTheory
 <member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter.CalculateMinCost(Microsoft.VisualBasic.Data.GraphTheory.Vertex)">
  <summary>
  Calculates the shortest route to all the other locations.
- (这个函数会枚举出从出发点<paramref name="startPos"/>到网络之中的所有节点的最短路径)
  </summary>
  <param name="startPos"></param>
  <returns>List of all locations and their shortest route</returns>
+ <remarks>
+ (这个函数会枚举出从出发点<paramref name="startPos"/>到网络之中的所有节点的最短路径)
+ </remarks>
 </member>
 <member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Calculator`1">
  <summary>
@@ -86,6 +102,18 @@ Microsoft.VisualBasic.Data.GraphTheory
  <summary>
  从出发点到终点所经过的路径
  </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Route.Cost">
+ <summary>
+ sum edge weight as cost
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Route.Count">
+ <summary>
+ size/length of the route path
+ </summary>
+ <returns></returns>
 </member>
 <member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.FastUnfolding.FastUnfolding">
  <summary>
@@ -876,6 +904,14 @@ Microsoft.VisualBasic.Data.GraphTheory
  returns nothing if target node is not exists in the index
  </returns>
 </member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.GetEdgeByID(System.String)">
+ <summary>
+ get a edge object by its unique reference id
+ </summary>
+ <param name="id"></param>
+ <returns></returns>
+ 
+</member>
 <member name="M:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.GetConnectedVertex">
  <summary>
  返回所有至少具有一条边连接的节点的集合
@@ -939,17 +975,17 @@ Microsoft.VisualBasic.Data.GraphTheory
  <summary>
  这个函数使用起来比较方便，但是要求节点都必须要存在于列表之中
  </summary>
- <param name="src$"></param>
- <param name="targets$"></param>
+ <param name="src"></param>
+ <param name="targets">a collection of the target vertex id</param>
  <returns></returns>
 </member>
 <member name="M:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.AddEdge(System.String,System.String,System.Double)">
  <summary>
  <paramref name="u"/> and <paramref name="v"/> is the property ``<see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Vertex.label"/>``
  </summary>
- <param name="u$"></param>
- <param name="v$"></param>
- <param name="weight#"></param>
+ <param name="u"></param>
+ <param name="v"></param>
+ <param name="weight"></param>
  <returns></returns>
 </member>
 <member name="M:Microsoft.VisualBasic.Data.GraphTheory.Graph`3.CreateEdge(System.String,System.String,System.Double)">
