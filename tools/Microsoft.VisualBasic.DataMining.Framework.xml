@@ -886,6 +886,16 @@ Microsoft.VisualBasic.DataMining.Framework
  <param name="m">fuzzification</param>
  <returns>cluster membership vector of current <paramref name="entity"/> object.</returns>
 </member>
+<member name="M:Microsoft.VisualBasic.DataMining.FuzzyCMeans.CMeans.J(System.Double,System.Double[][],System.Double[][],Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity[])">
+ <summary>
+ 
+ </summary>
+ <param name="m">fuzzification</param>
+ <param name="u"></param>
+ <param name="centers"></param>
+ <param name="entities"></param>
+ <returns></returns>
+</member>
 <member name="T:Microsoft.VisualBasic.DataMining.FuzzyCMeans.FuzzyCMeansEntity">
  <summary>
  A numeric vector object that tagged with the fuzzy cmeans cluster membership values
