@@ -1,18 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>SMRUCC.genomics.Analysis.SingleCell.STdeconvolve</RootNamespace>
+    <RootNamespace>Erica.Analysis.SingleCell.SpatialDeconvolve</RootNamespace>
     <TargetFrameworks>net8.0-windows;net8.0;net48</TargetFrameworks>
     <Platforms>AnyCPU;x64</Platforms>
     <Description>Reference-free cell-type deconvolution of pixel-resolution spatially resolved transcriptomics data</Description>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <AssemblyName>SMRUCC.genomics.Analysis.SingleCell.STdeconvolve</AssemblyName>
+    <AssemblyName>Erica.Analysis.SingleCell.SpatialDeconvolve</AssemblyName>
     <Configurations>Debug;Release;Rsharp_app_release</Configurations>
     <Title>Reference-free cell-type deconvolution of pixel-resolution spatially resolved transcriptomics data</Title>
     <Product>Erica Comprehensive Omics</Product>
     <Company>SMRUCC genomics institute</Company>
+    <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
+    <PackageIcon>icons8-jellyfish-96.png</PackageIcon>
+    <PackageOutputPath>..\..\..\..\.nuget</PackageOutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -58,6 +61,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\..\..\.pkg\icons8-jellyfish-96.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="..\..\..\..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>

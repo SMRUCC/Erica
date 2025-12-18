@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>SMRUCC.genomics.Analysis.SingleCell</RootNamespace>
+    <RootNamespace>Erica.Analysis.SingleCell.Expression</RootNamespace>
     <TargetFrameworks>net8.0;net8.0-windows;net48</TargetFrameworks>
     <Platforms>AnyCPU;x64</Platforms>
     <Configurations>Debug;Release;Rsharp_app_release;MEMI-Desktop</Configurations>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
-    <AssemblyName>SMRUCC.genomics.Analysis.SingleCell.Expression</AssemblyName>
+    <AssemblyName>Erica.Analysis.SingleCell.Expression</AssemblyName>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Product>Erica Comprehensive Omics</Product>
     <Company>SMRUCC genomics institute</Company>
@@ -14,6 +14,8 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <AssemblyTitle>Single Cells Expression Data Builder</AssemblyTitle>
     <Authors>xieguigang@metabolomics.ac.cn</Authors>
+    <PackageIcon>icons8-jellyfish-96.png</PackageIcon>
+    <PackageOutputPath>..\..\..\.nuget</PackageOutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0|AnyCPU'">
@@ -153,6 +155,13 @@
     <DebugType>full</DebugType>
     <DefineTrace>True</DefineTrace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\.pkg\icons8-jellyfish-96.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Buffers" Version="4.6.1" />

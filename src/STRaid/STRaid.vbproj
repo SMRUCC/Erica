@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>SMRUCC.genomics.Analysis.Spatial.RAID</RootNamespace>
+    <RootNamespace>Erica.Analysis.SpatialTissue.RaidData</RootNamespace>
     <TargetFrameworks>net8.0-windows;net8.0;net48</TargetFrameworks>
     <Title>Spatial transcriptomics h5ad data reader</Title>
     <Platforms>AnyCPU;x64</Platforms>
@@ -12,7 +12,9 @@
     <Product>Erica Comprehensive Omics</Product>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <AssemblyName>SMRUCC.genomics.Analysis.Spatial.RAID</AssemblyName>
+    <AssemblyName>Erica.Analysis.SpatialTissue.RaidData</AssemblyName>
+    <PackageIcon>icons8-jellyfish-96.png</PackageIcon>
+    <PackageOutputPath>..\..\.nuget</PackageOutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-windows|AnyCPU'">
@@ -128,6 +130,13 @@
     <RemoveIntegerChecks>True</RemoveIntegerChecks>
     <DefineTrace>True</DefineTrace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\.pkg\icons8-jellyfish-96.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Buffers" Version="4.6.1" />
