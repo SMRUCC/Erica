@@ -1,13 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>bgee</RootNamespace>
+    <RootNamespace>Erica.Analysis.KnowledgeBase.Bgee</RootNamespace>
     <TargetFrameworks>net8.0-windows;net8.0;net48</TargetFrameworks>
     <Platforms>AnyCPU;x64</Platforms>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Configurations>Debug;Release;Rsharp_app_release</Configurations>
+    <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
+    <AssemblyTitle>Bgee: gene expression data in animals</AssemblyTitle>
+    <AssemblyName>Erica.Analysis.KnowledgeBase.Bgee</AssemblyName>
+    <Title>Discover gene expression data in animals</Title>
+    <Description>Bgee is a database for retrieval and comparison of gene expression patterns across multiple animal species. It provides an intuitive answer to the question "where is a gene expressed?" and supports research in cancer and agriculture, as well as evolutionary biology.</Description>
+    <PackageIcon>icons8-jellyfish-96.png</PackageIcon>
+    <PackageOutputPath>..\..\.nuget</PackageOutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -55,6 +62,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\.pkg\icons8-jellyfish-96.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="..\..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
