@@ -7,7 +7,7 @@ Imports Microsoft.VisualBasic.DataStorage.netCDF.Data
 Imports Microsoft.VisualBasic.DataStorage.netCDF.DataVector
 Imports Microsoft.VisualBasic.Imaging.Math2D
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
-Imports STData = SMRUCC.genomics.Analysis.Spatial.RAID.STRaid
+Imports STData = Erica.Analysis.SpatialTissue.RaidData.STRaid
 
 Public Class SpatialHeatMap
 

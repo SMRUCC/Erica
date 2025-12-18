@@ -1,8 +1,8 @@
-﻿Imports Microsoft.VisualBasic.CommandLine.Reflection
+﻿Imports Erica.Analysis.SingleCell.SpatialDeconvolve
+Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Data.NLP.LDA
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
-Imports SMRUCC.genomics.Analysis.SingleCell.STdeconvolve
 Imports SMRUCC.Rsharp.Runtime
 
 ''' <summary>

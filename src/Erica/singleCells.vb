@@ -1,13 +1,16 @@
 ﻿Imports System.Drawing
 Imports System.IO
-Imports HEView
+Imports Erica.Analysis.SingleCell.Expression
+Imports Erica.Analysis.SpatialTissue
+Imports Erica.Analysis.SpatialTissue.HEView
+Imports Erica.Analysis.SpatialTissue.RaidData
+Imports Erica.Analysis.SpatialTissue.RaidData.HDF5
 Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.ComponentModel.Algorithm.base
 Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.Data.ChartPlots
 Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas
-Imports Microsoft.VisualBasic.Data.Framework.IO
 Imports Microsoft.VisualBasic.Emit.Delegates
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.BitmapImage
@@ -15,7 +18,6 @@ Imports Microsoft.VisualBasic.Imaging.Drawing2D
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors.Scaler
 Imports Microsoft.VisualBasic.Imaging.Driver
-Imports Microsoft.VisualBasic.Imaging.Filters
 Imports Microsoft.VisualBasic.Imaging.Math2D
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Math.MachineVision
@@ -25,9 +27,6 @@ Imports Microsoft.VisualBasic.MIME.application.json.Javascript
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports Microsoft.VisualBasic.Scripting.Runtime
 Imports SMRUCC.genomics.Analysis
-Imports SMRUCC.genomics.Analysis.SingleCell
-Imports SMRUCC.genomics.Analysis.Spatial.RAID
-Imports SMRUCC.genomics.Analysis.Spatial.RAID.HDF5
 Imports SMRUCC.Rsharp.Runtime
 Imports SMRUCC.Rsharp.Runtime.Components
 Imports SMRUCC.Rsharp.Runtime.Internal.Object

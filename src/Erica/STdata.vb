@@ -1,11 +1,11 @@
 Imports System.Drawing
 Imports System.IO
+Imports Erica.Analysis.SpatialTissue.Imaging
+Imports Erica.Analysis.SpatialTissue.RaidData
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Math.Distributions
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
-Imports SMRUCC.genomics.Analysis.Spatial.Imaging
-Imports SMRUCC.genomics.Analysis.Spatial.RAID
 Imports SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner
 Imports SMRUCC.Rsharp.RDataSet.Struct
 Imports SMRUCC.Rsharp.Runtime

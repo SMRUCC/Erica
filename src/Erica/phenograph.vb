@@ -40,6 +40,7 @@
 #End Region
 
 Imports System.Runtime.CompilerServices
+Imports Erica.Analysis.SingleCell.PhenoGraph
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.ComponentModel.DataStructures
@@ -58,7 +59,6 @@ Imports Microsoft.VisualBasic.Math.LinearAlgebra
 Imports Microsoft.VisualBasic.Parallel
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
-Imports SMRUCC.genomics.Analysis.SingleCell.PhenoGraph
 Imports SMRUCC.Rsharp.Runtime
 Imports SMRUCC.Rsharp.Runtime.Internal.Object
 Imports SMRUCC.Rsharp.Runtime.Interop

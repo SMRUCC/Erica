@@ -1,4 +1,4 @@
-Imports bgee
+Imports Erica.Analysis.KnowledgeBase.Bgee
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.HTS.GSEA
