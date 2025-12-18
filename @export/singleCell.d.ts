@@ -15,7 +15,7 @@ declare namespace singleCell {
     * 
      * @param cells -
      * @param antibody -
-     * @param wrap_cells this function returns a wrapped @``T:HEView.CellScan`` object vector if this parameter is set as TRUE, 
+     * @param wrap_cells this function returns a wrapped @``T:Erica.Analysis.SpatialTissue.HEView.CellScan`` object vector if this parameter is set as TRUE, 
      *  otherwise this function returns a numeric vector of the weight value of the specific 
      *  **`antibody`** data channel.
      * 
