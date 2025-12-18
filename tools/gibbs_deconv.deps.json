@@ -8,19 +8,19 @@
     ".NETCoreApp,Version=v8.0": {
       "gibbs_deconv/1.0.0": {
         "dependencies": {
+          "Erica.Analysis.SingleCell.SpatialDeconvolve": "1.0.0",
           "Microsoft.VisualBasic.Data.NLP": "1.0.0",
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
           "Microsoft.VisualBasic.Runtime": "5.0.1.2389",
           "SMRUCC.genomics.Analysis.HTS.DataFrame": "1.0.0",
-          "SMRUCC.genomics.Analysis.SingleCell.STdeconvolve": "1.0.0",
           "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner": "1.0.0",
+          "Erica.Analysis.SingleCell.SpatialDeconvolve.Reference": "1.0.0.0",
           "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.Reference": "5.0.1.2389",
           "Microsoft.VisualBasic.Data.NLP.Reference": "1.0.0.0",
           "Microsoft.VisualBasic.Math.Core.Reference": "5.0.1.2389",
           "Microsoft.VisualBasic.Math.Statistics.Reference": "1.0.0.0",
           "Microsoft.VisualBasic.Runtime.Reference": "5.33.69.2558",
           "SMRUCC.genomics.Analysis.HTS.DataFrame.Reference": "1.0.0.0",
-          "SMRUCC.genomics.Analysis.SingleCell.STdeconvolve.Reference": "1.0.0.0",
           "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.Reference": "1.0.0.0"
         },
         "runtime": {
@@ -210,6 +210,21 @@
           }
         }
       },
+      "Erica.Analysis.SingleCell.SpatialDeconvolve/1.0.0": {
+        "dependencies": {
+          "Microsoft.VisualBasic.Data.NLP": "1.0.0",
+          "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
+          "Microsoft.VisualBasic.Runtime": "5.0.1.2389",
+          "SMRUCC.genomics.Analysis.HTS.DataFrame": "1.0.0",
+          "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner": "1.0.0",
+          "System.Configuration.ConfigurationManager": "10.0.1"
+        },
+        "runtime": {
+          "Erica.Analysis.SingleCell.SpatialDeconvolve.dll": {
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
       "Microsoft.VisualBasic.Data.Bootstrapping.Fittings/5.0.1.2389": {
         "dependencies": {
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
@@ -291,21 +306,6 @@
           }
         }
       },
-      "SMRUCC.genomics.Analysis.SingleCell.STdeconvolve/1.0.0": {
-        "dependencies": {
-          "Microsoft.VisualBasic.Data.NLP": "1.0.0",
-          "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389",
-          "SMRUCC.genomics.Analysis.HTS.DataFrame": "1.0.0",
-          "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner": "1.0.0",
-          "System.Configuration.ConfigurationManager": "10.0.1"
-        },
-        "runtime": {
-          "SMRUCC.genomics.Analysis.SingleCell.STdeconvolve.dll": {
-            "fileVersion": "0.0.0.0"
-          }
-        }
-      },
       "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner/1.0.0": {
         "dependencies": {
           "Microsoft.VisualBasic.Runtime": "5.0.1.2389",
@@ -315,6 +315,14 @@
         "runtime": {
           "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.dll": {
             "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Erica.Analysis.SingleCell.SpatialDeconvolve.Reference/1.0.0.0": {
+        "runtime": {
+          "Erica.Analysis.SingleCell.SpatialDeconvolve.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
           }
         }
       },
@@ -361,14 +369,6 @@
       "SMRUCC.genomics.Analysis.HTS.DataFrame.Reference/1.0.0.0": {
         "runtime": {
           "SMRUCC.genomics.Analysis.HTS.DataFrame.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
-      "SMRUCC.genomics.Analysis.SingleCell.STdeconvolve.Reference/1.0.0.0": {
-        "runtime": {
-          "SMRUCC.genomics.Analysis.SingleCell.STdeconvolve.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -502,6 +502,11 @@
       "path": "system.text.encodings.web/10.0.1",
       "hashPath": "system.text.encodings.web.10.0.1.nupkg.sha512"
     },
+    "Erica.Analysis.SingleCell.SpatialDeconvolve/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "Microsoft.VisualBasic.Data.Bootstrapping.Fittings/5.0.1.2389": {
       "type": "project",
       "serviceable": false,
@@ -532,13 +537,13 @@
       "serviceable": false,
       "sha512": ""
     },
-    "SMRUCC.genomics.Analysis.SingleCell.STdeconvolve/1.0.0": {
+    "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner/1.0.0": {
-      "type": "project",
+    "Erica.Analysis.SingleCell.SpatialDeconvolve.Reference/1.0.0.0": {
+      "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
@@ -568,11 +573,6 @@
       "sha512": ""
     },
     "SMRUCC.genomics.Analysis.HTS.DataFrame.Reference/1.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "SMRUCC.genomics.Analysis.SingleCell.STdeconvolve.Reference/1.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

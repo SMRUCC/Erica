@@ -1,7 +1,7 @@
+Imports Erica.Analysis.SingleCell.SpatialDeconvolve
 Imports Microsoft.VisualBasic.CommandLine
 Imports Microsoft.VisualBasic.Serialization.JSON
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
-Imports SMRUCC.genomics.Analysis.SingleCell.STdeconvolve
 
 Module Program
 

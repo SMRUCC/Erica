@@ -1,6 +1,7 @@
 ﻿Imports System.Drawing.Drawing2D
 Imports System.IO
-Imports HEView
+Imports Erica.Analysis.SpatialTissue
+Imports Erica.Analysis.SpatialTissue.HEView
 Imports Microsoft.VisualBasic.ComponentModel.Ranges.Model
 Imports Microsoft.VisualBasic.Data.Framework
 Imports Microsoft.VisualBasic.Drawing

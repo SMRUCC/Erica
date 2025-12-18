@@ -1,0 +1,349 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Erica.Analysis.SpatialTissue.HEView
+</name>
+</assembly>
+<members>
+<member name="T:Erica.Analysis.SpatialTissue.HEView.CellMatchResult">
+ <summary>
+ 细胞匹配结果类
+ </summary>
+</member>
+<member name="P:Erica.Analysis.SpatialTissue.HEView.CellMatchResult.MatchScore">
+ <summary>
+ the total match score
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Erica.Analysis.SpatialTissue.HEView.CellScan.r1">
+ <summary>
+ 细胞椭圆长轴
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Erica.Analysis.SpatialTissue.HEView.CellScan.r2">
+ <summary>
+ 细胞椭圆短轴
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Erica.Analysis.SpatialTissue.HEView.CellScan.theta">
+ <summary>
+ 椭圆角度
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Erica.Analysis.SpatialTissue.HEView.CellScan.weight">
+ <summary>
+ the average grayscale weighted by area
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.CellScan.CellLookups(Microsoft.VisualBasic.Imaging.BitmapImage.BitmapBuffer,System.Drawing.Point,System.Int32,System.Boolean)">
+ <summary>
+ make ostu binary processing of the input image and then run CCL for extract the cell shapes from the binary image.
+ </summary>
+ <param name="grayscale">
+ should be a grayscale image
+ </param>
+ <param name="offset"></param>
+ <returns>
+ a collection of the cell object
+ </returns>
+ 
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.CellScan.ApplyTransform(Erica.Analysis.SpatialTissue.HEView.CellScan[],Microsoft.VisualBasic.Imaging.Math2D.Transform)">
+ <summary>
+ Perform geometric transformations (scaling, rotation, translation) on cellular matrix data.
+ </summary>
+ <param name="cells">原始细胞数组</param>
+ <param name="transform">变换参数</param>
+ <returns>变换后的细胞数组</returns>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.CellScan.ApplyAffineTransform(Erica.Analysis.SpatialTissue.HEView.CellScan[],Microsoft.VisualBasic.Imaging.Math2D.AffineTransform)">
+ <summary>
+ 仿射变换
+ </summary>
+</member>
+<member name="T:Erica.Analysis.SpatialTissue.HEView.DziImage">
+ <summary>
+ metadata of the dzi image data
+ </summary>
+</member>
+<member name="P:Erica.Analysis.SpatialTissue.HEView.DziImage.Format">
+ <summary>
+ the tile image file format
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Erica.Analysis.SpatialTissue.HEView.DziImage.Size">
+ <summary>
+ the raw input image dimension size
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Erica.Analysis.SpatialTissue.HEView.DziImage.MaxZoomLevels">
+ <summary>
+ 计算指定层级的图像维度（宽度或高度）
+ </summary>
+ <param name="originalDimension">原始维度（宽度或高度）</param>
+ <param name="level">目标层级</param>
+ <returns>指定层级的维度</returns>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.DziImage.DecodeTile(System.Int32,System.Int32,System.Int32)">
+ <summary>
+ 计算指定层级、列、行的瓦片位置和大小
+ </summary>
+ <param name="level">层级</param>
+ <param name="col">列号 (从0开始)</param>
+ <param name="row">行号 (从0开始)</param>
+ <returns>表示瓦片位置和大小的矩形</returns>
+ <remarks>
+ 1. 图像金字塔与层级（Level）
+ 
+ DZI将高分辨率图像处理为一系列层级（Level）的金字塔结构。层级0（Level 0）是分辨率最高的原始图像。每增加一个层级，
+ 图像的宽度和高度就缩减为上一层级的一半（采用Ceiling向上取整），直至最终变为1x1像素 。
+ 
+ 最大层级的计算公式为：MaxLevel = Ceiling(Log2(Max(Width, Height)))。这意味着对于一张 4224x3168 的图片，其最大层级为 13。
+ 
+ 2. 瓦片（Tile）网格
+ 
+ 在每个层级上，图像会被分割成多个尺寸为 TileSize x TileSize的瓦片（除了最右边和最下边的瓦片，它们可能因为不能整除而更小）。
+ 每个层级瓦片的列数（Columns）和行数（Rows）计算公式为：
+ 
+ + Columns = Ceiling(LevelWidth / TileSize)
+ + Rows = Ceiling(LevelHeight / TileSize)
+ 
+ 3.瓦片重叠（Overlap）
+ 
+ DZI 允许设置 Overlap（通常为1像素）。重叠是指相邻瓦片之间会重复一部分像素区域。这样做主要是为了在图像拼接渲染时消除瓦片
+ 间的缝隙或瑕疵，确保视觉上的连续性。
+ 计算瓦片位置和尺寸时，非边缘的瓦片会向四个方向延伸 Overlap个像素。位于图像边缘（左上、右上、左下、右下、上边界、下边界、
+ 左边界、右边界）的瓦片，其重叠区域需要特殊处理，不能超出图像的实际边界。
+ </remarks>
+</member>
+<member name="P:Erica.Analysis.SpatialTissue.HEView.DziImageBuffer.bitmap">
+ <summary>
+ the raw color image buffer
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Erica.Analysis.SpatialTissue.HEView.DziImageBuffer.grayscale">
+ <summary>
+ the raw color image buffer its grayscale image
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Erica.Analysis.SpatialTissue.HEView.DziImageBuffer.xy">
+ <summary>
+ the tile xy
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.DziImageBuffer.LoadBuffer(Erica.Analysis.SpatialTissue.HEView.DziImage,System.Int32,Microsoft.VisualBasic.ApplicationServices.IFileSystemEnvironment,System.Boolean,System.Boolean,System.Int32)">
+ <summary>
+ load tile image files from disk to memory 
+ </summary>
+ <param name="dzi"></param>
+ <param name="level"></param>
+ <param name="dir"></param>
+ <param name="skipBlank"></param>
+ <returns></returns>
+ <remarks>
+ the grayscale image for each tile also created in the dzi tile constructor function
+ </remarks>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.DziImageBuffer.GlobalScales(Erica.Analysis.SpatialTissue.HEView.DziImageBuffer[])">
+ <summary>
+ make grayscale image with global scale across the tiles
+ </summary>
+ <param name="tiles"></param>
+ <returns></returns>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.DziScanner.ScanIHCRGBCells(Erica.Analysis.SpatialTissue.HEView.DziImage,System.Int32,Microsoft.VisualBasic.ApplicationServices.IFileSystemEnvironment,System.Double,System.Double,System.Int32,System.Boolean)">
+ <summary>
+ scan with RGB colors
+ </summary>
+ <param name="dzi"></param>
+ <param name="level"></param>
+ <param name="dir"></param>
+ <param name="ostu_factor"></param>
+ <param name="noise"></param>
+ <param name="moran_knn"></param>
+ <param name="splitBlocks"></param>
+ <returns></returns>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.DziScanner.ScanCells(Erica.Analysis.SpatialTissue.HEView.DziImage,System.Int32,Microsoft.VisualBasic.ApplicationServices.IFileSystemEnvironment,System.Double,System.Double,System.Int32,System.Boolean,System.Boolean)">
+ <summary>
+ 
+ </summary>
+ <param name="dzi"></param>
+ <param name="level"></param>
+ <param name="dir">A directory path that contains the image files in current <paramref name="level"/>.</param>
+ <param name="ostu_factor"></param>
+ <param name="noise"></param>
+ <param name="moran_knn"></param>
+ <param name="splitBlocks"></param>
+ <returns></returns>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.Math.FilterNoise``1(System.Collections.Generic.IEnumerable{``0},System.Double)">
+ <summary>
+ 
+ </summary>
+ <param name="cells"></param>
+ <param name="noise">quantile level for filter the polygon shape points. all cell shapes which has its shape points less than this quantile level will be treated as noise</param>
+ <returns></returns>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.Math.Split``1(System.Collections.Generic.IEnumerable{``0})">
+ <summary>
+ split the large region as cell cluster
+ </summary>
+ <param name="cells"></param>
+ <param name="noise">
+ the quantile level of the cell size, all cells that with cell size less than this quantile cutoff will be treated as noised.
+ </param>
+ <returns></returns>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.SimpleCellMorphology.CalculateMetrics(System.Drawing.PointF[])">
+ <summary>
+ 计算拟合直线的相关指标
+ </summary>
+ <param name="points">输入数据点集合（PointF数组）</param>
+ <returns>包含弧度夹角、线段长度和平均距离的CalculationResult对象</returns>
+ 
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.SimpleCellMorphology.PointToSegmentDistance(System.Drawing.PointF,System.Drawing.PointF,System.Drawing.PointF)">
+ <summary>
+ 计算点到一个线段的距离（非无限直线）
+ </summary>
+ <param name="p">目标点</param>
+ <param name="p1">线段起点</param>
+ <param name="p2">线段终点</param>
+ <returns>点到线段的距离</returns>
+</member>
+<member name="P:Erica.Analysis.SpatialTissue.HEView.IHCCellScan.antibody">
+ <summary>
+ the antibody name used in IHC staining
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Erica.Analysis.SpatialTissue.HEView.IHCCellScan.data(System.String)">
+ <summary>
+ get the antibody weight data of this cell object 
+ </summary>
+ <param name="name"></param>
+ <returns></returns>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.IHCScanner.UnmixDziImage(Erica.Analysis.SpatialTissue.HEView.DziImage,System.Int32,Microsoft.VisualBasic.ApplicationServices.IFileSystemEnvironment,System.Boolean)">
+ <summary>
+ 
+ </summary>
+ <param name="dzi"></param>
+ <param name="level"></param>
+ <param name="dir"></param>
+ <param name="skipBlank">
+ skip of the blank tile image for make exports? tile image with all pixels is black or all pixels is white will be treated as blank tile image. 
+ </param>
+ <returns>
+ the generated image array may contains nothing if skip the blank tiles
+ </returns>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.IHCUnmixing.GetReferenceMatrixIHC1">
+ <summary>
+ 获取IHC1实验的参考颜色矩阵（4色+DAPI）
+ </summary>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.IHCUnmixing.GetReferenceMatrixIHC2">
+ <summary>
+ 获取IHC2实验的参考颜色矩阵（5色+DAPI）
+ </summary>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.IHCUnmixing.UnmixPixel(System.Drawing.Color,System.Double[0:,0:],System.Double)">
+ <summary>
+ 对单个像素进行抗体组成求解
+ </summary>
+ <param name="pixelColor">像素颜色</param>
+ <param name="A">参考颜色矩阵</param>
+ <param name="tolerance">容差</param>
+ <returns>各抗体贡献系数数组</returns>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.IHCUnmixing.Unmix(Microsoft.VisualBasic.Imaging.BitmapImage.BitmapBuffer,System.Double[0:,0:],System.Int32,System.Boolean)">
+ <summary>
+ Unmix the given raw color image as multiple layer grayscale image with given antibody color profiles.
+ </summary>
+ <param name="mixed">the raw color image to be unmixed</param>
+ <param name="A">the antibody color profiles, each row is the rgb reference color, value should be normalized to range [0,1].</param>
+ <param name="n">size of the layers</param>
+ <returns>grayscale image list</returns>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.IHCUnmixing.GetAntibodyNamesIHC1">
+ <summary>
+ 获取IHC1实验的抗体名称列表
+ </summary>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.IHCUnmixing.GetAntibodyNamesIHC2">
+ <summary>
+ 获取IHC2实验的抗体名称列表
+ </summary>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.SlideSample.Transform(System.Single,System.Single,System.Single,System.Single,System.Single)">
+ <summary>
+ 
+ </summary>
+ <param name="theta">旋转角度（弧度）</param>
+ <param name="tx">平移量</param>
+ <param name="ty">平移量</param>
+ <param name="sx">缩放因子</param>
+ <param name="sy">缩放因子</param>
+ <returns></returns>
+</member>
+<member name="T:Erica.Analysis.SpatialTissue.HEView.CellMatcher">
+ <summary>
+ 细胞匹配器 - 使用贪心算法进行细胞一一对应
+ </summary>
+</member>
+<member name="T:Erica.Analysis.SpatialTissue.HEView.CellMatcher.CellScanAccessor">
+ <summary>
+ 细胞访问器 - 用于KD树操作
+ </summary>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.CellMatcher.#ctor(System.Double,System.Double,System.Double)">
+ <summary>
+ 设置匹配参数
+ </summary>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.CellMatcher.CalculateMorphologySimilarity(Erica.Analysis.SpatialTissue.HEView.CellScan,Erica.Analysis.SpatialTissue.HEView.CellScan)">
+ <summary>
+ 计算两个细胞的形态学相似度
+ </summary>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.CellMatcher.CalculateMatchScore(Erica.Analysis.SpatialTissue.HEView.CellScan,Erica.Analysis.SpatialTissue.HEView.CellScan,System.Double,System.Double@)">
+ <summary>
+ 计算匹配得分（综合考虑距离和形态学特征）
+ </summary>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.CellMatcher.GreedyMatchCells(Erica.Analysis.SpatialTissue.HEView.CellScan[],Erica.Analysis.SpatialTissue.HEView.CellScan[],System.Int32)">
+ <summary>
+ 使用贪心算法进行细胞匹配
+ </summary>
+ <param name="cellsA">第一张切片的细胞列表</param>
+ <param name="cellsB">第二张切片的细胞列表</param>
+ <returns>匹配结果列表</returns>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.CellMatcher.GreedyMatchCellsInternal(Erica.Analysis.SpatialTissue.HEView.CellScan[],Erica.Analysis.SpatialTissue.HEView.CellScan[],System.Int32)">
+ <summary>
+ 使用贪心算法进行细胞匹配
+ </summary>
+ <param name="cellsA">第一张切片的细胞列表</param>
+ <param name="cellsB">第二张切片的细胞列表</param>
+ <returns>匹配结果列表</returns>
+</member>
+<member name="M:Erica.Analysis.SpatialTissue.HEView.CellMatcher.GetMatchStatistics(Erica.Analysis.SpatialTissue.HEView.CellMatchResult[],System.Int32,System.Int32)">
+ <summary>
+ 获取匹配统计信息
+ </summary>
+</member>
+</members>
+</doc>
