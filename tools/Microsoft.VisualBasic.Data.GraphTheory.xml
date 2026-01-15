@@ -56,6 +56,14 @@ Microsoft.VisualBasic.Data.GraphTheory
  (这个函数会枚举出从出发点<paramref name="startPos"/>到网络之中的所有节点的最短路径)
  </remarks>
 </member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter.CalculateMinCost(Microsoft.VisualBasic.Data.GraphTheory.Vertex,Microsoft.VisualBasic.Data.GraphTheory.Vertex)">
+ <summary>
+ 查找两点之间的最短路径
+ </summary>
+ <param name="startPos"></param>
+ <param name="endPos"></param>
+ <returns>当函数找不到路径的时候会返回空值</returns>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Calculator`1">
  <summary>
  calculates all-pairs shortest paths or shortest paths from a single node
