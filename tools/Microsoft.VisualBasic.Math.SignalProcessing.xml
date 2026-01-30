@@ -17,6 +17,36 @@ Microsoft.VisualBasic.Math.SignalProcessing
  </param>
  <returns></returns>
 </member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.NetworkSignalClassifier.ClassifyMetaboliteSignal(System.Double[])">
+ <summary>
+ 主分类函数：返回枚举类型的分类结果
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.SignalProcessing.NetworkSignalType.Isolated">
+ <summary>
+ 孤立节点信息（异常数据）
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.SignalProcessing.NetworkSignalType.Increasing">
+ <summary>
+ 递增信号（异常数据）
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.SignalProcessing.NetworkSignalType.Decreasing">
+ <summary>
+ 递减信号（异常数据）
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.SignalProcessing.NetworkSignalType.Oscillating">
+ <summary>
+ 周期性震荡信号（好数据）
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.SignalProcessing.NetworkSignalType.RandomSignal">
+ <summary>
+ 随机信号（好数据）
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Math.SignalProcessing.SignalClustering">
  <summary>
  Try to make time serial signal data into multiple clusters

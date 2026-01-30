@@ -64,6 +64,47 @@ Microsoft.VisualBasic.Data.GraphTheory
  <param name="endPos"></param>
  <returns>当函数找不到路径的时候会返回空值</returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.Node">
+ <summary>
+ Holds all the details of a node in the graph.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.#ctor(Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.SparseMatrix,System.Int32)">
+ <param name="graph">The adjacency matrix of the graph.</param>
+ <param name="vertices">Total number of vertices.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.DistanceFinder(System.Int32)">
+ <summary>
+ Calculates the minimum possible distance from root node to all other nodes.
+ </summary>
+ <param name="startIndex"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.DistanceFinderInternal(System.Int32,System.Nullable{System.Int32})">
+ <summary>
+ Calculates the minimum possible distance from root node to all other nodes.
+ </summary>
+ <param name="startIndex"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.FindPathBiDirectional(Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.SparseMatrix@,System.Int32,System.Int32,System.Int32)">
+ <summary>
+ Calculates the shortest path using Bi-Directional Dijkstra algorithm.
+ </summary>
+ <param name="graph">The adjacency matrix of the graph.</param>
+ <param name="vertices">Total number of vertices.</param>
+ <param name="startIndex">The starting node index.</param>
+ <param name="endIndex">The target node index.</param>
+ <returns>Returns the target Node containing path and distance info. Returns Nothing if path not found.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.FindPath(System.Int32,System.Int32)">
+ <summary>
+ Calculates the shortest path from startIndex to endIndex specifically.
+ </summary>
+ <param name="startIndex">The starting node index.</param>
+ <param name="endIndex">The target node index.</param>
+ <returns>Returns the target Node containing path and distance info. Returns Nothing if path not found.</returns>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Calculator`1">
  <summary>
  calculates all-pairs shortest paths or shortest paths from a single node
@@ -106,22 +147,22 @@ Microsoft.VisualBasic.Data.GraphTheory
  <param name="prevCost"></param>
  <returns></returns>
 </member>
-<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Route">
- <summary>
- 从出发点到终点所经过的路径
- </summary>
-</member>
-<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Route.Cost">
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.RoutePathway.Cost">
  <summary>
  sum edge weight as cost
  </summary>
  <returns></returns>
 </member>
-<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Route.Count">
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.RoutePathway.Count">
  <summary>
  size/length of the route path
  </summary>
  <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Route">
+ <summary>
+ 从出发点到终点所经过的路径
+ </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.FastUnfolding.FastUnfolding">
  <summary>
@@ -1205,6 +1246,12 @@ Microsoft.VisualBasic.Data.GraphTheory
 <member name="P:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.GridCell`1.index">
  <summary>
  二维数组之中的索引 
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.GridCell`1.GetHashCode">
+ <summary>
+ hashcode overrides for A-star algorithm
  </summary>
  <returns></returns>
 </member>

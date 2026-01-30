@@ -1,4 +1,5 @@
 ﻿Imports System.Runtime.CompilerServices
+Imports Microsoft.VisualBasic.Math
 Imports SMRUCC.genomics.Analysis.HTS.GSEA
 
 Public Module Fisher
@@ -25,6 +26,6 @@ Public Module Fisher
             End If
         Next
 
-        Return result.FDRCorrection.ToArray
+        Return result.FDR.ToArray
     End Function
 End Module
