@@ -626,6 +626,17 @@ Microsoft.VisualBasic.Data.Framework
  <param name="skipFirstColumn">假若第一列是固定的时间序列的话，是否需要跳过这第一列？？</param>
  <returns></returns>
 </member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.DocumentExtensions.LoadTsv``1(System.String,System.Text.Encoding,Microsoft.VisualBasic.ComponentModel.NameMapping,System.Boolean)">
+ <summary>
+ Load a .NET collection from a tsv file which is specific by <paramref name="path"/> value.
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="path$"></param>
+ <param name="encoding"></param>
+ <param name="nameMaps"></param>
+ <returns></returns>
+ 
+</member>
 <member name="M:Microsoft.VisualBasic.Data.Framework.DocumentExtensions.LoadTsv``1(System.String,Microsoft.VisualBasic.Text.Encodings,Microsoft.VisualBasic.ComponentModel.NameMapping,System.Boolean)">
  <summary>
  Load a .NET collection from a tsv file which is specific by <paramref name="path"/> value.
@@ -2179,7 +2190,7 @@ Microsoft.VisualBasic.Data.Framework
  </param>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataSet.LoadDataSet``1(System.String,System.String,System.Text.Encoding,System.Boolean)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataSet.LoadDataSet``1(System.String,System.String,System.Text.Encoding,System.Boolean,System.Boolean)">
  <summary>
  这个函数可以处理csv以及tsv数据格式
  </summary>
