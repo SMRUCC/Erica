@@ -827,6 +827,616 @@ Microsoft.VisualBasic.Data.GraphTheory
  <param name="steps">如果这个参数为空的话，默认分为50份</param>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.BinaryHeap`1">
+ <summary>
+ Binary heap wrapper around the <see cref="T:System.Collections.Generic.IList`1"/>
+ It's a max-heap implementation i.e. the maximum element is always on top.
+ But the order of elements can be customized by providing <see cref="T:System.Collections.Generic.IComparer`1"/> instance.
+ </summary>
+ <typeparam name="T">The type of the items in the source list.</typeparam>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.BinaryHeap`1._Comparer">
+ <summary>
+ Gets the heap comparer.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.BinaryHeap`1._Buffer">
+ <summary>
+ Gets the buffer of the heap.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.BinaryHeap`1.#ctor(System.Collections.Generic.IList{`0})">
+ <summary>
+ Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.BinaryHeap`1"/> class.
+ </summary>
+ <param name="buffer">The buffer to store heap items.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.BinaryHeap`1.#ctor(System.Collections.Generic.IList{`0},System.Collections.Generic.IComparer{`0})">
+ <summary>
+ Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.BinaryHeap`1"/> class.
+ </summary>
+ <param name="buffer">The buffer to store heap items.</param>
+ <param name="comparer">The comparer which defines order of items.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.BinaryHeap`1.Push(`0)">
+ <summary>
+ Pushes item to the heap.
+ </summary>
+ <param name="item">The item to push.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.BinaryHeap`1.Pop">
+ <summary>
+ Pops the item from the heap.
+ </summary>
+ <returns>The popped item.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.BinaryHeap`1.SiftDown(System.Int32)">
+ <summary>
+ Restores the heap property starting from i'th position down to the bottom
+ given that the downstream items fulfill the rule.
+ </summary>
+ <param name="i">The position of item where heap property is violated.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.BinaryHeap`1.SiftUp(System.Int32)">
+ <summary>
+ Restores the heap property starting from i'th position up to the head
+ given that the upstream items fulfill the rule.
+ </summary>
+ <param name="i">The position of item where heap property is violated.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.BinaryHeap`1.Swap(System.Int32,System.Int32)">
+ <summary>
+ Swaps items with the specified indicies.
+ </summary>
+ <param name="i">The first index.</param>
+ <param name="j">The second index.</param>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.CosineDistance">
+ <summary>
+ Calculates cosine similarity.
+ </summary>
+ <remarks>
+ Intuition behind selecting float as a carrier.
+
+ 1. In practice we work with vectors of dimensionality 100 and each component has value in range [-1; 1]
+    There certainly is a possibility of underflow.
+    But we assume that such cases are rare and we can rely on such underflow losses.
+
+ 2. According to the article http://www.ti3.tuhh.de/paper/rump/JeaRu13.pdf
+    the floating point rounding error is less then 100 * 2^-24 * sqrt(100) * sqrt(100) &lt; 0.0005960
+    We deem such precision is satisfactory for out needs.
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.CosineDistance.NonOptimized(System.Collections.Generic.IReadOnlyList{System.Single},System.Collections.Generic.IReadOnlyList{System.Single})">
+ <summary>
+ Calculates cosine distance without making any optimizations.
+ </summary>
+ <param name="u">Left vector.</param>
+ <param name="v">Right vector.</param>
+ <returns>Cosine distance between u and v.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.CosineDistance.ForUnits(System.Collections.Generic.IReadOnlyList{System.Single},System.Collections.Generic.IReadOnlyList{System.Single})">
+ <summary>
+ Calculates cosine distance with assumption that u and v are unit vectors.
+ </summary>
+ <param name="u">Left vector.</param>
+ <param name="v">Right vector.</param>
+ <returns>Cosine distance between u and v.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.CosineDistance.SIMD(System.Single[],System.Single[])">
+ <summary>
+ Calculates cosine distance optimized using SIMD instructions.
+ </summary>
+ <param name="u">Left vector.</param>
+ <param name="v">Right vector.</param>
+ <returns>Cosine distance between u and v.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.CosineDistance.SIMDForUnits(System.Single[],System.Single[])">
+ <summary>
+ Calculates cosine distance with assumption that u and v are unit vectors using SIMD instructions.
+ </summary>
+ <param name="u">Left vector.</param>
+ <param name="v">Right vector.</param>
+ <returns>Cosine distance between u and v.</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Graph`2">
+ <summary>
+ The layered graph implementation.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Graph`2._Parameters">
+ <summary>
+ Gets parameters of the algorithm.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Graph`2._NewNode">
+ <summary>
+ Gets the node factory associated with the graph.
+ The node construction arguments are:
+ 1st: int -> the id of the new node;
+ 2nd: TItem -> the item to attach to the node;
+ 3rd: int -> the level of the node.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Graph`2.#ctor(System.Func{`0,`0,`1},Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Parameters{`0,`1})">
+ <summary>
+ Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.Data.GraphTheory.Graph"/> class.
+ </summary>
+ <param name="distance">The distance funtion to use in the small world.</param>
+ <param name="parameters">The parameters of the algorithm.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Graph`2.Create(System.Collections.Generic.IList{`0},System.Random)">
+ <summary>
+ Creates graph from the given items.
+ Contains implementation of INSERT(hnsw, q, M, Mmax, efConstruction, mL) algorithm.
+ Article: Section 4. Algorithm 1.
+ </summary>
+ <param name="items">The items to insert.</param>
+ <param name="generator">The random number generator to use in <see cref="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Graph`2.RandomLevel(System.Random,System.Double)"/>.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Graph`2.KNearest(Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node{`0,`1},System.Int32)">
+ <summary>
+ Get k nearest items for a given one.
+ Contains implementation of K-NN-SEARCH(hnsw, q, K, ef) algorithm.
+ Article: Section 4. Algorithm 5.
+ </summary>
+ <param name="destination">The given node to get the nearest neighbourhood for.</param>
+ <param name="k">The size of the neighbourhood.</param>
+ <returns>The list of the nearest neighbours.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Graph`2.Serialize">
+ <summary>
+ Serializes edges of the graph.
+ </summary>
+ <returns>Bytes representing edges.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Graph`2.Deserialize(System.Collections.Generic.IList{`0},System.Byte[])">
+ <summary>
+ Deserilaizes graph edges and assigns nodes to the items.
+ </summary>
+ <param name="items">The underlying items.</param>
+ <param name="bytes">The serialized edges.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Graph`2.Print">
+ <summary>
+ Prints edges of the graph.
+ </summary>
+ <returns>String representation of the graph's edges.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Graph`2.KNearestAtLevel(Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node{`0,`1},Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node{`0,`1},System.Int32,System.Int32)">
+ <summary>
+ The implementaiton of SEARCH-LAYER(q, ep, ef, lc) algorithm.
+ Article: Section 4. Algorithm 2.
+ </summary>
+ <param name="entryPoint">The entry point for the search.</param>
+ <param name="destination">The search target.</param>
+ <param name="k">The number of the nearest neighbours to get from the layer.</param>
+ <param name="level">Level of the layer.</param>
+ <returns>The list of the nearest neighbours at the level.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Graph`2.RandomLevel(System.Random,System.Double)">
+ <summary>
+ Gets the level for the layer.
+ </summary>
+ <param name="generator">The random numbers generator.</param>
+ <param name="lambda">Poisson lambda.</param>
+ <returns>The level value.</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.NeighbourSelectionHeuristic">
+ <summary>
+ Type of heuristic to select best neighbours for a node.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.NeighbourSelectionHeuristic.SelectSimple">
+ <summary>
+ Marker for the Algorithm 3 (SELECT-NEIGHBORS-SIMPLE) from the article.
+ Implemented in <see cref="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.NodeAlg3`2"/>
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.NeighbourSelectionHeuristic.SelectHeuristic">
+ <summary>
+ Marker for the Algorithm 4 (SELECT-NEIGHBORS-HEURISTIC) from the article.
+ Implemented in <see cref="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.NodeAlg4`2"/>
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node`2">
+ <summary>
+ The abstract node implementation.
+ The <see cref="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node`2.SelectBestForConnecting(System.Collections.Generic.IList{Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node{`0,`1}})"/> must be implemented by the subclass.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node`2._Id">
+ <summary>
+ Gets the identifier of the node.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node`2._MaxLevel">
+ <summary>
+ Gets the maximum level of the node.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node`2._Item">
+ <summary>
+ Gets the item associated with the node.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node`2._TravelingCosts">
+ <summary>
+ Gets traveling costs from any other node to this one.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node`2._Parameters">
+ <summary>
+ Gets parameters of the algorithm.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node`2._Connections">
+ <summary>
+ Gets all connections of the node on all layers.
+ </summary>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node`2.#ctor(System.Int32,`0,System.Int32,System.Func{`0,`0,`1},Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Parameters{`0,`1})">
+ <summary>
+ Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node`2"/> class.
+ </summary>
+ <param name="id">The identifier of the node.</param>
+ <param name="item">The item which is represented by the node.</param>
+ <param name="maxLevel">The maximum level until which the node exists.</param>
+ <param name="distance">The distance function for attached items.</param>
+ <param name="parameters">The parameters of the algorithm.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node`2.GetConnections(System.Int32)">
+ <summary>
+ Get connections of the node on the given layer.
+ </summary>
+ <param name="level">The level of the layer.</param>
+ <returns>List of connected nodes.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node`2.AddConnection(Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node{`0,`1},System.Int32)">
+ <summary>
+ Add connections to the node on the specific layer.
+ </summary>
+ <param name="newNeighbour">The node to connect with.</param>
+ <param name="level">The level of the layer.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node`2.SelectBestForConnecting(System.Collections.Generic.IList{Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node{`0,`1}})">
+ <summary>
+ The algorithm which selects best neighbours from the candidates for this node.
+ </summary>
+ <param name="candidates">The candidates for connecting.</param>
+ <returns>Best nodes selected from the candidates.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node`2.GetM(System.Int32,System.Int32)">
+ <summary>
+ Get maximum allowed connections for the given layer.
+ </summary>
+ <remarks>
+ Article: Section 4.1:
+ "Selection of the Mmax0 (the maximum number of connections that an element can have in the zero layer) also
+ has a strong influence on the search performance, especially in case of high quality(high recall) search.
+ Simulations show that setting Mmax0 to M(this corresponds to kNN graphs on each layer if the neighbors
+ selection heuristic is not used) leads to a very strong performance penalty at high recall.
+ Simulations also suggest that 2∙M is a good choice for Mmax0;
+ setting the parameter higher leads to performance degradation and excessive memory usage".
+ </remarks>
+ <param name="baseM">Base M parameter of the algorithm.</param>
+ <param name="level">The level of the layer.</param>
+ <returns>The maximum number of connections.</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.NodeAlg3`2">
+ <summary>
+ The implementation of the SELECT-NEIGHBORS-SIMPLE(q, C, M) algorithm.
+ Article: Section 4. Algorithm 3.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.NodeAlg3`2.#ctor(System.Int32,`0,System.Int32,System.Func{`0,`0,`1},Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Parameters{`0,`1})">
+ <summary>
+ Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.NodeAlg3`2"/> class.
+ </summary>
+ <param name="id">The identifier of the node.</param>
+ <param name="item">The item which is represented by the node.</param>
+ <param name="maxLevel">The maximum level until which the node exists.</param>
+ <param name="distance">The distance function for attached items.</param>
+ <param name="parameters">The parameters of the algorithm.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.NodeAlg3`2.SelectBestForConnecting(System.Collections.Generic.IList{Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node{`0,`1}})">
+ <inheritdoc/>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.NodeAlg4`2">
+ <summary>
+ The implementation of the SELECT-NEIGHBORS-HEURISTIC(q, C, M, lc, extendCandidates, keepPrunedConnections) algorithm.
+ Article: Section 4. Algorithm 4.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.NodeAlg4`2.#ctor(System.Int32,`0,System.Int32,System.Func{`0,`0,`1},Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Parameters{`0,`1})">
+ <summary>
+ Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.NodeAlg4`2"/> class.
+ </summary>
+ <param name="id">The identifier of the node.</param>
+ <param name="item">The item which is represented by the node.</param>
+ <param name="maxLevel">The maximum level until which the node exists.</param>
+ <param name="distance">The distance function for attached items.</param>
+ <param name="parameters">The parameters of the algorithm.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.NodeAlg4`2.SelectBestForConnecting(System.Collections.Generic.IList{Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node{`0,`1}})">
+ <inheritdoc/>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Parameters`2">
+ <summary>
+ Parameters of the algorithm.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Parameters`2.#ctor">
+ <summary>
+ Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Parameters`2"/> class.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Parameters`2.M">
+ <summary>
+ Gets or sets the parameter which defines the maximum number of neighbors in the zero and above-zero layers.
+ The maximum number of neighbors for the zero layer is 2 * M.
+ The maximum number of neighbors for higher layers is M.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Parameters`2.LevelLambda">
+ <summary>
+ Gets or sets the max level decay parameter.
+ https://en.wikipedia.org/wiki/Exponential_distribution
+ See 'mL' parameter in the HNSW article.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Parameters`2.NeighbourHeuristic">
+ <summary>
+ Gets or sets parameter which specifies the type of heuristic to use for best neighbours selection.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Parameters`2.ConstructionPruning">
+ <summary>
+ Gets or sets the number of candidates to consider as neighbousr for a given node at the graph construction phase.
+ See 'efConstruction' parameter in the article.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Parameters`2.ExpandBestSelection">
+ <summary>
+ Gets or sets a value indicating whether to expand candidates if <see cref="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.NeighbourSelectionHeuristic.SelectHeuristic"/> is used.
+ See 'extendCandidates' parameter in the article.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Parameters`2.KeepPrunedConnections">
+ <summary>
+ Gets or sets a value indicating whether to keep pruned candidates if <see cref="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.NeighbourSelectionHeuristic.SelectHeuristic"/> is used.
+ See 'keepPrunedConnections' parameter in the article.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.KNNSearchResult`2">
+ <summary>
+ Representation of knn search result.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.KNNSearchResult`2.Id">
+ <summary>
+ Gets or sets the id of the item = rank of the item in source collection.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.KNNSearchResult`2.Item">
+ <summary>
+ Gets or sets the item itself.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.KNNSearchResult`2.Distance">
+ <summary>
+ Gets or sets the distance between the item and the knn search query.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.ReverseComparer`1">
+ <summary>
+ Reverses the order of the nested comparer.
+ </summary>
+ <typeparam name="T">The types of items to comapre.</typeparam>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.ReverseComparer`1.Default">
+ <summary>
+ Gets a default sort order comparer for the type specified by the generic argument.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.ReverseComparer`1.#ctor(System.Collections.Generic.IComparer{`0})">
+ <summary>
+ Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.ReverseComparer`1"/> class.
+ </summary>
+ <param name="comparer">The comparer to invert.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.ReverseComparer`1.Compare(`0,`0)">
+ <inheritdoc/>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.ReverseComparerExtensions">
+ <summary>
+ Extension methods to shortcut <see cref="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.ReverseComparer`1"/> usage.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.ReverseComparerExtensions.Reverse``1(System.Collections.Generic.IComparer{``0})">
+ <summary>
+ Creates new <see cref="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.ReverseComparer`1"/> wrapper for the given comparer.
+ </summary>
+ <typeparam name="T">The types of items to comapre.</typeparam>
+ <param name="comparer">The source comparer.</param>
+ <returns>The inverted to source comparer.</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.SmallWorld`2">
+ <summary>
+ <see href="https://arxiv.org/abs/1603.09320">Hierarchical Navigable Small World Graphs</see>.
+ </summary>
+ <typeparam name="TItem">The type of items to connect into small world.</typeparam>
+ <typeparam name="TDistance">The type of distance between items (expect any numeric type: float, double, decimal, int, ...).</typeparam>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.SmallWorld`2.DLt(`1,`1)">
+ <summary>
+ Distance is Lower Than.
+ </summary>
+ <param name="x">Left argument.</param>
+ <param name="y">Right argument.</param>
+ <returns>True if x &lt; y.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.SmallWorld`2.DGt(`1,`1)">
+ <summary>
+ Distance is Greater Than.
+ </summary>
+ <param name="x">Left argument.</param>
+ <param name="y">Right argument.</param>
+ <returns>True if x &gt; y.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.SmallWorld`2.DEq(`1,`1)">
+ <summary>
+ Distances are Equal.
+ </summary>
+ <param name="x">Left argument.</param>
+ <param name="y">Right argument.</param>
+ <returns>True if x == y.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.SmallWorld`2.BFS(Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node{`0,`1},System.Int32,System.Action{Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Node{`0,`1}})">
+ <summary>
+ Runs breadth first search.
+ </summary>
+ <param name="entryPoint">The entry point.</param>
+ <param name="level">The level of the graph where to run BFS.</param>
+ <param name="visitAction">The action to perform on each node.</param>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.SmallWorld`2.distance">
+ <summary>
+ The distance function in the items space.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.SmallWorld`2.graph">
+ <summary>
+ The hierarchical small world graph instance.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.SmallWorld`2.#ctor(System.Func{`0,`0,`1})">
+ <summary>
+ Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.SmallWorld`2"/> class.
+ </summary>
+ <param name="distance">The distance funtion to use in the small world.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.SmallWorld`2.BuildGraph(System.Collections.Generic.IList{`0},System.Random,Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.Parameters{`0,`1})">
+ <summary>
+ Builds hnsw graph from the items.
+ </summary>
+ <param name="items">The items to connect into the graph.</param>
+ <param name="generator">The random number generator for building graph.</param>
+ <param name="parameters">Parameters of the algorithm.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.SmallWorld`2.KNNSearch(`0,System.Int32)">
+ <summary>
+ Run knn search for a given item.
+ </summary>
+ <param name="item">The item to search nearest neighbours.</param>
+ <param name="k">The number of nearest neighbours.</param>
+ <returns>The list of found nearest neighbours.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.SmallWorld`2.SerializeGraph">
+ <summary>
+ Serializes the graph WITHOUT linked items.
+ </summary>
+ <returns>Bytes representing the graph.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.SmallWorld`2.DeserializeGraph(System.Collections.Generic.IList{`0},System.Byte[])">
+ <summary>
+ Deserializes the graph from byte array.
+ </summary>
+ <param name="items">The items to assign to the graph's verticies.</param>
+ <param name="bytes">The serialized parameters and edges.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.SmallWorld`2.Print">
+ <summary>
+ Prints edges of the graph.
+ Mostly for debug and test purposes.
+ </summary>
+ <returns>String representation of the graph's edges.</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.TravelingCosts`2">
+ <summary>
+ Implementation of distance calculation from an arbitrary point to the given destination.
+ </summary>
+ <typeparam name="TItem">Type of the points.</typeparam>
+ <typeparam name="TDistance">Type of the diatnce.</typeparam>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.TravelingCosts`2.DistanceComparer">
+ <summary>
+ Default distance comaprer.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.TravelingCosts`2.distance">
+ <summary>
+ The distance funciton.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.TravelingCosts`2.destination">
+ <summary>
+ The destination point.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.TravelingCosts`2.cache">
+ <summary>
+ Cached values.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.TravelingCosts`2.#ctor(System.Func{`0,`0,`1},`0)">
+ <summary>
+ Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.TravelingCosts`2"/> class.
+ </summary>
+ <param name="distance">The distance function.</param>
+ <param name="destination">The destination point.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.TravelingCosts`2.From(`0)">
+ <summary>
+ Calculates distance from the departure to the destination.
+ </summary>
+ <param name="departure">The point of departure.</param>
+ <returns>The distance from the departure to the destination.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.TravelingCosts`2.Compare(`0,`0)">
+ <summary>
+ Compares 2 points by the distance from the destination.
+ </summary>
+ <param name="x">Left point.</param>
+ <param name="y">Right point.</param>
+ <returns>
+ -1 if x is closer to the destination than y;
+ 0 if x and y are equally far from the destination;
+ 1 if x is farther from the destination than y.
+ </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.VectorUtils">
+ <summary>
+ Utilities to work with vectors.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.VectorUtils.Magnitude(System.Collections.Generic.IList{System.Single})">
+ <summary>
+ Calculates magnitude of the vector.
+ </summary>
+ <param name="vector">The vector to calculate magnitude for.</param>
+ <returns>The magnitude.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.VectorUtils.Normalize(System.Collections.Generic.IList{System.Single})">
+ <summary>
+ Turns vector to unit vector.
+ </summary>
+ <param name="vector">The vector to normalize.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.VectorUtils.MagnitudeSIMD(System.Single[])">
+ <summary>
+ SIMD optimized version of <see cref="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.VectorUtils.Magnitude(System.Collections.Generic.IList{System.Single})"/>.
+ </summary>
+ <param name="vector">The vector to calculate magnitude for.</param>
+ <returns>The magnitude.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.VectorUtils.NormalizeSIMD(System.Single[])">
+ <summary>
+ SIMD optimized version of <see cref="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.VectorUtils.Normalize(System.Collections.Generic.IList{System.Single})"/>.
+ </summary>
+ <param name="vector">The vector to normalize.</param>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.KNN">
  <summary>
  KNN search handler for phenograph
