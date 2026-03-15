@@ -1884,7 +1884,7 @@ Microsoft.VisualBasic.Data.Framework
  <summary>
  <see cref="F:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.current"></see>在<see cref="F:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.table"></see>之中的位置
  </summary>
- <remarks></remarks>
+ <remarks>the initialize value of this pointer is -1</remarks>
 </member>
 <member name="F:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.table">
  <summary>

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>System.Guid</title>
+    <title>Microsoft.VisualBasic.Data.Framework.FeatureVector</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <link rel="stylesheet" type="text/css" href="../../_assets/page.css">
@@ -13,25 +13,34 @@
 
         <table style="width: 100%;">
             <tr>
-                <td>Guid {System}</td>
+                <td>FeatureVector {Microsoft.VisualBasic.Data.Framework}</td>
                 <td style="text-align: right;">.NET clr documentation</td>
             </tr>
         </table>
 
-        <h2>Guid</h2>
+        <h2>FeatureVector</h2>
 
         <h3>Description</h3>
 
-        
+        <p>the feature column vector</p>
 
         <h3>Declare</h3>        
 
         <pre>
             <code id="clr_ts">
-# namespace System
-export class Guid extends <a href="/vignettes/clr/System/ValueType.html">ValueType</a> {
-   Variant: integer;
-   Version: integer;
+# namespace Microsoft.VisualBasic.Data.Framework
+export class FeatureVector {
+   attributes: list;
+   # does current vector has no data or just a single value?
+   isScalar: boolean;
+   # the feature name
+   name: string;
+   # the vector length
+   size: integer;
+   # the vector element scalar type, example as integer, double, etc...
+   type: <a href="/vignettes/clr/System/Type.html">Type</a>;
+   # a generic data vector
+   vector: <a href="/vignettes/clr/System/Array.html">Array</a>;
 }
 </code>
         </pre>
@@ -39,7 +48,9 @@ export class Guid extends <a href="/vignettes/clr/System/ValueType.html">ValueTy
         <h3>.NET clr type reference tree</h3>
 
         <ol>
-<li>this class extends from <a href="/vignettes/clr/System/ValueType.html">ValueType</a> class: <a href="/vignettes/clr/System/ValueType.html">ValueType</a></li>
+<li>use by <i>property</i> member <code>attributes</code>: list</li>
+<li>use by <i>property</i> member <code>type</code>: <a href="/vignettes/clr/System/Type.html">Type</a></li>
+<li>use by <i>property</i> member <code>vector</code>: <a href="/vignettes/clr/System/Array.html">Array</a></li>
 </ol>
 
 
