@@ -670,7 +670,7 @@ Microsoft.VisualBasic.Data.Framework
  is not exists in the table headers
  </returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DocumentExtensions.GetColumnValues(Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver,System.String)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DocumentExtensions.GetColumnValues(Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver,System.String)">
  <summary>
  get a specific column value by name
  </summary>
@@ -876,7 +876,7 @@ Microsoft.VisualBasic.Data.Framework
  (将目标Csv文件转换为特定类型的集合数据)
  </remarks>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.Extensions.AsDataSource``1(Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver,System.Boolean,System.Collections.Generic.Dictionary{System.String,System.String},System.Boolean)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.Extensions.AsDataSource``1(Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver,System.Boolean,System.Collections.Generic.Dictionary{System.String,System.String},System.Boolean)">
  <summary>
  Convert the csv data file to a type specific collection.(将目标Csv文件转换为特定类型的集合数据)
  </summary>
@@ -1431,7 +1431,7 @@ Microsoft.VisualBasic.Data.Framework
  <returns></returns>
  <remarks>
  由于是使用<see cref="F:Microsoft.VisualBasic.Data.Framework.IO.File._innerTable"/>来作为数据源的，所以对于csv对象而言，是含有header数据的，即含有第一行数据
- 对于<see cref="T:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver"/>类型而言，由于在创建对象的时候，第一行数据由于需要被用作为header，
+ 对于<see cref="T:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver"/>类型而言，由于在创建对象的时候，第一行数据由于需要被用作为header，
  所以这个内部表对象之中是不包含有header行的，即这个属性所输出的结果只中是不包含有header行的
  </remarks>
 </member>
@@ -1584,7 +1584,7 @@ Microsoft.VisualBasic.Data.Framework
 </member>
 <member name="M:Microsoft.VisualBasic.Data.Framework.IO.File.__createTableVector">
  <summary>
- 这个方法是保存<see cref="T:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver"></see>对象之中的数据所需要的
+ 这个方法是保存<see cref="T:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver"></see>对象之中的数据所需要的
  </summary>
  <returns></returns>
  <remarks></remarks>
@@ -1870,254 +1870,6 @@ Microsoft.VisualBasic.Data.Framework
  Pop all cells string from the internal buffer list and then returns the generated text line.
  </summary>
  <param name="delimiter"></param>
- <returns></returns>
-</member>
-<member name="T:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver">
- <summary>
- The dynamics data frame object which its first line is not contains the but using for the title property.
- </summary>
- <remarks>
- (第一行总是没有的，即本对象类型适用于第一行为列标题行的数据)
- </remarks>
-</member>
-<member name="F:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.p">
- <summary>
- <see cref="F:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.current"></see>在<see cref="F:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.table"></see>之中的位置
- </summary>
- <remarks>the initialize value of this pointer is -1</remarks>
-</member>
-<member name="F:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.table">
- <summary>
- table data that contains no header row
- </summary>
-</member>
-<member name="F:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.columnList">
- <summary>
- Using the first line of the csv row as the column headers in this csv file.
- </summary>
- <remarks></remarks>
-</member>
-<member name="P:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.Nrows">
- <summary>
- get number of the row data
- </summary>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.ChangeMapping(System.Collections.Generic.Dictionary{System.String,System.String})">
- <summary>
- ``Csv.Field -> <see cref="P:System.Reflection.MemberInfo.Name"/>``
- </summary>
- <param name="mapping">``{oldFieldName, newFieldName}``</param>
- <remarks></remarks>
- 
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.AddAttribute(System.String)">
- <summary>
- 这个函数会返回目标列在schema之中的下标序列号
- 如果已经存在了，则会直接返回下标号
- </summary>
- <param name="Name"></param>
- <returns></returns>
- 
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.MeasureTypeSchema">
- <summary>
- make measuring of the possible column data type
- </summary>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.CreateDataSource">
- <summary>
- Get the lines data for the convinent data operation.(为了保持一致的顺序，这个函数是非并行化的)
- </summary>
- <returns></returns>
- <remarks></remarks>
-</member>
-<member name="P:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.HeadTitles">
- <summary>
- The column headers in the csv file first row.
- </summary>
- <returns></returns>
-</member>
-<member name="P:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.Headers">
- <summary>
- The column headers in the csv file first row.
- </summary>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.csv">
- <summary>
- Convert this dataframe object as a csv document object
- </summary>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.#ctor(Microsoft.VisualBasic.Language.ArgumentReference[])">
- <summary>
- Create a new dataframe with column value assigned
- </summary>
- <param name="columns">
- 只支持基础类型,不支持复杂类型,因为csv文件的单元格不适用于复杂数据类型的数据文本的存储
- </param>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.ColumnRows(Microsoft.VisualBasic.Language.ArgumentReference[])">
- <summary>
- transpose the columns vector as rows collection
- </summary>
- <param name="columns"></param>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.Load(System.String,System.Text.Encoding,System.Boolean,Microsoft.VisualBasic.ComponentModel.DataSourceModel.NamedValue{System.Func{System.String,System.Boolean}},System.Boolean,System.Boolean)">
- <summary>
- Try loading a excel csv data file as a dynamics data frame object.
- </summary>
- <param name="path"></param>
- <param name="encoding"></param>
- <param name="simpleRowIterators">
- set this parameter to False will enable the multiple line row parser feature.
- </param>
- <returns></returns>
- <remarks>(尝试加载一个Csv文件为数据框对象，请注意，第一行必须要为标题行)</remarks>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.getColumnList(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.Framework.IO.RowObject})">
- <summary>
- use the first row as the column names
- </summary>
- <param name="table"></param>
- <returns></returns>
- <remarks>
- just check for the table header and give the warning message
- </remarks>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.CreateObject(Microsoft.VisualBasic.Data.Framework.IO.File,System.Boolean)">
- <summary>
- Creates the data frame object from the csv docs.
- </summary>
- <param name="file"></param>
- <returns></returns>
- 
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.CreateObject(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.Framework.IO.RowObject})">
- <summary>
- 
- </summary>
- <param name="headers">the header text data of each columns</param>
- <param name="rows">the table data that exlcudes the first header row.</param>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.Initialize(Microsoft.VisualBasic.Language.List{Microsoft.VisualBasic.Data.Framework.IO.RowObject},Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver@,System.Boolean)">
- <summary>
- just needs to assign the table value and the column names
- </summary>
- <param name="table"></param>
- <param name="dataframe"></param>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.GetOrdinal(System.String)">
- <summary>
- Function return -1 when column not found. 
- </summary>
- <param name="Column"></param>
- <returns></returns>
- <remarks></remarks>
- 
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.GetOrdinalSchema(System.String[])">
- <summary>
- Gets the order list of the specific column list, -1 value will be returned when it is not exists in the table.
- (获取列集合的位置列表，不存在的列则返回-1)
- </summary>
- <param name="columns"></param>
- <returns></returns>
- <remarks>由于存在一一对应关系，这里不会再使用并行拓展</remarks>
- 
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.Read">
- <summary>
- The data frame object start to reading the data in this table, if the current pointer is reach 
- the top of the lines then this function will returns FALSE to stop the reading loop.
- </summary>
- <returns></returns>
- <remarks></remarks>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.Reset">
- <summary>
- Reset the reading position in the data frame object.
- </summary>
- <remarks></remarks>
- 
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.CopyFrom(Microsoft.VisualBasic.Data.Framework.IO.File)">
- <summary>
- 这个方法会清除当前对象之中的原有数据
- </summary>
- <param name="source"></param>
- <remarks></remarks>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.GetRow(System.Int32)">
- <summary>
- get row line by its row number
- </summary>
- <param name="i"></param>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.GetRowData">
- <summary>
- get current row data vector
- </summary>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.GetRow">
- <summary>
- get current row string vector
- </summary>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.Select(System.String[])">
- <summary>
- Subset of the dataframe object by given column field names
- </summary>
- <param name="columnList"></param>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.Close">
- <summary>
- Closes the <see cref="T:System.Data.IDataReader"/>:<see cref="T:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver"/> Object.  
- </summary>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver.GetSchemaTable">
- <summary>
- Returns a System.Data.DataTable that describes the column metadata of the System.Data.IDataReader.
- </summary>
- <returns>A System.Data.DataTable that describes the column metadata.</returns>
-</member>
-<member name="T:Microsoft.VisualBasic.Data.Framework.IO.HeaderSchema">
- <summary>
- Create table column schema based on the dataframe title headers
- </summary>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.HeaderSchema.AddAttribute(System.String)">
- <summary>
- 这个函数会返回目标列在schema之中的下标序列号
- 如果已经存在了，则会直接返回下标号
- </summary>
- <param name="Name"></param>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.HeaderSchema.ChangeMapping(System.Collections.Generic.Dictionary{System.String,System.String})">
- <summary>
- ``Csv.Field -> <see cref="P:System.Reflection.MemberInfo.Name"/>``
- </summary>
- <param name="mapping">``{oldFieldName, newFieldName}``</param>
- <remarks></remarks>
-</member>
-<member name="F:Microsoft.VisualBasic.Data.Framework.IO.HeaderSchema.DuplicatedKeys">
- <summary>
- There is an duplicated key exists in your csv table, please delete the duplicated key and try load again!
- </summary>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.HeaderSchema.createSchemaOridinal(System.Collections.Generic.IEnumerable{System.String})">
- <summary>
- Indexing the column headers
- </summary>
  <returns></returns>
 </member>
 <member name="T:Microsoft.VisualBasic.Data.Framework.IO.DataSet">
@@ -2842,7 +2594,7 @@ Microsoft.VisualBasic.Data.Framework
  </summary>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.ComponentModels.DynamicObjectLoader.#ctor(Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.ComponentModels.DynamicObjectLoader.#ctor(Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver)">
  <summary>
  Copy the ordinal schema from the source data frame.
  </summary>
@@ -3107,12 +2859,6 @@ Microsoft.VisualBasic.Data.Framework
  <param name="Name">可能会通过<see cref="T:Microsoft.VisualBasic.Data.Framework.StorageProvider.Reflection.ColumnAttribute"/>来取别名</param>  
  <param name="BindProperty"></param>
 </member>
-<member name="P:Microsoft.VisualBasic.Data.Framework.StorageProvider.ComponentModels.ISchema.SchemaOridinal">
- <summary>
- 从数据源之中解析出来得到的域列表
- </summary>
- <returns></returns>
-</member>
 <member name="T:Microsoft.VisualBasic.Data.Framework.StorageProvider.ComponentModels.RowBuilder">
  <summary>
  这个是用于将Csv文件之中的行数据转换为.NET对象的
@@ -3148,7 +2894,7 @@ Microsoft.VisualBasic.Data.Framework
  </summary>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.ComponentModels.RowBuilder.IndexOf(Microsoft.VisualBasic.Data.Framework.StorageProvider.ComponentModels.ISchema)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.ComponentModels.RowBuilder.IndexOf(Microsoft.VisualBasic.Data.Framework.StorageProvider.ISchema)">
  <summary>
  从外部源之中获取本数据集的Schema的信息
  </summary>
@@ -3354,6 +3100,260 @@ Microsoft.VisualBasic.Data.Framework
  <param name="Properties"></param>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver">
+ <summary>
+ The dynamics data frame object which its first line is not contains the but using for the title property.
+ </summary>
+ <remarks>
+ (第一行总是没有的，即本对象类型适用于第一行为列标题行的数据)
+ </remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.p">
+ <summary>
+ <see cref="F:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.current"></see>在<see cref="F:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.table"></see>之中的位置
+ </summary>
+ <remarks>the initialize value of this pointer is -1</remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.table">
+ <summary>
+ table data that contains no header row
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.columnList">
+ <summary>
+ Using the first line of the csv row as the column headers in this csv file.
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.Nrows">
+ <summary>
+ get number of the row data
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.ChangeMapping(System.Collections.Generic.Dictionary{System.String,System.String})">
+ <summary>
+ ``Csv.Field -> <see cref="P:System.Reflection.MemberInfo.Name"/>``
+ </summary>
+ <param name="mapping">``{oldFieldName, newFieldName}``</param>
+ <remarks></remarks>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.AddAttribute(System.String)">
+ <summary>
+ 这个函数会返回目标列在schema之中的下标序列号
+ 如果已经存在了，则会直接返回下标号
+ </summary>
+ <param name="Name"></param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.MeasureTypeSchema">
+ <summary>
+ make measuring of the possible column data type
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.CreateDataSource">
+ <summary>
+ Get the lines data for the convinent data operation.
+ </summary>
+ <returns></returns>
+ <remarks>(为了保持一致的顺序，这个函数是非并行化的)</remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.HeadTitles">
+ <summary>
+ The column headers in the csv file first row.
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.Headers">
+ <summary>
+ The column headers in the csv file first row.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.csv">
+ <summary>
+ Convert this dataframe object as a csv document object
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.#ctor(Microsoft.VisualBasic.Language.ArgumentReference[])">
+ <summary>
+ Create a new dataframe with column value assigned
+ </summary>
+ <param name="columns">
+ 只支持基础类型,不支持复杂类型,因为csv文件的单元格不适用于复杂数据类型的数据文本的存储
+ </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.ColumnRows(Microsoft.VisualBasic.Language.ArgumentReference[])">
+ <summary>
+ transpose the columns vector as rows collection
+ </summary>
+ <param name="columns"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.Load(System.String,System.Text.Encoding,System.Boolean,Microsoft.VisualBasic.ComponentModel.DataSourceModel.NamedValue{System.Func{System.String,System.Boolean}},System.Boolean,System.Boolean)">
+ <summary>
+ Try loading a excel csv data file as a dynamics data frame object.
+ </summary>
+ <param name="path"></param>
+ <param name="encoding"></param>
+ <param name="simpleRowIterators">
+ set this parameter to False will enable the multiple line row parser feature.
+ </param>
+ <returns></returns>
+ <remarks>(尝试加载一个Csv文件为数据框对象，请注意，第一行必须要为标题行)</remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.getColumnList(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.Framework.IO.RowObject})">
+ <summary>
+ use the first row as the column names
+ </summary>
+ <param name="table"></param>
+ <returns></returns>
+ <remarks>
+ just check for the table header and give the warning message
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.CreateObject(Microsoft.VisualBasic.Data.Framework.IO.File,System.Boolean)">
+ <summary>
+ Creates the data frame object from the csv docs.
+ </summary>
+ <param name="file"></param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.CreateObject(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.Framework.IO.RowObject})">
+ <summary>
+ 
+ </summary>
+ <param name="headers">the header text data of each columns</param>
+ <param name="rows">the table data that exlcudes the first header row.</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.Initialize(Microsoft.VisualBasic.Language.List{Microsoft.VisualBasic.Data.Framework.IO.RowObject},Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver@,System.Boolean)">
+ <summary>
+ just needs to assign the table value and the column names
+ </summary>
+ <param name="table"></param>
+ <param name="dataframe"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.GetOrdinal(System.String)">
+ <summary>
+ Function return -1 when column not found. 
+ </summary>
+ <param name="Column"></param>
+ <returns></returns>
+ <remarks></remarks>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.GetOrdinalSchema(System.String[])">
+ <summary>
+ Gets the order list of the specific column list, -1 value will be returned when it is not exists in the table.
+ (获取列集合的位置列表，不存在的列则返回-1)
+ </summary>
+ <param name="columns"></param>
+ <returns></returns>
+ <remarks>由于存在一一对应关系，这里不会再使用并行拓展</remarks>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.Read">
+ <summary>
+ The data frame object start to reading the data in this table, if the current pointer is reach 
+ the top of the lines then this function will returns FALSE to stop the reading loop.
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.Reset">
+ <summary>
+ Reset the reading position in the data frame object.
+ </summary>
+ <remarks></remarks>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.CopyFrom(Microsoft.VisualBasic.Data.Framework.IO.File)">
+ <summary>
+ 这个方法会清除当前对象之中的原有数据
+ </summary>
+ <param name="source"></param>
+ <remarks></remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.GetRow(System.Int32)">
+ <summary>
+ get row line by its row number
+ </summary>
+ <param name="i"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.GetRowData">
+ <summary>
+ get current row data vector
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.GetRow">
+ <summary>
+ get current row string vector
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.Select(System.String[])">
+ <summary>
+ Subset of the dataframe object by given column field names
+ </summary>
+ <param name="columnList"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.Close">
+ <summary>
+ Closes the <see cref="T:System.Data.IDataReader"/>:<see cref="T:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver"/> Object.  
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.GetSchemaTable">
+ <summary>
+ Returns a System.Data.DataTable that describes the column metadata of the System.Data.IDataReader.
+ </summary>
+ <returns>A System.Data.DataTable that describes the column metadata.</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Framework.StorageProvider.HeaderSchema">
+ <summary>
+ Create table column schema based on the dataframe title headers
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.HeaderSchema.AddAttribute(System.String)">
+ <summary>
+ 这个函数会返回目标列在schema之中的下标序列号
+ 如果已经存在了，则会直接返回下标号
+ </summary>
+ <param name="Name"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.HeaderSchema.ChangeMapping(System.Collections.Generic.Dictionary{System.String,System.String})">
+ <summary>
+ ``Csv.Field -> <see cref="P:System.Reflection.MemberInfo.Name"/>``
+ </summary>
+ <param name="mapping">``{oldFieldName, newFieldName}``</param>
+ <remarks></remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.Framework.StorageProvider.HeaderSchema.DuplicatedKeys">
+ <summary>
+ There is an duplicated key exists in your csv table, please delete the duplicated key and try load again!
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.HeaderSchema.createSchemaOridinal(System.Collections.Generic.IEnumerable{System.String})">
+ <summary>
+ Indexing the column headers
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.Framework.StorageProvider.ISchema.SchemaOridinal">
+ <summary>
+ 从数据源之中解析出来得到的域列表
+ </summary>
+ <returns></returns>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.Framework.StorageProvider.Reflection.CollectionAttribute">
  <summary>
  This property is a array data type object.(并不建议使用本Csv属性来储存大量的文本字符串，极容易出错)
@@ -3490,7 +3490,7 @@ Microsoft.VisualBasic.Data.Framework
  <param name="Explicit"></param>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.Reflection.Reflector.LoadDataToObject(Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver,System.Type,System.Boolean,System.String,System.Boolean,System.Boolean)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.Reflection.Reflector.LoadDataToObject(Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver,System.Type,System.Boolean,System.String,System.Boolean,System.Boolean)">
  <summary>
  将Csv文件加载至一个目标集合之中以完成数据从文件之中的读取操作
  </summary>
@@ -3501,7 +3501,7 @@ Microsoft.VisualBasic.Data.Framework
  <remarks></remarks>
  
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.Reflection.Reflector.Convert``1(Microsoft.VisualBasic.Data.Framework.IO.DataFrameResolver,System.Boolean,System.String,System.Boolean)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.Reflection.Reflector.Convert``1(Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver,System.Boolean,System.String,System.Boolean)">
  <summary>
  从文件之中读取数据并转换为对象数据
  </summary>

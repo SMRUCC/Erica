@@ -228,6 +228,203 @@ Microsoft.VisualBasic.Data.GraphTheory
  next负责连接和此点相关的边
  </summary>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity">
+ <summary>
+ Leiden算法 - Louvain算法的改进版，保证社区连通性
+ 
+ 核心改进：
+ 1. 细化阶段(Refinement)：保证每个社区内部节点是连通的
+ 2. 快速移动策略：使用队列进行高效的节点移动
+ 3. 子社区合并：在细化阶段合并连通的子社区
+ </summary>
+ <remarks>
+ Traag V A, Waltman L, Van Eck N J. From Louvain to Leiden: 
+ guaranteeing well-connected communities[J]. Scientific reports, 2019, 9(1): 1-12.
+ </remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.refineIterations">
+ <summary>
+ Leiden算法的细化迭代次数
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.communityNodes">
+ <summary>
+ 社区到节点的映射，用于细化阶段
+ Key: 社区ID, Value: 该社区内的节点列表
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.refinedPartition">
+ <summary>
+ 细化阶段的子社区分配
+ Key: 节点ID, Value: 子社区ID
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.visited">
+ <summary>
+ 用于连通性检测的访问标记数组
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.stack">
+ <summary>
+ DFS/BFS使用的栈
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.theta">
+ <summary>
+ 细化阶段的参数：控制子社区合并的阈值
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.#ctor(System.Int32,System.Int32,System.Double,System.Double)">
+ <summary>
+ 初始化Leiden算法
+ </summary>
+ <param name="maxIterations">最大迭代次数</param>
+ <param name="refineIterations">细化迭代次数</param>
+ <param name="eps">误差容限</param>
+ <param name="theta">细化参数，控制子社区合并的激进程度</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.SolveClusters(System.Int32)">
+ <summary>
+ Leiden算法的核心：三阶段迭代
+ 
+ 阶段1: 局部节点移动 (快速移动策略)
+ 阶段2: 社区细化 (保证连通性)
+ 阶段3: 网络聚合
+ </summary>
+ <param name="max_clusters">最大社区数量限制</param>
+ <returns>自身实例，支持链式调用</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.MoveNodesFast">
+ <summary>
+ Leiden的快速移动策略
+ 
+ 与Louvain的区别：
+ 1. 使用队列存储需要检查的节点
+ 2. 节点移动后，其邻居自动加入队列
+ 3. 更高效地传播社区变化
+ </summary>
+ <returns>是否有节点发生移动</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.FindBestCommunityFast(System.Int32)">
+ <summary>
+ 为节点寻找最佳社区 (快速移动策略)
+ </summary>
+ <param name="node">待移动的节点</param>
+ <returns>最佳社区ID</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.CalculateDeltaQ(System.Int32,System.Int32)">
+ <summary>
+ 计算节点移动到目标社区的模块度变化
+ 
+ 模块度增量公式：
+ ΔQ = [k_i,in / 2m - Σ_tot * k_i / (2m)²] - [k_i,in(current) / 2m - Σ_tot(current) * k_i / (2m)²]
+ 简化后：ΔQ = k_i,in(target) - k_i,in(current) - k_i * (Σ_tot(target) - Σ_tot(current)) / (2m)
+ </summary>
+ <param name="node">节点ID</param>
+ <param name="targetCommunity">目标社区ID</param>
+ <returns>模块度变化值</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.RefineCommunities">
+ <summary>
+ 社区细化阶段 - Leiden算法的核心创新
+ 
+ 目的：保证每个社区内部节点是连通的
+ 
+ 步骤：
+ 1. 对每个社区，检查其内部连通性
+ 2. 如果不连通，将不连通的部分分离为独立子社区
+ 3. 在子社区内进行局部优化
+ 4. 合并收益为正的子社区
+ </summary>
+ <returns>是否发生了细化</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.LocalMoveWithinCommunity(System.Collections.Generic.List{System.Int32},System.Int32)">
+ <summary>
+ 在社区内进行局部移动优化
+ </summary>
+ <param name="nodesInCommunity">社区内的节点列表</param>
+ <param name="communityId">社区ID</param>
+ <returns>是否有节点移动</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.FindBestSubCommunity(System.Int32,System.Collections.Generic.Dictionary{System.Int32,System.Double},System.Collections.Generic.List{System.Int32})">
+ <summary>
+ 为节点在社区内寻找最佳子社区
+ </summary>
+ <param name="node">节点ID</param>
+ <param name="subCommWeight">子社区权重字典</param>
+ <param name="nodesInCommunity">社区内的节点列表</param>
+ <returns>最佳子社区ID</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.CalculateSubCommDeltaQ(System.Int32,System.Int32,System.Collections.Generic.Dictionary{System.Int32,System.Double})">
+ <summary>
+ 计算节点移动到目标子社区的模块度变化
+ </summary>
+ <param name="node">节点ID</param>
+ <param name="targetSubComm">目标子社区ID</param>
+ <param name="subCommWeight">子社区权重字典</param>
+ <returns>模块度变化值</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.MergeSubCommunities">
+ <summary>
+ 合并子社区
+ 
+ 将收益为正的子社区合并，同时保证连通性
+ </summary>
+ <returns>是否发生了合并</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.BuildSubCommConnections(System.Collections.Generic.List{System.Int32})">
+ <summary>
+ 构建子社区间的连接关系
+ </summary>
+ <param name="nodesInCommunity">社区内的节点列表</param>
+ <returns>子社区连接字典</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.CalculateMergeGain(System.Int32,System.Int32,System.Collections.Generic.List{System.Int32})">
+ <summary>
+ 计算合并两个子社区的收益
+ </summary>
+ <param name="subComm1">子社区1</param>
+ <param name="subComm2">子社区2</param>
+ <param name="nodesInCommunity">社区内的节点列表</param>
+ <returns>合并收益</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.ApplyRefinedPartition">
+ <summary>
+ 应用细化分区结果到主分区
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.FindConnectedComponents(System.Collections.Generic.List{System.Int32})">
+ <summary>
+ 在社区内查找连通分量
+ 
+ 使用DFS算法检测社区内节点的连通性
+ </summary>
+ <param name="nodes">社区内的节点列表</param>
+ <returns>连通分量列表</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.UpdateCommunityNodes">
+ <summary>
+ 更新社区到节点的映射
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.GetNextCommunityId">
+ <summary>
+ 获取下一个可用的社区ID
+ </summary>
+ <returns>新的社区ID</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.GenerateRandomOrder(System.Int32)">
+ <summary>
+ 生成随机节点顺序
+ </summary>
+ <param name="size">节点数量</param>
+ <returns>随机排列的节点索引数组</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LeidenCommunity.rebuildGraph">
+ <summary>
+ 重写重建图方法，添加调试信息
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity">
  <summary>
  A fast algorithm To find communities In large network
