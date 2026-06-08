@@ -131,9 +131,6 @@ Public Module Math
     ''' split the large region as cell cluster
     ''' </summary>
     ''' <param name="cells"></param>
-    ''' <param name="noise">
-    ''' the quantile level of the cell size, all cells that with cell size less than this quantile cutoff will be treated as noised.
-    ''' </param>
     ''' <returns></returns>
     <Extension>
     Public Iterator Function Split(Of T As CellScan)(cells As IEnumerable(Of T)) As IEnumerable(Of T)

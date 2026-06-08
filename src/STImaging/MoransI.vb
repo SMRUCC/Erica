@@ -63,8 +63,8 @@ Public Module MoransI
     ''' 
     ''' </summary>
     ''' <param name="Xi"></param>
-    ''' <param name="xj"></param>
-    ''' <param name="Wij">
+    ''' <param name="x"></param>
+    ''' <param name="W">
     ''' Wij is spatial weight between spots i and j calculated using the 2D spatial coordinates of the spots
     ''' </param>
     ''' <param name="Xu"></param>

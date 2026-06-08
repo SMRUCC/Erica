@@ -42,8 +42,6 @@ Public Class DziImage
     ''' <summary>
     ''' 计算指定层级的图像维度（宽度或高度）
     ''' </summary>
-    ''' <param name="originalDimension">原始维度（宽度或高度）</param>
-    ''' <param name="level">目标层级</param>
     ''' <returns>指定层级的维度</returns>
     Public ReadOnly Property MaxZoomLevels As SizeInt
         Get
