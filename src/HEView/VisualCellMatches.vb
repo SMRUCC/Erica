@@ -8,6 +8,7 @@ Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Math.LinearAlgebra
 Imports Microsoft.VisualBasic.MIME.Html.CSS
 Imports Microsoft.VisualBasic.MIME.Html.Render
+Imports Pen = Microsoft.VisualBasic.Imaging.Pen
 
 Public Class VisualCellMatches : Inherits Plot
 

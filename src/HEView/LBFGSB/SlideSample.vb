@@ -13,7 +13,7 @@ Public Class SlideSample
     Public Property y As Vector
     Public Property intensity As Vector()
 
-    Public Shared Function Render(slide As SlideSample, Optional heatmap As Integer = -1, Optional dims As Size? = Nothing) As Bitmap
+    Public Shared Function Render(slide As SlideSample, Optional heatmap As Integer = -1, Optional dims As Size? = Nothing) As Microsoft.VisualBasic.Imaging.Bitmap
         If dims Is Nothing Then
             Dim xlim = slide.x.Range.MinMax
             Dim ylim = slide.y.Range.MinMax
@@ -39,7 +39,7 @@ Public Class SlideSample
             .Select(Function(val, i) New PixelData(slide.x(i), slide.y(i), val)) _
             .ToArray
         Dim raster As New PixelRender(ScalerPalette.Jet.Description, 30, Color.White)
-        Dim img As Bitmap = raster.RenderRasterImage(pixels, dims)
+        Dim img As Microsoft.VisualBasic.Imaging.Bitmap = raster.RenderRasterImage(pixels, dims)
 
         Return img
     End Function

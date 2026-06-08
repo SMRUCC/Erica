@@ -5,6 +5,7 @@ Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.BitmapImage
 Imports Microsoft.VisualBasic.Imaging.Filters
 Imports Microsoft.VisualBasic.Scripting.Runtime
+Imports Image = Microsoft.VisualBasic.Imaging.Image
 
 Public Class DziImageBuffer
 
