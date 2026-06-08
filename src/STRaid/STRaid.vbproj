@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <RootNamespace>Erica.Analysis.SpatialTissue.RaidData</RootNamespace>
-    <TargetFrameworks>net10.0-windows;net10.0</TargetFrameworks>
+    <TargetFrameworks>net10.0</TargetFrameworks>
     <Title>Spatial transcriptomics h5ad data reader</Title>
     <Platforms>AnyCPU;x64</Platforms>
     <Configurations>Debug;Release;Rsharp_app_release;MEMI-Desktop</Configurations>
