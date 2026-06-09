@@ -31,12 +31,12 @@ Microsoft.VisualBasic.Drawing
  image save must dispose the canvas at first
  </summary>
 </member>
-<member name="T:Microsoft.VisualBasic.Drawing.Interop">
+<member name="T:Microsoft.VisualBasic.Drawing.SkiaInterop">
  <summary>
  Helper for interop with gdi+ in .net-windows
  </summary>
 </member>
-<member name="M:Microsoft.VisualBasic.Drawing.Interop.CastSkiaBitmap(Microsoft.VisualBasic.Imaging.Bitmap)">
+<member name="M:Microsoft.VisualBasic.Drawing.SkiaInterop.CastSkiaBitmap(Microsoft.VisualBasic.Imaging.Bitmap)">
  <summary>
  
  </summary>
@@ -46,14 +46,14 @@ Microsoft.VisualBasic.Drawing
  the transparent will be lost when cast memory bitmap to skia bitmap object
  </remarks>
 </member>
-<member name="M:Microsoft.VisualBasic.Drawing.Interop.SkiaToGdiPlusImage(SkiaSharp.SKImage)">
+<member name="M:Microsoft.VisualBasic.Drawing.SkiaInterop.SkiaToGdiPlusImage(SkiaSharp.SKImage)">
  <summary>
  Convert the skia image to gdi+ image
  </summary>
  <param name="skImage"></param>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Drawing.Interop.CreatePaint(Microsoft.VisualBasic.Imaging.Pen)">
+<member name="M:Microsoft.VisualBasic.Drawing.SkiaInterop.CreatePaint(Microsoft.VisualBasic.Imaging.Pen)">
  <summary>
  Create the stroke pen paint style
  </summary>

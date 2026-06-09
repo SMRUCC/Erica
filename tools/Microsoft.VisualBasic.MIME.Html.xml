@@ -275,7 +275,7 @@ Microsoft.VisualBasic.MIME.Html
  <summary>
  Css string for set font style
  </summary>
- <returns></returns>
+ <returns><see cref="M:Microsoft.VisualBasic.MIME.Html.CSS.CSSFont.ToString"/> value.</returns>
 </member>
 <member name="M:Microsoft.VisualBasic.MIME.Html.CSS.CSSFont.TryParse(System.String,Microsoft.VisualBasic.MIME.Html.CSS.CSSFont,System.Boolean@)">
  <summary>

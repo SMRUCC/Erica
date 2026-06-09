@@ -487,7 +487,7 @@ Microsoft.VisualBasic.Data.Framework
  <param name="file"></param>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DataImports.Imports(System.String,System.String,System.Text.Encoding)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataImports.Imports(System.String,System.String,System.Text.Encoding,System.Boolean)">
  <summary>
  Imports the data in a well formatted text file using a specific delimiter, default delimiter is comma character.
  </summary>
@@ -496,7 +496,7 @@ Microsoft.VisualBasic.Data.Framework
  <remarks></remarks>
  
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DataImports.Imports``1(System.String,System.String,System.Text.Encoding,System.Collections.Generic.Dictionary{System.String,System.String},System.Boolean)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataImports.Imports``1(System.String,System.String,System.Text.Encoding,System.Collections.Generic.Dictionary{System.String,System.String},System.Boolean,System.Boolean)">
  <summary>
  Imports data source by using specific delimiter.(这个函数是一个安全的函数，当目标文件不存在的时候，返回的是一个空集合)
  </summary>
@@ -504,6 +504,17 @@ Microsoft.VisualBasic.Data.Framework
  <param name="path"></param>
  <param name="delimiter"></param>
  <param name="encoding"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataImports.ImportsData(System.Collections.Generic.IEnumerable{System.String},System.String,System.Boolean)">
+ <summary>
+ 通过正则表达式按照特定的分隔符对文本行进行切分，并将切分后的结果封装成一个csvFile对象返回。
+ </summary>
+ <param name="lines"></param>
+ <param name="delimiter"></param>
+ <param name="skipComment">
+ 是否跳过以#开头的注释行，默认值为False。如果设置为True，则在处理文本行时会忽略掉所有以#开头的行，这些行通常被视为注释或元数据，不会被解析为数据行。
+ </param>
  <returns></returns>
 </member>
 <member name="M:Microsoft.VisualBasic.Data.Framework.DataImports.ImportsData``1(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
@@ -637,7 +648,7 @@ Microsoft.VisualBasic.Data.Framework
  <returns></returns>
  
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DocumentExtensions.LoadTsv``1(System.String,Microsoft.VisualBasic.Text.Encodings,Microsoft.VisualBasic.ComponentModel.NameMapping,System.Boolean)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DocumentExtensions.LoadTsv``1(System.String,Microsoft.VisualBasic.Text.Encodings,Microsoft.VisualBasic.ComponentModel.NameMapping,System.Boolean,System.Boolean)">
  <summary>
  Load a .NET collection from a tsv file which is specific by <paramref name="path"/> value.
  </summary>
@@ -2083,16 +2094,6 @@ Microsoft.VisualBasic.Data.Framework
  <param name="aggregate$"></param>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.Extensions.PropertyNames``1(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.ComponentModel.DataSourceModel.DynamicPropertyBase{``0}})">
- <summary>
- Gets the union collection of the keys from <see cref="P:Microsoft.VisualBasic.ComponentModel.DataSourceModel.DynamicPropertyBase`1.Properties"/>.
- </summary>
- <param name="list"></param>
- <returns></returns>
- <remarks>
- (包含所有的已经去除重复了的属性名称)
- </remarks>
-</member>
 <member name="M:Microsoft.VisualBasic.Data.Framework.IO.Extensions.Vector(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.Framework.IO.DataSet},System.String)">
  <summary>
  Get feature vector column value from the given dataset via a specific feature name.
@@ -3205,6 +3206,18 @@ Microsoft.VisualBasic.Data.Framework
  </param>
  <returns></returns>
  <remarks>(尝试加载一个Csv文件为数据框对象，请注意，第一行必须要为标题行)</remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.Parse``1(System.String)">
+ <summary>
+ Parse the csv document text data as a dynamics data frame object, the first line of the csv document will be used as the column headers of the data frame object.
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="content"></param>
+ <returns></returns>
+ <remarks>
+ <see cref="M:Microsoft.VisualBasic.Data.Framework.IO.File.Parse(System.String,System.Boolean,Microsoft.VisualBasic.ComponentModel.DataSourceModel.NamedValue{System.Func{System.String,System.Boolean}},System.Boolean)"/> the given <paramref name="content"/> text as table object, and then
+ <see cref="M:Microsoft.VisualBasic.Data.Framework.Extensions.AsDataSource``1(Microsoft.VisualBasic.Data.Framework.IO.File,System.Boolean,System.Boolean,System.Collections.Generic.Dictionary{System.String,System.String},System.Boolean)"/> cast table to target object collection
+ </remarks>
 </member>
 <member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.DataFrameResolver.getColumnList(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.Framework.IO.RowObject})">
  <summary>

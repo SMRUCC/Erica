@@ -327,6 +327,20 @@ Microsoft.VisualBasic.Imaging
  标签节点与anchor之间得吸引力
  </summary>
 </member>
+<member name="T:Microsoft.VisualBasic.Imaging.d3js.Layout.LabelCollisionSolver">
+ <summary>
+ 用于解决文本标签重叠问题的力导向迭代算法模块
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.d3js.Layout.LabelCollisionSolver.ResolveOverlaps(Microsoft.VisualBasic.Imaging.d3js.Layout.Label[],System.Int32,System.Single,System.Single)">
+ <summary>
+ 解决标签重叠问题的主方法
+ </summary>
+ <param name="labels">需要进行布局的标签数组</param>
+ <param name="maxIterations">最大迭代次数，默认300</param>
+ <param name="padding">标签之间的额外间距(像素)，默认2.0</param>
+ <param name="springStrength">弹簧力度(将标签拉回原点的力度)，默认0.1，值越大标签越靠近原点但可能重叠</param>
+</member>
 <member name="T:Microsoft.VisualBasic.Imaging.d3js.Layout.Label">
  <summary>
  a text label object
@@ -334,25 +348,25 @@ Microsoft.VisualBasic.Imaging
 </member>
 <member name="P:Microsoft.VisualBasic.Imaging.d3js.Layout.Label.X">
  <summary>
- the x-coordinate of the label.
+ the x-coordinate of the label.(rectanglef x)
  </summary>
  <returns></returns>
 </member>
 <member name="P:Microsoft.VisualBasic.Imaging.d3js.Layout.Label.Y">
  <summary>
- the y-coordinate of the label.
+ the y-coordinate of the label.(rectanglef y)
  </summary>
  <returns></returns>
 </member>
 <member name="P:Microsoft.VisualBasic.Imaging.d3js.Layout.Label.width">
  <summary>
- the width of the label (approximating the label as a rectangle).
+ the width of the label (approximating the label as a rectangle, rectangle width).
  </summary>
  <returns></returns>
 </member>
 <member name="P:Microsoft.VisualBasic.Imaging.d3js.Layout.Label.height">
  <summary>
- the height of the label (same approximation).
+ the height of the label (same approximation, rectangle height).
  </summary>
  <returns></returns>
 </member>
@@ -4909,6 +4923,11 @@ Microsoft.VisualBasic.Imaging
  <param name="desc">the graphics drawing context description</param>
  <param name="plot"></param>
  <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Driver.ImageDriver.Register">
+ <summary>
+ register the default System.Drawing.Common graphics driver for .net 4.8 runtime
+ </summary>
 </member>
 <member name="F:Microsoft.VisualBasic.Imaging.Driver.CSS.Types.Font">
  <summary>

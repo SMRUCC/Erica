@@ -88,8 +88,6 @@ Erica.Analysis.SpatialTissue.HEView
  <summary>
  计算指定层级的图像维度（宽度或高度）
  </summary>
- <param name="originalDimension">原始维度（宽度或高度）</param>
- <param name="level">目标层级</param>
  <returns>指定层级的维度</returns>
 </member>
 <member name="M:Erica.Analysis.SpatialTissue.HEView.DziImage.DecodeTile(System.Int32,System.Int32,System.Int32)">
@@ -201,9 +199,6 @@ Erica.Analysis.SpatialTissue.HEView
  split the large region as cell cluster
  </summary>
  <param name="cells"></param>
- <param name="noise">
- the quantile level of the cell size, all cells that with cell size less than this quantile cutoff will be treated as noised.
- </param>
  <returns></returns>
 </member>
 <member name="M:Erica.Analysis.SpatialTissue.HEView.SimpleCellMorphology.CalculateMetrics(System.Drawing.PointF[])">
