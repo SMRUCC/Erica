@@ -1351,6 +1351,73 @@ Microsoft.VisualBasic.Math.SignalProcessing
  is the column of the task assigned to agent <em>i</em>.</returns>
  <exception cref="T:System.ArgumentNullException"><paramref name="costs"/> is null.</exception>
 </member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils">
+ <summary>
+ 数学辅助工具类，提供信号处理和数值计算所需的基础函数
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.Gaussian(System.Double,System.Double,System.Double,System.Double)">
+ <summary>
+ 高斯函数
+ </summary>
+ <param name="x">自变量</param>
+ <param name="center">中心位置</param>
+ <param name="sigma">标准差</param>
+ <param name="height">峰高</param>
+ <returns>高斯函数值</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.MexicanHatWavelet(System.Double,System.Double,System.Double)">
+ <summary>
+ 墨西哥帽小波（Ricker Wavelet）函数
+ 这是高斯函数的二阶导数，用于CentWave算法
+ </summary>
+ <param name="x">自变量</param>
+ <param name="center">中心位置</param>
+ <param name="sigma">尺度参数</param>
+ <returns>小波函数值</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.MovingAverageSmooth(System.Double[],System.Int32)">
+ <summary>
+ 移动平均平滑
+ </summary>
+ <param name="data">输入数据</param>
+ <param name="windowSize">窗口大小（必须为奇数）</param>
+ <returns>平滑后的数据</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.SavitzkyGolaySmooth(System.Double[])">
+ <summary>
+ Savitzky-Golay平滑（二次多项式，5点窗口的简化实现）
+ 相比移动平均，能更好地保留峰形特征
+ </summary>
+ <param name="data">输入数据</param>
+ <returns>平滑后的数据</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.Convolve(System.Double[],System.Double[])">
+ <summary>
+ 一维卷积运算
+ </summary>
+ <param name="signal">输入信号</param>
+ <param name="kernel">卷积核</param>
+ <returns>卷积结果</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.FirstDerivative(System.Double[],System.Double)">
+ <summary>
+ 计算一阶导数（中心差分法）
+ </summary>
+ <param name="data">输入数据</param>
+ <param name="dt">采样间隔</param>
+ <returns>一阶导数</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.SecondDerivative(System.Double[],System.Double)">
+ <summary>
+ 计算二阶导数（中心差分法）
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.LinearInterpolation(System.Double,System.Double,System.Double,System.Double,System.Double)">
+ <summary>
+ 线性插值
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Math.SignalProcessing.NDtw.Dtw">
  <summary>
  Dynamic Time Warping (DTW) algorithm implementation
@@ -1616,6 +1683,19 @@ Microsoft.VisualBasic.Math.SignalProcessing
  <summary>
  make the signal data interpolation
  </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Interpolation.BSpline``1(System.Collections.Generic.IEnumerable{``0},System.Func{System.Single,System.Single,``0},System.Double,System.Double)">
+ <summary>
+ 
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="source"></param>
+ <param name="activator">
+ cast data to the <typeparamref name="T"/> object
+ </param>
+ <param name="degree"></param>
+ <param name="res"></param>
+ <returns></returns>
 </member>
 <member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Resampler">
  <summary>

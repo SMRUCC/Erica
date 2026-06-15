@@ -747,6 +747,13 @@ Microsoft.VisualBasic.Data.Framework
  <param name="encoding"></param>
  <returns></returns>
 </member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.DocumentExtensions.AsJSONObjects(Microsoft.VisualBasic.Data.Framework.IO.File)">
+ <summary>
+ cast csv table to json object array
+ </summary>
+ <param name="table"></param>
+ <returns></returns>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.Framework.Extensions">
  <summary>
  The shortcuts operation for the common csv document operations.

@@ -936,6 +936,51 @@ Microsoft.VisualBasic.Data.Bootstrapping.Fittings
  The non-linear function result output 
  </summary>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.LOESS">
+ <summary>
+ ========================================================================
+    LOESS回归实现
+ ========================================================================
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LOESS.FitLOESS(System.Double[],System.Double[],System.Double,System.Int32)">
+ <summary>
+ 拟合LOESS模型
+ 
+ LOESS（LOcally Estimated Scatterplot Smoothing）是一种非参数的局部回归方法。
+ 对于每个预测点，在其邻域内使用加权最小二乘法拟合一个低阶多项式，
+ 权重随距离增加而减小（使用三立方核函数）。
+ </summary>
+ <param name="x">自变量数组</param>
+ <param name="y">因变量数组</param>
+ <param name="span">带宽参数（0~1），控制邻域大小</param>
+ <param name="degree">多项式阶数（1或2）</param>
+ <returns>LOESS模型</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LOESS.PredictLOESS(Microsoft.VisualBasic.Data.Bootstrapping.LOESSModel,System.Double)">
+ <summary>
+ 使用LOESS模型进行预测
+ </summary>
+ <param name="model">LOESS模型</param>
+ <param name="x0">预测点</param>
+ <returns>预测值</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LOESS.WeightedPolynomialFit(System.Double[],System.Double[],System.Double[],System.Int32)">
+ <summary>
+ 加权多项式拟合
+ 使用正规方程求解加权最小二乘问题
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LOESS.SolveLinearSystem(System.Double[0:,0:],System.Double[])">
+ <summary>
+ 高斯消元法求解线性方程组 Ax = b
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.LOESSModel">
+ <summary>
+ LOESS模型，存储训练数据和参数
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.Bootstrapping.Logistic.Instance">
  <summary>
  classify training model
