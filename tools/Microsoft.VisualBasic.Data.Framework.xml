@@ -1240,11 +1240,11 @@ Microsoft.VisualBasic.Data.Framework
  <param name="row"></param>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.IO.CSVFile.RowHelpers.doDelimiterMask(System.String,System.Char)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.IO.CSVFile.RowHelpers.EscapeCsv(System.String,System.Char)">
  <summary>
- 
+ CSV 字段转义（处理逗号、引号、换行）
  </summary>
- <param name="s">The cell value text</param>
+ <param name="field">The cell value text</param>
  <param name="deli">The value row delimiter</param>
  <returns></returns>
  
