@@ -80,21 +80,24 @@
 Imports Microsoft.VisualBasic.MachineLearning.TensorFlow
 Imports std = System.Math
 
-''' <summary>
-''' 条件变分自编码器（CVAE）命名空间
-''' 包含用于单细胞转录组时间序列插值的完整CVAE算法实现
-''' 
-''' 算法原理：
-'''   CVAE通过引入条件变量c（时间标签），将变分自编码器扩展为条件生成模型。
-'''   编码器将输入数据x和条件c映射到潜在空间的分布参数（均值μ和方差σ²），
-'''   通过重参数化技巧采样潜在向量z，解码器再将z和条件c映射回数据空间。
-'''   
-'''   损失函数 = 重建损失（MSE） + β × KL散度
-'''   
-'''   训练完成后，可通过改变条件c来实现时间序列插值：
-'''   将真实细胞编码到潜在空间，再用新的时间条件解码，生成插值时间点的数据。
-''' </summary>
 Namespace MachineLearning.CVAE
+
+    ''' <summary>
+    ''' 条件变分自编码器（CVAE）命名空间
+    ''' 包含用于单细胞转录组时间序列插值的完整CVAE算法实现
+    ''' 
+    ''' 算法原理：
+    '''   CVAE通过引入条件变量c（时间标签），将变分自编码器扩展为条件生成模型。
+    '''   编码器将输入数据x和条件c映射到潜在空间的分布参数（均值μ和方差σ²），
+    '''   通过重参数化技巧采样潜在向量z，解码器再将z和条件c映射回数据空间。
+    '''   
+    '''   损失函数 = 重建损失（MSE） + β × KL散度
+    '''   
+    '''   训练完成后，可通过改变条件c来实现时间序列插值：
+    '''   将真实细胞编码到潜在空间，再用新的时间条件解码，生成插值时间点的数据。
+    ''' </summary>
+    Friend Class NamespaceDoc
+    End Class
 
 #Region "激活函数模块"
 
@@ -426,7 +429,7 @@ Namespace MachineLearning.CVAE
         End Function
 
         ''' <summary>
-        ''' 反向传播：ReLU的导数为1（当输入>0）或0（当输入<=0）
+        ''' 反向传播：ReLU的导数为1（当输入>0）或0（当输入&lt;=0）
         ''' </summary>
         Public Function Backward(gradOutput As Tensor) As Tensor
             Dim result = New Tensor(gradOutput.Shape)
