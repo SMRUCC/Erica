@@ -1,84 +1,84 @@
 #Region "Microsoft.VisualBasic::CVAE, Data_science\MachineLearning\CVAE\CVAE.vb"
 
-    ' Author:
-    ' 
-    '       CVAE Implementation for Single-Cell Time-Series Interpolation
-    '       基于条件变分自编码器（CVAE）的单细胞转录组时间序列插值算法模块
-    ' 
-    ' Copyright (c) 2024 GPL3 Licensed
-    ' 
-    ' 
-    ' GNU GENERAL PUBLIC LICENSE (GPL3)
-    ' 
-    ' 
-    ' This program is free software: you can redistribute it and/or modify
-    ' it under the terms of the GNU General Public License as published by
-    ' the Free Software Foundation, either version 3 of the License, or
-    ' (at your option) any later version.
-    ' 
-    ' This program is distributed in the hope that it will be useful,
-    ' but WITHOUT ANY WARRANTY; without even the implied warranty of
-    ' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    ' GNU General Public License for more details.
-    ' 
-    ' You should have received a copy of the GNU General Public License
-    ' along with this program. If not, see <http://www.gnu.org/licenses/>.
+' Author:
+' 
+'       CVAE Implementation for Single-Cell Time-Series Interpolation
+'       基于条件变分自编码器（CVAE）的单细胞转录组时间序列插值算法模块
+' 
+' Copyright (c) 2024 GPL3 Licensed
+' 
+' 
+' GNU GENERAL PUBLIC LICENSE (GPL3)
+' 
+' 
+' This program is free software: you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation, either version 3 of the License, or
+' (at your option) any later version.
+' 
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+' 
+' You should have received a copy of the GNU General Public License
+' along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
 
-    ' /********************************************************************************/
+' /********************************************************************************/
 
-    ' Summaries:
+' Summaries:
 
-    ' Code Statistics:
+' Code Statistics:
 
-    '   Module Activations
-    '       Functions: ReLU, ReLUDerivative, Sigmoid, SigmoidDerivative, LeakyReLU
-    ' 
-    '   Class LinearLayer
-    '       Functions: Forward, Backward, UpdateParameters, ZeroGradients
-    '       Properties: Weights, Bias, WeightGrad, BiasGrad
-    ' 
-    '   Class LayerNormLayer
-    '       Functions: Forward, Backward, UpdateParameters, ZeroGradients
-    '       Properties: Gamma, Beta, GammaGrad, BetaGrad
-    ' 
-    '   Class ReLULayer
-    '       Functions: Forward, Backward
-    ' 
-    '   Class AdamOptimizer
-    '       Sub: UpdateParameter
-    '       Properties: LearningRate, Beta1, Beta2, Epsilon
-    ' 
-    '   Class CVAE
-    '       Functions: Encode, Reparameterize, Decode, Forward, Backward
-    '                  ComputeLoss, UpdateParameters, Save, Load, InterpolateTimePoint
-    '       Properties: InputDim, LatentDim, ConditionDim, HiddenDim1, HiddenDim2
-    ' 
-    '   Class DataPreprocessor
-    '       Functions: NormalizeAndLog, SelectHVG, NormalizeTimeLabels, InverseTransform
-    '                  DenormalizeTimeLabel, GetProcessedData
-    ' 
-    '   Class CVAETrainer
-    '       Functions: Train, Evaluate, TrainEpoch
-    '       Properties: BatchSize, LearningRate, Epochs, Beta
-    ' 
-    '   Class TimeSeriesInterpolator
-    '       Functions: Interpolate, GenerateTargetTimePoints, InterpolateSingleTime
-    '       Properties: Strategy, NumSamplesPerTime
-    ' 
-    '   Class InterpolationResult
-    '       Properties: Data, TimeLabels, UniqueTimePoints, CellsPerTimePoint
-    ' 
-    '   Module CVAEDemo
-    '       Sub: RunDemo, GenerateSyntheticData
-    ' 
-    ' /********************************************************************************/
+'   Module Activations
+'       Functions: ReLU, ReLUDerivative, Sigmoid, SigmoidDerivative, LeakyReLU
+' 
+'   Class LinearLayer
+'       Functions: Forward, Backward, UpdateParameters, ZeroGradients
+'       Properties: Weights, Bias, WeightGrad, BiasGrad
+' 
+'   Class LayerNormLayer
+'       Functions: Forward, Backward, UpdateParameters, ZeroGradients
+'       Properties: Gamma, Beta, GammaGrad, BetaGrad
+' 
+'   Class ReLULayer
+'       Functions: Forward, Backward
+' 
+'   Class AdamOptimizer
+'       Sub: UpdateParameter
+'       Properties: LearningRate, Beta1, Beta2, Epsilon
+' 
+'   Class CVAE
+'       Functions: Encode, Reparameterize, Decode, Forward, Backward
+'                  ComputeLoss, UpdateParameters, Save, Load, InterpolateTimePoint
+'       Properties: InputDim, LatentDim, ConditionDim, HiddenDim1, HiddenDim2
+' 
+'   Class DataPreprocessor
+'       Functions: NormalizeAndLog, SelectHVG, NormalizeTimeLabels, InverseTransform
+'                  DenormalizeTimeLabel, GetProcessedData
+' 
+'   Class CVAETrainer
+'       Functions: Train, Evaluate, TrainEpoch
+'       Properties: BatchSize, LearningRate, Epochs, Beta
+' 
+'   Class TimeSeriesInterpolator
+'       Functions: Interpolate, GenerateTargetTimePoints, InterpolateSingleTime
+'       Properties: Strategy, NumSamplesPerTime
+' 
+'   Class InterpolationResult
+'       Properties: Data, TimeLabels, UniqueTimePoints, CellsPerTimePoint
+' 
+'   Module CVAEDemo
+'       Sub: RunDemo, GenerateSyntheticData
+' 
+' /********************************************************************************/
 
 #End Region
 
+Imports Microsoft.VisualBasic.MachineLearning.TensorFlow
 Imports std = System.Math
-Imports LinearAlgebra.Matrix
 
 ''' <summary>
 ''' 条件变分自编码器（CVAE）命名空间
@@ -285,7 +285,7 @@ Namespace MachineLearning.CVAE
         Public BetaM As Tensor
         Public BetaV As Tensor
 
-        Public Epsilon As Double = 1e-5
+        Public Epsilon As Double = 0.00001
 
         ' 反向传播所需的缓存
         Private InputCache As Tensor
@@ -371,8 +371,8 @@ Namespace MachineLearning.CVAE
                     gammaGrad += gradOutput(i, j) * NormalizedCache(i, j)
                     betaGrad += gradOutput(i, j)
                 Next
-                GammaGrad(0, j) = gammaGrad
-                BetaGrad(0, j) = betaGrad
+                Me.GammaGrad(0, j) = gammaGrad
+                Me.BetaGrad(0, j) = betaGrad
             Next
 
             ' 计算输入梯度
@@ -465,7 +465,7 @@ Namespace MachineLearning.CVAE
         Public Property Beta2 As Double = 0.999
 
         ''' <summary>数值稳定性的小常数（默认1e-8）</summary>
-        Public Property Epsilon As Double = 1e-8
+        Public Property Epsilon As Double = 0.00000001
 
         ''' <summary>时间步计数器</summary>
         Public T As Integer = 0
@@ -476,7 +476,7 @@ Namespace MachineLearning.CVAE
         Public Sub New(Optional learningRate As Double = 0.001,
                        Optional beta1 As Double = 0.9,
                        Optional beta2 As Double = 0.999,
-                       Optional epsilon As Double = 1e-8)
+                       Optional epsilon As Double = 0.00000001)
             Me.LearningRate = learningRate
             Me.Beta1 = beta1
             Me.Beta2 = beta2
@@ -1077,7 +1077,7 @@ Namespace MachineLearning.CVAE
     Public Class DataPreprocessor
 
         ''' <summary>每个细胞的目标总表达量（归一化因子）</summary>
-        Public Property TargetSum As Double = 1e4
+        Public Property TargetSum As Double = 10000.0
 
         ''' <summary>是否已执行对数变换</summary>
         Public Property IsLogTransformed As Boolean = False
@@ -1211,7 +1211,7 @@ Namespace MachineLearning.CVAE
                 GeneStds(j) = std.Sqrt(sumSq / nCells)
 
                 ' 防止除零
-                If GeneStds(j) < 1e-8 Then GeneStds(j) = 1.0
+                If GeneStds(j) < 0.00000001 Then GeneStds(j) = 1.0
             Next
 
             ' 标准化
@@ -1651,13 +1651,13 @@ Namespace MachineLearning.CVAE
             ' 生成目标时间点
             Dim timePoints = New List(Of Double)()
             Dim t = minNorm
-            Do While t <= maxNorm + 1e-10
+            Do While t <= maxNorm + 0.0000000001
                 timePoints.Add(t)
                 t += normInterval
             Loop
 
             ' 确保包含最大时间点
-            If std.Abs(timePoints(timePoints.Count - 1) - maxNorm) > 1e-6 Then
+            If std.Abs(timePoints(timePoints.Count - 1) - maxNorm) > 0.000001 Then
                 timePoints.Add(maxNorm)
             End If
 
@@ -1707,11 +1707,11 @@ Namespace MachineLearning.CVAE
             ' 对每个目标时间点进行插值
             For Each targetTime In targetTimes
                 ' 检查是否是原始时间点
-                Dim isOriginal = uniqueTimes.Any(Function(t) std.Abs(t - targetTime) < 1e-6)
+                Dim isOriginal = uniqueTimes.Any(Function(t) std.Abs(t - targetTime) < 0.000001)
 
                 If isOriginal Then
                     ' 原始时间点：直接使用原始数据
-                    Dim origTime = uniqueTimes.First(Function(t) std.Abs(t - targetTime) < 1e-6)
+                    Dim origTime = uniqueTimes.First(Function(t) std.Abs(t - targetTime) < 0.000001)
                     Dim cellIndices = cellsByTime(origTime)
                     Dim cellsData = New Double(cellIndices.Count - 1, nGenes - 1) {}
 
@@ -1891,7 +1891,7 @@ mergeResults:
             Dim afterCells = cellsByTime(tAfter)
 
             ' 采样使前后细胞数量一致
-            Dim nPairs = Math.Min(beforeCells.Count, afterCells.Count)
+            Dim nPairs = std.Min(beforeCells.Count, afterCells.Count)
             If NumSamplesPerTime > 0 AndAlso NumSamplesPerTime < nPairs Then
                 nPairs = NumSamplesPerTime
             End If
@@ -1926,7 +1926,7 @@ mergeResults:
 
             ' 在潜在空间做线性插值
             Dim alpha = (targetTime - tBefore) / (tAfter - tBefore)
-            alpha = Math.Max(0.0, Math.Min(1.0, alpha))  ' 裁剪到[0,1]
+            alpha = std.Max(0.0, std.Min(1.0, alpha))  ' 裁剪到[0,1]
 
             Dim zInterp = New Tensor(nPairs, Model.LatentDim)
             For i = 0 To nPairs - 1
