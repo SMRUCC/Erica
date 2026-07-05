@@ -29,6 +29,7 @@
 '   - 复用 CVAE.vb 中的数据预处理与训练器设计模式
 ' ============================================================================
 
+Imports Erica.Analysis.SingleCell.Expression.MachineLearning.CVAE
 Imports Microsoft.VisualBasic.MachineLearning.TensorFlow
 Imports std = System.Math
 
@@ -153,20 +154,20 @@ Namespace MachineLearning.Diffusion
                 Alphas(t) = 1.0 - Betas(t)
                 cumulativeAlpha *= Alphas(t)
                 AlphaBars(t) = cumulativeAlpha
-                SqrtAlphaBars(t) = std.Sqrt(std.Max(1e-10, AlphaBars(t)))
-                SqrtOneMinusAlphaBars(t) = std.Sqrt(std.Max(1e-10, 1.0 - AlphaBars(t)))
-                SqrtRecipAlphas(t) = std.Sqrt(1.0 / std.Max(1e-10, Alphas(t)))
-                OneMinusAlphasOverSqrtOneMinusAlphaBars(t) = (1.0 - Alphas(t)) / std.Max(1e-10, std.Sqrt(1.0 - AlphaBars(t)))
+                SqrtAlphaBars(t) = std.Sqrt(std.Max(0.0000000001, AlphaBars(t)))
+                SqrtOneMinusAlphaBars(t) = std.Sqrt(std.Max(0.0000000001, 1.0 - AlphaBars(t)))
+                SqrtRecipAlphas(t) = std.Sqrt(1.0 / std.Max(0.0000000001, Alphas(t)))
+                OneMinusAlphasOverSqrtOneMinusAlphaBars(t) = (1.0 - Alphas(t)) / std.Max(0.0000000001, std.Sqrt(1.0 - AlphaBars(t)))
             Next
 
             ' Step 3: 计算后验方差
             ' q(x_{t-1}|x_t,x_0) 的方差 = beta_t * (1-alpha_bar_{t-1}) / (1-alpha_bar_t)
             PosteriorVariances(0) = Betas(0)  ' t=0时使用beta_0作为近似
-            PosteriorLogVarClipped(0) = std.Sqrt(std.Max(1e-20, PosteriorVariances(0)))
+            PosteriorLogVarClipped(0) = std.Sqrt(std.Max(1.0E-20, PosteriorVariances(0)))
             For t As Integer = 1 To NumTimesteps - 1
-                Dim pv As Double = Betas(t) * (1.0 - AlphaBars(t - 1)) / std.Max(1e-10, (1.0 - AlphaBars(t)))
+                Dim pv As Double = Betas(t) * (1.0 - AlphaBars(t - 1)) / std.Max(0.0000000001, (1.0 - AlphaBars(t)))
                 PosteriorVariances(t) = pv
-                PosteriorLogVarClipped(t) = std.Sqrt(std.Max(1e-20, pv))
+                PosteriorLogVarClipped(t) = std.Sqrt(std.Max(1.0E-20, pv))
             Next
         End Sub
 
@@ -201,9 +202,9 @@ Namespace MachineLearning.Diffusion
         ''' <param name="t">时间步（整数或归一化后的浮点数）</param>
         ''' <param name="dim">嵌入维度</param>
         ''' <returns>维度为dim的嵌入向量</returns>
-        Public Function SinusoidalEmbedding(t As Double, dim As Integer) As Double()
-            Dim emb(dim - 1) As Double
-            Dim halfDim As Integer = dim \ 2
+        Public Function SinusoidalEmbedding(t As Double, [dim] As Integer) As Double()
+            Dim emb([dim] - 1) As Double
+            Dim halfDim As Integer = [dim] \ 2
             For i As Integer = 0 To halfDim - 1
                 Dim freq As Double = std.Exp(-std.Log(10000.0) * CDbl(i) / CDbl(halfDim))
                 Dim arg As Double = t * freq
@@ -224,12 +225,12 @@ Namespace MachineLearning.Diffusion
         ''' <param name="timeSteps">每个样本的时间步数组</param>
         ''' <param name="dim">嵌入维度</param>
         ''' <returns>(batch, dim) 的二维数组</returns>
-        Public Function BatchSinusoidalEmbedding(timeSteps As Integer(), dim As Integer) As Double(,)
+        Public Function BatchSinusoidalEmbedding(timeSteps As Integer(), [dim] As Integer) As Double(,)
             Dim batch As Integer = timeSteps.Length
-            Dim result(batch - 1, dim - 1) As Double
+            Dim result(batch - 1, [dim] - 1) As Double
             For i As Integer = 0 To batch - 1
-                Dim emb As Double() = SinusoidalEmbedding(CDbl(timeSteps(i)), dim)
-                For j As Integer = 0 To dim - 1
+                Dim emb As Double() = SinusoidalEmbedding(CDbl(timeSteps(i)), [dim])
+                For j As Integer = 0 To [dim] - 1
                     result(i, j) = emb(j)
                 Next
             Next
@@ -294,19 +295,19 @@ Namespace MachineLearning.Diffusion
             Dim inputSize As Integer = inputDim + conditionDim + timeEmbedDim
 
             ' 构建网络层（复用CVAE.vb中的层实现）
-            Linear1 = New LinearLayer(inputSize, HiddenDim, seedVal + 1)
-            LN1 = New LayerNormLayer(HiddenDim)
+            Linear1 = New LinearLayer(inputSize, hiddenDim, seedVal + 1)
+            LN1 = New LayerNormLayer(hiddenDim)
             ReLU1 = New ReLULayer()
 
-            Linear2 = New LinearLayer(HiddenDim, HiddenDim, seedVal + 2)
-            LN2 = New LayerNormLayer(HiddenDim)
+            Linear2 = New LinearLayer(hiddenDim, hiddenDim, seedVal + 2)
+            LN2 = New LayerNormLayer(hiddenDim)
             ReLU2 = New ReLULayer()
 
-            Linear3 = New LinearLayer(HiddenDim, HiddenDim, seedVal + 3)
-            LN3 = New LayerNormLayer(HiddenDim)
+            Linear3 = New LinearLayer(hiddenDim, hiddenDim, seedVal + 3)
+            LN3 = New LayerNormLayer(hiddenDim)
             ReLU3 = New ReLULayer()
 
-            Linear4 = New LinearLayer(HiddenDim, inputDim, seedVal + 4)
+            Linear4 = New LinearLayer(hiddenDim, inputDim, seedVal + 4)
 
             Optimizer = New AdamOptimizer(learningRate:=0.001)
         End Sub
@@ -539,7 +540,7 @@ Namespace MachineLearning.Diffusion
         ''' <summary>
         ''' 创建标准正态噪声张量
         ''' </summary>
-        Private Function CreateNoiseTensor(batch As Integer, dim As Integer) As Tensor
+        Private Function CreateNoiseTensor(batch As Integer, Dim As Integer) As Tensor
             Dim noise As New Tensor(batch, dim)
             For i As Integer = 0 To noise.Length - 1
                 noise.Data(i) = SampleNormal()
@@ -557,7 +558,7 @@ Namespace MachineLearning.Diffusion
         ''' <returns>加噪后的状态 x_t (batch, InputDim)</returns>
         Public Function QSample(x0 As Tensor, timeSteps As Integer(), Optional eps As Tensor = Nothing) As Tensor
             Dim batch As Integer = x0.Shape(0)
-            Dim dim As Integer = x0.Shape(1)
+            Dim As Integer = x0.Shape(1)
 
             ' 采样噪声 epsilon ~ N(0, I)
             If eps Is Nothing Then
@@ -632,7 +633,7 @@ Namespace MachineLearning.Diffusion
         ''' </summary>
         Public Function ComputeLoss(eps As Tensor, epsPred As Tensor) As Double
             Dim batch As Integer = eps.Shape(0)
-            Dim dim As Integer = eps.Shape(1)
+            Dim As Integer = eps.Shape(1)
             Dim loss As Double = 0.0
             For i As Integer = 0 To batch - 1
                 For j As Integer = 0 To dim - 1
@@ -649,7 +650,7 @@ Namespace MachineLearning.Diffusion
         ''' </summary>
         Public Sub Backward()
             Dim batch As Integer = CachedEps.Shape(0)
-            Dim dim As Integer = CachedEps.Shape(1)
+            Dim As Integer = CachedEps.Shape(1)
 
             Dim gradOutput As New Tensor(CachedNoisePred.Shape)
             Dim scale As Double = 2.0 / CDbl(batch)
@@ -686,7 +687,7 @@ Namespace MachineLearning.Diffusion
         ''' <returns>去噪后的状态 x_{t-1}</returns>
         Public Function PSample(xt As Tensor, t As Integer, c As Tensor) As Tensor
             Dim batch As Integer = xt.Shape(0)
-            Dim dim As Integer = xt.Shape(1)
+            Dim As Integer = xt.Shape(1)
 
             ' 构建时间嵌入（所有样本使用相同时间步t）
             Dim timeSteps(batch - 1) As Integer
@@ -879,7 +880,7 @@ Namespace MachineLearning.Diffusion
                     sumSq += diff * diff
                 Next
                 GeneStds(j) = std.Sqrt(sumSq / nCells)
-                If GeneStds(j) < 1e-8 Then GeneStds(j) = 1.0
+                If GeneStds(j) < 0.00000001 Then GeneStds(j) = 1.0
             Next
 
             ' 标准化
@@ -917,7 +918,7 @@ Namespace MachineLearning.Diffusion
             MinCondition = conditions.Min()
             MaxCondition = conditions.Max()
             Dim range As Double = MaxCondition - MinCondition
-            If range < 1e-10 Then range = 1.0
+            If range < 0.0000000001 Then range = 1.0
 
             Dim result(conditions.Length - 1) As Double
             For i As Integer = 0 To conditions.Length - 1
