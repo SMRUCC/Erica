@@ -263,6 +263,14 @@ Namespace MachineLearning.CVAE
             optimizer.UpdateParameter(Bias, BiasGrad, BiasM, BiasV)
         End Sub
 
+        Friend Sub ZeroGrad()
+            For i As Integer = 0 To BiasGrad.Length - 1
+                BiasGrad(i) = 0
+            Next
+            For i As Integer = 0 To WeightGrad.Length - 1
+                WeightGrad(i) = 0
+            Next
+        End Sub
     End Class
 
     ''' <summary>
@@ -405,6 +413,14 @@ Namespace MachineLearning.CVAE
             optimizer.UpdateParameter(Beta, BetaGrad, BetaM, BetaV)
         End Sub
 
+        Friend Sub ZeroGrad()
+            For i As Integer = 0 To BetaGrad.Length - 1
+                BetaGrad(i) = 0
+            Next
+            For i As Integer = 0 To GammaGrad.Length - 1
+                GammaGrad(i) = 0
+            Next
+        End Sub
     End Class
 
     ''' <summary>
@@ -989,7 +1005,7 @@ Namespace MachineLearning.CVAE
         ''' <summary>
         ''' 辅助方法：写入张量到文件
         ''' </summary>
-        Private Sub WriteLayer(writer As System.IO.StreamWriter, name As String, tensor As Tensor)
+        Friend Shared Sub WriteLayer(writer As System.IO.StreamWriter, name As String, tensor As Tensor)
             writer.WriteLine($"{name}:{String.Join(",", tensor.Shape)}")
             writer.WriteLine(String.Join(",", tensor.Data.Select(Function(d) d.ToString("G17"))))
         End Sub

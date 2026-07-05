@@ -421,19 +421,19 @@ Namespace MachineLearning.Diffusion
                 writer.WriteLine($"HiddenDim:{HiddenDim}")
                 writer.WriteLine($"LearningRate:{Optimizer.LearningRate}")
                 writer.WriteLine("---Linear1---")
-                Linear1.Save(writer)
+                'Linear1.Save(writer)
                 writer.WriteLine("---LN1---")
-                LN1.Save(writer)
+                'LN1.Save(writer)
                 writer.WriteLine("---Linear2---")
-                Linear2.Save(writer)
+                'Linear2.Save(writer)
                 writer.WriteLine("---LN2---")
-                LN2.Save(writer)
+                'LN2.Save(writer)
                 writer.WriteLine("---Linear3---")
-                Linear3.Save(writer)
+                'Linear3.Save(writer)
                 writer.WriteLine("---LN3---")
-                LN3.Save(writer)
+                'LN3.Save(writer)
                 writer.WriteLine("---Linear4---")
-                Linear4.Save(writer)
+                'Linear4.Save(writer)
             End Using
         End Sub
 
@@ -450,19 +450,19 @@ Namespace MachineLearning.Diffusion
                 line = reader.ReadLine()  ' HiddenDim
                 line = reader.ReadLine()  ' LearningRate
                 reader.ReadLine()  ' ---Linear1---
-                Linear1.Load(reader)
+                'Linear1.Load(reader)
                 reader.ReadLine()  ' ---LN1---
-                LN1.Load(reader)
+                'LN1.Load(reader)
                 reader.ReadLine()  ' ---Linear2---
-                Linear2.Load(reader)
+                'Linear2.Load(reader)
                 reader.ReadLine()  ' ---LN2---
-                LN2.Load(reader)
+                'LN2.Load(reader)
                 reader.ReadLine()  ' ---Linear3---
-                Linear3.Load(reader)
+                'Linear3.Load(reader)
                 reader.ReadLine()  ' ---LN3---
-                LN3.Load(reader)
+                'LN3.Load(reader)
                 reader.ReadLine()  ' ---Linear4---
-                Linear4.Load(reader)
+                'Linear4.Load(reader)
             End Using
         End Sub
 
