@@ -48,7 +48,7 @@ Namespace MachineLearning.Diffusion
     ''' 
     ''' 支持两种调度方式:
     '''   - linear:  beta_t 从 beta_start 线性增长到 beta_end
-    '''   - cosine:  基于余弦曲线的调度（Improved DDPM, Nichol & Dhariwal 2021）
+    '''   - cosine:  基于余弦曲线的调度（Improved DDPM, Nichol &amp; Dhariwal 2021）
     '''              在后期保持更低的噪声水平，生成质量更好
     ''' </summary>
     Public Class NoiseScheduler
