@@ -540,8 +540,8 @@ Namespace MachineLearning.Diffusion
         ''' <summary>
         ''' 创建标准正态噪声张量
         ''' </summary>
-        Private Function CreateNoiseTensor(batch As Integer, Dim As Integer) As Tensor
-            Dim noise As New Tensor(batch, dim)
+        Private Function CreateNoiseTensor(batch As Integer, [dim] As Integer) As Tensor
+            Dim noise As New Tensor(batch, [dim])
             For i As Integer = 0 To noise.Length - 1
                 noise.Data(i) = SampleNormal()
             Next
@@ -633,10 +633,10 @@ Namespace MachineLearning.Diffusion
         ''' </summary>
         Public Function ComputeLoss(eps As Tensor, epsPred As Tensor) As Double
             Dim batch As Integer = eps.Shape(0)
-            Dim As Integer = eps.Shape(1)
+            Dim [dim] As Integer = eps.Shape(1)
             Dim loss As Double = 0.0
             For i As Integer = 0 To batch - 1
-                For j As Integer = 0 To dim - 1
+                For j As Integer = 0 To [dim] - 1
                     Dim diff As Double = epsPred(i, j) - eps(i, j)
                     loss += diff * diff
                 Next
@@ -650,12 +650,12 @@ Namespace MachineLearning.Diffusion
         ''' </summary>
         Public Sub Backward()
             Dim batch As Integer = CachedEps.Shape(0)
-            Dim As Integer = CachedEps.Shape(1)
+            Dim [dim] As Integer = CachedEps.Shape(1)
 
             Dim gradOutput As New Tensor(CachedNoisePred.Shape)
             Dim scale As Double = 2.0 / CDbl(batch)
             For i As Integer = 0 To batch - 1
-                For j As Integer = 0 To dim - 1
+                For j As Integer = 0 To [dim] - 1
                     gradOutput(i, j) = scale * (CachedNoisePred(i, j) - CachedEps(i, j))
                 Next
             Next
@@ -687,7 +687,7 @@ Namespace MachineLearning.Diffusion
         ''' <returns>去噪后的状态 x_{t-1}</returns>
         Public Function PSample(xt As Tensor, t As Integer, c As Tensor) As Tensor
             Dim batch As Integer = xt.Shape(0)
-            Dim As Integer = xt.Shape(1)
+            Dim [dim] As Integer = xt.Shape(1)
 
             ' 构建时间嵌入（所有样本使用相同时间步t）
             Dim timeSteps(batch - 1) As Integer
@@ -703,9 +703,9 @@ Namespace MachineLearning.Diffusion
             Dim sqrtRecipAlpha As Double = Scheduler.SqrtRecipAlphas(t)
             Dim coeff As Double = Scheduler.OneMinusAlphasOverSqrtOneMinusAlphaBars(t)
 
-            Dim mean As New Tensor(batch, dim)
+            Dim mean As New Tensor(batch, [dim])
             For i As Integer = 0 To batch - 1
-                For j As Integer = 0 To dim - 1
+                For j As Integer = 0 To [dim] - 1
                     mean(i, j) = sqrtRecipAlpha * (xt(i, j) - coeff * epsPred(i, j))
                 Next
             Next
@@ -717,9 +717,9 @@ Namespace MachineLearning.Diffusion
 
             ' t>0时添加噪声: x_{t-1} = mean + sigma_t * z, z ~ N(0, I)
             Dim sigma As Double = Scheduler.PosteriorLogVarClipped(t)
-            Dim result As New Tensor(batch, dim)
+            Dim result As New Tensor(batch, [dim])
             For i As Integer = 0 To batch - 1
-                For j As Integer = 0 To dim - 1
+                For j As Integer = 0 To [dim] - 1
                     result(i, j) = mean(i, j) + sigma * SampleNormal()
                 Next
             Next
