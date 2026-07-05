@@ -212,9 +212,9 @@ Namespace MachineLearning.Diffusion
                 emb(2 * i + 1) = std.Cos(arg)
             Next
             ' 处理奇数维度
-            If dim Mod 2 = 1 Then
+            If [dim] Mod 2 = 1 Then
                 Dim freq As Double = std.Exp(-std.Log(10000.0) * CDbl(halfDim) / CDbl(halfDim))
-                emb(dim - 1) = std.Sin(t * freq)
+                emb([dim] - 1) = std.Sin(t * freq)
             End If
             Return emb
         End Function
@@ -558,20 +558,20 @@ Namespace MachineLearning.Diffusion
         ''' <returns>加噪后的状态 x_t (batch, InputDim)</returns>
         Public Function QSample(x0 As Tensor, timeSteps As Integer(), Optional eps As Tensor = Nothing) As Tensor
             Dim batch As Integer = x0.Shape(0)
-            Dim As Integer = x0.Shape(1)
+            Dim [dim] As Integer = x0.Shape(1)
 
             ' 采样噪声 epsilon ~ N(0, I)
             If eps Is Nothing Then
-                eps = CreateNoiseTensor(batch, dim)
+                eps = CreateNoiseTensor(batch, [dim])
             End If
 
             ' 计算 x_t = sqrt(alpha_bar_t) * x_0 + sqrt(1-alpha_bar_t) * epsilon
-            Dim xt As New Tensor(batch, dim)
+            Dim xt As New Tensor(batch, [dim])
             For i As Integer = 0 To batch - 1
                 Dim t As Integer = timeSteps(i)
                 Dim sqrtAlphaBar As Double = Scheduler.SqrtAlphaBars(t)
                 Dim sqrtOneMinusAlphaBar As Double = Scheduler.SqrtOneMinusAlphaBars(t)
-                For j As Integer = 0 To dim - 1
+                For j As Integer = 0 To [dim] - 1
                     xt(i, j) = sqrtAlphaBar * x0(i, j) + sqrtOneMinusAlphaBar * eps(i, j)
                 Next
             Next
