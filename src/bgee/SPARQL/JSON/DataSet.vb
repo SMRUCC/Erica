@@ -1,23 +1,26 @@
 ﻿Imports Microsoft.VisualBasic.MIME.application.rdf_xml
 
-Public Class DataSet
+Namespace SPARQL.JSON
 
-    Public Property head As HeadSet
-    Public Property results As ResultSet
+    Public Class DataSet
 
-End Class
+        Public Property head As HeadSet
+        Public Property results As ResultSet
 
-Public Class ResultSet
+    End Class
 
-    Public Property distinct As Boolean
-    Public Property ordered As Boolean
-    Public Property bindings As Dictionary(Of String, EntityProperty)()
+    Public Class ResultSet
 
-End Class
+        Public Property distinct As Boolean
+        Public Property ordered As Boolean
+        Public Property bindings As Dictionary(Of String, EntityProperty)()
 
-Public Class HeadSet
+    End Class
 
-    Public Property link As String()
-    Public Property vars As String()
+    Public Class HeadSet
 
-End Class
+        Public Property link As String()
+        Public Property vars As String()
+
+    End Class
+End Namespace
