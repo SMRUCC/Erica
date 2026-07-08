@@ -2,6 +2,9 @@
 Imports Microsoft.VisualBasic.Text.Xml.Models
 Imports SMRUCC.genomics.Analysis.HTS.GSEA
 
+''' <summary>
+''' the fisher background model
+''' </summary>
 Public Module BackgroundModel
 
     <Extension>
