@@ -11,4 +11,4 @@ let bgee = Bgee::parseTsv(file ="K:\Gallus\Gallus_gallus_expr_advanced_all_condi
                              ;
 let expr = Bgee::make_matrix(bgee);
 
-write.expr(expr, file = "K:\Gallus\Gallus_gallus_expr.csv");
+write.expr_matrix(expr, file = "K:\Gallus\Gallus_gallus_expr.csv");

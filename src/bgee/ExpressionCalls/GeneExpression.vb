@@ -48,7 +48,7 @@ Public Class GeneExpression
                 Continue For
             End If
 
-            Dim sample_id As String = $"{geneExpr.anatomicalName}-{geneExpr.developmental_stage}"
+            Dim sample_id As String = $"{geneExpr.anatomicalName}-{geneExpr.developmental_stage}-{geneExpr.sex}-{geneExpr.strain}"
 
             If Not expressions.ContainsKey(sample_id) Then
                 expressions.Add(sample_id, New List(Of AdvancedCalls) From {geneExpr})
