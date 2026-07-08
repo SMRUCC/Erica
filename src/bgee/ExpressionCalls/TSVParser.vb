@@ -6,6 +6,25 @@ Public Class TSVParser
     ReadOnly headers As HeaderSchema
     ReadOnly filepath As String
 
+    ReadOnly gene_id As Integer
+    ReadOnly gene_name As Integer
+    ReadOnly anatomical_id As Integer
+    ReadOnly anatomical_name As Integer
+    ReadOnly develop_id As Integer
+    ReadOnly develop_stage As Integer
+    ReadOnly expression As Integer
+    ReadOnly call_quality As Integer
+    ReadOnly expression_rank As Integer
+    ReadOnly expression_score As Integer
+    ReadOnly include_observed_data As Integer
+
+    ReadOnly affymetrix_offset As Integer
+    ReadOnly EST_offset As Integer
+    ReadOnly Insitu_offset As Integer
+    ReadOnly rnaseq As Integer
+    ReadOnly scrnaseq As Integer
+
+
     Sub New(filepath As String)
         Me.filepath = filepath
         Me.headers = New HeaderSchema(filepath.ReadFirstLine.Split(ASCII.TAB))

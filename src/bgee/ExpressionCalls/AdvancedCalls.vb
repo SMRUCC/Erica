@@ -39,6 +39,10 @@ Public Class AdvancedCalls
     ''' </summary>
     ''' <returns></returns>
     Public Property developmental_stage As String
+
+    Public Property sex As String
+    Public Property strain As String
+
     ''' <summary>
     ''' Call generated from all data types for the selected 
     ''' combination of condition parameters (anatomical or 
@@ -61,6 +65,10 @@ Public Class AdvancedCalls
     ''' </summary>
     ''' <returns></returns>
     Public Property call_quality As String
+
+    Public Property FDR As Double
+
+    Public Property expression_score As Double
     ''' <summary>
     ''' Rank score associated to the call. Rank scores of
     ''' expression calls are normalized across genes, 
@@ -71,7 +79,7 @@ Public Class AdvancedCalls
     ''' </summary>
     ''' <returns></returns>
     Public Property expression_rank As Double
-    Public Property expression_score As Double
+
     ''' <summary>
     ''' Permitted value: yes
     ''' 
@@ -80,10 +88,14 @@ Public Class AdvancedCalls
     ''' </summary>
     ''' <returns></returns>
     Public Property including_observed_data As String
+    Public Property self_observation_count As Integer
+    Public Property descendant_observation_count As Integer
+
     Public Property affymetrix As GeneExpression
     Public Property EST_data As GeneExpression
     Public Property In_Situ As GeneExpression
     Public Property RNASeq As GeneExpression
+    Public Property SingleCellRNASeq As GeneExpression
 
     Public Overrides Function ToString() As String
         Return $"[{call_quality}] {gene_name}@{anatomicalName} = {expression_rank}"
