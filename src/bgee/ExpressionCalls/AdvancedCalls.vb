@@ -138,7 +138,7 @@ Public Class AdvancedCalls
     End Function
 
     Public Shared Iterator Function ParseTable(file As String) As IEnumerable(Of AdvancedCalls)
-        For Each line As String In file.LineIterators.Skip(1)
+        For Each line As String In file.LineIterators(tqdm:=True).Skip(1)
             Yield ParseLine(line.Split(ASCII.TAB))
         Next
     End Function
