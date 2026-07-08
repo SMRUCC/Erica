@@ -34,6 +34,12 @@ Public Class GeneExpression
     Public Property absence_low_quality As Integer
     Public Property observed_data As String
 
+    Public Property call_quality As String
+    Public Property FDR As String
+    Public Property expression_score As String
+    Public Property expression_rank As String
+
+
     Public Shared Function MakeMatrix(bgeeCalls As IEnumerable(Of AdvancedCalls)) As Matrix
         Dim expressions As New Dictionary(Of String, List(Of AdvancedCalls))
 

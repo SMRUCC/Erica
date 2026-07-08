@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel.DataAnnotations.Schema
 Imports System.Reflection
+Imports Microsoft.VisualBasic.ComponentModel.DataSourceModel
 Imports Microsoft.VisualBasic.Data.Framework.StorageProvider
 Imports Microsoft.VisualBasic.Text
 
@@ -75,47 +76,40 @@ Public Class TSVParser
     End Function
 
     Private Function ParseLine(tsv As String()) As AdvancedCalls
+        Dim line As New StringArrayPointer(tsv)
+
         Return New AdvancedCalls With {
-            .geneID = tsv(0),
-            .gene_name = tsv(1).Trim(""""c),
-            .anatomicalID = tsv(2),
-            .anatomicalName = tsv(3).Trim(""""c),
-            .developmental_stageID = tsv(4),
-            .developmental_stage = tsv(5).Trim(""""c),
-            .expression = tsv(6),
-            .call_quality = tsv(7),
-            .expression_rank = Val(tsv(8)),
-            .including_observed_data = tsv(9),
-            .affymetrix = New GeneExpression With {
-                .data = tsv(10),
-                .expression_high_quality = Integer.Parse(tsv(11)),
-                .expression_low_quality = Integer.Parse(tsv(12)),
-                .absence_high_quality = Integer.Parse(tsv(13)),
-                .absence_low_quality = Integer.Parse(tsv(14)),
-                .observed_data = tsv(15)
-            },
-            .EST_data = New GeneExpression With {
-                .data = tsv(16),
-                .expression_high_quality = Integer.Parse(tsv(17)),
-                .expression_low_quality = Integer.Parse(tsv(18)),
-                .observed_data = tsv(19)
-            },
-            .In_Situ = New GeneExpression With {
-                .data = tsv(20),
-                .expression_high_quality = Integer.Parse(tsv(21)),
-                .expression_low_quality = Integer.Parse(tsv(22)),
-                .absence_high_quality = Integer.Parse(tsv(23)),
-                .absence_low_quality = Integer.Parse(tsv(24)),
-                .observed_data = tsv(25)
-            },
-            .RNASeq = New GeneExpression With {
-                .data = tsv(26),
-                .expression_high_quality = Integer.Parse(tsv(27)),
-                .expression_low_quality = Integer.Parse(tsv(28)),
-                .absence_high_quality = Integer.Parse(tsv(29)),
-                .absence_low_quality = Integer.Parse(tsv(30)),
-                .observed_data = tsv(31)
-            }
+            .geneID = line.ReadString(Me.gene_id, strip:=True),
+            .gene_name = line.ReadString(Me.gene_name, strip:=True),
+            .anatomicalID = line.ReadString(Me.anatomical_id, strip:=True),
+            .anatomicalName = line.ReadString(Me.anatomical_name, strip:=True),
+            .developmental_stageID = line.ReadString(Me.develop_id, strip:=True),
+            .developmental_stage = line.ReadString(Me.develop_stage, strip:=True),
+            .expression = line.ReadString(Me.expression, strip:=True),
+            .call_quality = line.ReadString(Me.call_quality, strip:=True),
+            .expression_rank = line.ReadDouble(Me.expression_rank),
+            .including_observed_data = line.ReadString(Me.include_observed_data, strip:=True),
+            .descendant_observation_count = line.ReadString(Me.descendant_observation_count, strip:=True),
+            .expression_score = line.ReadDouble(Me.expression_score),
+            .FDR = line.ReadDouble(Me.fdr),
+            .self_observation_count = line.ReadInteger(Me.self_observation_count),
+            .sex = line.ReadString(Me.sex, strip:=True),
+            .strain = line.ReadString(Me.strain, strip:=True),
+            .affymetrix = readGeneExpression(line, Me.affymetrix_offset),
+            .EST_data = readGeneExpression(line, Me.EST_offset),
+            .In_Situ = readGeneExpression(line, Me.Insitu_offset),
+            .RNASeq = readGeneExpression(line, Me.rnaseq_offset),
+            .SingleCellRNASeq = readGeneExpression(line, Me.scrnaseq_offset)
+        }
+    End Function
+
+    Private Shared Function readGeneExpression(line As StringArrayPointer, offset As Integer) As GeneExpression
+        Return New GeneExpression With {
+            .data = line.ReadString(offset, strip:=True),
+            .call_quality = line.ReadString(offset + 1, strip:=True),
+            .FDR = line.ReadString(offset + 2, strip:=True),
+            .expression_score = line.ReadString(offset + 3, strip:=True),
+            .expression_rank = line.ReadString(offset + 4, strip:=True)
         }
     End Function
 End Class
