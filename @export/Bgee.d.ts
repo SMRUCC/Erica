@@ -49,6 +49,16 @@ declare namespace Bgee {
    */
    function geneIDs(bgee: object): object;
    /**
+    * Make gene expression matrix from the bgee expression calls
+    * 
+    * 
+     * @param bgee a stream of the bgee gene expression calls which is parsed from the ``Bgee::parseTsv`` function.
+     * @param env -
+     * 
+     * + default value Is ``null``.
+   */
+   function make_matrix(bgee: any, env?: object): object;
+   /**
      * @param env default value Is ``null``.
    */
    function metabolomicsMapping(uniprot: object, geneExpressions: object, env?: object): object;

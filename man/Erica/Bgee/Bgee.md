@@ -7,6 +7,7 @@ the bgee database toolkit
 + [anatomicalIDs](Bgee/anatomicalIDs.1) get all anatomical ID from the bgee dataset
 + [geneIDs](Bgee/geneIDs.1) get all gene ids from the bgee dataset
 + [parseTsv](Bgee/parseTsv.1) parse the bgee tsv table file for load the gene expression ranking data
++ [make_matrix](Bgee/make_matrix.1) Make gene expression matrix from the bgee expression calls
 + [tissue_background](Bgee/tissue_background.1) create tissue and cell background based on bgee database
 + [write.backgroundPack](Bgee/write.backgroundPack.1) 
 + [read.backgroundPack](Bgee/read.backgroundPack.1) 
