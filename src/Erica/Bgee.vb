@@ -6,6 +6,7 @@ Imports SMRUCC.genomics.Assembly.Uniprot.XML
 Imports SMRUCC.Rsharp.Runtime
 Imports SMRUCC.Rsharp.Runtime.Internal.Object
 Imports SMRUCC.Rsharp.Runtime.Interop
+Imports ExprMatrix = SMRUCC.genomics.Analysis.HTS.DataFrame.Matrix
 
 ''' <summary>
 ''' the bgee database toolkit
@@ -160,6 +161,24 @@ Public Module Bgee
         Else
             Return stream.ToArray
         End If
+    End Function
+
+    ''' <summary>
+    ''' Make gene expression matrix from the bgee expression calls
+    ''' </summary>
+    ''' <param name="bgee">a stream of the bgee gene expression calls which is parsed from the ``Bgee::parseTsv`` function.</param>
+    ''' <param name="env"></param>
+    ''' <returns></returns>
+    <ExportAPI("make_matrix")>
+    <RApiReturn(GetType(ExprMatrix))>
+    Public Function make_matrix(<RRawVectorArgument> bgee As Object, Optional env As Environment = Nothing) As Object
+        Dim pull As pipeline = pipeline.TryCreatePipeline(Of AdvancedCalls)(bgee, env)
+
+        If pull.isError Then
+            Return pull.getError
+        End If
+
+        Return GeneExpression.MakeMatrix(pull.populates(Of AdvancedCalls)(env))
     End Function
 
     ''' <summary>
