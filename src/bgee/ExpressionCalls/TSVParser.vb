@@ -36,9 +36,13 @@ Public Class TSVParser
     Sub New(filepath As String)
         Static fields As Dictionary(Of String, String) = Me.GetType _
             .GetFields(bindingAttr:=BindingFlags.Instance Or BindingFlags.NonPublic) _
+            .Where(Function(f)
+                       Return f.GetCustomAttribute(Of ColumnAttribute) IsNot Nothing
+                   End Function) _
             .ToDictionary(Function(f) f.Name,
                           Function(f)
-                              Return f.GetCustomAttribute(Of ColumnAttribute).Name
+                              Dim col As ColumnAttribute = f.GetCustomAttribute(Of ColumnAttribute)
+                              Return col.Name
                           End Function)
 
         Me.filepath = filepath
