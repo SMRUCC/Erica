@@ -46,7 +46,12 @@ Public Class TSVParser
                           End Function)
 
         Me.filepath = filepath
-        Me.headers = New HeaderSchema(filepath.ReadFirstLine.Split(ASCII.TAB))
+        Me.headers = New HeaderSchema(filepath _
+            .ReadFirstLine _
+            .Split(ASCII.TAB) _
+            .Select(Function(name)
+                        Return name.Trim(""""c)
+                    End Function))
 
         Me.gene_id = headers.GetOrdinal(fields(NameOf(TSVParser.gene_id)))
         Me.gene_name = headers.GetOrdinal(fields(NameOf(TSVParser.gene_name)))
