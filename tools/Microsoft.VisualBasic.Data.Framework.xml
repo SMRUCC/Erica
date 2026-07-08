@@ -3376,9 +3376,9 @@ Microsoft.VisualBasic.Data.Framework
 </member>
 <member name="T:Microsoft.VisualBasic.Data.Framework.StorageProvider.Reflection.CollectionAttribute">
  <summary>
- This property is a array data type object.(并不建议使用本Csv属性来储存大量的文本字符串，极容易出错)
+ This property is a array data type object.
  </summary>
- <remarks></remarks>
+ <remarks>(并不建议使用本Csv属性来储存大量的文本字符串，极容易出错)</remarks>
 </member>
 <member name="M:Microsoft.VisualBasic.Data.Framework.StorageProvider.Reflection.CollectionAttribute.#ctor(System.String,System.String)">
  <summary>
