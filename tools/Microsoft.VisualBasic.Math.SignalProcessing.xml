@@ -1755,6 +1755,446 @@ Microsoft.VisualBasic.Math.SignalProcessing
  This method uses the internal phase and frequency values of its operand members. </summary>
  <returns>the samples </returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction">
+ <summary>
+ The abstract base class for all deterministic basis signal functions.
+ </summary>
+ <remarks>
+ Every basis function is modeled as a function of a single time variable
+ <c>x</c> with four universal parameters:
+ 
+ <list type="bullet">
+ <item><description><see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Amp"/> — amplitude / scaling factor</description></item>
+ <item><description><see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Center"/> — center / horizontal shift (x0)</description></item>
+ <item><description><see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Scale"/> — width / frequency / steepness factor</description></item>
+ <item><description><see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Offset"/> — vertical offset (baseline)</description></item>
+ </list>
+ 
+ The default evaluation is <c>Offset + Amp * Shape((x - Center) / Scale)</c>.
+ A concrete basis function only needs to override <see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Shape(System.Double)"/>, while
+ combinators (sum, product, convolution, ...) override <see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Evaluate(System.Double)"/>
+ instead. This makes both primitive functions and composite generators
+ interchangeable as building blocks.
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Amp">
+ <summary>
+ amplitude / scaling factor. Default 1.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Center">
+ <summary>
+ center / horizontal shift (x0). Controls when the feature occurs.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Scale">
+ <summary>
+ width / frequency / steepness factor. Interpreted by each subclass.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Offset">
+ <summary>
+ vertical offset (baseline). Default 0.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Shape(System.Double)">
+ <summary>
+ the normalized shape of the basis function, evaluated at the
+ shifted and scaled coordinate <paramref name="u"/> which equals
+ <c>(x - Center) / Scale</c> at call time.
+ </summary>
+ <param name="u">the normalized coordinate</param>
+ <returns>the shape value (before amp / offset applied)</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Evaluate(System.Double)">
+ <summary>
+ evaluate the basis function at a given time point <paramref name="x"/>.
+ Combinators override this to combine their operands.
+ </summary>
+ <param name="x">the time coordinate</param>
+ <returns>the signal value</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Sample(System.Collections.Generic.IEnumerable{System.Double})">
+ <summary>
+ sample the signal over a given time grid. The default implementation
+ simply evaluates each point; combinators such as convolution may
+ override this to perform whole-signal operations.
+ </summary>
+ <param name="x">the time grid to sample on</param>
+ <returns>the sampled signal values</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Sample(System.Double,System.Double,System.Int32)">
+ <summary>
+ sample the signal on an evenly spaced time grid.
+ </summary>
+ <param name="min">the start time</param>
+ <param name="max">the end time</param>
+ <param name="n">the number of sample points (must be &gt; 0)</param>
+ <returns>the sampled signal values</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.ToGeneralSignal(System.Collections.Generic.IEnumerable{System.Double},System.String,System.String)">
+ <summary>
+ sample the signal and wrap it into a <see cref="T:Microsoft.VisualBasic.Math.SignalProcessing.GeneralSignal"/>
+ so that it can be consumed by the downstream processing pipeline.
+ </summary>
+ <param name="x">the time grid</param>
+ <param name="reference">the signal id / variable name</param>
+ <param name="unit">the measure unit of the x axis</param>
+ <returns>the sampled signal as a <see cref="T:Microsoft.VisualBasic.Math.SignalProcessing.GeneralSignal"/></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.CopyParametersTo(Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction)">
+ <summary>
+ create a deep-ish copy of the universal parameters onto another
+ basis function (useful when building a generator programmatically).
+ </summary>
+ <param name="other">the target basis function</param>
+ <returns>the target, for chaining</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.GaussianNoise">
+ <summary>
+ Gaussian (white) noise: independent N(Offset, |Amp|) samples at every point.
+ </summary>
+ <remarks>
+ Use it to add realistic measurement noise, e.g.
+ Signal = Trend + Seasonality + GaussianNoise.
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.UniformNoise">
+ <summary>
+ uniform noise: independent samples uniformly distributed in
+ [Offset, Offset + Amp] (or [Offset + Amp, Offset] if Amp &lt; 0).
+ </summary>
+ <remarks>Useful for quantization / rounding style noise.</remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Sine">
+ <summary>
+ sine wave: Amp * sin(2π (x - Center) / Scale) + Offset
+ </summary>
+ <remarks>
+ <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Scale"/> is interpreted as the period (wavelength)
+ of the wave. Combine several sine waves of different periods and phases to
+ fit almost any periodic signal (Fourier principle).
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Cosine">
+ <summary>
+ cosine wave: Amp * cos(2π (x - Center) / Scale) + Offset
+ </summary>
+ <remarks><see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Scale"/> is the period.</remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Square">
+ <summary>
+ square wave: switches between +Amp and -Amp with a period of <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Scale"/>.
+ </summary>
+ <remarks>
+ Useful for modeling digital / on-off signals, switching states
+ (e.g. awake / asleep) or pulse trains.
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Triangle">
+ <summary>
+ triangle wave: linear rise and fall, period = <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Scale"/>.
+ </summary>
+ <remarks>Sharper than a sine; common for uniform mechanical motion or sweeps.</remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Sawtooth">
+ <summary>
+ sawtooth wave: rises linearly then drops instantly, period = <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Scale"/>.
+ </summary>
+ <remarks>Models capacitor charge-discharge, single sweeps or gradually
+ accumulating-then-bursting physical processes.</remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.DampedSine">
+ <summary>
+ damped sine wave: Amp * e^(-alpha (x - Center)) * sin(2π (x - Center) / Scale) + Offset.
+ </summary>
+ <remarks>
+ Extremely important for simulating mechanical vibration after a hit,
+ RLC circuit response, seismic waves and any decaying oscillation.
+ <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Scale"/> is the period; <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.DampedSine.Damping"/>
+ (alpha) controls how fast the oscillation decays.
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.DampedSine.Damping">
+ <summary>the damping coefficient (alpha) of the exponential envelope.</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Gaussian">
+ <summary>
+ Gaussian (normal) peak: a smooth localized bump.
+ </summary>
+ <remarks>
+ Reuses <see cref="T:Microsoft.VisualBasic.Math.Distributions.Gaussian"/> from the math library.
+ Center = mu, Scale = sigma, Amp = height.
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Lorentz">
+ <summary>
+ Lorentzian / Cauchy peak: similar to a Gaussian but with much heavier
+ (slower decaying) tails.
+ </summary>
+ <remarks>
+ Formula: 1 / (1 + ((x - Center) / Scale)^2). Commonly used in
+ spectroscopy and for modeling long-tail突发事件.
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.DoubleExp">
+ <summary>
+ double-sided exponential: e^(-|x - Center| / Scale).
+ </summary>
+ <remarks>
+ Forms a sharp peak at the center and decays exponentially to both
+ sides; models instant impact energy release.
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Ricker">
+ <summary>
+ Ricker wavelet / Mexican hat: a positive lobe flanked by two negative
+ side-lobes.
+ </summary>
+ <remarks>
+ A classic local-feature kernel in signal processing, radar and seismic
+ exploration. Reuses <see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.MexicanHatWavelet(System.Double,System.Double,System.Double)"/>.
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.RectPulse">
+ <summary>
+ rectangular pulse: constant Amp inside [Center, Center + Width], 0 elsewhere.
+ </summary>
+ <remarks>Models a device turning on and off over a fixed interval.</remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.RectPulse.Width">
+ <summary>the duration of the pulse (in the same unit as x).</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.LogNormal">
+ <summary>
+ log-normal function: an asymmetric bump, fast rise then long-tailed decay.
+ </summary>
+ <remarks>
+ Many physical quantities (particle sizes, income, reaction times) are not
+ normal but log-normal. Here Center maps to the log-mean mu and Scale maps
+ to the log-standard-deviation sigma:
+ shape(u) = exp(-(ln((x-Center)) - mu)^2 / (2 sigma^2)) / ((x-Center) sigma sqrt(2π)).
+ Returns 0 for x &lt;= Center to keep the domain valid.
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Sinc">
+ <summary>
+ sinc function: sin(π (x - Center) / Scale) / (π (x - Center) / Scale).
+ </summary>
+ <remarks>
+ The core function of signal processing; models the ideal low-pass filter
+ response or optical diffraction patterns. At the center it is defined as 1.
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Gompertz">
+ <summary>
+ Gompertz function: an asymmetric S-curve, flatter at both ends than a logistic.
+ </summary>
+ <remarks>
+ Commonly used for tumor growth or biological population limits. Here
+ Scale is the asymptotic cap and the intrinsic growth rate is fixed;
+ Center shifts the inflection point. Value stays in (0, Scale].
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Gompertz.Rate">
+ <summary>the intrinsic growth rate (positive).</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Tanh">
+ <summary>
+ hyperbolic tangent: Amp * tanh((x - Center) / Scale) + Offset.
+ </summary>
+ <remarks>
+ Like sigmoid but in [-1, 1] and steeper around zero. Use it instead of
+ sigmoid when the signal must switch symmetrically between positive and
+ negative states.
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.ReLU">
+ <summary>
+ rectified linear unit: Amp * max(0, (x - Center) / Scale - Cut) + Offset.
+ </summary>
+ <remarks>
+ Models a "threshold trigger": the output only grows linearly once the
+ (shifted) input exceeds the <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.ReLU.Cut"/> threshold.
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.ReLU.Cut">
+ <summary>the threshold offset c (in normalized units).</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Step">
+ <summary>
+ step function: the limit of a sigmoid. 0 before <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Center"/>,
+ 1 afterwards, with a transition sharpness controlled by <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Scale"/>.
+ </summary>
+ <remarks>
+ Models an instantaneous state change (fuse blowing, threshold alarm).
+ When <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Scale"/> &gt; 0 it uses a logistic sigmoid
+ for a smooth-but-sharp transition; when Scale = 0 it becomes an exact
+ Heaviside step.
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Linear">
+ <summary>
+ linear trend: Amp * (x - Center) / Scale + Offset.
+ </summary>
+ <remarks>The simplest constant growth / decline.</remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Exponential">
+ <summary>
+ exponential growth / decay: Amp * e^(alpha (x - Center) / Scale) + Offset.
+ </summary>
+ <remarks>
+ With a positive <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Exponential.Rate"/> it models unbounded population growth,
+ radioactive decay or chemical concentration; with a negative rate it decays.
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Exponential.Rate">
+ <summary>the growth / decay rate (alpha).</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Logarithm">
+ <summary>
+ logarithmic trend: Amp * ln((x - Center) / Scale) + Offset.
+ </summary>
+ <remarks>
+ Models diminishing returns, learning curves or fast-then-flat evolution.
+ Returns <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction.Offset"/> for x &lt;= Center to avoid NaN.
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Power">
+ <summary>
+ power-law trend: Amp * ((x - Center) / Scale)^alpha + Offset.
+ </summary>
+ <remarks>
+ 0 &lt; alpha &lt; 1 behaves like a log curve; alpha &gt; 1 behaves like
+ exponential growth. Extremely common in nature (fluid flow, fractals).
+ For fractional alpha the domain is restricted to x &gt;= Center.
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Power.Exponent">
+ <summary>the exponent (alpha).</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Sum">
+ <summary>
+ point-wise addition of two basis functions.
+ </summary>
+ <remarks>The most common combination, e.g.
+ Signal = LinearTrend + SineSeasonality + GaussianPeak + Noise.</remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Difference">
+ <summary>
+ point-wise subtraction: A - B.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Product">
+ <summary>
+ point-wise multiplication (modulation).
+ </summary>
+ <remarks>
+ e.g. Sine * ExponentialDecay gives a damped sine; or multiply by a
+ Sigmoid / Step to fade a signal in or out.
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Quotient">
+ <summary>
+ point-wise division: A / B (0 where B is 0).
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Convolution">
+ <summary>
+ convolution of a signal with a kernel, simulating a system's impulse
+ response to the input signal.
+ </summary>
+ <remarks>
+ The signal and the kernel are both sampled on the same time grid
+ (defined by <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Convolution.GridMin"/>, <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Convolution.GridMax"/>, <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Convolution.GridN"/>),
+ then convolved with <see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.Convolve(System.Double[],System.Double[])"/>. The result is
+ cached so repeated evaluation is a cheap table lookup.
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.SignalGenerator">
+ <summary>
+ the fluent builder / combiner for synthesizing complex signals out of
+ basis functions. It is itself a <see cref="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction"/> so it can be
+ nested inside other combinators, and it can be sampled into a
+ <see cref="T:Microsoft.VisualBasic.Math.SignalProcessing.GeneralSignal"/> or a <see cref="T:System.Double"/> array.
+ </summary>
+ <remarks>
+ Example:
+ <code>
+ Dim sig = New SignalGenerator() _
+     .Add(New Linear With {.Amp = 0.1, .Scale = 10}) _
+     .Add(New Sine With {.Amp = 2, .Scale = 5, .Center = 1}) _
+     .Add(New GaussianNoise With {.Amp = 0.2})
+ Dim data = sig.Sample(0, 100, 1000)
+ </code>
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.SignalGenerator.Seed">
+ <summary>the seed of the global RNG, for reproducible noise.</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.SignalGenerator.#ctor(Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction)">
+ <summary>
+ start a generator from an optional initial basis function.
+ </summary>
+ <param name="initial">the first term (defaults to a zero signal).</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.SignalGenerator.Add(Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction)">
+ <summary>add a basis function (point-wise +).</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.SignalGenerator.Subtract(Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction)">
+ <summary>subtract a basis function (point-wise -).</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.SignalGenerator.Multiply(Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction)">
+ <summary>multiply by a basis function (point-wise *).</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.SignalGenerator.Divide(Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction)">
+ <summary>divide by a basis function (point-wise /).</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisExtensions">
+ <summary>
+ fluent parameter helpers for any <see cref="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.BasisFunction"/>.
+ </summary>
+ <remarks>
+ These return the same object so calls can be chained, e.g.
+ <c>New Sine().Amplified(2).Scaled(5).At(1)</c>.
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Basis">
+ <summary>
+ factory methods to build each basis function with the four universal
+ parameters in a single call.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Presets">
+ <summary>
+ ready-to-use composite presets that demonstrate how basis functions
+ combine into realistic signals.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Presets.ECG(System.Double,System.Double)">
+ <summary>
+ a single-lead ECG-like beat synthesized from Gaussian bumps
+ (P wave, Q, R spike, S, T wave) plus a small baseline wander and noise.
+ </summary>
+ <param name="period">the RR interval (beat length) in seconds.</param>
+ <param name="noise">standard deviation of the measurement noise.</param>
+ <returns>a <see cref="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.SignalGenerator"/> producing one beat shape</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Presets.Vibration(System.Double,System.Double)">
+ <summary>
+ mechanical vibration: a damped sinusoid (impulse response) convolved
+ with a train of impact impulses, plus measurement noise.
+ </summary>
+ <param name="duration">total time in seconds.</param>
+ <param name="noise">standard deviation of the measurement noise.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Source.Generators.Presets.Weather(System.Double)">
+ <summary>
+ daily temperature-like curve: a slow seasonal sinusoid, a gentle
+ linear warming trend, diurnal variation and weather noise.
+ </summary>
+ <param name="days">number of days to simulate.</param>
+</member>
 <member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Source.DumpsSignal">
  <summary>
  

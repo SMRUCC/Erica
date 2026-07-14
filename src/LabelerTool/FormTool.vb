@@ -1,5 +1,4 @@
-﻿Imports System.Drawing.Drawing2D
-Imports System.IO
+﻿Imports System.IO
 Imports Erica.Analysis.SpatialTissue
 Imports Erica.Analysis.SpatialTissue.HEView
 Imports Microsoft.VisualBasic.ComponentModel.Ranges.Model
@@ -187,7 +186,7 @@ Public Class FormTool
 
         ' 再绘制多边形
         If polygonPoints.Count > 0 Then
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias
             Using pen As New System.Drawing.Pen(Color.Red, 2)
                 If polygonPoints.Count > 1 Then
                     e.Graphics.DrawLines(pen, polygonPoints.ToArray())

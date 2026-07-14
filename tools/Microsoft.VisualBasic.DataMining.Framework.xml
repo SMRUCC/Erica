@@ -1493,6 +1493,35 @@ Microsoft.VisualBasic.DataMining.Framework
  <param name="data"></param>
  <param name="itr"></param>
 </member>
+<member name="T:Microsoft.VisualBasic.DataMining.Standardizer">
+ <summary>
+ 每维度特征的 z-score 标准化器。
+ 
+ 训练阶段按特征维计算均值/标准差，推理阶段复用同一套参数，
+ 解决各维度特征量纲差异大导致的梯度不稳定问题。
+ 零方差维度标准差置 1，避免除零。
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Standardizer.Fit(System.Collections.Generic.IEnumerable{System.Double[]})">
+ <summary>
+ 用一组训练样本拟合均值与标准差
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Standardizer.Transform(System.Double[])">
+ <summary>
+ 对单个特征向量做标准化：(x - mean) / std
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Standardizer.Save(System.String)">
+ <summary>
+ 保存标准化参数到 JSON 文件
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Standardizer.Load(System.String)">
+ <summary>
+ 从 JSON 文件加载标准化参数
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.DataMining.DecisionTree.Algorithm">
  <summary>
  Algorithm module for train a new decision tree model
