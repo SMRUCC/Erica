@@ -3970,6 +3970,24 @@ Microsoft.VisualBasic.Imaging
  the view distance from the user view to target object
  </summary>
 </member>
+<member name="P:Microsoft.VisualBasic.Imaging.Drawing3D.Camera.AngleX">
+ <summary>
+ pitch
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Drawing3D.Camera.AngleY">
+ <summary>
+ yaw
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Drawing3D.Camera.AngleZ">
+ <summary>
+ roll
+ </summary>
+ <returns></returns>
+</member>
 <member name="P:Microsoft.VisualBasic.Imaging.Drawing3D.Camera.FieldOfView">
  <summary>
  FOV
@@ -4131,6 +4149,17 @@ Microsoft.VisualBasic.Imaging
 <member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Light.Shade(System.Drawing.Color,System.Drawing.Color,System.Double)">
  <summary>
  Shade <paramref name="baseColor"/> toward <paramref name="lightColor"/> by <paramref name="factor"/> (in [0,1]).
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Light.ScaleLightColor(System.Drawing.Color,System.Double)">
+ <summary>
+ 按亮度系数缩放灯光颜色（降低亮度可削弱被照亮面的发白）。
+ </summary>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Light.LightDirFromAngles(System.Int32,System.Int32)">
+ <summary>
+ 由仰角/方位角（度）构造指向光源的单位向量。
  </summary>
 </member>
 <member name="F:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.DistanceFieldSampler.Path">
@@ -4974,6 +5003,9 @@ Microsoft.VisualBasic.Imaging
  </summary>
  <param name="yaw">Degree.</param>
  <param name="pitch">Degree.</param>
+ <remarks>
+ rotateYP
+ </remarks>
 </member>
 <member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Point3D.RotateX(System.Single)">
  <summary>
@@ -5987,6 +6019,30 @@ Microsoft.VisualBasic.Imaging
  </summary>
  <param name="svg"></param>
  <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.SVG.Renderer.ParseSvgColor(System.String)">
+ <summary>
+ Parse an SVG color string to a <see cref="T:System.Drawing.Color"/> value.
+ Supports hex colors (#RGB, #RRGGBB), named colors, and "none".
+ </summary>
+ <param name="colorStr">The SVG color string (e.g., "#FF0000", "red", "none").</param>
+ <returns>The parsed color, or <see cref="F:System.Drawing.Color.Empty"/> if the string is "none" or empty.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.SVG.Renderer.DrawShape(Microsoft.VisualBasic.Imaging.IGraphics,Microsoft.VisualBasic.Imaging.SVG.XML.SvgElement,System.Action{Microsoft.VisualBasic.Imaging.Brush},System.Action{Microsoft.VisualBasic.Imaging.Pen})">
+ <summary>
+ Apply fill and stroke to a given <see cref="T:Microsoft.VisualBasic.Imaging.SVG.XML.SvgElement"/> using the provided draw actions.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.SVG.Renderer.ApplyTransform(Microsoft.VisualBasic.Imaging.IGraphics,System.String)">
+ <summary>
+ Parse the SVG transform attribute and apply it to the graphics context.
+ Supports translate, scale, rotate, skewX, skewY, and matrix.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.SVG.Renderer.BuildRoundedRectPath(System.Single,System.Single,System.Single,System.Single,System.Single,System.Single)">
+ <summary>
+ Build a <see cref="T:Microsoft.VisualBasic.Imaging.GraphicsPath"/> for a rounded rectangle.
+ </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.Imaging.SVG.SVGDataLayers">
  <summary>

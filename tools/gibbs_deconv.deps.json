@@ -28,83 +28,83 @@
           "gibbs_deconv.dll": {}
         }
       },
-      "System.Composition/10.0.9": {
+      "System.Composition/10.0.10": {
         "dependencies": {
-          "System.Composition.AttributedModel": "10.0.9",
-          "System.Composition.Convention": "10.0.9",
-          "System.Composition.Hosting": "10.0.9",
-          "System.Composition.Runtime": "10.0.9",
-          "System.Composition.TypedParts": "10.0.9"
+          "System.Composition.AttributedModel": "10.0.10",
+          "System.Composition.Convention": "10.0.10",
+          "System.Composition.Hosting": "10.0.10",
+          "System.Composition.Runtime": "10.0.10",
+          "System.Composition.TypedParts": "10.0.10"
         }
       },
-      "System.Composition.AttributedModel/10.0.9": {
+      "System.Composition.AttributedModel/10.0.10": {
         "runtime": {
           "lib/net10.0/System.Composition.AttributedModel.dll": {
-            "assemblyVersion": "10.0.0.9",
-            "fileVersion": "10.0.926.27113"
+            "assemblyVersion": "10.0.0.10",
+            "fileVersion": "10.0.1026.32716"
           }
         }
       },
-      "System.Composition.Convention/10.0.9": {
+      "System.Composition.Convention/10.0.10": {
         "dependencies": {
-          "System.Composition.AttributedModel": "10.0.9"
+          "System.Composition.AttributedModel": "10.0.10"
         },
         "runtime": {
           "lib/net10.0/System.Composition.Convention.dll": {
-            "assemblyVersion": "10.0.0.9",
-            "fileVersion": "10.0.926.27113"
+            "assemblyVersion": "10.0.0.10",
+            "fileVersion": "10.0.1026.32716"
           }
         }
       },
-      "System.Composition.Hosting/10.0.9": {
+      "System.Composition.Hosting/10.0.10": {
         "dependencies": {
-          "System.Composition.Runtime": "10.0.9"
+          "System.Composition.Runtime": "10.0.10"
         },
         "runtime": {
           "lib/net10.0/System.Composition.Hosting.dll": {
-            "assemblyVersion": "10.0.0.9",
-            "fileVersion": "10.0.926.27113"
+            "assemblyVersion": "10.0.0.10",
+            "fileVersion": "10.0.1026.32716"
           }
         }
       },
-      "System.Composition.Runtime/10.0.9": {
+      "System.Composition.Runtime/10.0.10": {
         "runtime": {
           "lib/net10.0/System.Composition.Runtime.dll": {
-            "assemblyVersion": "10.0.0.9",
-            "fileVersion": "10.0.926.27113"
+            "assemblyVersion": "10.0.0.10",
+            "fileVersion": "10.0.1026.32716"
           }
         }
       },
-      "System.Composition.TypedParts/10.0.9": {
+      "System.Composition.TypedParts/10.0.10": {
         "dependencies": {
-          "System.Composition.AttributedModel": "10.0.9",
-          "System.Composition.Hosting": "10.0.9",
-          "System.Composition.Runtime": "10.0.9"
+          "System.Composition.AttributedModel": "10.0.10",
+          "System.Composition.Hosting": "10.0.10",
+          "System.Composition.Runtime": "10.0.10"
         },
         "runtime": {
           "lib/net10.0/System.Composition.TypedParts.dll": {
-            "assemblyVersion": "10.0.0.9",
-            "fileVersion": "10.0.926.27113"
+            "assemblyVersion": "10.0.0.10",
+            "fileVersion": "10.0.1026.32716"
           }
         }
       },
-      "System.Configuration.ConfigurationManager/10.0.9": {
+      "System.Configuration.ConfigurationManager/10.0.10": {
         "dependencies": {
-          "System.Diagnostics.EventLog": "10.0.9",
-          "System.Security.Cryptography.ProtectedData": "10.0.9"
+          "System.Diagnostics.EventLog": "10.0.10",
+          "System.Security.Cryptography.ProtectedData": "10.0.10"
         },
         "runtime": {
           "lib/net10.0/System.Configuration.ConfigurationManager.dll": {
             "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.926.27113"
+            "fileVersion": "10.0.1026.32716"
           }
         }
       },
-      "System.Diagnostics.EventLog/10.0.9": {
+      "System.Diagnostics.EventLog/10.0.10": {
         "runtime": {
           "lib/net10.0/System.Diagnostics.EventLog.dll": {
             "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.926.27113"
+            "fileVersion": "10.0.1026.32716"
           }
         },
         "runtimeTargets": {
@@ -118,34 +118,34 @@
             "rid": "win",
             "assetType": "runtime",
             "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.926.27113"
+            "fileVersion": "10.0.1026.32716"
           }
         }
       },
-      "System.Formats.Nrbf/10.0.9": {
+      "System.Formats.Nrbf/10.0.10": {
         "runtime": {
           "lib/net10.0/System.Formats.Nrbf.dll": {
             "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.926.27113"
+            "fileVersion": "10.0.1026.32716"
           }
         }
       },
-      "System.Resources.Extensions/10.0.9": {
+      "System.Resources.Extensions/10.0.10": {
         "dependencies": {
-          "System.Formats.Nrbf": "10.0.9"
+          "System.Formats.Nrbf": "10.0.10"
         },
         "runtime": {
           "lib/net10.0/System.Resources.Extensions.dll": {
             "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.926.27113"
+            "fileVersion": "10.0.1026.32716"
           }
         }
       },
-      "System.Security.Cryptography.ProtectedData/10.0.9": {
+      "System.Security.Cryptography.ProtectedData/10.0.10": {
         "runtime": {
           "lib/net10.0/System.Security.Cryptography.ProtectedData.dll": {
             "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.926.27113"
+            "fileVersion": "10.0.1026.32716"
           }
         }
       },
@@ -156,7 +156,7 @@
           "Microsoft.VisualBasic.Runtime": "5.0.1.2389",
           "SMRUCC.genomics.Analysis.HTS.DataFrame": "1.0.0",
           "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner": "1.0.0",
-          "System.Configuration.ConfigurationManager": "10.0.9"
+          "System.Configuration.ConfigurationManager": "10.0.10"
         },
         "runtime": {
           "Erica.Analysis.SingleCell.SpatialDeconvolve.dll": {
@@ -220,8 +220,8 @@
       },
       "Microsoft.VisualBasic.Runtime/5.0.1.2389": {
         "dependencies": {
-          "System.Composition": "10.0.9",
-          "System.Resources.Extensions": "10.0.9"
+          "System.Composition": "10.0.10",
+          "System.Resources.Extensions": "10.0.10"
         },
         "runtime": {
           "Microsoft.VisualBasic.Runtime.dll": {
@@ -236,8 +236,8 @@
           "Microsoft.VisualBasic.Math.Statistics": "1.0.0",
           "Microsoft.VisualBasic.Runtime": "5.0.1.2389",
           "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner": "1.0.0",
-          "System.Composition": "10.0.9",
-          "System.Resources.Extensions": "10.0.9"
+          "System.Composition": "10.0.10",
+          "System.Resources.Extensions": "10.0.10"
         },
         "runtime": {
           "SMRUCC.genomics.Analysis.HTS.DataFrame.dll": {
@@ -248,8 +248,8 @@
       "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner/1.0.0": {
         "dependencies": {
           "Microsoft.VisualBasic.Runtime": "5.0.1.2389",
-          "System.Composition": "10.0.9",
-          "System.Resources.Extensions": "10.0.9"
+          "System.Composition": "10.0.10",
+          "System.Resources.Extensions": "10.0.10"
         },
         "runtime": {
           "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.dll": {
@@ -337,82 +337,82 @@
       "serviceable": false,
       "sha512": ""
     },
-    "System.Composition/10.0.9": {
+    "System.Composition/10.0.10": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-r5sOW2f8q4jytzR++SEo2XRcqPf02vA2sjWRa5p/vyHTOWBy3mpwf//NprBMGO2/LNC3PoKwguJL+JCvTpy4Qw==",
-      "path": "system.composition/10.0.9",
-      "hashPath": "system.composition.10.0.9.nupkg.sha512"
+      "sha512": "sha512-YdUvDCl3+purgfwn99oUwtS6/vrHJCiY2fPB3B/3SA3AhehjBZvSNXTzaDSJtOUVa0qHbO+6Zud4h1DJiuqV9g==",
+      "path": "system.composition/10.0.10",
+      "hashPath": "system.composition.10.0.10.nupkg.sha512"
     },
-    "System.Composition.AttributedModel/10.0.9": {
+    "System.Composition.AttributedModel/10.0.10": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ASCoBdxIae3IZFYLffKh9opLst7aZeujYt4yj55eayM1wr+kGxR4HxPEKbTcOIPMDigZ4LX5WD1ZSSTkpqoTDA==",
-      "path": "system.composition.attributedmodel/10.0.9",
-      "hashPath": "system.composition.attributedmodel.10.0.9.nupkg.sha512"
+      "sha512": "sha512-alK+Ew7XBsxHgwmSmiZzg7x4sLpNIaQ3QVJUkJ/issHZY0L+RHceqO27pDp0J0sDnSf8g6yJNpDnWSKL5sAa/g==",
+      "path": "system.composition.attributedmodel/10.0.10",
+      "hashPath": "system.composition.attributedmodel.10.0.10.nupkg.sha512"
     },
-    "System.Composition.Convention/10.0.9": {
+    "System.Composition.Convention/10.0.10": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-1tzR2Q+tBUjadvLZX/giK/qLsIegl5q341CoWfJv9ldvtkOxkDkMeP4gtH7E4YtDHcv5YPq9hRzjcFC/JOuElA==",
-      "path": "system.composition.convention/10.0.9",
-      "hashPath": "system.composition.convention.10.0.9.nupkg.sha512"
+      "sha512": "sha512-x+qzplPjKxvS6yM9YXXHJB2DWtgjRB2fRdXHyC26gGiKUghXXzieembAJGZSK67o7hSlKu/uwVClukpbqkj4ww==",
+      "path": "system.composition.convention/10.0.10",
+      "hashPath": "system.composition.convention.10.0.10.nupkg.sha512"
     },
-    "System.Composition.Hosting/10.0.9": {
+    "System.Composition.Hosting/10.0.10": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-yW3VFpWft5Iw1r1BpovQk0gVPry8T/JMNjGk0ia852/owdMxtfCOctujF3ojZTwozNUhPTG39xyGokckiQlwRw==",
-      "path": "system.composition.hosting/10.0.9",
-      "hashPath": "system.composition.hosting.10.0.9.nupkg.sha512"
+      "sha512": "sha512-gTu5YG07Ayx56z7ZQAXwjB2q1kK4dw7QplEs94iV0Ll6urfe1Wgjvjm0B0QGEDz8pi8Z698qDUjI0lsK+pF1mg==",
+      "path": "system.composition.hosting/10.0.10",
+      "hashPath": "system.composition.hosting.10.0.10.nupkg.sha512"
     },
-    "System.Composition.Runtime/10.0.9": {
+    "System.Composition.Runtime/10.0.10": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ilnkOvl3NN1MvgQKoHe8Gkon5B21zFZQeGLM8gaoqbBgqpFMIO6B1z2HjWudawKJ1/VRbwoYeCcg6B8Ir1E9Dg==",
-      "path": "system.composition.runtime/10.0.9",
-      "hashPath": "system.composition.runtime.10.0.9.nupkg.sha512"
+      "sha512": "sha512-iFjLY3cX9QSK/tg4cZEN00jU6OUSLWqsqSIryOGjSbhVR2PAiBHZn5h+AOd80JDB+BKVYxcGE7zBQrb2r3Kq0Q==",
+      "path": "system.composition.runtime/10.0.10",
+      "hashPath": "system.composition.runtime.10.0.10.nupkg.sha512"
     },
-    "System.Composition.TypedParts/10.0.9": {
+    "System.Composition.TypedParts/10.0.10": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-L/AS7N7HN/2Hx3LTm/9cWv/rnIKOgWmf+jhUiSfLrKdOKXtVu8dNV9f6fosQO9VAVU6gCzS0D7IXzDrO+bsoKg==",
-      "path": "system.composition.typedparts/10.0.9",
-      "hashPath": "system.composition.typedparts.10.0.9.nupkg.sha512"
+      "sha512": "sha512-fbaPjPHBY8G4lwqvZNbW35nUu1zCGWxo7wJG+C4A4qrA2QpXNYlnXBwFM0seCg7BEsVOVxyegfwYmxUc14lSYA==",
+      "path": "system.composition.typedparts/10.0.10",
+      "hashPath": "system.composition.typedparts.10.0.10.nupkg.sha512"
     },
-    "System.Configuration.ConfigurationManager/10.0.9": {
+    "System.Configuration.ConfigurationManager/10.0.10": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-k7kYSTmNjwFYKdUju+rjYyigbcUBj1sElR3ayqszcatPXL9YJoBANJN48xctdXTopYf3ceFX2T4m1xvJRM+CGA==",
-      "path": "system.configuration.configurationmanager/10.0.9",
-      "hashPath": "system.configuration.configurationmanager.10.0.9.nupkg.sha512"
+      "sha512": "sha512-64jtHt9yLYi6VHMF5AwDj6BGM/MZrygv55SXl0MOIkFsFjGwRuxV3/QgEm7NTp3TQIx+YNX4S6dNpY08fJ3+3g==",
+      "path": "system.configuration.configurationmanager/10.0.10",
+      "hashPath": "system.configuration.configurationmanager.10.0.10.nupkg.sha512"
     },
-    "System.Diagnostics.EventLog/10.0.9": {
+    "System.Diagnostics.EventLog/10.0.10": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-s2PcxHK4IYQ6gmD3VSBkym9tWGkFisKjcjWBdl7a+n4Yy66ae4beJ1ZdjDp060SSll4W3Rt4H2LW87dWckv+QQ==",
-      "path": "system.diagnostics.eventlog/10.0.9",
-      "hashPath": "system.diagnostics.eventlog.10.0.9.nupkg.sha512"
+      "sha512": "sha512-OvGz3PrzuAI/Sj7LTcXcCe3FClRI1IyRMZjNONcZtFh+Ww7nAtSh4kh08r8KVe/xxkXJPjR0Y1jF7H+N42d4xQ==",
+      "path": "system.diagnostics.eventlog/10.0.10",
+      "hashPath": "system.diagnostics.eventlog.10.0.10.nupkg.sha512"
     },
-    "System.Formats.Nrbf/10.0.9": {
+    "System.Formats.Nrbf/10.0.10": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-5SYwGzBdCL65Ntz56LjHgiY8khvvucN89xW9TSD/KVPFKSSl/ugoyfdb1nR0yXPeGBXWd4Y+QwIW5uwOsec3Pg==",
-      "path": "system.formats.nrbf/10.0.9",
-      "hashPath": "system.formats.nrbf.10.0.9.nupkg.sha512"
+      "sha512": "sha512-gOcWB7GddeYRGZWA8lHi84MvuzTI3ugYISfLfCg5FTdZB3cDaoAj7yG7c2bBaO+hio1nZ5kz/BrwpzfLT1R8Bg==",
+      "path": "system.formats.nrbf/10.0.10",
+      "hashPath": "system.formats.nrbf.10.0.10.nupkg.sha512"
     },
-    "System.Resources.Extensions/10.0.9": {
+    "System.Resources.Extensions/10.0.10": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-k+wqdoIzFpchXqXPM8b2JLEst5A3clG6CxoAzK3ZM+y5UFxBV6sxKlpMNtmoTw/s2v5dX8R9tAig0/BwjBWWbw==",
-      "path": "system.resources.extensions/10.0.9",
-      "hashPath": "system.resources.extensions.10.0.9.nupkg.sha512"
+      "sha512": "sha512-xUBGLR+HPujL5k3LmHIJSS6xFsKECOGO52nurXMDADkLRFNVVUxCH4ng2WBD1YTxGHkE/s2kJs1I2B89DJJyLA==",
+      "path": "system.resources.extensions/10.0.10",
+      "hashPath": "system.resources.extensions.10.0.10.nupkg.sha512"
     },
-    "System.Security.Cryptography.ProtectedData/10.0.9": {
+    "System.Security.Cryptography.ProtectedData/10.0.10": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-vXp+vBQbTkMrDzUiPCxo1KvzfaAvZWuSRS2P7e5orhtV7ZuePKAB3Cqc9dH2YHUavRJyA2uWd2yrL6hl2VoJ5g==",
-      "path": "system.security.cryptography.protecteddata/10.0.9",
-      "hashPath": "system.security.cryptography.protecteddata.10.0.9.nupkg.sha512"
+      "sha512": "sha512-BKt0SQgq2lq3ESE68jkeLwv95ypANrPDtkTOIFGcnhg2aRUeUUBDrQlkVDZctrg1WenVcvn5P5XZnuYI7q6rFQ==",
+      "path": "system.security.cryptography.protecteddata/10.0.10",
+      "hashPath": "system.security.cryptography.protecteddata.10.0.10.nupkg.sha512"
     },
     "Erica.Analysis.SingleCell.SpatialDeconvolve/1.0.0": {
       "type": "project",

@@ -28,37 +28,272 @@ Microsoft.VisualBasic.Imaging.Physics
  https://github.com/swharden/Csharp-Data-Visualization/tree/main/dev/old/drawing/boids
  </remarks>
 </member>
-<member name="T:Microsoft.VisualBasic.Imaging.Physics.Force">
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Collision.BroadPhase">
  <summary>
- 力
+ Broad Phase 宽相位剔除。将所有刚体的 AABB 写入均匀网格，
+ 只返回网格相邻单元内可能相交的物体对，将碰撞检测从 O(n²) 降到约 O(n)。
  </summary>
 </member>
-<member name="P:Microsoft.VisualBasic.Imaging.Physics.Force.strength">
- <summary>
- 力的大小
- </summary>
- <returns></returns>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Collision.BroadPhase.BodyPair">
+ <summary>一对可能发生碰撞的刚体</summary>
 </member>
-<member name="P:Microsoft.VisualBasic.Imaging.Physics.Force.angle">
- <summary>
- 力的方向，与水平的夹角，使用弧度
- </summary>
- <returns></returns>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Collision.BroadPhase.ComputePairs(System.Collections.Generic.List{Microsoft.VisualBasic.Imaging.Physics.RigidBody})">
+ <summary>计算所有潜在的碰撞对（AABB 重叠）</summary>
 </member>
-<member name="M:Microsoft.VisualBasic.Imaging.Physics.Force.op_UnaryNegation(Microsoft.VisualBasic.Imaging.Physics.Force)">
- <summary>
- 这个力的反向力
- </summary>
- <param name="f"></param>
- <returns></returns>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Collision.AABB">
+ <summary>轴对齐包围盒</summary>
 </member>
-<member name="M:Microsoft.VisualBasic.Imaging.Physics.Force.op_Addition(Microsoft.VisualBasic.Imaging.Physics.Force,Microsoft.VisualBasic.Imaging.Physics.Force)">
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Collision.Collider">
+ <summary>碰撞几何体基类</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.Collision.Collider.Kind">
+ <summary>几何体类型</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Collision.Collider.ComputeInertia(System.Double)">
+ <summary>给定质量，计算绕质心的转动惯量</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Collision.Collider.GetAABB(Microsoft.VisualBasic.Imaging.Physics.Vector2,System.Double)">
+ <summary>在给定位置/朝向下的世界 AABB</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Collision.CircleCollider">
+ <summary>圆形碰撞体，圆心位于局部原点（= 质心）</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Collision.PolygonCollider">
+ <summary>凸多边形碰撞体，顶点存储为相对质心（中心）的局部坐标</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Collision.PolygonCollider.vertices">
+ <summary>局部顶点（已相对质心居中）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Collision.PolygonCollider.normals">
+ <summary>每条边的外法向量（局部）</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Collision.PolygonCollider.#ctor(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Imaging.Physics.Vector2})">
  <summary>
- 使用平行四边形法则进行力的合成
+ 由局部顶点构造。会自动计算质心并将所有顶点平移到质心相对坐标，
+ 同时预计算外法向量。
  </summary>
- <param name="f1"></param>
- <param name="f2"></param>
- <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Collision.PolygonCollider.WorldVertex(System.Int32,Microsoft.VisualBasic.Imaging.Physics.Vector2,System.Double)">
+ <summary>第 i 个顶点在世界坐标系中的位置</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Collision.PolygonCollider.WorldNormal(System.Int32,System.Double)">
+ <summary>第 i 条边的法向量在世界坐标系中</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Collision.PolygonCollider.WorldSupport(Microsoft.VisualBasic.Imaging.Physics.Vector2,Microsoft.VisualBasic.Imaging.Physics.Vector2,System.Double)">
+ <summary>在给定世界方向 <paramref name="dir"/> 上的支撑点（世界坐标）</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Collision.ContactSolver">
+ <summary>
+ 顺序冲量接触求解器。对每个接触点迭代计算法向冲量（含恢复系数与 Baumgarte
+ 穿透修正）和切向冲量（库仑摩擦），并将冲量应用到两个刚体。
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Collision.ContactSolver.Baumgarte">
+ <summary>Baumgarte 稳定系数（穿透修正强度）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Collision.ContactSolver.Slop">
+ <summary>允许的穿透余量，避免抖动</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Collision.ContactSolver.RestitutionThreshold">
+ <summary>低于此相对法向速度时不施加恢复（避免静止抖动）</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Collision.ContactSolver.Solve(Microsoft.VisualBasic.Imaging.Physics.Collision.Manifold,System.Double)">
+ <summary>求解单个流形的所有接触点（应在每次速度迭代中调用）</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Collision.Manifold">
+ <summary>
+ 碰撞流形（接触信息）。法向量 <see cref="F:Microsoft.VisualBasic.Imaging.Physics.Collision.Manifold.Normal"/> 由 A 指向 B。
+ 接触点最多 2 个（世界坐标），用于顺序冲量求解。
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Collision.Manifold.Normal">
+ <summary>由 A 指向 B 的单位法向量</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Collision.Manifold.Penetration">
+ <summary>穿透深度（正数表示重叠）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Collision.Manifold.Contacts">
+ <summary>世界坐标接触点（1 或 2 个）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Collision.Manifold.Restitution">
+ <summary>组合后的恢复系数</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Collision.Manifold.Friction">
+ <summary>组合后的摩擦系数</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Collision.Manifold.InitSolver">
+ <summary>初始化冲量累加器（每步、每个接触点清零）</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Collision.NarrowPhase">
+ <summary>
+ Narrow Phase 窄相位精确碰撞检测。根据几何体类型分派到具体算法，
+ 生成 <see cref="T:Microsoft.VisualBasic.Imaging.Physics.Collision.Manifold"/>（法向由 A 指向 B、穿透深度、接触点）。
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Collision.NarrowPhase.Collide(Microsoft.VisualBasic.Imaging.Physics.RigidBody,Microsoft.VisualBasic.Imaging.Physics.RigidBody)">
+ <summary>计算 a 与 b 之间的碰撞流形；无碰撞时返回空流形（无接触点）</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Collision.NarrowPhase.FindAxisLeastPenetration(Microsoft.VisualBasic.Imaging.Physics.RigidBody,Microsoft.VisualBasic.Imaging.Physics.RigidBody)">
+ <summary>找到参考多边形上穿透最浅（即分离轴）的面索引与穿透值</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Collision.NarrowPhase.FindIncidentFace(Microsoft.VisualBasic.Imaging.Physics.RigidBody,Microsoft.VisualBasic.Imaging.Physics.RigidBody,System.Int32)">
+ <summary>找到入射多边形上法向与参考面法向最相反的边（世界坐标两点）</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Collision.NarrowPhase.Clip(Microsoft.VisualBasic.Imaging.Physics.Vector2,System.Double,Microsoft.VisualBasic.Imaging.Physics.Vector2[]@)">
+ <summary>将面 <paramref name="face"/> 裁切到平面 n·x = c 的背面，返回保留点数</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Collision.NarrowPhase.BiasGreaterThan(System.Double,System.Double)">
+ <summary>带偏置的比较：用于选择参考面（消除翻转抖动）</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.ForceFields.ForceField">
+ <summary>
+ 力场基类。覆盖一个区域（<see cref="F:Microsoft.VisualBasic.Imaging.Physics.ForceFields.ForceField.Region"/>，为 Nothing 时表示全局），
+ 每步对场内刚体施加力。派生类实现 <see cref="M:Microsoft.VisualBasic.Imaging.Physics.ForceFields.ForceField.Apply(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Imaging.Physics.RigidBody})"/>。
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.ForceFields.ForceField.Region">
+ <summary>作用区域；为 Nothing 时作用于世界内所有刚体</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.ForceFields.ForceField.Apply(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Imaging.Physics.RigidBody})">
+ <summary>对给定刚体集合施加力</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.ForceFields.ForceField.InRegion(Microsoft.VisualBasic.Imaging.Physics.RigidBody)">
+ <summary>刚体是否处于力场作用区域内</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.ForceFields.GravityField">
+ <summary>
+ 重力场：对场内每个刚体施加 F = m·g（默认向下）。
+ 可用于创建局部重力井或不同强度的重力区域。
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.ForceFields.GravityField.Gravity">
+ <summary>重力加速度向量（单位：长度/秒²）</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.ForceFields.MagneticField">
+ <summary>
+ 磁力场（点源）：以 <see cref="F:Microsoft.VisualBasic.Imaging.Physics.ForceFields.MagneticField.Center"/> 为中心，对场内刚体施加随距离
+ 平方衰减的吸引或排斥力，模拟磁极/引力井等效果。
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.ForceFields.MagneticField.Center">
+ <summary>力场中心</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.ForceFields.MagneticField.Strength">
+ <summary>强度</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.ForceFields.MagneticField.Attract">
+ <summary>True = 吸引，False = 排斥</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.ForceFields.MagneticField.Radius">
+ <summary>影响半径（超过此距离的刚体不受影响，默认全局）</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.ForceFields.WindField">
+ <summary>
+ 风力场：在区域内沿 <see cref="F:Microsoft.VisualBasic.Imaging.Physics.ForceFields.WindField.Direction"/> 施加风力，叠加正弦湍流使效果更自然。
+ 力大小与刚体质量成正比（类比气压对物体的作用）。
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.ForceFields.WindField.Direction">
+ <summary>风向（单位向量）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.ForceFields.WindField.Strength">
+ <summary>风力强度</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.ForceFields.WindField.Turbulence">
+ <summary>湍流强度（0 = 恒定风）</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Grid3D">
+ <summary>
+ The 3D counterpart of the 2D <see cref="T:Microsoft.VisualBasic.Imaging.Physics.GridDynamics"/> spatial hash.
+ 
+ Particles are bucketed into cubic cells of side length equal to the SPH
+ smoothing radius. A neighbour query then only needs to visit the 27 cells
+ surrounding the query cell (3x3x3), which reduces the neighbour search
+ cost from O(n^2) down to roughly O(n * k).
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Grid3D.GetCell3D(Microsoft.VisualBasic.Imaging.Physics.Vector3,System.Single)">
+ <summary>
+ compute the integer cell coordinate of a given position under the
+ given cell size(which equals to the SPH smoothing radius).
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Grid3D.EncodeGrid3D(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Imaging.Physics.Particle3D},System.Single)">
+ <summary>
+ Build the spatial hash of the given particle set, particles are grouped
+ into cubic cells keyed by their integer cell coordinate.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Grid3D.SpatialLookup3D(System.Collections.Generic.Dictionary{System.ValueTuple{System.Int32,System.Int32,System.Int32},Microsoft.VisualBasic.Imaging.Physics.Particle3D[]},System.ValueTuple{System.Int32,System.Int32,System.Int32})">
+ <summary>
+ Enumerate all of the particles that located inside the 27 cells which
+ surrounding the target cell.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.IContainer3D`1">
+ <summary>
+ the 3D volume container of the particles(the 3D counterpart of the 2D
+ <see cref="T:Microsoft.VisualBasic.Imaging.Physics.IContainer`1"/>).
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.IContainer3D`1.BoxSize">
+ <summary>
+ the size(x/y/z extent) of the box volume that holds the fluid.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Joints.IConstraint">
+ <summary>
+ 约束（关节）统一接口。在物理世界的速度迭代阶段调用 <see cref="M:Microsoft.VisualBasic.Imaging.Physics.Joints.IConstraint.SolveVelocity(System.Double)"/>，
+ 在位置阶段调用 <see cref="M:Microsoft.VisualBasic.Imaging.Physics.Joints.IConstraint.SolvePosition(System.Double)"/> 做穿透/漂移修正。
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Joints.IConstraint.SolveVelocity(System.Double)">
+ <summary>在速度求解迭代中施加冲量</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Joints.IConstraint.SolvePosition(System.Double)">
+ <summary>位置修正（消除约束漂移）</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Joints.PrismaticJoint">
+ <summary>
+ 滑块（棱柱）关节：允许两个刚体沿给定世界轴 <see cref="F:Microsoft.VisualBasic.Imaging.Physics.Joints.PrismaticJoint.axis"/> 自由滑动，
+ 但约束垂直于该轴的相对平移以及相对旋转。
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Joints.PrismaticJoint.axis">
+ <summary>允许滑动的世界方向（单位向量）</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Joints.RevoluteJoint">
+ <summary>
+ 铰链（旋转）关节：将两个刚体在各自的局部锚点处钉在一起，允许绕该点自由旋转。
+ 在 2D 中这与球窝关节等价。
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Joints.RevoluteJoint.anchorA">
+ <summary>物体 A 局部坐标系下的锚点（相对质心）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Joints.RevoluteJoint.anchorB">
+ <summary>物体 B 局部坐标系下的锚点（相对质心）</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Joints.SpringJoint">
+ <summary>
+ 弹簧关节：在两个刚体的锚点之间施加胡克弹力（与形变成正比）和阻尼力
+ （与相对速度成正比），模拟弹性连接（如绳索、弹簧、悬挂）。
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Joints.SpringJoint.stiffness">
+ <summary>弹簧刚度 k（胡克定律 F = -k·Δx）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Joints.SpringJoint.damping">
+ <summary>阻尼系数 c（与相对速度相反，抑制振荡）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Joints.SpringJoint.restLength">
+ <summary>自然长度（无受力时的间距）</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Joints.WeldJoint">
+ <summary>
+ 固定（焊接）关节：将两个刚体的相对位置与相对角度完全锁定，
+ 相当于刚性连接（如焊接、铆接）。
+ </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.AbstractForce">
  <summary>
@@ -90,28 +325,22 @@ Microsoft.VisualBasic.Imaging.Physics
  @author Mathieu Jacomy
  </summary>
 </member>
-<member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.Node">
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.layout.ForceVectorUtils.ApplyBidirectional(Microsoft.VisualBasic.Imaging.Physics.layout.Node,Microsoft.VisualBasic.Imaging.Physics.layout.Node,System.Double,System.Double,System.Double,System.Double,System.Double)">
  <summary>
- the layout data model
+ Apply a force to both nodes (bidirectional): N1 and N2 are pushed apart / pulled together.
  </summary>
- <remarks>
- contains node layout position and shape size data
- </remarks>
 </member>
-<member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.TextProperties">
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.layout.ForceVectorUtils.ApplyUnidirectional(Microsoft.VisualBasic.Imaging.Physics.layout.Node,Microsoft.VisualBasic.Imaging.Physics.layout.Node,System.Double,System.Double,System.Double,System.Double,System.Double)">
  <summary>
- the label drawing style data
+ Apply a force to the target node only (unidirectional): N2 is pushed away from N1.
  </summary>
- <remarks>
- text label size data
- </remarks>
 </member>
 <member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.LabelAdjust">
  <summary>
  @author Mathieu Jacomy
  </summary>
 </member>
-<member name="M:Microsoft.VisualBasic.Imaging.Physics.layout.LabelAdjust.goAlgo(Microsoft.VisualBasic.Imaging.Physics.layout.Node[],System.Collections.Generic.Dictionary{Microsoft.VisualBasic.Imaging.Physics.layout.Node,Microsoft.VisualBasic.Imaging.Physics.layout.TextProperties})">
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.layout.LabelAdjust.Iterate(Microsoft.VisualBasic.Imaging.Physics.layout.Node[],System.Collections.Generic.Dictionary{Microsoft.VisualBasic.Imaging.Physics.layout.Node,Microsoft.VisualBasic.Imaging.Physics.layout.TextProperties})">
  <summary>
  one iteration
  </summary>
@@ -122,6 +351,14 @@ Microsoft.VisualBasic.Imaging.Physics
  <summary>
  @author Mathieu Bastian
  </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.Node">
+ <summary>
+ the layout data model
+ </summary>
+ <remarks>
+ contains node layout position and shape size data
+ </remarks>
 </member>
 <member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.ProportionalDisplacement">
  <summary>
@@ -138,123 +375,30 @@ Microsoft.VisualBasic.Imaging.Physics
  @author Helder Suzuki
  </summary>
 </member>
-<member name="T:Microsoft.VisualBasic.Imaging.Physics.MassPoint">
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.TextProperties">
  <summary>
- 质点，没有体积和大小，只有质量和电荷量的理想物理对象
+ the label drawing style data
  </summary>
+ <remarks>
+ text label size data
+ </remarks>
 </member>
-<member name="P:Microsoft.VisualBasic.Imaging.Physics.MassPoint.Mass">
- <summary>
- 物体的质量，会影响重力，可能会影响摩擦力
- </summary>
- <returns></returns>
-</member>
-<member name="P:Microsoft.VisualBasic.Imaging.Physics.MassPoint.Point">
- <summary>
- 用来兼容2D/3D
- </summary>
- <returns></returns>
-</member>
-<member name="P:Microsoft.VisualBasic.Imaging.Physics.MassPoint.Charge">
- <summary>
- 用于计算库仑力的电荷量
- </summary>
- <returns></returns>
-</member>
-<member name="P:Microsoft.VisualBasic.Imaging.Physics.MassPoint.Velocity">
- <summary>
- 速度
- </summary>
- <returns></returns>
-</member>
-<member name="P:Microsoft.VisualBasic.Imaging.Physics.MassPoint.Acceleration">
- <summary>
- 加速度
- </summary>
- <returns></returns>
-</member>
-<member name="P:Microsoft.VisualBasic.Imaging.Physics.MassPoint.World">
- <summary>
- 对象所处的世界的空间类型
- </summary>
- <returns></returns>
-</member>
-<member name="P:Microsoft.VisualBasic.Imaging.Physics.MassPoint.ID">
- <summary>
- 当前的这个物体的唯一标识符
- </summary>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Imaging.Physics.MassPoint.Displacement">
- <summary>
- 物体在dt时间段内以当前的速度<see cref="P:Microsoft.VisualBasic.Imaging.Physics.MassPoint.Velocity"/>之下产生一小部分的位移
- </summary>
-</member>
-<member name="M:Microsoft.VisualBasic.Imaging.Physics.MassPoint.op_Addition(Microsoft.VisualBasic.Imaging.Physics.MassPoint,Microsoft.VisualBasic.Imaging.Physics.Force)">
- <summary>
- 物体受到外部力的作用下改变了加速度
- </summary>
- <param name="m"></param>
- <param name="F">这个是最终的合力</param>
- <returns></returns>
-</member>
-<member name="T:Microsoft.VisualBasic.Imaging.Physics.Math">
- <summary>
- Math provider for <see cref="T:Microsoft.VisualBasic.Imaging.Physics.Force"/>
- </summary>
-</member>
-<member name="F:Microsoft.VisualBasic.Imaging.Physics.Math.X">
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.ForceMath.X">
  <summary>
  Vector index for XYZ
  </summary>
 </member>
-<member name="F:Microsoft.VisualBasic.Imaging.Physics.Math.Y">
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.ForceMath.Y">
  <summary>
  Vector index for XYZ
  </summary>
 </member>
-<member name="F:Microsoft.VisualBasic.Imaging.Physics.Math.Z">
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.ForceMath.Z">
  <summary>
  Vector index for XYZ
  </summary>
 </member>
-<member name="M:Microsoft.VisualBasic.Imaging.Physics.Math.Decomposition2D(Microsoft.VisualBasic.Imaging.Physics.Force)">
- <summary>
- 将力分解为水平和垂直两个方向上面的分力
- </summary>
- <param name="F"></param>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Imaging.Physics.Math.ParallelogramLaw(Microsoft.VisualBasic.Imaging.Physics.Force,Microsoft.VisualBasic.Imaging.Physics.Force)">
- <summary>
- 力的合成的平行四边形法则
- </summary>
- <param name="f1"></param>
- <param name="f2"></param>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Imaging.Physics.Math.Sum(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Imaging.Physics.Force})">
- <summary>
- 使用平行四边形法则计算出合力
- </summary>
- <param name="F">分力</param>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Imaging.Physics.Math.Gravity(Microsoft.VisualBasic.Imaging.Physics.MassPoint,System.Double)">
- <summary>
- 重力总是向下的
- </summary>
- <param name="m"></param>
- <param name="g#"></param>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Imaging.Physics.Math.Friction">
- <summary>
- 与合力的方向相反的摩檫力
- </summary>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Imaging.Physics.Math.CoulombsLaw(System.Double,System.Double,System.Double,System.Double)">
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.ForceMath.CoulombsLaw(System.Double,System.Double,System.Double,System.Double)">
  <summary>
  只计算出力的大小，没有方向
  </summary>
@@ -265,16 +409,7 @@ Microsoft.VisualBasic.Imaging.Physics
  <returns></returns>
  
 </member>
-<member name="M:Microsoft.VisualBasic.Imaging.Physics.Math.CoulombsLaw(Microsoft.VisualBasic.Imaging.Physics.MassPoint,Microsoft.VisualBasic.Imaging.Physics.MassPoint,System.Double)">
- <summary>
- 两个点电荷之间的库仑力
- </summary>
- <param name="m1"></param>
- <param name="m2"></param>
- <param name="k#"></param>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Imaging.Physics.Math.Cos(Microsoft.VisualBasic.Math.LinearAlgebra.Vector,Microsoft.VisualBasic.Math.LinearAlgebra.Vector)">
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.ForceMath.Cos(Microsoft.VisualBasic.Math.LinearAlgebra.Vector,Microsoft.VisualBasic.Math.LinearAlgebra.Vector)">
  <summary>
  计算两个向量之间的alpha夹角的cos值
  </summary>
@@ -283,74 +418,384 @@ Microsoft.VisualBasic.Imaging.Physics
  <returns></returns>
  
 </member>
-<member name="M:Microsoft.VisualBasic.Imaging.Physics.Math.RepulsiveForce(System.Double,Microsoft.VisualBasic.Math.LinearAlgebra.Vector,Microsoft.VisualBasic.Math.LinearAlgebra.Vector)">
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Particles2D.Emitter">
  <summary>
- 排斥力模型
+ 粒子发射器：在 <see cref="F:Microsoft.VisualBasic.Imaging.Physics.Particles2D.Emitter.Position"/> 处沿 <see cref="F:Microsoft.VisualBasic.Imaging.Physics.Particles2D.Emitter.BaseAngle"/> 方向、
+ 以 <see cref="F:Microsoft.VisualBasic.Imaging.Physics.Particles2D.Emitter.Spread"/> 张角随机产生粒子。支持一次性爆发或持续生成。
  </summary>
- <param name="strength#"></param>
- <param name="a">空间位置坐标</param>
- <param name="b">空间位置坐标</param>
- <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Imaging.Physics.Math.AttractiveForce(System.Double,Microsoft.VisualBasic.Math.LinearAlgebra.Vector,Microsoft.VisualBasic.Math.LinearAlgebra.Vector)">
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Particles2D.Emitter.Position">
+ <summary>发射位置</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Particles2D.Emitter.BaseAngle">
+ <summary>发射中心方向（弧度）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Particles2D.Emitter.Spread">
+ <summary>张角（弧度，绕中心方向两侧各 Spread/2）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Particles2D.Emitter.Speed">
+ <summary>初速度大小</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Particles2D.Emitter.Life">
+ <summary>寿命（秒）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Particles2D.Emitter.Size">
+ <summary>粒子尺寸（像素）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Particles2D.Emitter.Color">
+ <summary>粒子颜色</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Particles2D.Emitter.GenerateOne">
+ <summary>生成单个粒子（处于激活状态）</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Particles2D.GameParticle">
  <summary>
- 吸引力模型
+ 单个粒子。数据极简（位置、速度、寿命、尺寸、颜色），
+ 不与其他物理系统耦合以支持海量粒子。
  </summary>
- <param name="strength#"></param>
- <param name="a"></param>
- <param name="b"></param>
- <returns></returns>
 </member>
-<member name="F:Microsoft.VisualBasic.Imaging.Physics.Particle.density">
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Particles2D.GameParticle.Reset(Microsoft.VisualBasic.Imaging.Physics.Vector2,Microsoft.VisualBasic.Imaging.Physics.Vector2,System.Double,System.Single,System.Drawing.Color)">
+ <summary>复用该粒子实例，重置其状态</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Particles2D.ParticleSystem">
+ <summary>
+ 轻量粒子系统。使用对象池复用 <see cref="T:Microsoft.VisualBasic.Imaging.Physics.Particles2D.GameParticle"/>，避免频繁分配；
+ 每个粒子仅受重力与线性阻力影响，可承载海量粒子（爆炸、火花、灰尘、魔法等）。
+ 不与刚体耦合，以保证性能。
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Particles2D.ParticleSystem.Gravity">
+ <summary>重力加速度（像素/秒²）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Particles2D.ParticleSystem.Drag">
+ <summary>线性阻力（0 = 无）</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.Particles2D.ParticleSystem.Count">
+ <summary>当前活跃粒子数</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.Particles2D.ParticleSystem.Particles">
+ <summary>活跃粒子集合（用于渲染）</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Particles2D.ParticleSystem.Emit(Microsoft.VisualBasic.Imaging.Physics.Particles2D.Emitter,System.Int32)">
+ <summary>由发射器爆发 n 个粒子</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Particles2D.ParticleSystem.Step(System.Double)">
+ <summary>每步推进粒子</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.FluidEngine3D">
+ <summary>
+ A 3D Smoothed Particle Hydrodynamics (SPH) water simulation engine.
+ 
+ This is the three dimensional counterpart of the 2D <see cref="T:Microsoft.VisualBasic.Imaging.Physics.FluidEngine"/>.
+ The simulation pipeline is identical to the 2D version:
+ 
+ 1. apply the external forces(gravity + shake disturbance) and predict positions
+ 2. rebuild the spatial hash(<see cref="T:Microsoft.VisualBasic.Imaging.Physics.Grid3D"/>) for the neighbour search
+ 3. calculate the density and near density of each particle
+ 4. calculate the pressure force
+ 5. calculate the viscosity force
+ 6. integrate the positions and resolve the box boundary collisions
+ 
+ The fluid is contained inside an axis aligned box volume
+ <c>[0,BoxSize.x] x [0,BoxSize.y] x [0,BoxSize.z]</c> and gravity pulls the
+ water toward the +Y face(the bottom of the container).
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.FluidEngine3D.SmoothingRadius">
+ <summary>
+ The SPH smoothing radius. changing this rebuilds the kernels.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.FluidEngine3D.BoxSize">
+ <summary>
+ the size(x/y/z extent) of the box volume that holds the fluid.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.FluidEngine3D.DisturbAccel">
+ <summary>
+ An external disturbance acceleration injected by the host application
+ (for example, the inertial force produced when the user shakes the
+ window on the desktop). the engine decays this value every step so the
+ water naturally settles down again after a shake.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.FluidEngine3D.DisturbDamping">
+ <summary>
+ the exponential decay factor(per step) applied to <see cref="P:Microsoft.VisualBasic.Imaging.Physics.FluidEngine3D.DisturbAccel"/>.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.FluidEngine3D.Count">
+ <summary>
+ the total number of the water particles inside this simulation.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.FluidEngine3D.Reset">
+ <summary>
+ re-scatter all of the particles randomly inside the current box volume
+ and clear their velocities.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.FluidEngine3D.DecayDisturbance">
+ <summary>
+ decay the external shake disturbance so the water settles back down.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.FluidKernels">
+ <summary>
+ SPH smoothing kernels used by <see cref="T:Microsoft.VisualBasic.Imaging.Physics.FluidEngine"/>.
+ The scaling factors depend only on the smoothing radius, so they are
+ precomputed once in the constructor.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.FluidKernels3D">
+ <summary>
+ SPH smoothing kernels used by the 3D fluid engine <see cref="T:Microsoft.VisualBasic.Imaging.Physics.FluidEngine3D"/>.
+ 
+ The method signatures mirror the 2D <see cref="T:Microsoft.VisualBasic.Imaging.Physics.FluidKernels"/>, but the
+ normalization scaling factors use the correct three dimensional constants
+ so that the kernels integrate to unity over a 3D sphere of radius h:
+ 
+ + Poly6:            315 / (64 * PI * h^9)
+ + SpikyPow3:        15  / (PI * h^6)
+ + SpikyPow2:        15  / (PI * h^5)
+ + d/dr SpikyPow3:   45  / (PI * h^6)
+ + d/dr SpikyPow2:   30  / (PI * h^5)
+ 
+ The scaling factors depend only on the smoothing radius, so they are
+ precomputed once in the constructor.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Particle.Density">
  <summary>
  Density, Near Density
  </summary>
 </member>
-<member name="T:Microsoft.VisualBasic.Imaging.Physics.Reactions">
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Particle3D">
  <summary>
- How does two <see cref="T:Microsoft.VisualBasic.Imaging.Physics.MassPoint"/> object reacting with each other.
+ A single water particle inside the 3D SPH fluid simulation. This is the
+ three dimensional counterpart of the 2D <see cref="T:Microsoft.VisualBasic.Imaging.Physics.Particle"/>: all of the
+ spatial state (position, velocity, predicted position) is stored as a
+ <see cref="T:Microsoft.VisualBasic.Imaging.Physics.Vector3"/>.
  </summary>
 </member>
-<member name="M:Microsoft.VisualBasic.Imaging.Physics.Reactions.CoulombsLaw(Microsoft.VisualBasic.Imaging.Physics.MassPoint,Microsoft.VisualBasic.Imaging.Physics.MassPoint,System.Double)">
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.Particle3D.Density">
  <summary>
- 两个点电荷之间的库仑力
+ Density, Near Density. only the <see cref="F:Microsoft.VisualBasic.Imaging.Physics.Vector3.x"/> and
+ <see cref="F:Microsoft.VisualBasic.Imaging.Physics.Vector3.y"/> component is used, the <see cref="F:Microsoft.VisualBasic.Imaging.Physics.Vector3.z"/>
+ component is unused (kept for a compact storage).
  </summary>
- <param name="m1"></param>
- <param name="m2"></param>
- <param name="k#"></param>
- <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Vector3">
+ <summary>
+ A self-contained double precision 3D vector used by the 3D fluid
+ simulation engine <see cref="T:Microsoft.VisualBasic.Imaging.Physics.FluidEngine3D"/>. This type mirrors the
+ shape of the 2D <see cref="T:Microsoft.VisualBasic.Imaging.Physics.Vector2"/> so that the SPH pipeline can be
+ ported into three dimensions with minimal changes.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.Vector3.Magnitude">
+ <summary>
+ The euclidean length (magnitude) of this vector.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.Vector3.Field(System.Int32)">
+ <summary>
+ index based access to the three vector components: 0=x, 1=y, 2=z.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Vector3.Normalize">
+ <summary>
+ Returns the unit vector, a zero length vector returns the zero vector.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Vector3.Dot(Microsoft.VisualBasic.Imaging.Physics.Vector3,Microsoft.VisualBasic.Imaging.Physics.Vector3)">
+ <summary>
+ The dot product of two 3d vectors.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Vector3.Cross(Microsoft.VisualBasic.Imaging.Physics.Vector3,Microsoft.VisualBasic.Imaging.Physics.Vector3)">
+ <summary>
+ The cross product of two 3d vectors.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Vector3.Random(Microsoft.VisualBasic.Imaging.Physics.Vector3)">
+ <summary>
+ Generate a random point that located inside the given box volume.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Vector3.op_Multiply(Microsoft.VisualBasic.Imaging.Physics.Vector3,Microsoft.VisualBasic.Imaging.Physics.Vector3)">
+ <summary>
+ component-wise multiplication of two vectors.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.PhysicsWorld">
+ <summary>
+ 2D 物理世界。以 <see cref="M:Microsoft.VisualBasic.Imaging.Physics.PhysicsWorld.Step(System.Double)"/> 固定步长驱动，内部按子步执行：
+ 施加力场 → 由力积分速度 → 宽相位 → 窄相位 → 顺序冲量求解（接触 + 关节）→
+ 由速度积分位置 → 关节位置修正。
+ 可直接接入游戏主循环（每帧调用一次 <see cref="M:Microsoft.VisualBasic.Imaging.Physics.PhysicsWorld.Step(System.Double)"/> 传入真实 dt）。
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.PhysicsWorld.Bodies">
+ <summary>所有刚体</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.PhysicsWorld.Joints">
+ <summary>所有约束/关节</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.PhysicsWorld.ForceFields">
+ <summary>所有力场</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.PhysicsWorld.Gravity">
+ <summary>全局重力（像素世界下数值通常较大）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.PhysicsWorld.Iterations">
+ <summary>速度/位置约束求解迭代次数</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.PhysicsWorld.FixedDt">
+ <summary>固定时间步长（秒）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.PhysicsWorld.Substeps">
+ <summary>每个固定步长内的子步数（越多越稳定、越慢）</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.PhysicsWorld.Add(Microsoft.VisualBasic.Imaging.Physics.RigidBody)">
+ <summary>添加刚体</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.PhysicsWorld.Add(Microsoft.VisualBasic.Imaging.Physics.Joints.IConstraint)">
+ <summary>添加约束/关节</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.PhysicsWorld.Add(Microsoft.VisualBasic.Imaging.Physics.ForceFields.ForceField)">
+ <summary>添加力场</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.PhysicsWorld.Step(System.Double)">
+ <summary>
+ 固定步长推进。传入真实帧间隔 <paramref name="frameDt"/>（秒），
+ 内部用累加器以 <see cref="F:Microsoft.VisualBasic.Imaging.Physics.PhysicsWorld.FixedDt"/> 为单位执行若干子步，避免可变步长不稳定。
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.PhysicsWorld.Box(System.Double,System.Double,System.Double,Microsoft.VisualBasic.Imaging.Physics.PhysicsMaterial)">
+ <summary>创建一个矩形刚体（多边形碰撞体，顶点相对质心）</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.PhysicsWorld.Circle(System.Double,System.Double,Microsoft.VisualBasic.Imaging.Physics.PhysicsMaterial)">
+ <summary>创建一个圆形刚体</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.PhysicsMaterial">
+ <summary>
+ 物理材质：摩擦系数 (friction) 与恢复系数 (restitution)。
+ 碰撞时由碰撞双方材质组合得到最终的接触参数。
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.PhysicsMaterial.Friction">
+ <summary>静/动摩擦系数（库仑摩擦），0 = 无摩擦，1 = 很强摩擦</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.PhysicsMaterial.Restitution">
+ <summary>恢复系数（弹性），0 = 完全非弹性，1 = 完全弹性</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.PhysicsMaterial.CombineFriction(Microsoft.VisualBasic.Imaging.Physics.PhysicsMaterial,Microsoft.VisualBasic.Imaging.Physics.PhysicsMaterial)">
+ <summary>两个材质组合的摩擦系数（几何平均，确定性且稳定）</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.PhysicsMaterial.CombineRestitution(Microsoft.VisualBasic.Imaging.Physics.PhysicsMaterial,Microsoft.VisualBasic.Imaging.Physics.PhysicsMaterial)">
+ <summary>两个材质组合的恢复系数（取较大值）</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.RigidBody">
+ <summary>
+ 2D 刚体。不会发生形变，受力后整体平动 + 转动。
+ 位置 <see cref="F:Microsoft.VisualBasic.Imaging.Physics.RigidBody.Position"/> 表示质心（世界坐标），<see cref="F:Microsoft.VisualBasic.Imaging.Physics.RigidBody.Rotation"/> 为 2D 标量角（弧度）。
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Physics.RigidBody.ID">
+ <summary>唯一标识符</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.RigidBody.Position">
+ <summary>质心世界坐标</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.RigidBody.Rotation">
+ <summary>朝向（弧度，绕 Z 轴）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.RigidBody.Velocity">
+ <summary>线速度</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.RigidBody.AngularVelocity">
+ <summary>角速度（标量）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.RigidBody.Mass">
+ <summary>质量（kg 或任意单位）。0 / 静态物体用 <see cref="F:Microsoft.VisualBasic.Imaging.Physics.RigidBody.IsStatic"/> 表示</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.RigidBody.Inertia">
+ <summary>绕质心的转动惯量</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.RigidBody.LinearDamping">
+ <summary>线性阻尼（0 = 无）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.RigidBody.AngularDamping">
+ <summary>角阻尼（0 = 无）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.RigidBody.MaxSpeed">
+ <summary>
+ 最大线速度（像素/秒）。0 = 不限制。作为简化连续碰撞检测(CCD)的防护，
+ 限制单步位移不超过物体尺寸，避免高速物体“穿隧”而过。
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.RigidBody.Material">
+ <summary>物理材质</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.RigidBody.Shape">
+ <summary>碰撞几何体（圆 / 多边形），几何中心即质心</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Physics.RigidBody.IsStatic">
+ <summary>静态物体不参与动力学积分，仅作为碰撞边界</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.RigidBody.SetStatic">
+ <summary>设为静态物体（无限质量/惯量）</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.RigidBody.ApplyForce(Microsoft.VisualBasic.Imaging.Physics.Vector2)">
+ <summary>施加一个集中于质心的力</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.RigidBody.ApplyForceAtPoint(Microsoft.VisualBasic.Imaging.Physics.Vector2,Microsoft.VisualBasic.Imaging.Physics.Vector2)">
+ <summary>在物体的世界坐标点 <paramref name="worldPoint"/> 施加力，会产生扭矩</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.RigidBody.ApplyTorque(System.Double)">
+ <summary>施加纯扭矩</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.RigidBody.ApplyImpulse(Microsoft.VisualBasic.Imaging.Physics.Vector2,Microsoft.VisualBasic.Imaging.Physics.Vector2)">
+ <summary>在相对质心的接触点 <paramref name="contactVector"/> 处施加冲量（瞬时改变速度）</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.RigidBody.IntegrateVelocity(System.Double)">
+ <summary>
+ 半隐式（辛）欧拉：由力更新速度。应在 <see cref="M:Microsoft.VisualBasic.Imaging.Physics.RigidBody.IntegratePosition(System.Double)"/> 之前调用。
+ v += (F/m)·dt; ω += (τ/I)·dt
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.RigidBody.IntegratePosition(System.Double)">
+ <summary>由速度更新位置：x += v·dt; θ += ω·dt</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.RigidBody.ClearForces">
+ <summary>清除力/扭矩累加器（每个子步结束后调用）</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.RigidBody.GetAABB">
+ <summary>当前 AABB（包围盒）</summary>
 </member>
 <member name="T:Microsoft.VisualBasic.Imaging.Physics.Vector2Math">
  <summary>
- unity math
+ unity math + 2D rigid body helpers
  </summary>
 </member>
-<member name="T:Microsoft.VisualBasic.Imaging.Physics.World">
- <summary>
- Physics world reactor
- </summary>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Vector2Math.Cross(Microsoft.VisualBasic.Imaging.Physics.Vector2,Microsoft.VisualBasic.Imaging.Physics.Vector2)">
+ <summary>Scalar (2D) cross product a × b.</summary>
 </member>
-<member name="T:Microsoft.VisualBasic.Imaging.Physics.World.Output">
- <summary>
- 将状态被改变的对象输出到显示设备或者存储设备之上
- </summary>
- <param name="objs"></param>
- <param name="physX">调试使用</param>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Vector2Math.Cross(Microsoft.VisualBasic.Imaging.Physics.Vector2,System.Double)">
+ <summary>Cross of a vector with a scalar: a × s = (s·a.y, -s·a.x).</summary>
 </member>
-<member name="M:Microsoft.VisualBasic.Imaging.Physics.World.AddReaction(System.String,System.String,Microsoft.VisualBasic.Imaging.Physics.World.Reaction,System.String)">
- <summary>
- 添加两个对象之间的相互作用
- </summary>
- <param name="a$">对象a：<see cref="P:Microsoft.VisualBasic.Imaging.Physics.MassPoint.ID"/></param>
- <param name="b$">对象b：<see cref="P:Microsoft.VisualBasic.Imaging.Physics.MassPoint.ID"/></param>
- <param name="react">这两个对象之间如何产生力？</param>
- <param name="trace$"></param>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Vector2Math.Cross(System.Double,Microsoft.VisualBasic.Imaging.Physics.Vector2)">
+ <summary>Cross of a scalar with a vector: s × a = (-s·a.y, s·a.x).</summary>
 </member>
-<member name="M:Microsoft.VisualBasic.Imaging.Physics.World.React(System.UInt32)">
- <summary>
- 指令世界模型对象迭代计算指定的迭代计算次数
- </summary>
- <param name="time%">迭代的次数</param>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Vector2Math.Normalize(Microsoft.VisualBasic.Imaging.Physics.Vector2)">
+ <summary>Normalize; returns Zero when the vector is zero-length.</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Vector2Math.Perpendicular(Microsoft.VisualBasic.Imaging.Physics.Vector2)">
+ <summary>Perpendicular (rotated +90°): (-y, x).</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Physics.Vector2Math.Rotate(Microsoft.VisualBasic.Imaging.Physics.Vector2,System.Double)">
+ <summary>Rotate vector by angle (radians) counter-clockwise.</summary>
 </member>
 </members>
 </doc>

@@ -807,6 +807,28 @@ Microsoft.VisualBasic.Drawing.Windows
  <param name="paint"></param>
  <returns></returns>
 </member>
+<member name="M:Microsoft.VisualBasic.Drawing.DrawingInterop.CTypeFontFamilyObject(Microsoft.VisualBasic.Imaging.FontFamily)">
+ <summary>
+ Convert of the .NET 8.0 visualbasic graphics component as .NET clr windows gdi+ object
+ </summary>
+ <param name="f"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.DrawingInterop.CTypeStringFormatObject(Microsoft.VisualBasic.Imaging.StringFormat)">
+ <summary>
+ Convert of the .NET 8.0 visualbasic graphics component as .NET clr windows gdi+ object
+ </summary>
+ <param name="f"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Drawing.DrawingInterop.CTypeMatrixObject(Microsoft.VisualBasic.Imaging.Matrix)">
+ <summary>
+ Convert of the .NET 8.0 visualbasic graphics component as .NET clr windows gdi+ object.
+ Replays the transform operation parameters stored on the imaging Matrix onto a GDI+ Matrix.
+ </summary>
+ <param name="matrix"></param>
+ <returns></returns>
+</member>
 <member name="M:Microsoft.VisualBasic.Drawing.DrawingInterop.CTypeGraphicsPath(Microsoft.VisualBasic.Imaging.GraphicsPath)">
  <summary>
  Convert of the .NET 8.0 visualbasic graphics component as .NET clr windows gdi+ object
