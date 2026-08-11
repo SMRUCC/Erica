@@ -4,8 +4,8 @@ System.IO.IOException: signature is not valid: the block magic should be 'TREE'!
    at Microsoft.VisualBasic.Data.IO.HDF5.struct.DataBTree.EnumerateChunks(Superblock sb)+MoveNext() in G:\GCModeller\src\runtime\sciBASIC#\Data\BinaryData\HDF5\structure\DataBTree.vb:line 82
    at Microsoft.VisualBasic.Data.IO.HDF5.dataset.ChunkLookup..ctor(Superblock sb, ChunkedDatasetV3 dataset) in G:\GCModeller\src\runtime\sciBASIC#\Data\BinaryData\HDF5\dataset\ChunkedDatasetV3.vb:line 352
    at Microsoft.VisualBasic.Data.IO.HDF5.dataset.ChunkedDatasetV3.getBuffer(Superblock sb) in G:\GCModeller\src\runtime\sciBASIC#\Data\BinaryData\HDF5\dataset\ChunkedDatasetV3.vb:line 221
-   at Erica.Analysis.SpatialTissue.RaidData.HDF5.TenXReader.ReadStringVector(HDF5File h5, String path) in G:\Erica\src\STRaid\HDF5\TenXReader.vb:line 92
-   at Erica.Analysis.SpatialTissue.RaidData.HDF5.TenXReader.ReadBarcodes(HDF5File h5) in G:\Erica\src\STRaid\HDF5\TenXReader.vb:line 128
-   at Erica.Analysis.SpatialTissue.RaidData.HDF5.TenXReader.ReadMoleculeInfo(HDF5File h5) in G:\Erica\src\STRaid\HDF5\TenXReader.vb:line 185
+   at Erica.Analysis.SpatialTissue.RaidData.HDF5.TenXReader.ReadStringVector(HDF5File h5, String path) in G:\Erica\src\STRaid\HDF5\TenXReader.vb:line 94
+   at Erica.Analysis.SpatialTissue.RaidData.HDF5.TenXReader.ReadBarcodes(HDF5File h5) in G:\Erica\src\STRaid\HDF5\TenXReader.vb:line 130
+   at Erica.Analysis.SpatialTissue.RaidData.HDF5.TenXReader.ReadMoleculeInfo(HDF5File h5) in G:\Erica\src\STRaid\HDF5\TenXReader.vb:line 187
    at Erica.Analysis.SpatialTissue.RaidData.HDF5.TenXReader.OpenVisiumHD(String filePath) in G:\Erica\src\STRaid\HDF5\TenXReader.vb:line 48
    at test.Program.VerifyMoleculeInfo() in G:\Erica\src\STRaid\test\Program.vb:line 122

@@ -83,7 +83,9 @@ Namespace HDF5
         ''' 读取一个字符串数据集（如 barcodes / features/id）为 String()。
         ''' </summary>
         Private Function ReadStringVector(h5 As HDF5File, path As String) As String()
-            Dim reader As HDF5Reader = h5.GetObject(path)
+            ' 使用安全查找：HDF5File.GetObject 在根组中找不到符号名时会抛 LINQ "no matching element"，
+            ' 这里改用 TryGetObject 捕获后返回 Nothing，便于上层给出明确的“数据集缺失”诊断。
+            Dim reader As HDF5Reader = TryGetObject(h5, path)
 
             If reader Is Nothing OrElse reader.dataset Is Nothing Then
                 Return Nothing
