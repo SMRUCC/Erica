@@ -1,36 +1,122 @@
-﻿=== Visium HD 10x HDF5 流式稀疏读取验证 ===
+﻿G:\GCModeller\src\GCModeller\analysis\HTS_matrix\File\BinaryData\HTSMatrixReader.vb(167,22): warning CA2022: Avoid inexact read with 'Public MustOverride Overloads Function Read(buffer As Byte(), offset As Integer, count As Integer) As Integer' (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2022) [G:\GCModeller\src\GCModeller\analysis\HTS_matrix\HTS_matrix-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\GCModeller\analysis\HTS_matrix\File\BinaryData\HTSMatrixReader.vb(199,18): warning CA2022: Avoid inexact read with 'Public MustOverride Overloads Function Read(buffer As Byte(), offset As Integer, count As Integer) As Integer' (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2022) [G:\GCModeller\src\GCModeller\analysis\HTS_matrix\HTS_matrix-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\obj\Debug\net10.0\Rsharp-netcore5.AssemblyInfo.vb(19,59): warning BC42366: The specified version string does not conform to the recommended format - major.minor.build.revision [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\System\TypeCode.vb(202,9): warning BC42105: Function 'LoadWhat' doesn't return a value on all code paths. A null reference exception could occur at run time when the result is used. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\applys.vb(265,56): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Interop\RsharpOperator\BinaryOperatorEngine.vb(125,20): warning BC40008: 'Public Function asVector(Of TimeSpan)(value As Object) As TimeSpan()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Interop\RsharpOperator\BinaryOperatorEngine.vb(126,20): warning BC40008: 'Public Function asVector(Of TimeSpan)(value As Object) As TimeSpan()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\base.vb(173,22): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\base.vb(202,22): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\applys.vb(411,24): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Interop\RsharpOperator\BinaryOperatorEngine.vb(208,130): warning BC40008: 'Public Function asVector(Of TimeSpan)(value As Object) As TimeSpan()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Interop\RsharpOperator\BinaryOperatorEngine.vb(209,130): warning BC40008: 'Public Function asVector(Of TimeSpan)(value As Object) As TimeSpan()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\objects\base\dataframe\cbind.vb(97,35): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\objects\utils\TableFormatter.vb(121,28): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\base.vb(728,41): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\objects\reflector.vb(110,68): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\applys.vb(726,24): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Vectorization\CLRVector.vb(671,26): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\base.vb(797,27): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\base.vb(806,26): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Interop\RsharpOperator\BinaryOperator.vb(129,37): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\base.vb(982,22): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\base.vb(1025,38): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\base.vb(1043,32): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\base.vb(1064,34): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\System\Package\NuGet\Repository.vb(91,9): warning BC42105: Function 'Install' doesn't return a value on all code paths. A null reference exception could occur at run time when the result is used. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\System\Package\NuGet\Repository.vb(101,9): warning BC42105: Function 'Search' doesn't return a value on all code paths. A null reference exception could occur at run time when the result is used. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\base.vb(1366,26): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\base.vb(1663,44): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\env.vb(195,34): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\base.vb(1786,68): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\Math\math.vb(541,25): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\objects\RConversion\makeDataframe.vb(471,34): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Interpreter\ExecuteEngine\ExpressionSymbols\Operators\ValueAssignOperator\MemberValueAssign.vb(303,41): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\Linq\reshape2.vb(230,35): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\objects\RConversion\conversion.vb(157,36): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Interpreter\ExecuteEngine\ExpressionSymbols\Operators\ValueAssignOperator\dataframeValueAssign.vb(77,43): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Interpreter\ExecuteEngine\ExpressionSymbols\Operators\AppendOperator.vb(113,24): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Interpreter\ExecuteEngine\ExpressionSymbols\Operators\AppendOperator.vb(115,35): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Interpreter\ExecuteEngine\ExpressionSymbols\Operators\AppendOperator.vb(126,20): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Interpreter\ExecuteEngine\ExpressionSymbols\Operators\AppendOperator.vb(128,31): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\base.vb(3059,36): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\Math\math.vb(1182,27): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Interpreter\ExecuteEngine\ExpressionSymbols\Operators\Binary\BinaryBetweenExpression.vb(132,40): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Interpreter\ExecuteEngine\ExpressionSymbols\Operators\Binary\BinaryBetweenExpression.vb(135,38): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\string\stringr.vb(226,61): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\string\stringr.vb(291,61): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Interpreter\ExecuteEngine\ExpressionSymbols\Operators\DataFrameSlice.vb(96,37): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Interpreter\ExecuteEngine\ExpressionSymbols\Operators\DataFrameProjection.vb(96,38): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Interpreter\ExecuteEngine\ExpressionSymbols\DataSet\StringInterpolation.vb(114,22): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Interpreter\ExecuteEngine\ExpressionSymbols\Operators\Binary\BinaryInExpression.vb(307,24): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\Linq\reshape2.vb(604,35): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\objects\RConversion\conversion.vb(1339,61): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Interpreter\ExecuteEngine\ExpressionSymbols\DataSet\Literal\VectorLiteral.vb(148,49): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\Linq\linq.vb(382,58): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\objects\RConversion\castList.vb(339,63): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Interpreter\ExecuteEngine\ExpressionSymbols\DataSet\LinqQuery.vb(171,28): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\Linq\linq.vb(1507,34): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\R#\Runtime\Internal\internalInvokes\Linq\Group.vb(142,25): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\R#\Rsharp-netcore5.vbproj::TargetFramework=net10.0]
+G:\GCModeller\src\R-sharp\studio\RData\Writer.vb(167,57): warning BC40008: 'Public Function asVector(Of Object)(value As Object) As Object()' is obsolete. [G:\GCModeller\src\R-sharp\studio\RData\RData.NET5.vbproj::TargetFramework=net10.0]
+=== Visium HD 10x HDF5 流式稀疏读取验证 ===
 起始托管内存: 0 MB
 
 === DIAGNOSE: G:\Erica\src\STRaid\test\data\test_seurat.rda ===
-warning, 147 ms - Type CLO(closures) not implemented
-warning, 148 ms - Tag not implemented for type CLO and ignored
-warning, 151 ms - Type 249(NIL|SYM|LIST|closures|ENV|PROM|LANG|SPECIAL|BUILTIN|CHAR|LGL|INT|REAL|CPLX|STR|DOT|ANY|VEC|EXPR|Byte code|EXTPTR|WEAKREF|RAW|S4|FUNSXP|ALTREP|EMPTYENV|GLOBALENV|NILVALUE|REF) not implemented
-warning, 151 ms - Type 251(NIL|SYM|LIST|closures|ENV|PROM|LANG|SPECIAL|BUILTIN|CHAR|LGL|INT|REAL|CPLX|STR|DOT|ANY|VEC|EXPR|Byte code|EXTPTR|WEAKREF|RAW|S4|FUNSXP|ALTREP|EMPTYENV|GLOBALENV|NILVALUE|REF) not implemented
-warning, 151 ms - Type 251(NIL|SYM|LIST|closures|ENV|PROM|LANG|SPECIAL|BUILTIN|CHAR|LGL|INT|REAL|CPLX|STR|DOT|ANY|VEC|EXPR|Byte code|EXTPTR|WEAKREF|RAW|S4|FUNSXP|ALTREP|EMPTYENV|GLOBALENV|NILVALUE|REF) not implemented
-warning, 151 ms - Type BCODE(Byte code) not implemented
-warning, 151 ms - Tag not implemented for type NIL and ignored
-warning, 151 ms - Tag not implemented for type NIL and ignored
-warning, 151 ms - Tag not implemented for type NIL and ignored
-warning, 151 ms - Tag not implemented for type NIL and ignored
-warning, 151 ms - Type 46(NIL|SYM|LIST|closures|ENV|PROM|LANG|SPECIAL|BUILTIN|CHAR|LGL|INT|REAL|CPLX|STR|DOT|ANY|VEC|EXPR|Byte code|EXTPTR|WEAKREF|RAW|S4|FUNSXP|ALTREP|EMPTYENV|GLOBALENV|NILVALUE|REF) not implemented
-warning, 151 ms - Tag not implemented for type 46 and ignored
-warning, 151 ms - Type 108(NIL|SYM|LIST|closures|ENV|PROM|LANG|SPECIAL|BUILTIN|CHAR|LGL|INT|REAL|CPLX|STR|DOT|ANY|VEC|EXPR|Byte code|EXTPTR|WEAKREF|RAW|S4|FUNSXP|ALTREP|EMPTYENV|GLOBALENV|NILVALUE|REF) not implemented
-warning, 151 ms - Tag not implemented for type 108 and ignored
-dotnet : Unhandled exception. System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
-At Z:\tmp\genie-ps-1786491721205-a3as2j.ps1:262 char:33
+warning, 142 ms - Type CLO(closures) not implemented
+warning, 144 ms - Tag not implemented for type CLO and ignored
+warning, 147 ms - Type 249(NIL|SYM|LIST|closures|ENV|PROM|LANG|SPECIAL|BUILTIN|CHAR|LGL|INT|REAL|CPLX|STR|DOT|ANY|VEC|EXPR|Byte code|EXTPTR|WEAKREF|RAW|S4|FUNSXP|ALTREP|EMPTYENV|GLOBALENV|NILVALUE|REF) not implemented
+warning, 147 ms - Type 251(NIL|SYM|LIST|closures|ENV|PROM|LANG|SPECIAL|BUILTIN|CHAR|LGL|INT|REAL|CPLX|STR|DOT|ANY|VEC|EXPR|Byte code|EXTPTR|WEAKREF|RAW|S4|FUNSXP|ALTREP|EMPTYENV|GLOBALENV|NILVALUE|REF) not implemented
+warning, 147 ms - Type 251(NIL|SYM|LIST|closures|ENV|PROM|LANG|SPECIAL|BUILTIN|CHAR|LGL|INT|REAL|CPLX|STR|DOT|ANY|VEC|EXPR|Byte code|EXTPTR|WEAKREF|RAW|S4|FUNSXP|ALTREP|EMPTYENV|GLOBALENV|NILVALUE|REF) not implemented
+warning, 147 ms - Type BCODE(Byte code) not implemented
+warning, 147 ms - Tag not implemented for type NIL and ignored
+warning, 147 ms - Tag not implemented for type NIL and ignored
+warning, 147 ms - Tag not implemented for type NIL and ignored
+warning, 147 ms - Tag not implemented for type NIL and ignored
+warning, 147 ms - Type 46(NIL|SYM|LIST|closures|ENV|PROM|LANG|SPECIAL|BUILTIN|CHAR|LGL|INT|REAL|CPLX|STR|DOT|ANY|VEC|EXPR|Byte code|EXTPTR|WEAKREF|RAW|S4|FUNSXP|ALTREP|EMPTYENV|GLOBALENV|NILVALUE|REF) not implemented
+warning, 147 ms - Tag not implemented for type 46 and ignored
+warning, 147 ms - Type 108(NIL|SYM|LIST|closures|ENV|PROM|LANG|SPECIAL|BUILTIN|CHAR|LGL|INT|REAL|CPLX|STR|DOT|ANY|VEC|EXPR|Byte code|EXTPTR|WEAKREF|RAW|S4|FUNSXP|ALTREP|EMPTYENV|GLOBALENV|NILVALUE|REF) not implemented
+warning, 147 ms - Tag not implemented for type 108 and ignored
+warning, 147 ms - Type 243(NIL|SYM|LIST|closures|ENV|PROM|LANG|SPECIAL|BUILTIN|CHAR|LGL|INT|REAL|CPLX|STR|DOT|ANY|VEC|EXPR|Byte code|EXTPTR|WEAKREF|RAW|S4|FUNSXP|ALTREP|EMPTYENV|GLOBALENV|NILVALUE|REF) not implemented
+list[.class=] length=1
+  $seurat_obj =>
+    list[.class=] length=3
+      $assays =>
+        list[.class=] length=1
+          $1 =>
+            list[.class=] length=9
+              $layers =>
+                list[.class=] length=3
+                  $1 =>
+                    list[.class=] length=9
+                      $i =>
+                        vector length=2842 dataType=vector
+                      $p =>
+                        vector length=31 dataType=vector
+                      $Dim =>
+                        vector length=2 dataType=vector
+                      $Dimnames =>
+                        list[.class=] length=2
+                          $1 =>
+                            Dictionary`2 = System.Collections.Generic.Dictionary`2[System.String,System.Object]
+                          $2 =>
+                            Dictionary`2 = System.Collections.Generic.Dictionary`2[System.String,System.Object]
+                      $x =>
+                        vector length=2842 dataType=vector
+                      $factors =>
+dotnet : Unhandled exception. System.NullReferenceException: Object reference not set to an instance of an object.
+At Z:\tmp\genie-ps-1786491856745-12jg6e.ps1:262 char:33
 + cd "g:\Erica\src\STRaid\test" ; dotnet run -c Debug 2>&1 | Out-File - ...
 +                                 ~~~~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : NotSpecified: (Unhandled excep...ameter 'index'):String) [], RemoteException
+    + CategoryInfo          : NotSpecified: (Unhandled excep...e of an object.:String) [], RemoteException
     + FullyQualifiedErrorId : NativeCommandError
  
-   at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at SMRUCC.Rsharp.RDataSet.Reader.parse_R_object(List`1 reference_list, Boolean is_root) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 402
-   at SMRUCC.Rsharp.RDataSet.Reader.parse_R_object(List`1 reference_list, Boolean is_root) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 292
-   at SMRUCC.Rsharp.RDataSet.Reader.parse_R_object(List`1 reference_list, Boolean is_root) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 412
-   at SMRUCC.Rsharp.RDataSet.Reader.parse_R_object(List`1 reference_list, Boolean is_root) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 308
-   at SMRUCC.Rsharp.RDataSet.Reader.parse_all() in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 152
-   at SMRUCC.Rsharp.RDataSet.Reader.ParseRDataBinary(BinaryDataReader bin, Boolean expand_altrep, Boolean debug) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 481
-   at SMRUCC.Rsharp.RDataSet.Reader.ParseData(Stream bin, Boolean expand_altrep, Boolean debug) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 503
-   at SMRUCC.Rsharp.RDataSet.Reader.ParseData(Stream bin, Boolean expand_altrep, Boolean debug) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 515
-   at test.SeuratDiag.Diagnose(String file) in G:\Erica\src\STRaid\test\SeuratDiag.vb:line 11
+   at SMRUCC.Rsharp.Runtime.Internal.Object.list.getByName(String name) in G:\GCModeller\src\R-sharp\R#\Runtime\Internal\objects\dataset\list.vb:line 679
+   at test.SeuratDiag.Dump(Object value, Int32 depth) in G:\Erica\src\STRaid\test\SeuratDiag.vb:line 21
+   at test.SeuratDiag.Dump(Object value, Int32 depth) in G:\Erica\src\STRaid\test\SeuratDiag.vb:line 25
+   at test.SeuratDiag.Dump(Object value, Int32 depth) in G:\Erica\src\STRaid\test\SeuratDiag.vb:line 25
+   at test.SeuratDiag.Dump(Object value, Int32 depth) in G:\Erica\src\STRaid\test\SeuratDiag.vb:line 25
+   at test.SeuratDiag.Dump(Object value, Int32 depth) in G:\Erica\src\STRaid\test\SeuratDiag.vb:line 25
+   at test.SeuratDiag.Dump(Object value, Int32 depth) in G:\Erica\src\STRaid\test\SeuratDiag.vb:line 25
+   at test.SeuratDiag.Dump(Object value, Int32 depth) in G:\Erica\src\STRaid\test\SeuratDiag.vb:line 25
+   at test.SeuratDiag.Diagnose(String file) in G:\Erica\src\STRaid\test\SeuratDiag.vb:line 13
    at test.Program.Main(String[] args) in G:\Erica\src\STRaid\test\Program.vb:line 26
