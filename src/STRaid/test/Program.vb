@@ -22,6 +22,10 @@ Module Program
         VerifyFeatureSlice()
         VerifyMoleculeInfo()
 
+        ' TEMP diagnostic for S4 / Seurat parsing
+        Diagnose("G:\Erica\src\STRaid\test\data\test_seurat.rda")
+        Diagnose("G:\Erica\src\STRaid\test\data\test_seurat.rds")
+
         Dim memEnd As Long = GC.GetTotalMemory(True)
         Console.WriteLine()
         Console.WriteLine($"结束托管内存: {memEnd \ (1024 * 1024)} MB")
