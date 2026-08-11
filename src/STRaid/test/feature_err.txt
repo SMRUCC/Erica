@@ -5,4 +5,4 @@ System.IO.IOException: signature is not valid
    at Microsoft.VisualBasic.Data.IO.HDF5.HDF5File.parseHeader() in G:\GCModeller\src\runtime\sciBASIC#\Data\BinaryData\HDF5\HDF5File.vb:line 193
    at Microsoft.VisualBasic.Data.IO.HDF5.HDF5File..ctor(String fileName) in G:\GCModeller\src\runtime\sciBASIC#\Data\BinaryData\HDF5\HDF5File.vb:line 152
    at Erica.Analysis.SpatialTissue.RaidData.HDF5.TenXReader.OpenVisiumHD(String filePath) in G:\Erica\src\STRaid\HDF5\TenXReader.vb:line 34
-   at test.Program.VerifyMoleculeInfo() in G:\Erica\src\STRaid\test\Program.vb:line 122
+   at test.Program.VerifyFeatureSlice() in G:\Erica\src\STRaid\test\Program.vb:line 53
