@@ -11,6 +11,7 @@
 
 Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.Data.IO.HDF5
+Imports Microsoft.VisualBasic.Data.IO.HDF5.Microsoft.VisualBasic.Data.IO.HDF5
 Imports Microsoft.VisualBasic.Data.IO.HDF5.struct
 Imports Microsoft.VisualBasic.Language
 
@@ -238,7 +239,7 @@ Namespace Erica.Analysis.SpatialTissue.RaidData.HDF5
                                 nProcessed += 1L
                                 If nProcessed Mod stride = 0 Then
                                     ' 进度采样：避免刷屏，仅周期性输出
-                                    Call $"molecule_info: aggregated {nProcessed} molecules, dict={agg.Count}".__DEBUG_ECHO
+                                    Call $"molecule_info: aggregated {nProcessed} molecules, dict={agg.Count}".debug
                                 End If
                             Next
                         Loop
