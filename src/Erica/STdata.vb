@@ -36,7 +36,7 @@ Public Module STdata
     ''' </remarks>
     <ExportAPI("read.ST_h5ad")>
     Public Function ReadST_spacerangerH5Matrix(h5ad As String) As Matrix
-        Return HDF5.SpaceRanger.ReadST_spacerangerH5Matrix(h5ad)
+        Throw New NotImplementedException
     End Function
 
     ''' <summary>

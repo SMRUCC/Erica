@@ -4,7 +4,6 @@ Imports Erica.Analysis.SingleCell.Expression
 Imports Erica.Analysis.SpatialTissue
 Imports Erica.Analysis.SpatialTissue.HEView
 Imports Erica.Analysis.SpatialTissue.RaidData
-Imports Erica.Analysis.SpatialTissue.RaidData.HDF5
 Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.ComponentModel.Algorithm.base
@@ -34,21 +33,6 @@ Imports SMRUCC.Rsharp.Runtime.Interop
 Imports SMRUCC.Rsharp.Runtime.Vectorization
 Imports clr_df = Microsoft.VisualBasic.Data.Framework.DataFrame
 Imports RInternal = SMRUCC.Rsharp.Runtime.Internal
-
-#If NET48 Then
-Imports Pen = System.Drawing.Pen
-Imports Pens = System.Drawing.Pens
-Imports Brush = System.Drawing.Brush
-Imports Font = System.Drawing.Font
-Imports Brushes = System.Drawing.Brushes
-Imports SolidBrush = System.Drawing.SolidBrush
-Imports DashStyle = System.Drawing.Drawing2D.DashStyle
-Imports Image = System.Drawing.Image
-Imports Bitmap = System.Drawing.Bitmap
-Imports GraphicsPath = System.Drawing.Drawing2D.GraphicsPath
-Imports FontStyle = System.Drawing.FontStyle
-#Else
-#End If
 
 ''' <summary>
 ''' single cell data toolkit
@@ -317,7 +301,7 @@ Public Module singleCells
         If TypeOf h5ad Is AnnData Then
             Return DirectCast(h5ad, AnnData).ExportExpression
         ElseIf TypeOf h5ad Is String Then
-            Return DirectCast(h5ad, String).DoCall(AddressOf LoadDisk.LoadRawExpressionMatrix)
+            Throw New NotImplementedException
         Else
             Return RInternal.debug.stop({
                 $"A file path or h5ad anndata is required!",
@@ -337,7 +321,7 @@ Public Module singleCells
     ''' </remarks>
     <ExportAPI("read.h5ad")>
     Public Function readH5ad(h5adfile As String, Optional loadExpr0 As Boolean = True) As AnnData
-        Return LoadDisk.LoadDiskMemory(h5adfile, loadExpr0)
+        Throw New NotImplementedException
     End Function
 
     ''' <summary>
