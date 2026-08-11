@@ -140,6 +140,13 @@ Namespace Erica.Analysis.SpatialTissue.RaidData.HDF5
         Public Property matrix As SparseMatrix
 
         ''' <summary>
+        ''' 基础数学模块承载的稀疏表达矩阵（COO 三元组直接构造），维度 [nBins, nFeatures]。
+        ''' 与 <see cref="matrix"/> 表达同一份数据，但使用 <see cref="Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.SparseMatrix"/>，
+        ''' 便于上层直接进行线性代数运算。
+        ''' </summary>
+        Public Property sparseMatrix As Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.SparseMatrix
+
+        ''' <summary>
         ''' 空间坐标信息（可能为 Nothing）。
         ''' </summary>
         Public Property spatial As SpatialCoords
@@ -300,4 +307,100 @@ Namespace Erica.Analysis.SpatialTissue.RaidData.HDF5
             End If
         End Function
     End Module
+
+    ''' <summary>
+    ''' molecule_info.h5 流式聚合后的 UMI 计数稀疏矩阵结果。
+    ''' 矩阵使用基础数学模块 <see cref="Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.SparseMatrix"/>
+    ''' （COO 三元组构造的稀疏表达矩阵），维度为 [nBarcodes, nFeatures]。
+    ''' </summary>
+    Public Class MoleculeInfoMatrix
+
+        ''' <summary>
+        ''' 每个 barcode（spot）的标识，长度 = 矩阵行数。
+        ''' </summary>
+        Public Property barcodes As String()
+
+        ''' <summary>
+        ''' 特征（基因）元数据表，长度 = 矩阵列数。
+        ''' </summary>
+        Public Property features As FeatureMeta()
+
+        ''' <summary>
+        ''' UMI 计数稀疏矩阵，维度 [nBarcodes, nFeatures]。
+        ''' 以 (barcode_idx, feature_idx) 为坐标，值为该 spot × gene 的 UMI 累加和。
+        ''' </summary>
+        Public Property matrix As Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.SparseMatrix
+
+        ''' <summary>
+        ''' 参与聚合的分子总数（原始 molecule_info 行数）。
+        ''' </summary>
+        Public Property moleculeCount As Long
+
+        Public Overrides Function ToString() As String
+            Dim dims As String = If(matrix Is Nothing, "?", $"{matrix.RowDimension} x {matrix.ColumnDimension}")
+            Return $"MoleculeInfoMatrix[{dims}] molecules={moleculeCount}"
+        End Function
+    End Class
+
+    ''' <summary>
+    ''' 统一的 Visium HD 解析结果入口。
+    ''' 由 <see cref="TenXReader.OpenVisiumHD"/> 按文件结构自动分流构造：
+    '''   - 含 <c>feature_slices</c> 组 → <see cref="FeatureSliceData"/>（基础稀疏矩阵承载表达量）；
+    '''   - 含 <c>barcode_idx</c> 扁平表 → <see cref="MoleculeInfoMatrix"/>（UMI 聚合稀疏矩阵）。
+    ''' </summary>
+    Public Class VisiumHDResult
+
+        ''' <summary>
+        ''' 解析到的文件类型。
+        ''' </summary>
+        Public Property kind As VisiumHDKind
+
+        ''' <summary>
+        ''' feature_slice.h5 的结果（仅当 <see cref="kind"/> = FeatureSlice 时非空）。
+        ''' </summary>
+        Public Property featureSlice As FeatureSliceData
+
+        ''' <summary>
+        ''' molecule_info.h5 的结果（仅当 <see cref="kind"/> = MoleculeInfo 时非空）。
+        ''' </summary>
+        Public Property moleculeInfo As MoleculeInfoMatrix
+
+        Public ReadOnly Property barcodes As String()
+            Get
+                If featureSlice IsNot Nothing Then
+                    Return featureSlice.barcodes
+                ElseIf moleculeInfo IsNot Nothing Then
+                    Return moleculeInfo.barcodes
+                End If
+                Return Nothing
+            End Get
+        End Property
+
+        Public ReadOnly Property features As FeatureMeta()
+            Get
+                If featureSlice IsNot Nothing Then
+                    Return featureSlice.features
+                ElseIf moleculeInfo IsNot Nothing Then
+                    Return moleculeInfo.features
+                End If
+                Return Nothing
+            End Get
+        End Property
+
+        Public Overrides Function ToString() As String
+            Return $"VisiumHDResult[{kind}]"
+        End Function
+    End Class
+
+    ''' <summary>
+    ''' Visium HD 文件类型枚举。
+    ''' </summary>
+    Public Enum VisiumHDKind
+        ''' <summary>未知 / 无法识别的结构。</summary>
+        Unknown
+        ''' <summary>feature_slice.h5：按切片分组的三元组表达矩阵。</summary>
+        FeatureSlice
+        ''' <summary>molecule_info.h5：扁平分子表，需聚合为 UMI 矩阵。</summary>
+        MoleculeInfo
+    End Enum
 End Namespace
