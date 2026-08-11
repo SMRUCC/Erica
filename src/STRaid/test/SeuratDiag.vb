@@ -18,7 +18,8 @@ Module SeuratDiag
         Dim indent As String = New String(" "c, depth * 2)
         If TypeOf value Is list Then
             Dim l As list = value
-            Console.WriteLine($"{indent}list[.class={l.getByName(".class")}] length={l.length}")
+            Dim cls = If(l.getByName(".class"), "")
+            Console.WriteLine($"{indent}list[.class={cls}] length={l.length}")
             For Each name In l.getNames
                 If name = ".class" Then Continue For
                 Console.WriteLine($"{indent}  ${name} =>")
