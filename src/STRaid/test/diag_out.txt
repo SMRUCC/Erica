@@ -1,0 +1,36 @@
+﻿=== Visium HD 10x HDF5 流式稀疏读取验证 ===
+起始托管内存: 0 MB
+
+=== DIAGNOSE: G:\Erica\src\STRaid\test\data\test_seurat.rda ===
+warning, 147 ms - Type CLO(closures) not implemented
+warning, 148 ms - Tag not implemented for type CLO and ignored
+warning, 151 ms - Type 249(NIL|SYM|LIST|closures|ENV|PROM|LANG|SPECIAL|BUILTIN|CHAR|LGL|INT|REAL|CPLX|STR|DOT|ANY|VEC|EXPR|Byte code|EXTPTR|WEAKREF|RAW|S4|FUNSXP|ALTREP|EMPTYENV|GLOBALENV|NILVALUE|REF) not implemented
+warning, 151 ms - Type 251(NIL|SYM|LIST|closures|ENV|PROM|LANG|SPECIAL|BUILTIN|CHAR|LGL|INT|REAL|CPLX|STR|DOT|ANY|VEC|EXPR|Byte code|EXTPTR|WEAKREF|RAW|S4|FUNSXP|ALTREP|EMPTYENV|GLOBALENV|NILVALUE|REF) not implemented
+warning, 151 ms - Type 251(NIL|SYM|LIST|closures|ENV|PROM|LANG|SPECIAL|BUILTIN|CHAR|LGL|INT|REAL|CPLX|STR|DOT|ANY|VEC|EXPR|Byte code|EXTPTR|WEAKREF|RAW|S4|FUNSXP|ALTREP|EMPTYENV|GLOBALENV|NILVALUE|REF) not implemented
+warning, 151 ms - Type BCODE(Byte code) not implemented
+warning, 151 ms - Tag not implemented for type NIL and ignored
+warning, 151 ms - Tag not implemented for type NIL and ignored
+warning, 151 ms - Tag not implemented for type NIL and ignored
+warning, 151 ms - Tag not implemented for type NIL and ignored
+warning, 151 ms - Type 46(NIL|SYM|LIST|closures|ENV|PROM|LANG|SPECIAL|BUILTIN|CHAR|LGL|INT|REAL|CPLX|STR|DOT|ANY|VEC|EXPR|Byte code|EXTPTR|WEAKREF|RAW|S4|FUNSXP|ALTREP|EMPTYENV|GLOBALENV|NILVALUE|REF) not implemented
+warning, 151 ms - Tag not implemented for type 46 and ignored
+warning, 151 ms - Type 108(NIL|SYM|LIST|closures|ENV|PROM|LANG|SPECIAL|BUILTIN|CHAR|LGL|INT|REAL|CPLX|STR|DOT|ANY|VEC|EXPR|Byte code|EXTPTR|WEAKREF|RAW|S4|FUNSXP|ALTREP|EMPTYENV|GLOBALENV|NILVALUE|REF) not implemented
+warning, 151 ms - Tag not implemented for type 108 and ignored
+dotnet : Unhandled exception. System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
+At Z:\tmp\genie-ps-1786491721205-a3as2j.ps1:262 char:33
++ cd "g:\Erica\src\STRaid\test" ; dotnet run -c Debug 2>&1 | Out-File - ...
++                                 ~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Unhandled excep...ameter 'index'):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at SMRUCC.Rsharp.RDataSet.Reader.parse_R_object(List`1 reference_list, Boolean is_root) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 402
+   at SMRUCC.Rsharp.RDataSet.Reader.parse_R_object(List`1 reference_list, Boolean is_root) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 292
+   at SMRUCC.Rsharp.RDataSet.Reader.parse_R_object(List`1 reference_list, Boolean is_root) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 412
+   at SMRUCC.Rsharp.RDataSet.Reader.parse_R_object(List`1 reference_list, Boolean is_root) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 308
+   at SMRUCC.Rsharp.RDataSet.Reader.parse_all() in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 152
+   at SMRUCC.Rsharp.RDataSet.Reader.ParseRDataBinary(BinaryDataReader bin, Boolean expand_altrep, Boolean debug) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 481
+   at SMRUCC.Rsharp.RDataSet.Reader.ParseData(Stream bin, Boolean expand_altrep, Boolean debug) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 503
+   at SMRUCC.Rsharp.RDataSet.Reader.ParseData(Stream bin, Boolean expand_altrep, Boolean debug) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 515
+   at test.SeuratDiag.Diagnose(String file) in G:\Erica\src\STRaid\test\SeuratDiag.vb:line 11
+   at test.Program.Main(String[] args) in G:\Erica\src\STRaid\test\Program.vb:line 26

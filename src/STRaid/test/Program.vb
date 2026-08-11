@@ -19,8 +19,8 @@ Module Program
         Console.WriteLine($"起始托管内存: {memStart \ (1024 * 1024)} MB")
         Console.WriteLine()
 
-        VerifyFeatureSlice()
-        VerifyMoleculeInfo()
+        ' VerifyFeatureSlice()
+        ' VerifyMoleculeInfo()
 
         ' TEMP diagnostic for S4 / Seurat parsing
         Diagnose("G:\Erica\src\STRaid\test\data\test_seurat.rda")
