@@ -1,6 +1,5 @@
 Imports System
-Imports Microsoft.VisualBasic.Math.LinearAlgebra.Matrix
-Imports Erica.Analysis.SpatialTissue.RaidData.HDF5
+Imports Erica.Analysis.SpatialTissue.RaidData.Erica.Analysis.SpatialTissue.RaidData.HDF5
 
 Module Program
 
@@ -84,7 +83,7 @@ Module Program
 
         For i As Integer = 0 To sliceCount - 1
             Dim slice As FeatureSliceData = result.featureSlice(i)
-            Dim m As SparseMatrix = slice.sparseMatrix
+            Dim m As Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.SparseMatrix = slice.sparseMatrix
 
             If m Is Nothing Then
                 okDims = False
@@ -134,7 +133,7 @@ Module Program
 
         Dim nBarcodes As Integer = If(result.moleculeInfo.barcodes Is Nothing, 0, result.moleculeInfo.barcodes.Length)
         Dim nFeatures As Integer = If(result.moleculeInfo.features Is Nothing, 0, result.moleculeInfo.features.Length)
-        Dim m As SparseMatrix = result.moleculeInfo.matrix
+        Dim m As Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.SparseMatrix = result.moleculeInfo.matrix
         Dim moleculeCount As Long = result.moleculeInfo.moleculeCount
 
         Check("barcodes 规模", nBarcodes > 0, $"nBarcodes={nBarcodes}")

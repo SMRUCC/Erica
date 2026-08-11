@@ -18,7 +18,7 @@ Namespace Erica.Analysis.SpatialTissue.RaidData.HDF5
     '''   data(indptr[i] : indptr[i+1]) 为第 i 行的非零元素值；
     '''   indices(indptr[i] : indptr[i+1]) 为对应的列（特征）下标。
     ''' </summary>
-    Public Class SparseMatrix
+    Public Class HDF5SparseMatrix
 
         ''' <summary>
         ''' 非零元素值（行优先压缩）。
@@ -137,7 +137,7 @@ Namespace Erica.Analysis.SpatialTissue.RaidData.HDF5
         ''' <summary>
         ''' CSR 压缩表达矩阵。
         ''' </summary>
-        Public Property matrix As SparseMatrix
+        Public Property matrix As HDF5SparseMatrix
 
         ''' <summary>
         ''' 基础数学模块承载的稀疏表达矩阵（COO 三元组直接构造），维度 [nBins, nFeatures]。
