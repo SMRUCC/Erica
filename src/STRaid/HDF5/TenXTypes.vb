@@ -357,8 +357,9 @@ Namespace Erica.Analysis.SpatialTissue.RaidData.HDF5
 
         ''' <summary>
         ''' feature_slice.h5 的结果（仅当 <see cref="kind"/> = FeatureSlice 时非空）。
+        ''' 每个元素是一个分片（feature_slices 组下的一个子组），共享同一套 barcodes / features 元数据。
         ''' </summary>
-        Public Property featureSlice As FeatureSliceData
+        Public Property featureSlice As List(Of FeatureSliceData)
 
         ''' <summary>
         ''' molecule_info.h5 的结果（仅当 <see cref="kind"/> = MoleculeInfo 时非空）。
@@ -367,8 +368,8 @@ Namespace Erica.Analysis.SpatialTissue.RaidData.HDF5
 
         Public ReadOnly Property barcodes As String()
             Get
-                If featureSlice IsNot Nothing Then
-                    Return featureSlice.barcodes
+                If featureSlice IsNot Nothing AndAlso featureSlice.Count > 0 Then
+                    Return featureSlice(0).barcodes
                 ElseIf moleculeInfo IsNot Nothing Then
                     Return moleculeInfo.barcodes
                 End If
@@ -378,8 +379,8 @@ Namespace Erica.Analysis.SpatialTissue.RaidData.HDF5
 
         Public ReadOnly Property features As FeatureMeta()
             Get
-                If featureSlice IsNot Nothing Then
-                    Return featureSlice.features
+                If featureSlice IsNot Nothing AndAlso featureSlice.Count > 0 Then
+                    Return featureSlice(0).features
                 ElseIf moleculeInfo IsNot Nothing Then
                     Return moleculeInfo.features
                 End If

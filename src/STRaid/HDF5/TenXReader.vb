@@ -36,9 +36,13 @@ Namespace Erica.Analysis.SpatialTissue.RaidData.HDF5
 
                 Select Case kind
                     Case VisiumHDKind.FeatureSlice
+                        ' ReadFeatureSlices 是流式 Iterator，捕获了 h5；必须在 Using 作用域内消费，
+                        ' 否则 Using 释放 h5 后迭代会访问已关闭的文件句柄。此处物化分片集合，
+                        ' 单个分片非零数很小（约 1~2 万），总内存仍维持在稀疏量级，不会 OOM。
+                        Dim slices As New List(Of FeatureSliceData)(ReadFeatureSlices(h5))
                         Return New VisiumHDResult With {
                             .kind = kind,
-                            .featureSlice = ReadFeatureSlices(h5)
+                            .featureSlice = slices
                         }
                     Case VisiumHDKind.MoleculeInfo
                         Return New VisiumHDResult With {
