@@ -15,7 +15,7 @@ Imports Microsoft.VisualBasic.Data.IO.HDF5.Microsoft.VisualBasic.Data.IO.HDF5
 Imports Microsoft.VisualBasic.Data.IO.HDF5.struct
 Imports Microsoft.VisualBasic.Language
 
-Namespace Erica.Analysis.SpatialTissue.RaidData.HDF5
+Namespace HDF5
 
     ''' <summary>
     ''' Visium HD 两种 10x HDF5 文件的统一流式稀疏读取入口。

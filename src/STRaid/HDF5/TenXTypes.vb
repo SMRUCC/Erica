@@ -10,7 +10,7 @@
 Imports Microsoft.VisualBasic.Data.IO.HDF5
 Imports Microsoft.VisualBasic.Data.IO.HDF5.struct
 
-Namespace Erica.Analysis.SpatialTissue.RaidData.HDF5
+Namespace HDF5
 
     ''' <summary>
     ''' CSR（Compressed Sparse Row）格式的三元组稀疏表达矩阵。
