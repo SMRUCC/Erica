@@ -53,6 +53,7 @@ Module Program
             result = TenXReader.OpenVisiumHD(FeatureSliceFile)
         Catch ex As Exception
             Check("OpenVisiumHD(feature_slice)", False, $"抛出异常: {ex.GetType().Name}: {ex.Message}")
+            System.IO.File.WriteAllText("G:\Erica\src\STRaid\test\feature_err.txt", ex.ToString())
             Return
         End Try
 
@@ -121,6 +122,7 @@ Module Program
             result = TenXReader.OpenVisiumHD(MoleculeInfoFile)
         Catch ex As Exception
             Check("OpenVisiumHD(molecule_info)", False, $"抛出异常: {ex.GetType().Name}: {ex.Message}")
+            System.IO.File.WriteAllText("G:\Erica\src\STRaid\test\molecule_err.txt", ex.ToString())
             Return
         End Try
 
