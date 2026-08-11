@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>test</RootNamespace>
+    <TargetFramework>net10.0</TargetFramework>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\GCModeller\src\GCModeller\analysis\HTS_matrix\HTS_matrix-netcore5.vbproj" />
+    <ProjectReference Include="..\..\..\..\GCModeller\src\runtime\sciBASIC#\Data\BinaryData\BinaryData\binarydata-netcore5.vbproj" />
+    <ProjectReference Include="..\..\..\..\GCModeller\src\runtime\sciBASIC#\Data\BinaryData\HDF5\HDF5.vbproj" />
+    <ProjectReference Include="..\..\..\..\GCModeller\src\runtime\sciBASIC#\Data\BinaryData\HDSPack\HDSPack.vbproj" />
+    <ProjectReference Include="..\..\..\..\GCModeller\src\runtime\sciBASIC#\Data\BinaryData\msgpack\msgpack-netcore5.vbproj" />
+    <ProjectReference Include="..\..\..\..\GCModeller\src\runtime\sciBASIC#\Data_science\Mathematica\Math\DataFittings\linear-netcore5.vbproj" />
+    <ProjectReference Include="..\..\..\..\GCModeller\src\runtime\sciBASIC#\Data_science\Mathematica\Math\Math.Statistics\stats-netcore5.vbproj" />
+    <ProjectReference Include="..\..\..\..\GCModeller\src\runtime\sciBASIC#\Data_science\Mathematica\Math\Math\Math.NET5.vbproj" />
+    <ProjectReference Include="..\..\..\..\GCModeller\src\runtime\sciBASIC#\Microsoft.VisualBasic.Core\src\Core.vbproj" />
+    <ProjectReference Include="..\..\..\..\GCModeller\src\workbench\modules\ExperimentDesigner\designer-netcore5.vbproj" />
+    <ProjectReference Include="..\STRaid.vbproj" />
+  </ItemGroup>
+
+</Project>

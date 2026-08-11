@@ -1,0 +1,53 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="MEMI-Desktop" />
+    <BuildType Name="Release" />
+    <BuildType Name="Rsharp_app_release" />
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Folder Name="/framework/">
+    <Project Path="../../GCModeller/src/GCModeller/analysis/HTS_matrix/HTS_matrix-netcore5.vbproj">
+      <Platform Solution="*|x64" Project="x64" />
+    </Project>
+    <Project Path="../../GCModeller/src/runtime/sciBASIC#/Data/BinaryData/BinaryData/binarydata-netcore5.vbproj">
+      <Platform Solution="*|x64" Project="x64" />
+    </Project>
+    <Project Path="../../GCModeller/src/runtime/sciBASIC#/Data/BinaryData/HDF5/HDF5.vbproj">
+      <BuildType Solution="MEMI-Desktop|*" Project="Rsharp_app_release" />
+      <Platform Solution="*|x64" Project="x64" />
+    </Project>
+    <Project Path="../../GCModeller/src/runtime/sciBASIC#/Data/BinaryData/HDSPack/HDSPack.vbproj">
+      <Platform Solution="*|x64" Project="x64" />
+    </Project>
+    <Project Path="../../GCModeller/src/runtime/sciBASIC#/Data/BinaryData/msgpack/msgpack-netcore5.vbproj">
+      <Platform Solution="*|x64" Project="x64" />
+    </Project>
+    <Project Path="../../GCModeller/src/runtime/sciBASIC#/Data_science/Mathematica/Math/DataFittings/linear-netcore5.vbproj">
+      <BuildType Solution="MEMI-Desktop|*" Project="Rsharp_app_release" />
+      <Platform Solution="*|x64" Project="x64" />
+    </Project>
+    <Project Path="../../GCModeller/src/runtime/sciBASIC#/Data_science/Mathematica/Math/Math.Statistics/stats-netcore5.vbproj">
+      <BuildType Solution="MEMI-Desktop|*" Project="Rsharp_app_release" />
+      <Platform Solution="*|x64" Project="x64" />
+    </Project>
+    <Project Path="../../GCModeller/src/runtime/sciBASIC#/Data_science/Mathematica/Math/Math/Math.NET5.vbproj">
+      <Platform Solution="*|x64" Project="x64" />
+    </Project>
+    <Project Path="../../GCModeller/src/runtime/sciBASIC#/Microsoft.VisualBasic.Core/src/Core.vbproj">
+      <Platform Solution="*|x64" Project="x64" />
+    </Project>
+    <Project Path="../../GCModeller/src/workbench/modules/ExperimentDesigner/designer-netcore5.vbproj">
+      <Platform Solution="*|x64" Project="x64" />
+    </Project>
+  </Folder>
+  <Project Path="STRaid/STRaid.vbproj">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
+  <Project Path="STRaid/test/test.vbproj">
+    <BuildType Solution="MEMI-Desktop|*" Project="Debug" />
+    <BuildType Solution="Rsharp_app_release|*" Project="Release" />
+    <Platform Solution="Debug|x64" Project="x64" />
+  </Project>
+</Solution>
