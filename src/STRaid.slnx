@@ -42,6 +42,15 @@
       <Platform Solution="*|x64" Project="x64" />
     </Project>
   </Folder>
+  <Folder Name="/renv/">
+    <Project Path="../../GCModeller/src/R-sharp/R#/Rsharp-netcore5.vbproj">
+      <Platform Solution="*|x64" Project="x64" />
+    </Project>
+    <Project Path="../../GCModeller/src/R-sharp/studio/RData/RData.NET5.vbproj">
+      <BuildType Solution="MEMI-Desktop|*" Project="Rsharp_app_release" />
+      <Platform Solution="*|x64" Project="x64" />
+    </Project>
+  </Folder>
   <Project Path="STRaid/STRaid.vbproj">
     <Platform Solution="*|x64" Project="x64" />
   </Project>
