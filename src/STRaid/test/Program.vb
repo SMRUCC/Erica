@@ -1,5 +1,6 @@
 Imports System
 Imports System.IO
+Imports Erica.Analysis.SpatialTissue.RaidData
 Imports Erica.Analysis.SpatialTissue.RaidData.HDF5
 
 Module Program
