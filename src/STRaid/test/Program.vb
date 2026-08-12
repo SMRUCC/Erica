@@ -1,4 +1,5 @@
 Imports System
+Imports System.IO
 Imports Erica.Analysis.SpatialTissue.RaidData.HDF5
 
 Module Program
@@ -15,16 +16,15 @@ Module Program
     Sub Main(args As String())
         Dim memStart As Long = GC.GetTotalMemory(True)
 
-        Console.WriteLine("=== Visium HD 10x HDF5 流式稀疏读取验证 ===")
+        Console.WriteLine("=== Visium HD 10x HDF5 / SeuratObject RData 验证 ===")
         Console.WriteLine($"起始托管内存: {memStart \ (1024 * 1024)} MB")
         Console.WriteLine()
 
-        ' VerifyFeatureSlice()
-        ' VerifyMoleculeInfo()
+        ' === SeuratObject 读取验证 ===
+        TestSeuratObjectRDS()
+        TestSeuratObjectRDA()
 
-        ' TEMP diagnostic for S4 / Seurat parsing
-        Diagnose("G:\Erica\src\STRaid\test\data\test_seurat.rda")
-        Diagnose("G:\Erica\src\STRaid\test\data\test_seurat.rds")
+        Console.WriteLine()
 
         Dim memEnd As Long = GC.GetTotalMemory(True)
         Console.WriteLine()
@@ -38,6 +38,173 @@ Module Program
         End If
     End Sub
 
+#Region "SeuratObject 读取验证"
+
+    Private Sub TestSeuratObjectRDS()
+        Console.WriteLine("--- SeuratObject RDS 读取 ---")
+        Dim filePath As String = "G:\Erica\src\STRaid\test\data\test_seurat.rds"
+
+        If Not File.Exists(filePath) Then
+            Console.WriteLine($"  [SKIP] 测试文件不存在: {filePath}")
+            Console.WriteLine($"  请运行: C:\Program Files\R\R-4.5.0\bin\Rscript.exe G:\Erica\src\STRaid\test\gen_test_seurat.R")
+            Return
+        End If
+
+        Dim memBefore As Long = GC.GetTotalMemory(True)
+        Dim seurat As SeuratObject = Nothing
+
+        Try
+            seurat = SeuratObjectReader.ReadFile(filePath)
+        Catch ex As Exception
+            Check("SeuratObjectReader.ReadFile(RDS)", False, $"抛出异常: {ex.GetType().Name}: {ex.Message}")
+            File.WriteAllText("G:\Erica\src\STRaid\test\seurat_rds_err.txt", ex.ToString())
+            Return
+        End Try
+
+        ValidateSeuratObject(seurat, "RDS")
+
+        Dim memAfter As Long = GC.GetTotalMemory(True)
+        Console.WriteLine($"  [INFO] RDS 读取内存: before={memBefore \ (1024 * 1024)} MB, after={memAfter \ (1024 * 1024)} MB")
+    End Sub
+
+    Private Sub TestSeuratObjectRDA()
+        Console.WriteLine("--- SeuratObject RDA 读取 ---")
+        Dim filePath As String = "G:\Erica\src\STRaid\test\data\test_seurat.rda"
+
+        If Not File.Exists(filePath) Then
+            Console.WriteLine($"  [SKIP] 测试文件不存在: {filePath}")
+            Console.WriteLine($"  请运行: C:\Program Files\R\R-4.5.0\bin\Rscript.exe G:\Erica\src\STRaid\test\gen_test_seurat.R")
+            Return
+        End If
+
+        Dim memBefore As Long = GC.GetTotalMemory(True)
+        Dim seurat As SeuratObject = Nothing
+
+        Try
+            seurat = SeuratObjectReader.ReadFile(filePath)
+        Catch ex As Exception
+            Check("SeuratObjectReader.ReadFile(RDA)", False, $"抛出异常: {ex.GetType().Name}: {ex.Message}")
+            File.WriteAllText("G:\Erica\src\STRaid\test\seurat_rda_err.txt", ex.ToString())
+            Return
+        End Try
+
+        ValidateSeuratObject(seurat, "RDA")
+
+        Dim memAfter As Long = GC.GetTotalMemory(True)
+        Console.WriteLine($"  [INFO] RDA 读取内存: before={memBefore \ (1024 * 1024)} MB, after={memAfter \ (1024 * 1024)} MB")
+    End Sub
+
+    Private Sub ValidateSeuratObject(seurat As SeuratObject, source As String)
+        Check($"{source}: SeuratObject 非空", seurat IsNot Nothing, "")
+
+        If seurat Is Nothing Then Return
+
+        Console.WriteLine($"  [INFO] {source}: {seurat.ToString()}")
+        Console.WriteLine($"  [INFO] {source}: Version={seurat.Version}")
+
+        ' Validate assays
+        Check($"{source}: Assays 非空", seurat.Assays IsNot Nothing AndAlso seurat.Assays.Count > 0,
+              $"count={If(seurat.Assays?.Count, 0)}")
+
+        If seurat.Assays IsNot Nothing AndAlso seurat.Assays.Count > 0 Then
+            For Each kvp In seurat.Assays
+                Dim assay As SeuratAssay = kvp.Value
+                Console.WriteLine($"  [INFO] {source}: Assay[{assay.Name}] features={assay.nFeatures} cells={assay.nCells} key={assay.Key}")
+
+                Check($"{source}: Assay[{assay.Name}] nFeatures > 0", assay.nFeatures > 0,
+                      $"nFeatures={assay.nFeatures}")
+                Check($"{source}: Assay[{assay.Name}] nCells > 0", assay.nCells > 0,
+                      $"nCells={assay.nCells}")
+
+                ' Check counts matrix
+                If assay.Counts IsNot Nothing Then
+                    Dim hasData As Boolean = False
+                    For i As Integer = 0 To Math.Min(assay.Counts.GetLength(0) - 1, 4)
+                        For j As Integer = 0 To Math.Min(assay.Counts.GetLength(1) - 1, 4)
+                            If assay.Counts(i, j) > 0 Then hasData = True
+                        Next
+                    Next
+                    Check($"{source}: Assay[{assay.Name}] counts 有数据",
+                          hasData, $"dims={assay.Counts.GetLength(0)}x{assay.Counts.GetLength(1)}")
+                Else
+                    Console.WriteLine($"  [WARN] {source}: Assay[{assay.Name}] counts is Nothing")
+                End If
+
+                ' Check data (normalized)
+                If assay.Data IsNot Nothing Then
+                    Console.WriteLine($"  [INFO] {source}: Assay[{assay.Name}] data dims={assay.Data.GetLength(0)}x{assay.Data.GetLength(1)}")
+                End If
+
+                ' Check scale.data
+                If assay.ScaleData IsNot Nothing Then
+                    Console.WriteLine($"  [INFO] {source}: Assay[{assay.Name}] scale.data dims={assay.ScaleData.GetLength(0)}x{assay.ScaleData.GetLength(1)}")
+                End If
+
+                ' Check variable features
+                If assay.VariableFeatures IsNot Nothing AndAlso assay.VariableFeatures.Length > 0 Then
+                    Check($"{source}: Assay[{assay.Name}] VariableFeatures",
+                          assay.VariableFeatures.Length > 0,
+                          $"nVarFeatures={assay.VariableFeatures.Length}")
+                End If
+            Next
+        End If
+
+        ' Validate meta.data
+        Check($"{source}: MetaData 非空",
+              seurat.MetaData IsNot Nothing AndAlso seurat.MetaData.Count > 0,
+              $"columns={If(seurat.MetaData?.Count, 0)}")
+
+        If seurat.MetaData IsNot Nothing Then
+            Console.WriteLine($"  [INFO] {source}: MetaData columns: {String.Join(", ", seurat.MetaData.Keys)}")
+        End If
+
+        ' Validate cell names
+        Check($"{source}: CellNames",
+              seurat.CellNames IsNot Nothing AndAlso seurat.CellNames.Length > 0,
+              $"nCells={If(seurat.CellNames?.Length, 0)}")
+
+        ' Validate reductions
+        If seurat.Reductions IsNot Nothing AndAlso seurat.Reductions.Count > 0 Then
+            Console.WriteLine($"  [INFO] {source}: Reductions: {String.Join(", ", seurat.Reductions.Keys)}")
+            For Each kvp In seurat.Reductions
+                Dim red As DimReduction = kvp.Value
+                Console.WriteLine($"  [INFO] {source}: Reduction[{red.Name}] method={red.Method} cells={red.nCells} dims={red.nDimensions}")
+
+                Check($"{source}: Reduction[{red.Name}] CellEmbeddings 非空",
+                      red.CellEmbeddings IsNot Nothing,
+                      $"dims={If(red.CellEmbeddings, "null")}")
+
+                If red.CellEmbeddings IsNot Nothing Then
+                    Check($"{source}: Reduction[{red.Name}] CellEmbeddings dims correct",
+                          red.nCells > 0 AndAlso red.nDimensions > 0,
+                          $"cells={red.nCells} dims={red.nDimensions}")
+                End If
+            Next
+        Else
+            Console.WriteLine($"  [WARN] {source}: No reductions found")
+        End If
+
+        ' Validate active.ident
+        If seurat.ActiveIdent IsNot Nothing AndAlso seurat.ActiveIdent.Length > 0 Then
+            Check($"{source}: ActiveIdent 非空",
+                  seurat.ActiveIdent.Length > 0,
+                  $"length={seurat.ActiveIdent.Length}")
+        End If
+
+        ' Validate nCells consistency
+        If seurat.CellNames IsNot Nothing Then
+            Dim cellCount As Integer = seurat.CellNames.Length
+            If seurat.MetaData IsNot Nothing AndAlso seurat.MetaData.Count > 0 Then
+                Dim metaCellCount As Integer = seurat.MetaData.Values.First().Length
+                Check($"{source}: CellNames count = MetaData row count",
+                      cellCount = metaCellCount,
+                      $"CellNames={cellCount}, MetaData={metaCellCount}")
+            End If
+        End If
+    End Sub
+
+#End Region
+
     Private Sub Check(name As String, condition As Boolean, detail As String)
         If condition Then
             passCount += 1
@@ -46,130 +213,6 @@ Module Program
             failCount += 1
             Console.WriteLine($"  [FAIL] {name} - {detail}")
         End If
-    End Sub
-
-    Private Sub VerifyFeatureSlice()
-        Console.WriteLine("--- feature_slice.h5 ---")
-        Dim memBefore As Long = GC.GetTotalMemory(True)
-
-        Dim result As VisiumHDResult
-        Try
-            result = TenXReader.OpenVisiumHD(FeatureSliceFile)
-        Catch ex As Exception
-            Check("OpenVisiumHD(feature_slice)", False, $"抛出异常: {ex.GetType().Name}: {ex.Message}")
-            System.IO.File.WriteAllText("G:\Erica\src\STRaid\test\feature_err.txt", ex.ToString())
-            Return
-        End Try
-
-        Check("DetectKind=FeatureSlice", result.kind = VisiumHDKind.FeatureSlice, $"kind={result.kind}")
-
-        If result.featureSlice Is Nothing OrElse result.featureSlice.Count = 0 Then
-            Check("featureSlice 非空", False, "未解析出任何分片")
-            Return
-        End If
-
-        Dim nBarcodes As Integer = If(result.barcodes Is Nothing, 0, result.barcodes.Length)
-        Dim nFeatures As Integer = If(result.features Is Nothing, 0, result.features.Length)
-
-        Check("barcodes 规模", nBarcodes > 0, $"nBarcodes={nBarcodes}")
-        Check("features 规模", nFeatures > 0, $"nFeatures={nFeatures}")
-        If result.features IsNot Nothing AndAlso nFeatures > 0 Then
-            Check("features 元数据", Not String.IsNullOrEmpty(result.features(0).id),
-                  $"首特征 id={result.features(0).id}, type={result.features(0).featureType}")
-        End If
-
-        Dim sliceCount As Integer = result.featureSlice.Count
-        Dim totalNnz As Long = 0L
-        Dim maxRowDim As Integer = 0
-        Dim maxColDim As Integer = 0
-        Dim okDims As Boolean = True
-        Dim okNnz As Boolean = True
-        Dim peakMem As Long = memBefore
-
-        For i As Integer = 0 To sliceCount - 1
-            Dim slice As FeatureSliceData = result.featureSlice(i)
-            Dim m As Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.SparseMatrix = slice.sparseMatrix
-
-            If m Is Nothing Then
-                okDims = False
-                Exit For
-            End If
-
-            totalNnz += m.nnz
-            If m.RowDimension > maxRowDim Then maxRowDim = m.RowDimension
-            If m.ColumnDimension > maxColDim Then maxColDim = m.ColumnDimension
-
-            ' 不变量：行维度 == nBarcodes（bin 数），列维度 == nFeatures
-            If m.RowDimension <> nBarcodes Then okDims = False
-            If m.ColumnDimension <> nFeatures Then okDims = False
-            ' 不变量：单个分片 nnz 必须为正且不超过所有 bin×feature 组合数
-            If m.nnz <= 0 OrElse CLng(m.nnz) > CLng(nBarcodes) * CLng(nFeatures) Then okNnz = False
-
-            Dim cur As Long = GC.GetTotalMemory(False)
-            If cur > peakMem Then peakMem = cur
-        Next
-
-        Check("分片维度匹配", okDims, $"maxRowDim={maxRowDim} (期望 {nBarcodes}), maxColDim={maxColDim} (期望 {nFeatures})")
-        Check("分片 nnz 合法", okNnz, $"total nnz={totalNnz:N0}, 分片数={sliceCount}")
-        Check("分片数", sliceCount > 0, $"sliceCount={sliceCount}")
-
-        Dim memAfter As Long = GC.GetTotalMemory(True)
-        Console.WriteLine($"  [INFO] feature_slice 峰值托管内存: {peakMem \ (1024 * 1024)} MB, 结束: {memAfter \ (1024 * 1024)} MB")
-    End Sub
-
-    Private Sub VerifyMoleculeInfo()
-        Console.WriteLine("--- molecule_info.h5 ---")
-        Dim memBefore As Long = GC.GetTotalMemory(True)
-
-        Dim result As VisiumHDResult
-        Try
-            result = TenXReader.OpenVisiumHD(MoleculeInfoFile)
-        Catch ex As Exception
-            Check("OpenVisiumHD(molecule_info)", False, $"抛出异常: {ex.GetType().Name}: {ex.Message}")
-            System.IO.File.WriteAllText("G:\Erica\src\STRaid\test\molecule_err.txt", ex.ToString())
-            Return
-        End Try
-
-        Check("DetectKind=MoleculeInfo", result.kind = VisiumHDKind.MoleculeInfo, $"kind={result.kind}")
-
-        If result.moleculeInfo Is Nothing Then
-            Check("moleculeInfo 非空", False, "未解析出结果")
-            Return
-        End If
-
-        Dim nBarcodes As Integer = If(result.moleculeInfo.barcodes Is Nothing, 0, result.moleculeInfo.barcodes.Length)
-        Dim nFeatures As Integer = If(result.moleculeInfo.features Is Nothing, 0, result.moleculeInfo.features.Length)
-        Dim m As Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.SparseMatrix = result.moleculeInfo.matrix
-        Dim moleculeCount As Long = result.moleculeInfo.moleculeCount
-
-        Check("barcodes 规模", nBarcodes > 0, $"nBarcodes={nBarcodes}")
-        Check("features 规模", nFeatures > 0, $"nFeatures={nFeatures}")
-
-        If m Is Nothing Then
-            Check("matrix 非空", False, "聚合矩阵为 Nothing")
-            Return
-        End If
-
-        Check("矩阵维度[RowDimension]", m.RowDimension = nBarcodes, $"{m.RowDimension} (期望 {nBarcodes})")
-        Check("矩阵维度[ColumnDimension]", m.ColumnDimension = nFeatures, $"{m.ColumnDimension} (期望 {nFeatures})")
-
-        Dim nnz As Long = m.nnz
-        Check("nnz <= 分子总数", nnz <= moleculeCount, $"nnz={nnz:N0}, moleculeCount={moleculeCount:N0}")
-
-        ' 不变量：nnz 必须是 (barcode, feature) 去重后的合法值，且坐标范围由维度保证
-        Check("nnz 正向", nnz > 0, $"nnz={nnz:N0}")
-
-        ' 坐标范围抽查：若干越界坐标应返回 0（不存在）
-        Dim outOfRangeZero As Boolean = True
-        If nBarcodes > 0 AndAlso nFeatures > 0 Then
-            If m.Get(nBarcodes, 0) <> 0.0 Then outOfRangeZero = False
-            If m.Get(0, nFeatures) <> 0.0 Then outOfRangeZero = False
-        End If
-        Check("越界坐标返回 0", outOfRangeZero, "越界 (row,col) 取值为 0")
-
-        Dim memAfter As Long = GC.GetTotalMemory(True)
-        Console.WriteLine($"  [INFO] molecule_info 峰值托管内存: {memAfter \ (1024 * 1024)} MB, 结束: {memAfter \ (1024 * 1024)} MB")
-        Console.WriteLine($"  [INFO] UMI 矩阵维度 {m.RowDimension} x {m.ColumnDimension}, nnz={nnz:N0}, 分子总数={moleculeCount:N0}")
     End Sub
 
 End Module

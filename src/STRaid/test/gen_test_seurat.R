@@ -50,7 +50,10 @@ if (!dir.exists(out_dir)) {
   dir.create(out_dir, recursive = TRUE)
 }
 
+# Save as RDS (single object, no wrapper)
 saveRDS(seurat_obj, file = file.path(out_dir, "test_seurat.rds"))
+
+# Save as RDA (named variable inside environment)
 save(seurat_obj, file = file.path(out_dir, "test_seurat.rda"))
 
 cat("Seurat object generated successfully.\n")
@@ -59,3 +62,6 @@ cat("  genes:", nrow(seurat_obj), "\n")
 cat("  assays:", names(seurat_obj@assays), "\n")
 cat("  reductions:", names(seurat_obj@reductions), "\n")
 cat("  images:", names(seurat_obj@images), "\n")
+cat("\n")
+cat("Seurat object summary:\n")
+print(seurat_obj)
