@@ -58,8 +58,11 @@ Public Module SeuratObjectReader
 
             ' Check if this is already the Seurat object (has .class = "Seurat")
             Dim cls As Object = topList.getByName(".class")
-            If cls IsNot Nothing AndAlso cls.ToString() = "Seurat" Then
-                Return topList
+            If cls IsNot Nothing Then
+                Dim clsStr As String = cls.ToString()
+                If clsStr = "Seurat" OrElse clsStr.Contains("Seurat") Then
+                    Return topList
+                End If
             End If
 
             ' .rda format: the top-level list contains named variables.
@@ -67,28 +70,36 @@ Public Module SeuratObjectReader
             Dim names As String() = topList.getNames
             If names IsNot Nothing Then
                 For Each name As String In names
+                    If name Is Nothing Then Continue For
+
                     Dim slotVal As Object = topList.getByName(name)
                     If TypeOf slotVal Is list Then
                         Dim innerList As list = DirectCast(slotVal, list)
                         Dim innerCls As Object = innerList.getByName(".class")
-                        If innerCls IsNot Nothing AndAlso innerCls.ToString() = "Seurat" Then
+                        If innerCls IsNot Nothing Then
+                            Dim innerClsStr As String = innerCls.ToString()
+                            If innerClsStr = "Seurat" OrElse innerClsStr.Contains("Seurat") Then
+                                Return innerList
+                            End If
+                        End If
+
+                        ' Fallback: if .class extraction failed, check for
+                        ' characteristic Seurat slot names
+                        If innerList.getByName("assays") IsNot Nothing OrElse
+                           innerList.getByName("meta.data") IsNot Nothing Then
                             Return innerList
                         End If
                     End If
                 Next
             End If
 
-            ' If we still haven't found it, check if any sub-list has S4-like structure
-            ' (has "assays" or "meta.data" slots - characteristic of Seurat)
-            For Each name As String In If(names, New String() {})
-                Dim slotVal As Object = topList.getByName(name)
-                If TypeOf slotVal Is list Then
-                    Dim innerList As list = DirectCast(slotVal, list)
-                    If innerList.getByName("assays") IsNot Nothing Then
-                        Return innerList
-                    End If
-                End If
-            Next
+            ' If we still haven't found it, check if topList itself has
+            ' characteristic Seurat slots (for RDS where .class might be
+            ' empty/malformed but the slots are correct)
+            If topList.getByName("assays") IsNot Nothing OrElse
+               topList.getByName("meta.data") IsNot Nothing Then
+                Return topList
+            End If
         End If
 
         Return Nothing

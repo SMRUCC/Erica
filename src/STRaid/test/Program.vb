@@ -22,15 +22,12 @@ Module Program
         Console.WriteLine()
 
         ' === SeuratObject 读取验证 ===
-        ' Test basic R objects first to verify parser works
-        Console.WriteLine("=== Diagnose Test (Simple List RDS) ===")
-        Diagnose("G:\Erica\src\STRaid\test\data\simple_list.rds")
+        ' Run Diagnose first to see raw R# structure
+        Console.WriteLine("=== Diagnose Test (Seurat RDA) ===")
+        Diagnose("G:\Erica\src\STRaid\test\data\test_seurat.rda")
         Console.WriteLine()
-        Console.WriteLine("=== Diagnose Test (Simple List RDA) ===")
-        Diagnose("G:\Erica\src\STRaid\test\data\simple_list.rda")
-        Console.WriteLine()
-        Console.WriteLine("=== Diagnose Test (Simple DF RDS) ===")
-        Diagnose("G:\Erica\src\STRaid\test\data\simple_df.rds")
+        Console.WriteLine("=== Diagnose Test (Seurat RDS) ===")
+        Diagnose("G:\Erica\src\STRaid\test\data\test_seurat.rds")
         Console.WriteLine()
 
         TestSeuratObjectRDS()
