@@ -187,57 +187,91 @@ Public Module SeuratObjectReader
 
         Dim assaysList As list = DirectCast(assaysObj, list)
         Dim assayNames As String() = assaysList.getNames
-        If assayNames Is Nothing Then Return result
 
-        For Each assayName As String In assayNames
-            If assayName = ".class" Then Continue For
+        ' The active assay name from the Seurat object (e.g. "RNA")
+        Dim activeAssay As String = TryGetString(seuratList, "active.assay")
 
-            Dim assayObj As Object = assaysList.getByName(assayName)
-            If Not TypeOf assayObj Is list Then Continue For
+        ' Collect valid assay slots (filter out .class and empty names)
+        Dim assaySlots As New List(Of KeyValuePair(Of String, Object))
+        If assayNames IsNot Nothing Then
+            For Each name As String In assayNames
+                If name = ".class" Then Continue For
+                Dim val As Object = assaysList.getByName(name)
+                If TypeOf val Is list Then
+                    assaySlots.Add(New KeyValuePair(Of String, Object)(name, val))
+                End If
+            Next
+        End If
 
-            Dim assayList As list = DirectCast(assayObj, list)
-            Dim assay As New SeuratAssay() With {
-                .Name = assayName,
-                .Key = TryGetString(assayList, "key")
-            }
-
-            ' Extract layers (Seurat v5: counts, data, scale.data are in the layers slot)
-            ExtractAssayLayers(assayList, assay)
-
-            ' Extract variable features
-            assay.VariableFeatures = ExtractVariableFeatures(assayList)
-
-            ' Extract feature-level metadata
-            assay.FeatureMetaData = ExtractFeatureMetaData(assayList)
-
-            ' Extract feature names
-            assay.FeatureNames = ExtractFeatureNames(assayList, assay)
-
+        ' If only one assay and name is numeric/default, use active assay name
+        If assaySlots.Count = 1 AndAlso String.IsNullOrEmpty(assaySlots(0).Key) Then
+            Dim assayName As String = If(Not String.IsNullOrEmpty(activeAssay), activeAssay, "RNA")
+            Dim assayList As list = DirectCast(assaySlots(0).Value, list)
+            Dim assay As SeuratAssay = BuildAssay(assayList, assayName)
             result.Add(assayName, assay)
-        Next
+        Else
+            For Each kvp In assaySlots
+                Dim assayName As String = kvp.Key
+                If String.IsNullOrEmpty(assayName) Then assayName = $"Assay{result.Count + 1}"
+                Dim assayList As list = DirectCast(kvp.Value, list)
+                Dim assay As SeuratAssay = BuildAssay(assayList, assayName)
+                result.Add(assayName, assay)
+            Next
+        End If
 
         Return result
     End Function
 
     ''' <summary>
-    ''' Extract assay layers (counts, data, scale.data) from an assay list.
-    ''' Handles both Seurat v5 (layers slot) and v3/v4 (direct slots).
+    ''' Build a single SeuratAssay from its R# list representation.
     ''' </summary>
-    Private Sub ExtractAssayLayers(assayList As list, assay As SeuratAssay)
-        ' Seurat v5: layers are in the "layers" slot as a named list
+    Private Function BuildAssay(assayList As list, name As String) As SeuratAssay
+        Dim assay As New SeuratAssay() With {
+            .Name = name,
+            .Key = TryGetString(assayList, "key")
+        }
+
+        ' Extract layers (Seurat v5: layers slot with possibly unnamed sub-slots)
         Dim layersObj As Object = assayList.getByName("layers")
         If TypeOf layersObj Is list Then
             Dim layersList As list = DirectCast(layersObj, list)
-            assay.Counts = TryGetMatrix(layersList, "counts")
-            assay.Data = TryGetMatrix(layersList, "data")
-            assay.ScaleData = TryGetMatrix(layersList, "scale.data")
+            Dim layerNames As String() = layersList.getNames
+            Dim layerIndex As Integer = 0
+
+            If layerNames IsNot Nothing Then
+                For Each layerName As String In layerNames
+                    If layerName = ".class" Then Continue For
+                    Dim layerObj As Object = layersList.getByName(layerName)
+                    If TypeOf layerObj Is list Then
+                        Dim matrix As Double(,) = SparseListToMatrix(DirectCast(layerObj, list))
+                        ' Assign by position: 0=counts, 1=data, 2=scale.data
+                        Select Case layerIndex
+                            Case 0 : assay.Counts = matrix
+                            Case 1 : assay.Data = matrix
+                            Case 2 : assay.ScaleData = matrix
+                        End Select
+                        layerIndex += 1
+                    End If
+                Next
+            End If
         End If
 
-        ' Fallback: try direct slots (Seurat v3/v4 or if layers extraction failed)
+        ' Fallback: try direct slots
         If assay.Counts Is Nothing Then assay.Counts = TryGetMatrix(assayList, "counts")
         If assay.Data Is Nothing Then assay.Data = TryGetMatrix(assayList, "data")
         If assay.ScaleData Is Nothing Then assay.ScaleData = TryGetMatrix(assayList, "scale.data")
-    End Sub
+
+        ' Extract variable features
+        assay.VariableFeatures = ExtractVariableFeatures(assayList)
+
+        ' Extract feature-level metadata
+        assay.FeatureMetaData = ExtractFeatureMetaData(assayList)
+
+        ' Extract feature names
+        assay.FeatureNames = ExtractFeatureNames(assayList, assay)
+
+        Return assay
+    End Function
 
     ''' <summary>
     ''' Extract variable features from an assay.
@@ -415,6 +449,7 @@ Public Module SeuratObjectReader
         Dim redNames As String() = redList.getNames
         If redNames Is Nothing Then Return result
 
+        Dim reductionIndex As Integer = 0
         For Each redName As String In redNames
             If redName = ".class" Then Continue For
 
@@ -422,18 +457,31 @@ Public Module SeuratObjectReader
             If Not TypeOf redSlotObj Is list Then Continue For
 
             Dim redSlot As list = DirectCast(redSlotObj, list)
+            Dim key As String = TryGetString(redSlot, "key")
+
+            ' Infer name from key if slot name is empty/numeric
+            Dim displayName As String = redName
+            If String.IsNullOrEmpty(displayName) OrElse Integer.TryParse(displayName, Nothing) Then
+                If Not String.IsNullOrEmpty(key) Then
+                    ' key is like "PC_" or "UMAP_"
+                    displayName = key.TrimEnd("_"c).ToLower()
+                Else
+                    displayName = $"Reduction{reductionIndex + 1}"
+                End If
+            End If
+
             Dim reduction As New DimReduction() With {
-                .Name = redName,
+                .Name = displayName,
                 .Method = TryGetString(redSlot, "method"),
-                .Key = TryGetString(redSlot, "key")
+                .Key = key
             }
 
-            ' Extract cell.embeddings
-            reduction.CellEmbeddings = TryGetMatrix(redSlot, "cell.embeddings")
+            ' Extract cell.embeddings - may be flat vector or matrix
+            reduction.CellEmbeddings = TryGetReductionMatrix(redSlot, "cell.embeddings")
             reduction.CellNames = TryGetRowNames(redSlot, "cell.embeddings")
 
-            ' Extract feature.loadings (PCA rotation)
-            reduction.FeatureLoadings = TryGetMatrix(redSlot, "feature.loadings")
+            ' Extract feature.loadings (PCA rotation) - may be flat vector
+            reduction.FeatureLoadings = TryGetReductionMatrix(redSlot, "feature.loadings")
             reduction.FeatureLoadingNames = TryGetRowNames(redSlot, "feature.loadings")
 
             ' Extract stdev (PCA only)
@@ -449,7 +497,8 @@ Public Module SeuratObjectReader
                 End If
             End If
 
-            result.Add(redName, reduction)
+            result.Add(displayName, reduction)
+            reductionIndex += 1
         Next
 
         Return result
@@ -552,6 +601,93 @@ Public Module SeuratObjectReader
                     Next
                     Return result
                 End If
+            End If
+
+            Return Nothing
+        Catch
+            Return Nothing
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' Extract a reduction matrix (cell.embeddings or feature.loadings) which
+    ''' may be stored as a flat vector (n cells/features * n dimensions) with
+    ''' dim attribute stored separately, or as a full matrix.
+    ''' </summary>
+    Private Function TryGetReductionMatrix(l As list, name As String) As Double(,)
+        Try
+            Dim obj As Object = l.getByName(name)
+            If obj Is Nothing Then Return Nothing
+
+            ' Case 1: Already a matrix (2D array or dataframe)
+            If TypeOf obj Is dataframe Then
+                Return DataframeToMatrix(DirectCast(obj, dataframe))
+            End If
+
+            If TypeOf obj Is Array Then
+                Dim arr As Array = DirectCast(obj, Array)
+                If arr.Rank = 2 Then
+                    Return DirectCast(arr, Double(,))
+                End If
+            End If
+
+            ' Case 2: Flat vector - try to reshape using the reduction's dim info
+            ' The vector contains values in column-major order (R default).
+            ' We need to know the number of cells (rows) and dimensions (cols).
+            ' For PCA: ncols = stdev.length, for UMAP: ncols = 2.
+            If TypeOf obj Is vector Then
+                Dim v As vector = DirectCast(obj, vector)
+                If v.data Is Nothing OrElse v.data.Length = 0 Then Return Nothing
+
+                Dim nTotal As Integer = v.data.Length
+
+                ' Try to determine dimensions
+                Dim nCols As Integer = 0
+                ' For PCA, stdev length = ncols
+                Dim stdevObj As Object = l.getByName("stdev")
+                If TypeOf stdevObj Is vector Then
+                    Dim stdevV As vector = DirectCast(stdevObj, vector)
+                    If stdevV.data IsNot Nothing Then
+                        nCols = stdevV.data.Length
+                    End If
+                End If
+
+                ' For UMAP/t-SNE, key suggests 2D
+                If nCols = 0 Then
+                    Dim key As String = TryGetString(l, "key")
+                    If Not String.IsNullOrEmpty(key) Then
+                        If key.StartsWith("UMAP", StringComparison.OrdinalIgnoreCase) OrElse
+                           key.StartsWith("TSNE", StringComparison.OrdinalIgnoreCase) OrElse
+                           key.StartsWith("tSNE", StringComparison.OrdinalIgnoreCase) Then
+                            nCols = 2
+                        End If
+                    End If
+                End If
+
+                ' Default: assume 2 columns
+                If nCols = 0 Then nCols = 2
+
+                Dim nRows As Integer = nTotal \ nCols
+
+                If nRows * nCols <> nTotal Then
+                    ' Mismatch - try swapping
+                    Dim temp As Integer = nRows
+                    nRows = nCols
+                    nCols = temp
+                    If nRows * nCols <> nTotal Then
+                        Return Nothing
+                    End If
+                End If
+
+                Dim result As Double(,) = New Double(nRows - 1, nCols - 1) {}
+                ' R stores column-major: element [i, j] is at position i + j * nRows
+                For j As Integer = 0 To nCols - 1
+                    For i As Integer = 0 To nRows - 1
+                        result(i, j) = Convert.ToDouble(v.data.GetValue(i + j * nRows))
+                    Next
+                Next
+
+                Return result
             End If
 
             Return Nothing
