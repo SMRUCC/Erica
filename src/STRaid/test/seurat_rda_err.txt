@@ -28,4 +28,4 @@ System.InvalidProgramException: Common Language Runtime detected an invalid prog
    at SMRUCC.Rsharp.RDataSet.Reader.ParseData(Stream bin, Boolean expand_altrep, Boolean debug) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 598
    at Erica.Analysis.SpatialTissue.RaidData.SeuratObjectReader.ReadStream(Stream stream) in G:\Erica\src\STRaid\SeuratObject\SeuratObjectReader.vb:line 32
    at Erica.Analysis.SpatialTissue.RaidData.SeuratObjectReader.ReadFile(String filePath) in G:\Erica\src\STRaid\SeuratObject\SeuratObjectReader.vb:line 20
-   at test.Program.TestSeuratObjectRDA() in G:\Erica\src\STRaid\test\Program.vb:line 93
+   at test.Program.TestSeuratObjectRDA() in G:\Erica\src\STRaid\test\Program.vb:line 96
