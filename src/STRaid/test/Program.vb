@@ -58,9 +58,7 @@ Module Program
         Dim seurat As SeuratObject = Nothing
 
         Try
-            Console.WriteLine($"  [DEBUG] Calling SeuratObjectReader.ReadFile for RDS...")
             seurat = SeuratObjectReader.ReadFile(filePath)
-            Console.WriteLine($"  [DEBUG] ReadFile completed successfully.")
         Catch ex As Exception
             Check("SeuratObjectReader.ReadFile(RDS)", False, $"抛出异常: {ex.GetType().Name}: {ex.Message}")
             Console.Error.WriteLine($"  [STACK] {ex.StackTrace}")
