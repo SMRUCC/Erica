@@ -22,13 +22,8 @@ Module Program
         Console.WriteLine()
 
         ' === SeuratObject 读取验证 ===
-        ' Run Diagnose first to see raw R# structure
-        Console.WriteLine("=== Diagnose Test (Seurat RDA) ===")
-        Diagnose("G:\Erica\src\STRaid\test\data\test_seurat.rda")
-        Console.WriteLine()
-        Console.WriteLine("=== Diagnose Test (Seurat RDS) ===")
-        Diagnose("G:\Erica\src\STRaid\test\data\test_seurat.rds")
-        Console.WriteLine()
+        TestSeuratObjectRDS()
+        TestSeuratObjectRDA()
 
         TestSeuratObjectRDS()
         TestSeuratObjectRDA()

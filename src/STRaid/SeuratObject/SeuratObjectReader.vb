@@ -368,13 +368,30 @@ Public Module SeuratObjectReader
 
         Dim metaObj As Object = seuratList.getByName("meta.data")
         If metaObj Is Nothing Then Return result
-        If Not TypeOf metaObj Is dataframe Then Return result
 
-        Dim df As dataframe = DirectCast(metaObj, dataframe)
-        If df.columns IsNot Nothing Then
-            For Each kvp In df.columns
-                result(kvp.Key) = kvp.Value
-            Next
+        If TypeOf metaObj Is dataframe Then
+            Dim df As dataframe = DirectCast(metaObj, dataframe)
+            If df.columns IsNot Nothing Then
+                For Each kvp In df.columns
+                    result(kvp.Key) = kvp.Value
+                Next
+            End If
+        ElseIf TypeOf metaObj Is list Then
+            ' meta.data may be a list instead of dataframe if slot names were lost
+            Dim ml As list = DirectCast(metaObj, list)
+            Dim names As String() = ml.getNames
+            If names IsNot Nothing Then
+                For Each name As String In names
+                    If name = ".class" Then Continue For
+                    Dim val As Object = ml.getByName(name)
+                    If TypeOf val Is vector Then
+                        Dim v As vector = DirectCast(val, vector)
+                        result(name) = v.data
+                    ElseIf TypeOf val Is Array Then
+                        result(name) = DirectCast(val, Array)
+                    End If
+                Next
+            End If
         End If
 
         Return result
