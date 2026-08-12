@@ -3,22 +3,22 @@ System.InvalidProgramException: Common Language Runtime detected an invalid prog
    at SMRUCC.Rsharp.RDataSet.ParserXDR.parse_int() in G:\GCModeller\src\R-sharp\studio\RData\ParserXDR.vb:line 80
    at SMRUCC.Rsharp.RDataSet.Reader.parse_R_object(List`1 reference_list, Boolean is_root) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 268
    at SMRUCC.Rsharp.RDataSet.Reader._Closure$__15-0._Lambda$__0() in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 359
-   at SMRUCC.Rsharp.RDataSet.Reader.parseVector[T](Func`1 parse) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 497
+   at SMRUCC.Rsharp.RDataSet.Reader.parseVector[T](Func`1 parse) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 508
    at SMRUCC.Rsharp.RDataSet.Reader.parse_R_object(List`1 reference_list, Boolean is_root) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 359
    at SMRUCC.Rsharp.RDataSet.Reader._Closure$__15-0._Lambda$__0() in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 359
-   at SMRUCC.Rsharp.RDataSet.Reader.parseVector[T](Func`1 parse) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 497
+   at SMRUCC.Rsharp.RDataSet.Reader.parseVector[T](Func`1 parse) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 508
    at SMRUCC.Rsharp.RDataSet.Reader.parse_R_object(List`1 reference_list, Boolean is_root) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 359
-   at SMRUCC.Rsharp.RDataSet.Reader.parse_R_object(List`1 reference_list, Boolean is_root) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 467
+   at SMRUCC.Rsharp.RDataSet.Reader.parse_R_object(List`1 reference_list, Boolean is_root) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 478
    at SMRUCC.Rsharp.RDataSet.Reader._Closure$__15-0._Lambda$__0() in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 359
-   at SMRUCC.Rsharp.RDataSet.Reader.parseVector[T](Func`1 parse) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 497
+   at SMRUCC.Rsharp.RDataSet.Reader.parseVector[T](Func`1 parse) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 508
    at SMRUCC.Rsharp.RDataSet.Reader.parse_R_object(List`1 reference_list, Boolean is_root) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 359
    at SMRUCC.Rsharp.RDataSet.Reader.parse_R_object(List`1 reference_list, Boolean is_root) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 309
    at SMRUCC.Rsharp.RDataSet.Reader.parse_R_object(List`1 reference_list, Boolean is_root) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 369
    at SMRUCC.Rsharp.RDataSet.Reader.parse_R_object(List`1 reference_list, Boolean is_root) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 309
    at SMRUCC.Rsharp.RDataSet.Reader.parse_all() in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 152
-   at SMRUCC.Rsharp.RDataSet.Reader.ParseRDataBinary(BinaryDataReader bin, Boolean expand_altrep, Boolean debug) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 536
-   at SMRUCC.Rsharp.RDataSet.Reader.ParseData(Stream bin, Boolean expand_altrep, Boolean debug) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 558
-   at SMRUCC.Rsharp.RDataSet.Reader.ParseData(Stream bin, Boolean expand_altrep, Boolean debug) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 570
+   at SMRUCC.Rsharp.RDataSet.Reader.ParseRDataBinary(BinaryDataReader bin, Boolean expand_altrep, Boolean debug) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 547
+   at SMRUCC.Rsharp.RDataSet.Reader.ParseData(Stream bin, Boolean expand_altrep, Boolean debug) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 569
+   at SMRUCC.Rsharp.RDataSet.Reader.ParseData(Stream bin, Boolean expand_altrep, Boolean debug) in G:\GCModeller\src\R-sharp\studio\RData\Reader.vb:line 581
    at Erica.Analysis.SpatialTissue.RaidData.SeuratObjectReader.ReadStream(Stream stream) in G:\Erica\src\STRaid\SeuratObject\SeuratObjectReader.vb:line 31
    at Erica.Analysis.SpatialTissue.RaidData.SeuratObjectReader.ReadFile(String filePath) in G:\Erica\src\STRaid\SeuratObject\SeuratObjectReader.vb:line 20
-   at test.Program.TestSeuratObjectRDA() in G:\Erica\src\STRaid\test\Program.vb:line 85
+   at test.Program.TestSeuratObjectRDA() in G:\Erica\src\STRaid\test\Program.vb:line 86

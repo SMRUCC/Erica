@@ -58,6 +58,7 @@ Module Program
             seurat = SeuratObjectReader.ReadFile(filePath)
         Catch ex As Exception
             Check("SeuratObjectReader.ReadFile(RDS)", False, $"抛出异常: {ex.GetType().Name}: {ex.Message}")
+            Console.Error.WriteLine($"  [STACK] {ex.StackTrace}")
             File.WriteAllText("G:\Erica\src\STRaid\test\seurat_rds_err.txt", ex.ToString())
             Return
         End Try
