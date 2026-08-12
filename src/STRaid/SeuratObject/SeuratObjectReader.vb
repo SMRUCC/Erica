@@ -28,14 +28,17 @@ Public Module SeuratObjectReader
     ''' <returns>A populated SeuratObject.</returns>
     Public Function ReadStream(stream As Stream) As SeuratObject
         ' Step 1: Parse the RData binary format
+        Console.Error.WriteLine("[SeuratObjectReader] Step 1: Parsing RData...")
         Dim rdata As RData = Reader.ParseData(stream)
+        Console.Error.WriteLine("[SeuratObjectReader] Step 1: Done. Object type = " & rdata.object?.info.type.ToString())
 
         ' Step 2: Convert RObject tree to R# objects
+        Console.Error.WriteLine("[SeuratObjectReader] Step 2: Converting to R# objects...")
         Dim rObj As Object = ConvertToR.ToRObject(rdata.object)
+        Console.Error.WriteLine("[SeuratObjectReader] Step 2: Done. Type = " & If(rObj?.GetType().Name, "Nothing"))
 
         ' Step 3: Navigate to the Seurat object
-        ' For .rda: ToRObject returns a list containing named variables
-        ' For .rds: ToRObject returns the object directly
+        Console.Error.WriteLine("[SeuratObjectReader] Step 3: Locating Seurat list...")
         Dim seuratList As list = LocateSeuratList(rObj)
         If seuratList Is Nothing Then
             Throw New InvalidDataException("Could not locate Seurat object in the R data file.")

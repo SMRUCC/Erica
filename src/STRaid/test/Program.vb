@@ -22,6 +22,11 @@ Module Program
         Console.WriteLine()
 
         ' === SeuratObject 读取验证 ===
+        ' First, run the original diagnostic to check if basic parsing works
+        Console.WriteLine("=== Original Diagnose Test ===")
+        Diagnose("G:\Erica\src\STRaid\test\data\test_seurat.rds")
+        Console.WriteLine()
+
         TestSeuratObjectRDS()
         TestSeuratObjectRDA()
 
@@ -55,7 +60,9 @@ Module Program
         Dim seurat As SeuratObject = Nothing
 
         Try
+            Console.WriteLine($"  [DEBUG] Calling SeuratObjectReader.ReadFile for RDS...")
             seurat = SeuratObjectReader.ReadFile(filePath)
+            Console.WriteLine($"  [DEBUG] ReadFile completed successfully.")
         Catch ex As Exception
             Check("SeuratObjectReader.ReadFile(RDS)", False, $"抛出异常: {ex.GetType().Name}: {ex.Message}")
             Console.Error.WriteLine($"  [STACK] {ex.StackTrace}")
