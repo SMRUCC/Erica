@@ -1,3 +1,5 @@
+Imports std = System.Math
+
 ' ============================================================================
 ' SpatialDEModel.vb — SpatialDE 核心算法
 ' ----------------------------------------------------------------------------
@@ -15,10 +17,6 @@
 '   LL = -N/2·log(2π) - 1/2·log|σ_s²·(Σ+δI)|
 '        - 1/2·(y-μ1)ᵀ(σ_s²(Σ+δI))⁻¹(y-μ1)     (Eq. 3)
 ' ============================================================================
-
-Imports SpatialOmics.Math
-Imports System
-Imports System.Linq
 
 Namespace SpatialOmics.SpatialDE
 
@@ -74,7 +72,7 @@ Namespace SpatialOmics.SpatialDE
             End Get
         End Property
 
-        ''' <summary>是否通过显著性检验（q < 0.05）</summary>
+        ''' <summary>是否通过显著性检验（q &lt; 0.05）</summary>
         Public ReadOnly Property IsSignificant As Boolean
             Get
                 Return QValue < 0.05
@@ -120,14 +118,14 @@ Namespace SpatialOmics.SpatialDE
         Private Sub ComputeDistanceRange()
             _maxDist = 0.0
             _minDist = Double.MaxValue
-            For i = 0 To _n - 2
-                For j = i + 1 To _n - 1
+            For I As Integer = 0 To _n - 2
+                For j = I + 1 To _n - 1
                     Dim d2 As Double = 0.0
                     For d = 0 To _coords.Cols - 1
-                        Dim diff = _coords(i, d) - _coords(j, d)
+                        Dim diff = _coords(I, d) - _coords(j, d)
                         d2 += diff * diff
                     Next
-                    Dim dist = Math.Sqrt(d2)
+                    Dim dist = std.Sqrt(d2)
                     If dist > 0 AndAlso dist < _minDist Then
                         _minDist = dist
                     End If
@@ -142,10 +140,10 @@ Namespace SpatialOmics.SpatialDE
 
         Private Function GenerateLengthScaleGrid(nPoints As Integer) As Double()
             Dim grid(nPoints - 1) As Double
-            Dim logMin = Math.Log(_minDist * 0.5)
-            Dim logMax = Math.Log(_maxDist * 2.0)
-            For i = 0 To nPoints - 1
-                grid(i) = Math.Exp(logMin + (logMax - logMin) * i / (nPoints - 1))
+            Dim logMin = std.Log(_minDist * 0.5)
+            Dim logMax = std.Log(_maxDist * 2.0)
+            For I As Integer = 0 To nPoints - 1
+                grid(I) = std.Exp(logMin + (logMax - logMin) * I / (nPoints - 1))
             Next
             Return grid
         End Function
@@ -188,8 +186,8 @@ Namespace SpatialOmics.SpatialDE
             ' BH-FDR 校正
             Dim pVals = results.Select(Function(r) r.PValue).ToArray()
             Dim qVals = Statistics.BenjaminiHochberg(pVals)
-            For i = 0 To results.Count - 1
-                results(i).QValue = qVals(i)
+            For I As Integer = 0 To results.Count - 1
+                results(I).QValue = qVals(I)
             Next
 
             Return results
@@ -255,13 +253,13 @@ Namespace SpatialOmics.SpatialDE
                 ' 对 δ 做一维优化（Brent）
                 ' 目标：最大化对数边际似然
                 Dim negLogLik As Func(Of Double, Double) = Function(delta)
-                                                                Try
-                                                                    Return -ComputeLogMarginalLikelihood(
+                                                               Try
+                                                                   Return -ComputeLogMarginalLikelihood(
                                                                         yCentered, K, delta, n)
-                                                                Catch
-                                                                    Return 1.0E+20
-                                                                End Try
-                                                            End Function
+                                                               Catch
+                                                                   Return 1.0E+20
+                                                               End Try
+                                                           End Function
 
                 Dim deltaMin = 0.0001
                 Dim deltaMax = 10.0
@@ -280,7 +278,7 @@ Namespace SpatialOmics.SpatialDE
             Next
 
             ' 计算 BIC = log(N)·M - 2·LL（M = 参数数 = 3: μ, σ_s², δ；l 从网格选取）
-            Dim bic = Math.Log(n) * 3 - 2.0 * bestLL
+            Dim bic = std.Log(n) * 3 - 2.0 * bestLL
 
             Return New SpatialDEResult With {
                 .GeneName = geneName,
@@ -316,16 +314,16 @@ Namespace SpatialOmics.SpatialDE
             ' 残差二次型 = yᵀ C⁻¹ y - N·μ²  (已中心化，μ_c=0 for centered y)
             ' 对于中心化的 y，μ=0，二次型 = y_cᵀ C⁻¹ y_c
             Dim quad As Double = 0.0
-            For i = 0 To n - 1
-                quad += yCentered(i) * Cinv_y(i)
+            For I As Integer = 0 To n - 1
+                quad += yCentered(I) * Cinv_y(I)
             Next
 
-            Dim sigmaSqVal = Math.Max(quad / n, 1.0E-20)
+            Dim sigmaSqVal = std.Max(quad / n, 1.0E-20)
 
             ' LL = -N/2·log(2π) - 1/2·(N·log(σ_s²) + log|C|) - 1/2·N
             ' (二次型 / σ_s² = N，因 σ_s² = quad/N)
-            Dim ll = -0.5 * n * Math.Log(2.0 * Math.PI) -
-                     0.5 * (n * Math.Log(sigmaSqVal) + logDetC) -
+            Dim ll = -0.5 * n * std.Log(2.0 * std.PI) -
+                     0.5 * (n * std.Log(sigmaSqVal) + logDetC) -
                      0.5 * n
 
             Return ll
@@ -345,32 +343,32 @@ Namespace SpatialOmics.SpatialDE
 
             ' C⁻¹·1
             Dim ones(n - 1) As Double
-            For i = 0 To n - 1
-                ones(i) = 1.0
+            For I As Integer = 0 To n - 1
+                ones(I) = 1.0
             Next
             Dim Cinv1 = C.SolveCholesky(ones)
 
             ' μ = (1ᵀ C⁻¹ 1)⁻¹ · (1ᵀ C⁻¹ y)
             Dim denom As Double = 0.0  ' 1ᵀ C⁻¹ 1
             Dim numer As Double = 0.0  ' 1ᵀ C⁻¹ y
-            For i = 0 To n - 1
-                denom += Cinv1(i)
-                numer += CinvY(i)
+            For I As Integer = 0 To n - 1
+                denom += Cinv1(I)
+                numer += CinvY(I)
             Next
 
-            Dim mu = If(Math.Abs(denom) > 1.0E-20, numer / denom, 0.0)
+            Dim mu = If(std.Abs(denom) > 1.0E-20, numer / denom, 0.0)
 
             ' σ_s² = (y - μ·1)ᵀ C⁻¹ (y - μ·1) / N
             Dim resid(n - 1) As Double
-            For i = 0 To n - 1
-                resid(i) = yCentered(i) - mu
+            For I As Integer = 0 To n - 1
+                resid(I) = yCentered(I) - mu
             Next
             Dim CinvResid = C.SolveCholesky(resid)
             Dim quad As Double = 0.0
-            For i = 0 To n - 1
-                quad += resid(i) * CinvResid(i)
+            For I As Integer = 0 To n - 1
+                quad += resid(I) * CinvResid(I)
             Next
-            Dim sigmaSq = Math.Max(quad / n, 1.0E-20)
+            Dim sigmaSq = std.Max(quad / n, 1.0E-20)
 
             Return (mu, sigmaSq, CinvY)
         End Function
@@ -388,8 +386,8 @@ Namespace SpatialOmics.SpatialDE
 
             ' LL = -N/2·log(2π) - N/2·log(σ²) - N/2
             ' (因 Σ(y-μ)²/(σ²) = (N-1)·var(y)/σ² = N-1 ≈ N)
-            Return -0.5 * n * Math.Log(2.0 * Math.PI) -
-                   0.5 * n * Math.Log(sigmaSq) -
+            Return -0.5 * n * std.Log(2.0 * std.PI) -
+                   0.5 * n * std.Log(sigmaSq) -
                    0.5 * (n - 1)
         End Function
 

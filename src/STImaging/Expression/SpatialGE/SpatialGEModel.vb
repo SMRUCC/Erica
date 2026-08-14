@@ -1,3 +1,5 @@
+Imports std = System.Math
+
 ' ============================================================================
 ' SpatialGEModel.vb — spatialGE 主分析模型
 ' ----------------------------------------------------------------------------
@@ -11,10 +13,6 @@
 '   4. STclust 空间感知聚类
 '   5. 汇总结果
 ' ============================================================================
-
-Imports SpatialOmics.Math
-Imports System
-Imports System.Linq
 
 Namespace SpatialOmics.SpatialGE
 
@@ -69,8 +67,8 @@ Namespace SpatialOmics.SpatialGE
                 ' 标准化 + log2
                 For g = 0 To nGenes - 1
                     ' CPM (counts per million) + log2
-                    Dim cpm = counts(g, j) / libSize * 1.0E6
-                    result(g, j) = Math.Log2(cpm + pseudo)
+                    Dim cpm = counts(g, j) / libSize * 1000000.0
+                    result(g, j) = std.Log2(cpm + pseudo)
                 Next
             Next
 
@@ -190,14 +188,14 @@ Namespace SpatialOmics.SpatialGE
         ''' <summary>估计中位样本间距</summary>
         Private Function EstimateMedianDistance() As Double
             Dim dists As New List(Of Double)
-            For i = 0 To _n - 2
-                For j = i + 1 To _n - 1
+            For I As Integer = 0 To _n - 2
+                For j = I + 1 To _n - 1
                     Dim d2 As Double = 0.0
                     For d = 0 To _coords.Cols - 1
-                        Dim diff = _coords(i, d) - _coords(j, d)
+                        Dim diff = _coords(I, d) - _coords(j, d)
                         d2 += diff * diff
                     Next
-                    dists.Add(Math.Sqrt(d2))
+                    dists.Add(std.Sqrt(d2))
                 Next
             Next
             dists.Sort()

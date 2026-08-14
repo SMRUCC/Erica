@@ -22,4 +22,8 @@
   <Project Path="STImaging/STImaging.vbproj">
     <Platform Solution="*|x64" Project="x64" />
   </Project>
+  <Project Path="STImaging/test/test.vbproj">
+    <BuildType Solution="MEMI-Desktop|*" Project="Debug" />
+    <BuildType Solution="Rsharp_app_release|*" Project="Release" />
+  </Project>
 </Solution>

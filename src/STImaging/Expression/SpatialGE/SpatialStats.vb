@@ -1,3 +1,5 @@
+Imports std = System.Math
+
 ' ============================================================================
 ' SpatialStats.vb — 空间自相关统计量
 ' ----------------------------------------------------------------------------
@@ -20,10 +22,6 @@
 '   Moran (1950), Geary (1954), Getis & Ord (1992)
 '   Ospina et al. (2022) Bioinformatics 38(9):2645-2647
 ' ============================================================================
-
-Imports SpatialOmics.Math
-Imports System
-Imports System.Linq
 
 Namespace SpatialOmics.SpatialGE
 
@@ -97,27 +95,27 @@ Namespace SpatialOmics.SpatialGE
             Dim W As New Matrix(_n, _n)
 
             ' 计算所有点对距离
-            For i = 0 To _n - 1
+            For I As Integer = 0 To _n - 1
                 ' 找到 i 的 K 个最近邻
                 Dim dists(_n - 1) As (idx As Integer, dist As Double)
                 For j = 0 To _n - 1
                     Dim d2 As Double = 0.0
                     For d = 0 To _coords.Cols - 1
-                        Dim diff = _coords(i, d) - _coords(j, d)
+                        Dim diff = _coords(I, d) - _coords(j, d)
                         d2 += diff * diff
                     Next
-                    dists(j) = (j, Math.Sqrt(d2))
+                    dists(j) = (j, std.Sqrt(d2))
                 Next
 
                 ' 按距离排序，取前 K 个（排除自身）
-                Dim neighbors = dists.Where(Function(x) x.idx <> i).
+                Dim neighbors = dists.Where(Function(x) x.idx <> I()).
                                       OrderBy(Function(x) x.dist).
                                       Take(kNeighbors).ToArray()
 
                 ' 行标准化权重
                 Dim w As Double = 1.0 / neighbors.Length
                 For Each nb In neighbors
-                    W(i, nb.idx) = w
+                    w(I, nb.idx) = w
                 Next
             Next
 
@@ -129,16 +127,16 @@ Namespace SpatialOmics.SpatialGE
         ''' </summary>
         Public Function BuildDistanceWeights(distanceThreshold As Double) As Matrix
             Dim W As New Matrix(_n, _n)
-            For i = 0 To _n - 1
+            For I As Integer = 0 To _n - 1
                 Dim neighbors As New List(Of Integer)
                 For j = 0 To _n - 1
-                    If i = j Then Continue For
+                    If I = j Then Continue For
                     Dim d2 As Double = 0.0
                     For d = 0 To _coords.Cols - 1
-                        Dim diff = _coords(i, d) - _coords(j, d)
+                        Dim diff = _coords(I, d) - _coords(j, d)
                         d2 += diff * diff
                     Next
-                    If Math.Sqrt(d2) <= distanceThreshold Then
+                    If std.Sqrt(d2) <= distanceThreshold Then
                         neighbors.Add(j)
                     End If
                 Next
@@ -146,7 +144,7 @@ Namespace SpatialOmics.SpatialGE
                 If neighbors.Count > 0 Then
                     Dim w As Double = 1.0 / neighbors.Count
                     For Each nb In neighbors
-                        W(i, nb) = w
+                        w(I, nb) = w
                     Next
                 End If
             Next
@@ -213,17 +211,17 @@ Namespace SpatialOmics.SpatialGE
 
             ' S₀ = Σᵢ Σⱼ wᵢⱼ
             Dim S0 As Double = 0.0
-            For i = 0 To n - 1
+            For I As Integer = 0 To n - 1
                 For j = 0 To n - 1
-                    S0 += W(i, j)
+                    S0 += W(I, j)
                 Next
             Next
 
             ' Σᵢ Σⱼ wᵢⱼ(xᵢ-x̄)(xⱼ-x̄)
             Dim numerator As Double = 0.0
-            For i = 0 To n - 1
+            For I As Integer = 0 To n - 1
                 For j = 0 To n - 1
-                    numerator += W(i, j) * centered(i) * centered(j)
+                    numerator += W(I, j) * centered(I) * centered(j)
                 Next
             Next
 
@@ -232,24 +230,24 @@ Namespace SpatialOmics.SpatialGE
 
             ' 方差（随机化假设下的近似）
             Dim S1 As Double = 0.0
-            For i = 0 To n - 1
+            For I As Integer = 0 To n - 1
                 Dim rowSum As Double = 0.0
                 Dim colSum As Double = 0.0
                 For j = 0 To n - 1
-                    rowSum += W(i, j)
-                    colSum += W(j, i)
+                    rowSum += W(I, j)
+                    colSum += W(j, I)
                 Next
                 S1 += (rowSum + colSum) ^ 2
             Next
             S1 /= 2.0
 
             Dim S2 As Double = 0.0
-            For i = 0 To n - 1
+            For I As Integer = 0 To n - 1
                 Dim rowSum As Double = 0.0
                 Dim colSum As Double = 0.0
                 For j = 0 To n - 1
-                    rowSum += W(i, j)
-                    colSum += W(j, i)
+                    rowSum += W(I, j)
+                    colSum += W(j, I)
                 Next
                 S2 += (rowSum - colSum) ^ 2
             Next
@@ -259,9 +257,9 @@ Namespace SpatialOmics.SpatialGE
                        ((n - 1) * (n - 2) * (n - 3) * S0 * S0) -
                        expected * expected
 
-            If varI < 0 Then varI = Math.Abs(varI)
-            Dim z = If(varI > 0, (I - expected) / Math.Sqrt(varI), 0.0)
-            Dim p = 2.0 * (1.0 - NormalCDF(Math.Abs(z)))
+            If varI < 0 Then varI = std.Abs(varI)
+            Dim z = If(varI > 0, (I - expected) / std.Sqrt(varI), 0.0)
+            Dim p = 2.0 * (1.0 - NormalCDF(std.Abs(z)))
 
             Return (I, expected, z, p)
         End Function
@@ -278,8 +276,8 @@ Namespace SpatialOmics.SpatialGE
             Dim n = values.Length
             Dim xBar = Statistics.Mean(values)
             Dim ss As Double = 0.0
-            For i = 0 To n - 1
-                ss += (values(i) - xBar) ^ 2
+            For I As Integer = 0 To n - 1
+                ss += (values(I) - xBar) ^ 2
             Next
             If ss < 1.0E-20 Then
                 Return (1.0, 1.0, 0.0, 1.0)
@@ -287,10 +285,10 @@ Namespace SpatialOmics.SpatialGE
 
             Dim S0 As Double = 0.0
             Dim numerator As Double = 0.0
-            For i = 0 To n - 1
+            For I As Integer = 0 To n - 1
                 For j = 0 To n - 1
-                    S0 += W(i, j)
-                    numerator += W(i, j) * (values(i) - values(j)) ^ 2
+                    S0 += W(I, j)
+                    numerator += W(I, j) * (values(I) - values(j)) ^ 2
                 Next
             Next
 
@@ -301,8 +299,8 @@ Namespace SpatialOmics.SpatialGE
             Dim varC = (2.0 * S0 * S0 + n * (n - 1) * S0 - n * S1) /
                        (S0 * S0 * (n - 1) * (n - 2)) - 1.0
             If varC < 1.0E-20 Then varC = 1.0
-            Dim z = (C - expected) / Math.Sqrt(varC)
-            Dim p = 2.0 * (1.0 - NormalCDF(Math.Abs(z)))
+            Dim z = (C - expected) / std.Sqrt(varC)
+            Dim p = 2.0 * (1.0 - NormalCDF(std.Abs(z)))
 
             Return (C, expected, z, p)
         End Function
@@ -320,16 +318,16 @@ Namespace SpatialOmics.SpatialGE
             Dim n = values.Length
             Dim xBar = Statistics.Mean(values)
             Dim S As Double = 0.0
-            For i = 0 To n - 1
-                S += (values(i) - xBar) ^ 2
+            For I As Integer = 0 To n - 1
+                S += (values(I) - xBar) ^ 2
             Next
-            S = Math.Sqrt(S / n)
+            S = std.Sqrt(S / n)
 
             Dim gi(n - 1) As Double
             Dim zi(n - 1) As Double
             Dim pi(n - 1) As Double
 
-            For i = 0 To n - 1
+            For I As Integer = 0 To n - 1
                 ' Σⱼ wᵢⱼ xⱼ
                 Dim sumWX As Double = 0.0
                 ' Σⱼ wᵢⱼ
@@ -338,23 +336,23 @@ Namespace SpatialOmics.SpatialGE
                 Dim sumW2 As Double = 0.0
 
                 For j = 0 To n - 1
-                    sumWX += W(i, j) * values(j)
-                    sumW += W(i, j)
-                    sumW2 += W(i, j) * W(i, j)
+                    sumWX += W(I, j) * values(j)
+                    sumW += W(I, j)
+                    sumW2 += W(I, j) * W(I, j)
                 Next
 
                 ' 分子
                 Dim numer = sumWX - xBar * sumW
                 ' 分母
-                Dim denom = S * Math.Sqrt((n * sumW2 - sumW * sumW) / (n - 1))
+                Dim denom = S * std.Sqrt((n * sumW2 - sumW * sumW) / (n - 1))
 
-                If Math.Abs(denom) < 1.0E-20 Then
-                    zi(i) = 0.0
+                If std.Abs(denom) < 1.0E-20 Then
+                    zi(I) = 0.0
                 Else
-                    zi(i) = numer / denom
+                    zi(I) = numer / denom
                 End If
 
-                pi(i) = 2.0 * (1.0 - NormalCDF(Math.Abs(zi(i))))
+                pi(I) = 2.0 * (1.0 - NormalCDF(std.Abs(zi(I))))
             Next
 
             Return (gi, zi, pi)
@@ -364,14 +362,14 @@ Namespace SpatialOmics.SpatialGE
         Private Function NormalCDF(z As Double) As Double
             ' Abramowitz & Stegun 近似
             Dim sign = If(z >= 0, 1, -1)
-            z = Math.Abs(z) / Math.Sqrt(2.0)
+            z = std.Abs(z) / std.Sqrt(2.0)
             Dim t = 1.0 / (1.0 + 0.3275911 * z)
             Dim poly = t * (0.254829592 +
                      t * (-0.284496736 +
                      t * (1.421413741 +
                      t * (-1.453152027 +
                      t * 1.061405429))))
-            Dim erf = 1.0 - poly * Math.Exp(-z * z)
+            Dim erf = 1.0 - poly * std.Exp(-z * z)
             Return 0.5 * (1.0 + sign * erf)
         End Function
 

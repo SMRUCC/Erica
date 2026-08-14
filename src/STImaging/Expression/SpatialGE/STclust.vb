@@ -1,3 +1,5 @@
+Imports std = System.Math
+
 ' ============================================================================
 ' STclust.vb — 空间感知聚类（STclust）
 ' ----------------------------------------------------------------------------
@@ -16,10 +18,6 @@
 '   Ospina et al. (2022) Bioinformatics 38(9):2645-2647
 '   Ward, J.H. (1963) J. Am. Stat. Assoc. 58:236-244
 ' ============================================================================
-
-Imports SpatialOmics.Math
-Imports System
-Imports System.Linq
 
 Namespace SpatialOmics.SpatialGE
 
@@ -85,7 +83,7 @@ Namespace SpatialOmics.SpatialGE
                             Optional normalizeD1 As Boolean = True) As STclustResult
 
             Dim nGenes = expression.Rows
-            nTopGenes = Math.Min(nTopGenes, nGenes)
+            nTopGenes = std.Min(nTopGenes, nGenes)
 
             ' 1. 检测 top-N 变异基因
             Dim variances(nGenes - 1) As Double
@@ -105,12 +103,12 @@ Namespace SpatialOmics.SpatialGE
 
             ' 4. 组合距离：D = (1-w)·D1 + w·D2
             Dim D As New Matrix(_n, _n)
-            For i = 0 To _n - 1
-                For j = i To _n - 1
-                    Dim val = (1.0 - spatialWeight) * D1(i, j) +
-                              spatialWeight * D2(i, j)
-                    D(i, j) = val
-                    D(j, i) = val
+            For I As Integer = 0 To _n - 1
+                For j = I To _n - 1
+                    Dim val = (1.0 - spatialWeight) * D1(I, j) +
+                              spatialWeight * D2(I, j)
+                    D(I, j) = val
+                    D(j, I) = val
                 Next
             Next
 
@@ -137,25 +135,25 @@ Namespace SpatialOmics.SpatialGE
             Dim D As New Matrix(_n, _n)
             Dim maxDist As Double = 0.0
 
-            For i = 0 To _n - 1
-                For j = i To _n - 1
+            For I As Integer = 0 To _n - 1
+                For j = I To _n - 1
                     Dim d2 As Double = 0.0
                     For Each g In geneIndices
-                        Dim diff = expr(g, i) - expr(g, j)
+                        Dim diff = expr(g, I) - expr(g, j)
                         d2 += diff * diff
                     Next
-                    Dim dist = Math.Sqrt(d2)
-                    D(i, j) = dist
-                    D(j, i) = dist
+                    Dim dist = std.Sqrt(d2)
+                    D(I, j) = dist
+                    D(j, I) = dist
                     If dist > maxDist Then maxDist = dist
                 Next
             Next
 
             ' 标准化到 [0, 1]
             If normalize AndAlso maxDist > 0 Then
-                For i = 0 To _n - 1
+                For I As Integer = 0 To _n - 1
                     For j = 0 To _n - 1
-                        D(i, j) /= maxDist
+                        D(I, j) /= maxDist
                     Next
                 Next
             End If
@@ -170,24 +168,24 @@ Namespace SpatialOmics.SpatialGE
             Dim D As New Matrix(_n, _n)
             Dim maxDist As Double = 0.0
 
-            For i = 0 To _n - 1
-                For j = i To _n - 1
+            For I As Integer = 0 To _n - 1
+                For j = I To _n - 1
                     Dim d2 As Double = 0.0
-                    For d = 0 To _coords.Cols - 1
-                        Dim diff = _coords(i, d) - _coords(j, d)
+                    For D = 0 To _coords.Cols - 1
+                        Dim diff = _coords(I, D) - _coords(j, D)
                         d2 += diff * diff
                     Next
-                    Dim dist = Math.Sqrt(d2)
-                    D(i, j) = dist
-                    D(j, i) = dist
+                    Dim dist = std.Sqrt(d2)
+                    D(I, j) = dist
+                    D(j, I) = dist
                     If dist > maxDist Then maxDist = dist
                 Next
             Next
 
             If normalize AndAlso maxDist > 0 Then
-                For i = 0 To _n - 1
+                For I As Integer = 0 To _n - 1
                     For j = 0 To _n - 1
-                        D(i, j) /= maxDist
+                        D(I, j) /= maxDist
                     Next
                 Next
             End If
@@ -209,10 +207,10 @@ Namespace SpatialOmics.SpatialGE
             Dim clusterIds(n - 1) As Integer
             Dim clusterSizes(n - 1) As Integer
             Dim activeClusters As New List(Of Integer)
-            For i = 0 To n - 1
-                clusterIds(i) = i
-                clusterSizes(i) = 1
-                activeClusters.Add(i)
+            For I As Integer = 0 To n - 1
+                clusterIds(I) = I
+                clusterSizes(I) = 1
+                activeClusters.Add(I)
             Next
 
             ' 聚类间 Ward 距离矩阵
@@ -232,7 +230,7 @@ Namespace SpatialOmics.SpatialGE
                         ' Ward 距离 = (2·n_i·n_j/(n_i+n_j)) · d(i,j)²
                         Dim ni = clusterSizes(ci)
                         Dim nj = clusterSizes(cj)
-                        Dim d = D(ci, cj)
+                        Dim d = d(ci, cj)
                         Dim ward = (2.0 * ni * nj / (ni + nj)) * d * d
                         If ward < minWard Then
                             minWard = ward
@@ -253,7 +251,7 @@ Namespace SpatialOmics.SpatialGE
                 clusterSizes(newId) = clusterSizes(minI) + clusterSizes(minJ)
 
                 ' 记录合并历史
-                mergeHistory.Add((minI, minJ, Math.Sqrt(minWard)))
+                mergeHistory.Add((minI, minJ, std.Sqrt(minWard)))
 
                 ' 更新新聚类到其他聚类的距离（Ward 平均链接）
                 ' 用 Lance-Williams 公式更新距离
@@ -266,7 +264,7 @@ Namespace SpatialOmics.SpatialGE
                     Dim di = D(minI, otherId)
                     Dim dj = D(minJ, otherId)
                     ' Ward 平均链接更新
-                    D(newId, otherId) = Math.Sqrt((ni * di * di + nj * dj * dj -
+                    D(newId, otherId) = std.Sqrt((ni * di * di + nj * dj * dj -
                         ni * nj / (ni + nj) * D(minI, minJ) * D(minI, minJ)) / (ni + nj))
                     D(otherId, newId) = D(newId, otherId)
                 Next
@@ -282,8 +280,8 @@ Namespace SpatialOmics.SpatialGE
 
             ' 生成最终聚类分配
             Dim assignments(n - 1) As Integer
-            For i = 0 To n - 1
-                assignments(i) = -1
+            For I As Integer = 0 To n - 1
+                assignments(I) = -1
             Next
 
             Dim labelMap As New Dictionary(Of Integer, Integer)
@@ -295,29 +293,29 @@ Namespace SpatialOmics.SpatialGE
 
             ' 回溯：从合并历史中确定每个样本的最终聚类
             ' 简单方法：对每个样本，找到包含它的最终聚类
-            For i = 0 To n - 1
-                Dim currentCluster As Integer = i
+            For I As Integer = 0 To n - 1
+                Dim currentCluster As Integer = I
                 ' 反复追踪合并链直到找到活跃聚类
                 While Not activeClusters.Contains(currentCluster)
                     ' 在 mergeHistory 中找到包含 currentCluster 的合并
-                    For Each merge In mergeHistory
-                        If merge.clusterA = currentCluster Then
-                            currentCluster = merge.clusterA ' 不行，需要新ID
+                    For Each Merge As (clusterA%, clusterB%, d%) In mergeHistory
+                        If Merge.clusterA = currentCluster Then
+                            currentCluster = Merge.clusterA ' 不行，需要新ID
                         End If
                     Next
                     ' 这里简化：直接取最近活跃
                     Exit While
                 End While
                 ' 简化分配：直接基于活跃聚类列表索引
-                assignments(i) = labelMap(currentCluster)
+                assignments(I) = labelMap(currentCluster)
             Next
 
             ' 上面的回溯复杂度高，这里用直接方法：
             ' 构建从初始样本到最终聚类的映射
             ' 用并查集
             Dim parent(maxClusterId) As Integer
-            For i = 0 To maxClusterId
-                parent(i) = i
+            For I As Integer = 0 To maxClusterId
+                parent(I) = I
             Next
 
             ' 从后往前处理合并历史
@@ -342,8 +340,8 @@ Namespace SpatialOmics.SpatialGE
 
             ' 初始化 medoids：随机选择 k 个
             Dim medoids(k - 1) As Integer
-            For i = 0 To k - 1
-                medoids(i) = rng.Next(n)
+            For I As Integer = 0 To k - 1
+                medoids(I) = rng.Next(n)
             Next
 
             Dim assignments(n - 1) As Integer
@@ -355,24 +353,25 @@ Namespace SpatialOmics.SpatialGE
                 maxIter -= 1
 
                 ' 分配：每个样本到最近的 medoid
-                For i = 0 To n - 1
+                For I As Integer = 0 To n - 1
                     Dim minDist As Double = Double.MaxValue
                     Dim bestK = 0
                     For kk = 0 To k - 1
-                        If D(i, medoids(kk)) < minDist Then
-                            minDist = D(i, medoids(kk))
+                        If D(I, medoids(kk)) < minDist Then
+                            minDist = D(I, medoids(kk))
                             bestK = kk
                         End If
                     Next
-                    If assignments(i) <> bestK Then
-                        assignments(i) = bestK
+                    If assignments(I) <> bestK Then
+                        assignments(I) = bestK
                         changed = True
                     End If
                 Next
 
                 ' 更新 medoids：选择每个聚类中到其他成员距离和最小的点
-                For kk = 0 To k - 1
-                    Dim members = Enumerable.Range(0, n).Where(Function(i) assignments(i) = kk).ToArray()
+                For kk As Integer = 0 To k - 1
+                    Dim ki As Integer = kk
+                    Dim members = Enumerable.Range(0, n).Where(Function(i) assignments(i) = ki).ToArray()
                     If members.Length = 0 Then Continue For
                     Dim minCost As Double = Double.MaxValue
                     Dim bestMedoid = medoids(kk)
