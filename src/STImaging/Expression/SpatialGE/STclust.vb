@@ -1,3 +1,4 @@
+Imports Erica.Analysis.SpatialTissue.Imaging.SpatialOmics.Math
 Imports std = System.Math
 
 ' ============================================================================
@@ -113,17 +114,17 @@ Namespace SpatialOmics.SpatialGE
             Next
 
             ' 5. 层次聚类（Ward linkage）
-            Dim (assignments, mergeHistory) = HierarchicalClusteringWard(D, nClusters)
+            Dim __ As (assignments As Integer(), mergeHistory As List(Of (Integer, Integer, Double))) = HierarchicalClusteringWard(D, nClusters)
 
             ' 收集选定基因名
             Dim selGenes = topIdx.Select(Function(i) geneNames(i)).ToArray()
 
             Return New STclustResult With {
-                .Assignments = assignments,
+                .Assignments = __.assignments,
                 .K = nClusters,
                 .SelectedGenes = selGenes,
                 .SpatialWeight = spatialWeight,
-                .MergeHistory = mergeHistory
+                .MergeHistory = __.mergeHistory
             }
         End Function
 
@@ -171,8 +172,8 @@ Namespace SpatialOmics.SpatialGE
             For I As Integer = 0 To _n - 1
                 For j = I To _n - 1
                     Dim d2 As Double = 0.0
-                    For D = 0 To _coords.Cols - 1
-                        Dim diff = _coords(I, D) - _coords(j, D)
+                    For di As Integer = 0 To _coords.Cols - 1
+                        Dim diff = _coords(I, di) - _coords(j, di)
                         d2 += diff * diff
                     Next
                     Dim dist = std.Sqrt(d2)
@@ -228,10 +229,10 @@ Namespace SpatialOmics.SpatialGE
                         Dim ci = activeClusters(a)
                         Dim cj = activeClusters(b)
                         ' Ward 距离 = (2·n_i·n_j/(n_i+n_j)) · d(i,j)²
-                        Dim ni = clusterSizes(ci)
-                        Dim nj = clusterSizes(cj)
-                        Dim d = d(ci, cj)
-                        Dim ward = (2.0 * ni * nj / (ni + nj)) * d * d
+                        Dim nci As Integer = clusterSizes(ci)
+                        Dim ncj As Integer = clusterSizes(cj)
+                        Dim di = D(ci, cj)
+                        Dim ward = (2.0 * nci * ncj / (nci + ncj)) * di * di
                         If ward < minWard Then
                             minWard = ward
                             minI = ci

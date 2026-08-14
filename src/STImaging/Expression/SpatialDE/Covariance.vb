@@ -1,3 +1,6 @@
+Imports Erica.Analysis.SpatialTissue.Imaging.SpatialOmics.Math
+Imports std = System.Math
+
 ' ============================================================================
 ' Covariance.vb — 空间协方差核函数
 ' ----------------------------------------------------------------------------
@@ -8,9 +11,6 @@
 ' 每种核接受长度尺度 l，输出 N×N 协方差矩阵。
 ' 参考：Svensson et al., Nat Methods 2018, Eq. 2 及 Supplementary。
 ' ============================================================================
-
-Imports SpatialOmics.Math
-Imports System
 
 Namespace SpatialOmics.SpatialDE
 
@@ -37,16 +37,16 @@ Namespace SpatialOmics.SpatialDE
             Dim n = coords.Rows
             Dim K As New Matrix(n, n)
             Dim invL2 As Double = 1.0 / (2.0 * lengthScale * lengthScale)
-            For i = 0 To n - 1
-                For j = i To n - 1
+            For I As Integer = 0 To n - 1
+                For j = I To n - 1
                     Dim d2 As Double = 0.0
                     For d = 0 To coords.Cols - 1
-                        Dim diff = coords(i, d) - coords(j, d)
+                        Dim diff = coords(I, d) - coords(j, d)
                         d2 += diff * diff
                     Next
-                    Dim val = Math.Exp(-d2 * invL2)
-                    K(i, j) = val
-                    K(j, i) = val
+                    Dim val = std.Exp(-d2 * invL2)
+                    K(I, j) = val
+                    K(j, I) = val
                 Next
             Next
             Return K
@@ -61,15 +61,15 @@ Namespace SpatialOmics.SpatialDE
             Dim n = coords.Rows
             Dim K As New Matrix(n, n)
             Dim invL2 As Double = 1.0 / (lengthScale * lengthScale)
-            For i = 0 To n - 1
-                For j = i To n - 1
+            For I As Integer = 0 To n - 1
+                For j = I To n - 1
                     Dim dot As Double = 0.0
                     For d = 0 To coords.Cols - 1
-                        dot += coords(i, d) * coords(j, d)
+                        dot += coords(I, d) * coords(j, d)
                     Next
                     Dim val = 1.0 + dot * invL2
-                    K(i, j) = val
-                    K(j, i) = val
+                    K(I, j) = val
+                    K(j, I) = val
                 Next
             Next
             Return K
@@ -89,18 +89,18 @@ Namespace SpatialOmics.SpatialDE
             Dim p As Double = If(period, lengthScale)
             Dim K As New Matrix(n, n)
             Dim invL2 As Double = 1.0 / (2.0 * lengthScale * lengthScale)
-            Dim piOverP As Double = Math.PI / p
-            For i = 0 To n - 1
-                For j = i To n - 1
+            Dim piOverP As Double = std.PI / p
+            For I As Integer = 0 To n - 1
+                For j = I To n - 1
                     Dim dist As Double = 0.0
                     For d = 0 To coords.Cols - 1
-                        dist += (coords(i, d) - coords(j, d)) ^ 2
+                        dist += (coords(I, d) - coords(j, d)) ^ 2
                     Next
-                    dist = Math.Sqrt(dist)
-                    Dim sinVal = Math.Sin(piOverP * dist)
-                    Dim val = Math.Exp(-sinVal * sinVal * invL2)
-                    K(i, j) = val
-                    K(j, i) = val
+                    dist = std.Sqrt(dist)
+                    Dim sinVal = std.Sin(piOverP * dist)
+                    Dim val = std.Exp(-sinVal * sinVal * invL2)
+                    K(I, j) = val
+                    K(j, I) = val
                 Next
             Next
             Return K

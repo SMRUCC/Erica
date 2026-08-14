@@ -1,12 +1,11 @@
+Imports std = System.Math
+
 ' ============================================================================
 ' Matrix.vb — 基于 BCL 的矩阵运算库
 ' ----------------------------------------------------------------------------
 ' 提供矩阵创建、算术运算、转置、求逆、行列式、Cholesky 分解等功能。
 ' 所有实现仅依赖 System.Math 和 System.Linq，不引入第三方数值库。
 ' ============================================================================
-
-Imports System
-Imports System.Linq
 
 Namespace SpatialOmics.Math
 
@@ -64,8 +63,8 @@ Namespace SpatialOmics.Math
         ''' <summary>创建单位矩阵</summary>
         Public Shared Function Identity(n As Integer) As Matrix
             Dim m As New Matrix(n, n)
-            For i = 0 To n - 1
-                m._data(i, i) = 1.0
+            For I As Integer = 0 To n - 1
+                m._data(I, I) = 1.0
             Next
             Return m
         End Function
@@ -76,9 +75,9 @@ Namespace SpatialOmics.Math
                 Throw New ArgumentException("Array length does not match dimensions.")
             End If
             Dim m As New Matrix(rows, cols)
-            For i = 0 To rows - 1
+            For I As Integer = 0 To rows - 1
                 For j = 0 To cols - 1
-                    m._data(i, j) = values(i * cols + j)
+                    m._data(I, j) = values(I() * cols + j)
                 Next
             Next
             Return m
@@ -90,9 +89,9 @@ Namespace SpatialOmics.Math
                 Throw New ArgumentException("Matrix dimensions must match for addition.")
             End If
             Dim result As New Matrix(a._rows, a._cols)
-            For i = 0 To a._rows - 1
+            For I As Integer = 0 To a._rows - 1
                 For j = 0 To a._cols - 1
-                    result._data(i, j) = a._data(i, j) + b._data(i, j)
+                    result._data(I, j) = a._data(I, j) + b._data(I, j)
                 Next
             Next
             Return result
@@ -104,9 +103,9 @@ Namespace SpatialOmics.Math
                 Throw New ArgumentException("Matrix dimensions must match for subtraction.")
             End If
             Dim result As New Matrix(a._rows, a._cols)
-            For i = 0 To a._rows - 1
+            For I As Integer = 0 To a._rows - 1
                 For j = 0 To a._cols - 1
-                    result._data(i, j) = a._data(i, j) - b._data(i, j)
+                    result._data(I, j) = a._data(I, j) - b._data(I, j)
                 Next
             Next
             Return result
@@ -119,13 +118,13 @@ Namespace SpatialOmics.Math
                     $"Matrix multiply dimension mismatch: ({a._rows}x{a._cols}) * ({b._rows}x{b._cols})")
             End If
             Dim result As New Matrix(a._rows, b._cols)
-            For i = 0 To a._rows - 1
+            For I As Integer = 0 To a._rows - 1
                 For j = 0 To b._cols - 1
                     Dim sum As Double = 0.0
                     For k = 0 To a._cols - 1
-                        sum += a._data(i, k) * b._data(k, j)
+                        sum += a._data(I, k) * b._data(k, j)
                     Next
-                    result._data(i, j) = sum
+                    result._data(I, j) = sum
                 Next
             Next
             Return result
@@ -134,9 +133,9 @@ Namespace SpatialOmics.Math
         ''' <summary>标量乘法</summary>
         Public Shared Operator *(a As Matrix, s As Double) As Matrix
             Dim result As New Matrix(a._rows, a._cols)
-            For i = 0 To a._rows - 1
+            For I As Integer = 0 To a._rows - 1
                 For j = 0 To a._cols - 1
-                    result._data(i, j) = a._data(i, j) * s
+                    result._data(I, j) = a._data(I, j) * s
                 Next
             Next
             Return result
@@ -150,9 +149,9 @@ Namespace SpatialOmics.Math
         ''' <summary>矩阵加常数</summary>
         Public Function AddScalar(s As Double) As Matrix
             Dim result As New Matrix(_rows, _cols)
-            For i = 0 To _rows - 1
+            For I As Integer = 0 To _rows - 1
                 For j = 0 To _cols - 1
-                    result._data(i, j) = _data(i, j) + s
+                    result._data(I, j) = _data(I, j) + s
                 Next
             Next
             Return result
@@ -164,9 +163,9 @@ Namespace SpatialOmics.Math
                 Throw New ArgumentException("Dimensions must match for element-wise multiply.")
             End If
             Dim result As New Matrix(_rows, _cols)
-            For i = 0 To _rows - 1
+            For I As Integer = 0 To _rows - 1
                 For j = 0 To _cols - 1
-                    result._data(i, j) = _data(i, j) * b._data(i, j)
+                    result._data(I, j) = _data(I, j) * b._data(I, j)
                 Next
             Next
             Return result
@@ -179,13 +178,13 @@ Namespace SpatialOmics.Math
                     $"维度不匹配: ({_rows}x{_cols}) × ({b._rows}x{b._cols})")
             End If
             Dim result As New Matrix(_rows, b._cols)
-            For i = 0 To _rows - 1
+            For I As Integer = 0 To _rows - 1
                 For j = 0 To b._cols - 1
                     Dim s As Double = 0.0
                     For k = 0 To _cols - 1
-                        s += _data(i, k) * b._data(k, j)
+                        s += _data(I, k) * b._data(k, j)
                     Next
-                    result._data(i, j) = s
+                    result._data(I, j) = s
                 Next
             Next
             Return result
@@ -194,9 +193,9 @@ Namespace SpatialOmics.Math
         ''' <summary>转置</summary>
         Public Function Transpose() As Matrix
             Dim result As New Matrix(_cols, _rows)
-            For i = 0 To _rows - 1
+            For I As Integer = 0 To _rows - 1
                 For j = 0 To _cols - 1
-                    result._data(j, i) = _data(i, j)
+                    result._data(j, I) = _data(I, j)
                 Next
             Next
             Return result
@@ -205,8 +204,8 @@ Namespace SpatialOmics.Math
         ''' <summary>提取列向量</summary>
         Public Function GetColumn(col As Integer) As Double()
             Dim v(_rows - 1) As Double
-            For i = 0 To _rows - 1
-                v(i) = _data(i, col)
+            For I As Integer = 0 To _rows - 1
+                v(I) = _data(I, col)
             Next
             Return v
         End Function
@@ -226,12 +225,12 @@ Namespace SpatialOmics.Math
                 Throw New ArgumentException("Vector length must match matrix columns.")
             End If
             Dim result(_rows - 1) As Double
-            For i = 0 To _rows - 1
+            For I = 0 To _rows - 1
                 Dim sum As Double = 0.0
                 For j = 0 To _cols - 1
-                    sum += _data(i, j) * v(j)
+                    sum += _data(I, j) * v(j)
                 Next
-                result(i) = sum
+                result(I) = sum
             Next
             Return result
         End Function
@@ -246,18 +245,18 @@ Namespace SpatialOmics.Math
             Dim lu(n - 1, n - 1) As Double
             Array.Copy(_data, lu, _data.Length)
             Dim perm(n - 1) As Integer
-            For i = 0 To n - 1
-                perm(i) = i
+            For I As Integer = 0 To n - 1
+                perm(I) = I
             Next
             Dim det As Double = 1.0
             For k = 0 To n - 1
                 ' 选主元
-                Dim maxVal As Double = Math.Abs(lu(k, k))
+                Dim maxVal As Double = std.Abs(lu(k, k))
                 Dim maxRow As Integer = k
-                For i = k + 1 To n - 1
-                    If Math.Abs(lu(i, k)) > maxVal Then
-                        maxVal = Math.Abs(lu(i, k))
-                        maxRow = i
+                For I As Integer = k + 1 To n - 1
+                    If std.Abs(lu(I, k)) > maxVal Then
+                        maxVal = std.Abs(lu(I, k))
+                        maxRow = I
                     End If
                 Next
                 If maxVal < 1.0E-300 Then
@@ -275,10 +274,10 @@ Namespace SpatialOmics.Math
                     det = -det
                 End If
                 det *= lu(k, k)
-                For i = k + 1 To n - 1
-                    lu(i, k) /= lu(k, k)
+                For I As Integer = k + 1 To n - 1
+                    lu(I, k) /= lu(k, k)
                     For j = k + 1 To n - 1
-                        lu(i, j) -= lu(i, k) * lu(k, j)
+                        lu(I, j) -= lu(I, k) * lu(k, j)
                     Next
                 Next
             Next
@@ -289,8 +288,8 @@ Namespace SpatialOmics.Math
         Public Function LogDetPosDef() As Double
             Dim L = Cholesky()
             Dim logDet As Double = 0.0
-            For i = 0 To _rows - 1
-                logDet += 2.0 * Math.Log(L._data(i, i))
+            For I As Integer = 0 To _rows - 1
+                logDet += 2.0 * std.Log(L._data(I, I))
             Next
             Return logDet
         End Function
@@ -305,20 +304,20 @@ Namespace SpatialOmics.Math
             End If
             Dim n As Integer = _rows
             Dim L As New Matrix(n, n)
-            For i = 0 To n - 1
-                For j = 0 To i
-                    Dim sum As Double = _data(i, j)
+            For I As Integer = 0 To n - 1
+                For j = 0 To I
+                    Dim sum As Double = _data(I, j)
                     For k = 0 To j - 1
-                        sum -= L._data(i, k) * L._data(j, k)
+                        sum -= L._data(I, k) * L._data(j, k)
                     Next
-                    If i = j Then
+                    If I = j Then
                         If sum <= 0 Then
                             Throw New InvalidOperationException(
-                                $"Matrix is not positive definite at element ({i},{j}).")
+                                $"Matrix is not positive definite at element ({I},{j}).")
                         End If
-                        L._data(i, j) = Math.Sqrt(sum)
+                        L._data(I, j) = std.Sqrt(sum)
                     Else
-                        L._data(i, j) = sum / L._data(j, j)
+                        L._data(I, j) = sum / L._data(j, j)
                     End If
                 Next
             Next
@@ -339,21 +338,21 @@ Namespace SpatialOmics.Math
             Dim L = Cholesky()
             ' 前代：L y = b
             Dim y(n - 1) As Double
-            For i = 0 To n - 1
-                Dim sum As Double = b(i)
-                For j = 0 To i - 1
-                    sum -= L._data(i, j) * y(j)
+            For I As Integer = 0 To n - 1
+                Dim sum As Double = b(I)
+                For j = 0 To I - 1
+                    sum -= L._data(I, j) * y(j)
                 Next
-                y(i) = sum / L._data(i, i)
+                y(I) = sum / L._data(I, I)
             Next
             ' 回代：Lᵀ x = y
             Dim x(n - 1) As Double
-            For i = n - 1 To 0 Step -1
-                Dim sum As Double = y(i)
-                For j = i + 1 To n - 1
-                    sum -= L._data(j, i) * x(j)
+            For I As Integer = n - 1 To 0 Step -1
+                Dim sum As Double = y(I)
+                For j = I + 1 To n - 1
+                    sum -= L._data(j, I) * x(j)
                 Next
-                x(i) = sum / L._data(i, i)
+                x(I) = sum / L._data(I, I)
             Next
             Return x
         End Function
@@ -366,20 +365,20 @@ Namespace SpatialOmics.Math
             Dim n As Integer = _rows
             ' 使用 Gauss-Jordan 消元
             Dim aug(n - 1, 2 * n - 1) As Double
-            For i = 0 To n - 1
+            For I As Integer = 0 To n - 1
                 For j = 0 To n - 1
-                    aug(i, j) = _data(i, j)
+                    aug(I, j) = _data(I, j)
                 Next
-                aug(i, n + i) = 1.0
+                aug(I, n + I) = 1.0
             Next
             For k = 0 To n - 1
                 ' 选主元
-                Dim maxVal As Double = Math.Abs(aug(k, k))
+                Dim maxVal As Double = std.Abs(aug(k, k))
                 Dim maxRow As Integer = k
-                For i = k + 1 To n - 1
-                    If Math.Abs(aug(i, k)) > maxVal Then
-                        maxVal = Math.Abs(aug(i, k))
-                        maxRow = i
+                For I As Integer = k + 1 To n - 1
+                    If std.Abs(aug(I, k)) > maxVal Then
+                        maxVal = std.Abs(aug(I, k))
+                        maxRow = I
                     End If
                 Next
                 If maxVal < 1.0E-300 Then
@@ -398,19 +397,19 @@ Namespace SpatialOmics.Math
                     aug(k, j) /= pivot
                 Next
                 ' 消元
-                For i = 0 To n - 1
-                    If i <> k Then
-                        Dim factor = aug(i, k)
+                For I As Integer = 0 To n - 1
+                    If I <> k Then
+                        Dim factor = aug(I, k)
                         For j = 0 To 2 * n - 1
-                            aug(i, j) -= factor * aug(k, j)
+                            aug(I, j) -= factor * aug(k, j)
                         Next
                     End If
                 Next
             Next
             Dim result As New Matrix(n, n)
-            For i = 0 To n - 1
+            For I As Integer = 0 To n - 1
                 For j = 0 To n - 1
-                    result._data(i, j) = aug(i, n + j)
+                    result._data(I, j) = aug(I, n + j)
                 Next
             Next
             Return result
@@ -422,8 +421,8 @@ Namespace SpatialOmics.Math
                 Throw New InvalidOperationException("Trace requires square matrix.")
             End If
             Dim tr As Double = 0.0
-            For i = 0 To _rows - 1
-                tr += _data(i, i)
+            For I As Integer = 0 To _rows - 1
+                tr += _data(I, I)
             Next
             Return tr
         End Function
@@ -440,13 +439,13 @@ Namespace SpatialOmics.Math
 
         ''' <summary>字符串表示（截断显示）</summary>
         Public Overrides Function ToString() As String
-            Dim maxRows As Integer = Math.Min(_rows, 6)
-            Dim maxCols As Integer = Math.Min(_cols, 6)
+            Dim maxRows As Integer = std.Min(_rows, 6)
+            Dim maxCols As Integer = std.Min(_cols, 6)
             Dim sb As New Text.StringBuilder()
             sb.AppendLine($"Matrix [{_rows}x{_cols}]")
-            For i = 0 To maxRows - 1
+            For I As Integer = 0 To maxRows - 1
                 For j = 0 To maxCols - 1
-                    sb.Append($"{_data(i, j),12:F6} ")
+                    sb.Append($"{_data(I, j),12:F6} ")
                 Next
                 If _cols > maxCols Then sb.Append("...")
                 sb.AppendLine()

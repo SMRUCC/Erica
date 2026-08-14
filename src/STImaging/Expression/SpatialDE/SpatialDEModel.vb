@@ -1,3 +1,4 @@
+Imports Erica.Analysis.SpatialTissue.Imaging.SpatialOmics.Math
 Imports std = System.Math
 
 ' ============================================================================
@@ -263,17 +264,17 @@ Namespace SpatialOmics.SpatialDE
 
                 Dim deltaMin = 0.0001
                 Dim deltaMax = 10.0
-                Dim (optDelta, optNegLL) = Optimization.BrentMinimize(
+                Dim __ As (optDelta#, optNegLL#) = Optimization.BrentMinimize(
                     negLogLik, deltaMin, deltaMax, 0.001, 100)
 
-                Dim ll = -optNegLL
+                Dim ll = -__.optNegLL
                 If ll > bestLL Then
                     bestLL = ll
                     bestL = l
-                    bestDelta = optDelta
+                    bestDelta = __.optDelta
                     ' 重算 μ 和 σ_s²
-                    Dim (_, _, sigmaSq) = ComputeMuSigma(yCentered, K, optDelta)
-                    bestSigmaSq = sigmaSq
+                    Dim _2 As (Double, sigmaSq As Double, Double()) = ComputeMuSigma(yCentered, K, __.optDelta)
+                    bestSigmaSq = _2.sigmaSq
                 End If
             Next
 
@@ -304,7 +305,7 @@ Namespace SpatialOmics.SpatialDE
                 yCentered As Double(), K As Matrix,
                 delta As Double, n As Integer) As Double
 
-            Dim (mu, sigmaSq, Cinv_y) = ComputeMuSigma(yCentered, K, delta)
+            Dim __ As (mu#, sigmaSq#, Cinv_y As Double()) = ComputeMuSigma(yCentered, K, delta)
 
             ' log|C| = log|σ_s²·C| = N·log(σ_s²) + log|C|
             ' 使用 Cholesky 的对角乘积求 log|C|
@@ -315,7 +316,7 @@ Namespace SpatialOmics.SpatialDE
             ' 对于中心化的 y，μ=0，二次型 = y_cᵀ C⁻¹ y_c
             Dim quad As Double = 0.0
             For I As Integer = 0 To n - 1
-                quad += yCentered(I) * Cinv_y(I)
+                quad += yCentered(I) * __.Cinv_y(I)
             Next
 
             Dim sigmaSqVal = std.Max(quad / n, 1.0E-20)

@@ -1,11 +1,11 @@
+Imports std = System.Math
+
 ' ============================================================================
 ' Optimization.vb — 1-D / 多维优化器（纯 BCL 实现）
 ' ----------------------------------------------------------------------------
 ' 提供 Brent 一维搜索（用于 SpatialDE 的 length scale 网格优化后的精调）
 ' 和坐标下降法（用于多参数优化）。
 ' ============================================================================
-
-Imports System
 
 Namespace SpatialOmics.Math
 
@@ -30,7 +30,7 @@ Namespace SpatialOmics.Math
 
             Const golden As Double = 0.3819660112501051 ' (3 - √5) / 2
             Const c As Double = 1.0 - golden           ' (3 - √5) / 2 的补
-            Const eps As Double = 2.220446049250313E-16  ' 机器 ε
+            Const eps As Double = 0.00000000000000022204460492503131  ' 机器 ε
 
             Dim x = a + golden * (b - a) ' 第一个内点
             Dim w = x, v = x             ' 前面两个点
@@ -41,28 +41,28 @@ Namespace SpatialOmics.Math
 
             For iter = 1 To maxIter
                 Dim m = 0.5 * (a + b)
-                Dim tol1 = tol * Math.Abs(x) + eps
+                Dim tol1 = tol * std.Abs(x) + eps
                 Dim tol2 = 2.0 * tol1
 
                 ' 收敛检查
-                If Math.Abs(x - m) <= tol2 - 0.5 * (b - a) Then
+                If std.Abs(x - m) <= tol2 - 0.5 * (b - a) Then
                     Return (x, fx)
                 End If
 
                 Dim useParabolic As Boolean = False
 
                 ' 尝试抛物线拟合
-                If Math.Abs(e) > tol1 Then
+                If std.Abs(e) > tol1 Then
                     Dim r = (x - w) * (fx - fv)
                     Dim q = (x - v) * (fx - fw)
                     Dim p = (x - v) * q - (x - w) * r
                     q = 2.0 * (q - r)
                     If q > 0 Then p = -p
-                    q = Math.Abs(q)
+                    q = std.Abs(q)
                     Dim etemp = e
                     e = d
 
-                    If Math.Abs(p) < Math.Abs(0.5 * q * etemp) AndAlso
+                    If std.Abs(p) < std.Abs(0.5 * q * etemp) AndAlso
                        p > q * (a - x) AndAlso p < q * (b - x) Then
                         ' 抛物线插值可行
                         d = p / q
@@ -80,7 +80,7 @@ Namespace SpatialOmics.Math
                     d = c * e
                 End If
 
-                u = x + If(Math.Abs(d) >= tol1, d, If(d > 0, tol1, -tol1))
+                u = x + If(std.Abs(d) >= tol1, d, If(d > 0, tol1, -tol1))
                 fu = f(u)
 
                 If fu <= fx Then
@@ -125,19 +125,19 @@ Namespace SpatialOmics.Math
 
             For iter = 1 To maxIter
                 Dim improved As Boolean = False
-                For i = 0 To n - 1
+                For I As Integer = 0 To n - 1
                     ' 一维搜索：固定其他维度，优化第 i 维
-                    Dim xi = x(i)
+                    Dim xi = x(I)
                     Dim f1D As Func(Of Double, Double) = Function(t)
-                                                                 x(i) = t
-                                                                 Return f(x)
-                                                             End Function
-                    Dim (bestT, bestF) = BrentMinimize(f1D, bounds(i).lo, bounds(i).hi, tol)
-                    x(i) = bestT
-                    If bestF < fPrev - tol Then improved = True
+                                                             x(I) = t
+                                                             Return f(x)
+                                                         End Function
+                    Dim __ As (bestT#, bestF#) = BrentMinimize(f1D, bounds(I).lo, bounds(I).hi, tol)
+                    x(I) = __.bestT
+                    If __.bestF < fPrev - tol Then improved = True
                 Next
                 Dim fNew = f(x)
-                If Not improved AndAlso Math.Abs(fPrev - fNew) < tol Then Exit For
+                If Not improved AndAlso std.Abs(fPrev - fNew) < tol Then Exit For
                 fPrev = fNew
             Next
             Return x

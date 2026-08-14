@@ -1,3 +1,6 @@
+Imports Erica.Analysis.SpatialTissue.Imaging.SpatialOmics.Math
+Imports std = System.Math
+
 ' ============================================================================
 ' AEH.vb — Automatic Expression Histology（自动表达组织学）
 ' ----------------------------------------------------------------------------
@@ -11,10 +14,6 @@
 '   3. 对后验均值做 K-means 聚类，得到 K 个空间模式
 '   4. 用变分 EM 迭代优化聚类中心和分配概率
 ' ============================================================================
-
-Imports SpatialOmics.Math
-Imports System
-Imports System.Linq
 
 Namespace SpatialOmics.SpatialDE
 
@@ -84,12 +83,12 @@ Namespace SpatialOmics.SpatialDE
                 ' GP 后验均值 ≈ K · (K+σ²I)⁻¹ · y
                 ' 即 C⁻¹·y 后乘 K
                 Dim CinvY = C.SolveCholesky(yCentered)
-                For i = 0 To n - 1
+                For I As Integer = 0 To n - 1
                     Dim smoothVal As Double = 0.0
                     For j = 0 To n - 1
-                        smoothVal += K(i, j) * CinvY(j)
+                        smoothVal += K(I, j) * CinvY(j)
                     Next
-                    smoothed(g, i) = smoothVal + yMean
+                    smoothed(g, I) = smoothVal + yMean
                 Next
             Next
 
@@ -102,13 +101,13 @@ Namespace SpatialOmics.SpatialDE
                 centers(0, j) = smoothed(firstIdx, j)
             Next
 
-            For k = 1 To kPatterns - 1
+            For K = 1 To kPatterns - 1
                 ' 计算各点到已有中心的最小距离
                 Dim dists(nGenes - 1) As Double
                 Dim distSum As Double = 0.0
                 For g = 0 To nGenes - 1
                     Dim minDist As Double = Double.MaxValue
-                    For kk = 0 To k - 1
+                    For kk = 0 To K - 1
                         Dim d2 As Double = 0.0
                         For j = 0 To n - 1
                             d2 += (smoothed(g, j) - centers(kk, j)) ^ 2
@@ -130,7 +129,7 @@ Namespace SpatialOmics.SpatialDE
                     End If
                 Next
                 For j = 0 To n - 1
-                    centers(k, j) = smoothed(nextIdx, j)
+                    centers(K, j) = smoothed(nextIdx, j)
                 Next
             Next
 
@@ -143,42 +142,42 @@ Namespace SpatialOmics.SpatialDE
                 ' E 步：计算各基因属于各模式的概率（softmax on -d²/2σ²）
                 For g = 0 To nGenes - 1
                     Dim logProb(kPatterns - 1) As Double
-                    For k = 0 To kPatterns - 1
+                    For K = 0 To kPatterns - 1
                         Dim d2 As Double = 0.0
                         For j = 0 To n - 1
-                            Dim diff = smoothed(g, j) - centers(k, j)
+                            Dim diff = smoothed(g, j) - centers(K, j)
                             d2 += diff * diff
                         Next
-                        logProb(k) = -0.5 * d2 / (1.0 + 0.01) ' σ²=1 + jitter
+                        logProb(K) = -0.5 * d2 / (1.0 + 0.01) ' σ²=1 + jitter
                     Next
                     ' softmax
                     Dim maxLP = logProb.Max()
                     Dim sumExp As Double = 0.0
-                    For k = 0 To kPatterns - 1
-                        posterior(g, k) = Math.Exp(logProb(k) - maxLP)
-                        sumExp += posterior(g, k)
+                    For K = 0 To kPatterns - 1
+                        posterior(g, K) = std.Exp(logProb(K) - maxLP)
+                        sumExp += posterior(g, K)
                     Next
-                    For k = 0 To kPatterns - 1
-                        posterior(g, k) /= sumExp
+                    For K = 0 To kPatterns - 1
+                        posterior(g, K) /= sumExp
                     Next
                     ' 硬分配
                     Dim maxP = posterior(g, 0)
                     Dim maxK = 0
-                    For k = 1 To kPatterns - 1
-                        If posterior(g, k) > maxP Then
-                            maxP = posterior(g, k)
-                            maxK = k
+                    For K = 1 To kPatterns - 1
+                        If posterior(g, K) > maxP Then
+                            maxP = posterior(g, K)
+                            maxK = K
                         End If
                     Next
                     assignments(g) = maxK
                 Next
 
                 ' M 步：更新中心
-                For k = 0 To kPatterns - 1
+                For K = 0 To kPatterns - 1
                     Dim count As Double = 0.0
                     Dim sum(n - 1) As Double
                     For g = 0 To nGenes - 1
-                        Dim p = posterior(g, k)
+                        Dim p = posterior(g, K)
                         count += p
                         For j = 0 To n - 1
                             sum(j) += p * smoothed(g, j)
@@ -186,7 +185,7 @@ Namespace SpatialOmics.SpatialDE
                     Next
                     If count > 0 Then
                         For j = 0 To n - 1
-                            centers(k, j) = sum(j) / count
+                            centers(K, j) = sum(j) / count
                         Next
                     End If
                 Next
@@ -195,16 +194,16 @@ Namespace SpatialOmics.SpatialDE
                 Dim ll As Double = 0.0
                 For g = 0 To nGenes - 1
                     Dim maxLP = Double.MinValue
-                    For k = 0 To kPatterns - 1
-                        If posterior(g, k) > 0 Then
-                            Dim lp = Math.Log(posterior(g, k))
+                    For K = 0 To kPatterns - 1
+                        If posterior(g, K) > 0 Then
+                            Dim lp = std.Log(posterior(g, K))
                             If lp > maxLP Then maxLP = lp
                         End If
                     Next
                     If maxLP > Double.MinValue Then ll += maxLP
                 Next
 
-                If Math.Abs(ll - prevLL) < tol Then Exit For
+                If std.Abs(ll - prevLL) < tol Then Exit For
                 prevLL = ll
             Next
 
@@ -219,14 +218,14 @@ Namespace SpatialOmics.SpatialDE
         ''' <summary>估计中位数长度尺度（用于 GP 平滑）</summary>
         Private Function EstimateMedianLengthScale() As Double
             Dim distances As New List(Of Double)
-            For i = 0 To _n - 2
-                For j = i + 1 To _n - 1
+            For I As Integer = 0 To _n - 2
+                For j = I + 1 To _n - 1
                     Dim d2 As Double = 0.0
                     For d = 0 To _coords.Cols - 1
-                        Dim diff = _coords(i, d) - _coords(j, d)
+                        Dim diff = _coords(I, d) - _coords(j, d)
                         d2 += diff * diff
                     Next
-                    distances.Add(Math.Sqrt(d2))
+                    distances.Add(std.Sqrt(d2))
                 Next
             Next
             distances.Sort()
