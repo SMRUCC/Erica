@@ -1,3 +1,5 @@
+Imports std = System.Math
+
 ' ============================================================================
 ' Kriging.vb — 普通克里金插值
 ' ----------------------------------------------------------------------------
@@ -19,10 +21,6 @@
 '   Diggle, P.J. & Ribeiro, P.J. (2007) Model-based Geostatistics. Springer.
 '   Ospina et al. (2022) Bioinformatics 38(9):2645-2647
 ' ============================================================================
-
-Imports SpatialOmics.Math
-Imports System
-Imports System.Linq
 
 Namespace SpatialOmics.SpatialGE
 
@@ -98,7 +96,7 @@ Namespace SpatialOmics.SpatialGE
 
             ' 计算所有样本对距离和半方差
             Dim pairs As New List(Of (dist As Double, halfVar As Double))
-            For i = 0 To _nSamples - 2
+            For i As Integer = 0 To _nSamples - 2
                 For j = i + 1 To _nSamples - 1
                     Dim d2 As Double = 0.0
                     For d = 0 To _sampleCoords.Cols - 1
@@ -128,10 +126,10 @@ Namespace SpatialOmics.SpatialGE
                 counts(lagIdx) += 1
             Next
 
-            For i = 0 To nLags - 1
-                If counts(i) > 0 Then
-                    distances(i) /= counts(i)
-                    gamma(i) /= counts(i)
+            For I = 0 To nLags - 1
+                If counts(I) > 0 Then
+                    distances(I) /= counts(I)
+                    gamma(I) /= counts(I)
                 End If
             Next
 
@@ -146,7 +144,7 @@ Namespace SpatialOmics.SpatialGE
 
         ''' <summary>
         ''' 拟合理论变异函数模型（最小二乘拟合球状模型）
-        ''' Spherical: γ(h) = nugget + partial_sill · (3h/(2r) - h³/(2r³))  for h < r
+        ''' Spherical: γ(h) = nugget + partial_sill · (3h/(2r) - h³/(2r³))  for h &lt; r
         '''            γ(h) = sill  for h ≥ r
         ''' </summary>
         Public Function FitVariogram(distances As Double(), gamma As Double(),
@@ -176,7 +174,7 @@ Namespace SpatialOmics.SpatialGE
                 For Each sil In sillGrid
                     For Each rng In rangeGrid
                         Dim ssd As Double = 0.0
-                        For i = 0 To distances.Length - 1
+                        For i As Integer = 0 To distances.Length - 1
                             Dim pred = EvaluateVariogram(distances(i), nug, sil, rng, modelType)
                             Dim resid = gamma(i) - pred
                             ssd += resid * resid
@@ -231,9 +229,9 @@ Namespace SpatialOmics.SpatialGE
 
             ' 构建样本间变异函数矩阵 Γ (N+1 × N+1)
             ' 最后一行/列用于拉格朗日乘子 μ
-            Dim dim = _nSamples + 1
-            Dim Gamma As New Matrix(dim, dim)
-            For i = 0 To _nSamples - 1
+            Dim [dim] = _nSamples + 1
+            Dim Gamma As New Matrix([dim], [dim])
+            For i As Integer = 0 To _nSamples - 1
                 For j = 0 To _nSamples - 1
                     If i = j Then
                         Gamma(i, j) = varioParams.Nugget ' 对角线 = 0 or nugget
@@ -260,8 +258,8 @@ Namespace SpatialOmics.SpatialGE
             ' 逐目标点插值
             For p = 0 To nTargets - 1
                 ' 构建变异函数向量 g (N+1)
-                Dim g(dim - 1) As Double
-                For i = 0 To _nSamples - 1
+                Dim g([dim] - 1) As Double
+                For i As Integer = 0 To _nSamples - 1
                     Dim d2 As Double = 0.0
                     For d = 0 To _sampleCoords.Cols - 1
                         Dim diff = _sampleCoords(i, d) - targetCoords(p, d)
@@ -274,25 +272,25 @@ Namespace SpatialOmics.SpatialGE
                 g(_nSamples) = 1.0
 
                 ' λ = Γ⁻¹ · g
-                Dim lambda(dim - 1) As Double
-                For i = 0 To dim - 1
+                Dim lambda([dim] - 1) As Double
+                For I As Integer = 0 To [dim] - 1
                     Dim s As Double = 0.0
-                    For j = 0 To dim - 1
-                        s += GammaInv(i, j) * g(j)
+                    For j = 0 To [dim] - 1
+                        s += GammaInv(I, j) * g(j)
                     Next
-                    lambda(i) = s
+                    lambda(I) = s
                 Next
 
                 ' ẑ(x₀) = Σ λᵢ · z(xᵢ)
                 Dim pred As Double = 0.0
-                For i = 0 To _nSamples - 1
+                For i As Integer = 0 To _nSamples - 1
                     pred += lambda(i) * values(i)
                 Next
                 predictions(p) = pred
 
                 ' σ²(x₀) = Σ λᵢ · γ(xᵢ, x₀) + μ
                 Dim varEst As Double = 0.0
-                For i = 0 To _nSamples - 1
+                For i As Integer = 0 To _nSamples - 1
                     varEst += lambda(i) * g(i)
                 Next
                 varEst += lambda(_nSamples) ' μ
