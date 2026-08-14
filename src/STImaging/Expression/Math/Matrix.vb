@@ -77,7 +77,7 @@ Namespace SpatialOmics.Math
             Dim m As New Matrix(rows, cols)
             For I As Integer = 0 To rows - 1
                 For j = 0 To cols - 1
-                    m._data(I, j) = values(I() * cols + j)
+                    m._data(I, j) = values(I * cols + j)
                 Next
             Next
             Return m
@@ -225,7 +225,7 @@ Namespace SpatialOmics.Math
                 Throw New ArgumentException("Vector length must match matrix columns.")
             End If
             Dim result(_rows - 1) As Double
-            For I = 0 To _rows - 1
+            For I As Integer = 0 To _rows - 1
                 Dim sum As Double = 0.0
                 For j = 0 To _cols - 1
                     sum += _data(I, j) * v(j)

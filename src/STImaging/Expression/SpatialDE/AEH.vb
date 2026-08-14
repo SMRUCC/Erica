@@ -72,11 +72,11 @@ Namespace SpatialOmics.SpatialDE
             ' 1. 对每个基因做空间平滑（GP 后验均值近似）
             Dim smoothed(nGenes - 1, n - 1) As Double
             Dim lengthScale = EstimateMedianLengthScale()
-            Dim K = CovarianceKernels.SquaredExponential(_coords, lengthScale)
+            Dim K As Matrix = CovarianceKernels.SquaredExponential(_coords, lengthScale)
             ' 加小噪声保证正定
             Dim C = K.AddScalar(0.01)
 
-            For g = 0 To nGenes - 1
+            For g As Integer = 0 To nGenes - 1
                 Dim y = expression.GetRow(g)
                 Dim yMean = Statistics.Mean(y)
                 Dim yCentered = y.Select(Function(v) v - yMean).ToArray()
@@ -101,13 +101,13 @@ Namespace SpatialOmics.SpatialDE
                 centers(0, j) = smoothed(firstIdx, j)
             Next
 
-            For K = 1 To kPatterns - 1
+            For Ki As Integer = 1 To kPatterns - 1
                 ' 计算各点到已有中心的最小距离
                 Dim dists(nGenes - 1) As Double
                 Dim distSum As Double = 0.0
                 For g = 0 To nGenes - 1
                     Dim minDist As Double = Double.MaxValue
-                    For kk = 0 To K - 1
+                    For kk = 0 To Ki - 1
                         Dim d2 As Double = 0.0
                         For j = 0 To n - 1
                             d2 += (smoothed(g, j) - centers(kk, j)) ^ 2
@@ -129,7 +129,7 @@ Namespace SpatialOmics.SpatialDE
                     End If
                 Next
                 For j = 0 To n - 1
-                    centers(K, j) = smoothed(nextIdx, j)
+                    centers(Ki, j) = smoothed(nextIdx, j)
                 Next
             Next
 
@@ -142,42 +142,42 @@ Namespace SpatialOmics.SpatialDE
                 ' E 步：计算各基因属于各模式的概率（softmax on -d²/2σ²）
                 For g = 0 To nGenes - 1
                     Dim logProb(kPatterns - 1) As Double
-                    For K = 0 To kPatterns - 1
+                    For Ki As Integer = 0 To kPatterns - 1
                         Dim d2 As Double = 0.0
                         For j = 0 To n - 1
-                            Dim diff = smoothed(g, j) - centers(K, j)
+                            Dim diff = smoothed(g, j) - centers(Ki, j)
                             d2 += diff * diff
                         Next
-                        logProb(K) = -0.5 * d2 / (1.0 + 0.01) ' σ²=1 + jitter
+                        logProb(Ki) = -0.5 * d2 / (1.0 + 0.01) ' σ²=1 + jitter
                     Next
                     ' softmax
                     Dim maxLP = logProb.Max()
                     Dim sumExp As Double = 0.0
-                    For K = 0 To kPatterns - 1
-                        posterior(g, K) = std.Exp(logProb(K) - maxLP)
-                        sumExp += posterior(g, K)
+                    For Ki As Integer = 0 To kPatterns - 1
+                        posterior(g, Ki) = std.Exp(logProb(Ki) - maxLP)
+                        sumExp += posterior(g, Ki)
                     Next
-                    For K = 0 To kPatterns - 1
-                        posterior(g, K) /= sumExp
+                    For Ki As Integer = 0 To kPatterns - 1
+                        posterior(g, Ki) /= sumExp
                     Next
                     ' 硬分配
                     Dim maxP = posterior(g, 0)
                     Dim maxK = 0
-                    For K = 1 To kPatterns - 1
-                        If posterior(g, K) > maxP Then
-                            maxP = posterior(g, K)
-                            maxK = K
+                    For Ki As Integer = 1 To kPatterns - 1
+                        If posterior(g, Ki) > maxP Then
+                            maxP = posterior(g, Ki)
+                            maxK = Ki
                         End If
                     Next
                     assignments(g) = maxK
                 Next
 
                 ' M 步：更新中心
-                For K = 0 To kPatterns - 1
+                For Ki As Integer = 0 To kPatterns - 1
                     Dim count As Double = 0.0
                     Dim sum(n - 1) As Double
                     For g = 0 To nGenes - 1
-                        Dim p = posterior(g, K)
+                        Dim p = posterior(g, Ki)
                         count += p
                         For j = 0 To n - 1
                             sum(j) += p * smoothed(g, j)
@@ -185,7 +185,7 @@ Namespace SpatialOmics.SpatialDE
                     Next
                     If count > 0 Then
                         For j = 0 To n - 1
-                            centers(K, j) = sum(j) / count
+                            centers(Ki, j) = sum(j) / count
                         Next
                     End If
                 Next
@@ -194,9 +194,9 @@ Namespace SpatialOmics.SpatialDE
                 Dim ll As Double = 0.0
                 For g = 0 To nGenes - 1
                     Dim maxLP = Double.MinValue
-                    For K = 0 To kPatterns - 1
-                        If posterior(g, K) > 0 Then
-                            Dim lp = std.Log(posterior(g, K))
+                    For Ki As Integer = 0 To kPatterns - 1
+                        If posterior(g, Ki) > 0 Then
+                            Dim lp = std.Log(posterior(g, Ki))
                             If lp > maxLP Then maxLP = lp
                         End If
                     Next

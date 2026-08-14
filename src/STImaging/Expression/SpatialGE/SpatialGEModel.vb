@@ -1,3 +1,4 @@
+Imports Erica.Analysis.SpatialTissue.Imaging.SpatialOmics.Math
 Imports std = System.Math
 
 ' ============================================================================
@@ -125,8 +126,8 @@ Namespace SpatialOmics.SpatialGE
                 Dim y = expression.GetRow(g)
 
                 ' 拟合变异函数
-                Dim (dists, gammas, counts) = krig.ComputeEmpiricalVariogram(y, 10)
-                Dim vario = krig.FitVariogram(dists, gammas, VariogramModel.Spherical)
+                Dim __ As (dists As Double(), gammas As Double(), counts As Integer()) = krig.ComputeEmpiricalVariogram(y, 10)
+                Dim vario = krig.FitVariogram(__.dists, __.gammas, VariogramModel.Spherical)
 
                 ' 插值
                 Dim res = krig.Interpolate(y, targetCoords, vario)

@@ -1,3 +1,4 @@
+Imports Erica.Analysis.SpatialTissue.Imaging.SpatialOmics.Math
 Imports std = System.Math
 
 ' ============================================================================
@@ -108,14 +109,15 @@ Namespace SpatialOmics.SpatialGE
                 Next
 
                 ' 按距离排序，取前 K 个（排除自身）
-                Dim neighbors = dists.Where(Function(x) x.idx <> I()).
+                Dim offset As Integer = I
+                Dim neighbors = dists.Where(Function(x) x.idx <> offset).
                                       OrderBy(Function(x) x.dist).
                                       Take(kNeighbors).ToArray()
 
                 ' 行标准化权重
-                Dim w As Double = 1.0 / neighbors.Length
+                Dim wi As Double = 1.0 / neighbors.Length
                 For Each nb In neighbors
-                    w(I, nb.idx) = w
+                    W(I, nb.idx) = wi
                 Next
             Next
 
@@ -142,9 +144,9 @@ Namespace SpatialOmics.SpatialGE
                 Next
                 ' 行标准化
                 If neighbors.Count > 0 Then
-                    Dim w As Double = 1.0 / neighbors.Count
+                    Dim wi As Double = 1.0 / neighbors.Count
                     For Each nb In neighbors
-                        w(I, nb) = w
+                        W(I, nb) = wi
                     Next
                 End If
             Next
@@ -225,7 +227,7 @@ Namespace SpatialOmics.SpatialGE
                 Next
             Next
 
-            Dim I = (n / S0) * numerator / ss
+            Dim dI = (n / S0) * numerator / ss
             Dim expected = -1.0 / (n - 1)
 
             ' 方差（随机化假设下的近似）
@@ -258,10 +260,10 @@ Namespace SpatialOmics.SpatialGE
                        expected * expected
 
             If varI < 0 Then varI = std.Abs(varI)
-            Dim z = If(varI > 0, (I - expected) / std.Sqrt(varI), 0.0)
+            Dim z = If(varI > 0, (dI - expected) / std.Sqrt(varI), 0.0)
             Dim p = 2.0 * (1.0 - NormalCDF(std.Abs(z)))
 
-            Return (I, expected, z, p)
+            Return (dI, expected, z, p)
         End Function
 
         ''' <summary>
