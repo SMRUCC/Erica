@@ -103,7 +103,7 @@ Namespace SpatialOmics.SpatialGE
                         Dim diff = _sampleCoords(i, d) - _sampleCoords(j, d)
                         d2 += diff * diff
                     Next
-                    Dim dist = Math.Sqrt(d2)
+                    Dim dist = std.Sqrt(d2)
                     Dim halfVar = 0.5 * (values(i) - values(j)) ^ 2
                     pairs.Add((dist, halfVar))
                 Next
@@ -119,14 +119,14 @@ Namespace SpatialOmics.SpatialGE
             Dim counts(nLags - 1) As Integer
 
             For Each pair In pairs
-                Dim lagIdx = CInt(Math.Floor(pair.dist / lagSize))
+                Dim lagIdx = CInt(std.Floor(pair.dist / lagSize))
                 If lagIdx >= nLags Then lagIdx = nLags - 1
                 distances(lagIdx) += pair.dist
                 gamma(lagIdx) += pair.halfVar
                 counts(lagIdx) += 1
             Next
 
-            For I = 0 To nLags - 1
+            For I As Integer = 0 To nLags - 1
                 If counts(I) > 0 Then
                     distances(I) /= counts(I)
                     gamma(I) /= counts(I)
@@ -181,9 +181,9 @@ Namespace SpatialOmics.SpatialGE
                         Next
                         If ssd < bestSSD Then
                             bestSSD = ssd
-                            bestParams.Nugget = Math.Max(0, nug)
-                            bestParams.Sill = Math.Max(nug + 0.0001, sil)
-                            bestParams.Range = Math.Max(0.0001, rng)
+                            bestParams.Nugget = std.Max(0, nug)
+                            bestParams.Sill = std.Max(nug + 0.0001, sil)
+                            bestParams.Range = std.Max(0.0001, rng)
                         End If
                     Next
                 Next
@@ -206,9 +206,9 @@ Namespace SpatialOmics.SpatialGE
                                (1.5 * h / range - 0.5 * (h / range) ^ 3)
                     End If
                 Case VariogramModel.Exponential
-                    Return nugget + partialSill * (1.0 - Math.Exp(-3.0 * h / range))
+                    Return nugget + partialSill * (1.0 - std.Exp(-3.0 * h / range))
                 Case VariogramModel.Gaussian
-                    Return nugget + partialSill * (1.0 - Math.Exp(-3.0 * (h / range) ^ 2))
+                    Return nugget + partialSill * (1.0 - std.Exp(-3.0 * (h / range) ^ 2))
                 Case Else
                     Return EvaluateVariogram(h, nugget, sill, range, VariogramModel.Spherical)
             End Select
@@ -242,7 +242,7 @@ Namespace SpatialOmics.SpatialGE
                             d2 += diff * diff
                         Next
                         Gamma(i, j) = EvaluateVariogram(
-                            Math.Sqrt(d2), varioParams.Nugget, varioParams.Sill,
+                              std.Sqrt(d2), varioParams.Nugget, varioParams.Sill,
                             varioParams.Range, varioParams.Model)
                     End If
                 Next
@@ -266,7 +266,7 @@ Namespace SpatialOmics.SpatialGE
                         d2 += diff * diff
                     Next
                     g(i) = EvaluateVariogram(
-                        Math.Sqrt(d2), varioParams.Nugget, varioParams.Sill,
+                          std.Sqrt(d2), varioParams.Nugget, varioParams.Sill,
                         varioParams.Range, varioParams.Model)
                 Next
                 g(_nSamples) = 1.0
@@ -294,7 +294,7 @@ Namespace SpatialOmics.SpatialGE
                     varEst += lambda(i) * g(i)
                 Next
                 varEst += lambda(_nSamples) ' μ
-                variances(p) = Math.Max(0, varEst)
+                variances(p) = std.Max(0, varEst)
             Next
 
             Return New KrigingResult With {
