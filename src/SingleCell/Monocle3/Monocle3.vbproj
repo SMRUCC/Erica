@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>Monocle3</RootNamespace>
+    <RootNamespace>SMRUCC.genomics.SingleCell</RootNamespace>
     <TargetFramework>net10.0</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>

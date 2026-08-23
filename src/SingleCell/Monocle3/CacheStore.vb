@@ -33,7 +33,7 @@ Namespace SMRUCC.genomics.SingleCell.Monocle3
         ''' 生成缓存文件路径（带步骤序号前缀，便于按步骤定位与人工检查）。
         ''' </summary>
         Public Function Path(key As String) As String
-            Return Path.Join(cacheDir, key)
+            Return IO.Path.Combine(cacheDir, key)
         End Function
 
         ''' <summary>
@@ -147,8 +147,8 @@ Namespace SMRUCC.genomics.SingleCell.Monocle3
         ''' <summary>
         ''' 从 JSON 缓存反序列化对象。
         ''' </summary>
-        Public Function LoadJson(Of T)(key As String) As T
-            Return LoadObject(Of T)(Path(key))
+        Public Function LoadJson(Of T As New)(key As String) As T
+            Return LoadJSON(Of T)(IO.File.ReadAllText(Path(key)))
         End Function
 
         ' ===================== 轻量图缓存（自定义边表） =====================
