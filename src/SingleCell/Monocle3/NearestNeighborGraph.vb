@@ -75,9 +75,9 @@ Namespace SMRUCC.genomics.SingleCell.Monocle3
         End Function
 
         ''' <summary>
-        ''' 将轻量图转换为 Louvain 所需的 <see cref="NetworkGraph(Of Node, VertexEdge)"/>。
+        ''' 将轻量图转换为 Louvain 所需的 <see cref="NetworkGraph(Of Vertex, VertexEdge)"/>。
         ''' </summary>
-        Public Shared Function ToNetworkGraph(g As GraphData) As NetworkGraph(Of Node, VertexEdge)
+        Public Shared Function ToNetworkGraph(g As GraphData) As NetworkGraph(Of Vertex, VertexEdge)
             Return g.ToNetworkGraph()
         End Function
     End Class

@@ -19,7 +19,7 @@ Module Program
         End If
 
         Call Console.WriteLine($"Loading expression matrix: {exprFile}")
-        Dim matrix = Matrix.LoadData(exprFile)
+        Dim matrix As Matrix = Matrix.LoadData(exprFile)
         Call Console.WriteLine($"Loaded {matrix.expression.Length} genes x {matrix.sampleID.Length} samples")
 
         Dim opts = New Monocle3Options With {

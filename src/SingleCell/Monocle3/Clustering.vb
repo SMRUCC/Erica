@@ -22,8 +22,8 @@ Namespace SMRUCC.genomics.SingleCell.Monocle3
 
             Call Console.WriteLine($"[cluster] running {(If(opts.useLeiden, "Leiden", "Louvain"))} community detection (resolution={opts.resolution}) ...")
 
-            Dim g As NetworkGraph(Of Node, VertexEdge) = knn.ToNetworkGraph()
-            Dim louvain As LouvainCommunity = Builder.Load(Of Node, VertexEdge)(g, eps:=opts.resolution, leiden:=opts.useLeiden)
+            Dim g As NetworkGraph(Of Vertex, VertexEdge) = knn.ToNetworkGraph()
+            Dim louvain As LouvainCommunity = Builder.Load(Of Vertex, VertexEdge)(g, eps:=opts.resolution, leiden:=opts.useLeiden)
 
             Call louvain.SolveClustersParallel()
             Dim labelsStr = louvain.GetCommunity()
