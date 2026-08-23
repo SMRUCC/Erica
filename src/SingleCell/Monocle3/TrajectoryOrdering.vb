@@ -39,7 +39,7 @@ Namespace SMRUCC.genomics.SingleCell.Monocle3
 
             ' 1. 计算 cluster 质心（UMAP 3D 空间）
             Dim n = clusters.Length
-            Dim dim = umap3d.GetLength(1)
+            Dim ndim = umap3d.GetLength(1)
             Dim clusterIds = clusters.Distinct.ToArray
             Dim k = clusterIds.Length
             Dim idMap As New Dictionary(Of Integer, Integer)
@@ -47,18 +47,18 @@ Namespace SMRUCC.genomics.SingleCell.Monocle3
                 idMap(clusterIds(i)) = i
             Next
 
-            Dim centroid(k - 1, dim - 1) As Double
+            Dim centroid(k - 1, ndim - 1) As Double
             Dim counts(k - 1) As Integer
             For s As Integer = 0 To n - 1
                 Dim ci = idMap(clusters(s))
                 counts(ci) += 1
-                For d As Integer = 0 To dim - 1
+                For d As Integer = 0 To ndim - 1
                     centroid(ci, d) += umap3d(s, d)
                 Next
             Next
             For ci As Integer = 0 To k - 1
                 If counts(ci) > 0 Then
-                    For d As Integer = 0 To dim - 1
+                    For d As Integer = 0 To ndim - 1
                         centroid(ci, d) /= counts(ci)
                     Next
                 End If
@@ -69,7 +69,7 @@ Namespace SMRUCC.genomics.SingleCell.Monocle3
             For a As Integer = 0 To k - 1
                 For b As Integer = a + 1 To k - 1
                     Dim d = 0.0
-                    For dd As Integer = 0 To dim - 1
+                    For dd As Integer = 0 To ndim - 1
                         Dim diff = centroid(a, dd) - centroid(b, dd)
                         d += diff * diff
                     Next
