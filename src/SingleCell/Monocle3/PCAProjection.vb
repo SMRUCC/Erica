@@ -25,7 +25,10 @@ Namespace SMRUCC.genomics.SingleCell.Monocle3
 
             Call Console.WriteLine($"[pca] computing {opts.numPCA} principal components on {n} samples x {data.GetLength(1)} genes ...")
 
-            Dim result = PCA.PrincipalComponentAnalysis(data, y, opts.numPCA)
+            ' PCA 接受 StatisticsObject：需将 [样本 × 基因] 的 Double(,) 转为 Double()()（每行一个样本）
+            Dim rows = MatrixExtensions.ToRowVectors(data)
+            Dim stat = New StatisticsObject(rows, y)
+            Dim result = PCA.PrincipalComponentAnalysis(stat, opts.numPCA)
             Dim scores = result.TPreds
             Dim scoreMatrix(n - 1, opts.numPCA - 1) As Double
 

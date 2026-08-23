@@ -1,4 +1,3 @@
-Imports Microsoft.VisualBasic.Data.GraphTheory
 Imports Microsoft.VisualBasic.Data.GraphTheory.Network
 
 Namespace SMRUCC.genomics.SingleCell.Monocle3
@@ -28,23 +27,27 @@ Namespace SMRUCC.genomics.SingleCell.Monocle3
         End Function
 
         ''' <summary>
-        ''' 转换为 sciBASIC# 的 <see cref="NetworkGraph(Of Vertex, VertexEdge)"/>。
-        ''' 节点 ID 在 NetworkGraph 构造时自动赋为顺序索引（从 1 起），
+        ''' 转换为 sciBASIC# 的 <see cref="NetworkGraph(Of Node, Edge(Of ?))"/>。
+        ''' 节点 ID 在 NetworkGraph 构造时自动赋为顺序索引（从 0/1 起），
         ''' 因此样本 i 对应节点 ID = i + 1，可据此回溯。
         ''' </summary>
-        Public Function ToNetworkGraph() As NetworkGraph(Of Vertex, VertexEdge)
-            Dim nodeList(nodes.Length - 1) As Vertex
-            Dim edgeList(edges.Length - 1) As VertexEdge
+        Public Function ToNetworkGraph() As NetworkGraph(Of Node, Edge(Of Node))
+            Dim nodeList(nodes.Length - 1) As Node
+            Dim edgeList(edges.Length - 1) As Edge(Of Node)
 
             For i As Integer = 0 To nodes.Length - 1
-                nodeList(i) = New Vertex(i, nodes(i))
+                nodeList(i) = New Node() With {.label = nodes(i)}
             Next
             For i As Integer = 0 To edges.Length - 1
                 Dim e = edges(i)
-                edgeList(i) = New VertexEdge(nodeList(e.u), nodeList(e.v), e.weight)
+                edgeList(i) = New Edge(Of Node) With {
+                    .U = nodeList(e.u),
+                    .V = nodeList(e.v),
+                    .weight = e.weight
+                }
             Next
 
-            Return New NetworkGraph(Of Vertex, VertexEdge)(nodeList, edgeList)
+            Return New NetworkGraph(Of Node, Edge(Of Node))(nodeList, edgeList)
         End Function
     End Class
 

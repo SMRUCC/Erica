@@ -1,4 +1,3 @@
-Imports Microsoft.VisualBasic.Data.GraphTheory
 Imports Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain
 Imports Microsoft.VisualBasic.Data.GraphTheory.Network
 Imports stdNum = System.Math
@@ -22,8 +21,8 @@ Namespace SMRUCC.genomics.SingleCell.Monocle3
 
             Call Console.WriteLine($"[cluster] running {(If(opts.useLeiden, "Leiden", "Louvain"))} community detection (resolution={opts.resolution}) ...")
 
-            Dim g As NetworkGraph(Of Vertex, VertexEdge) = knn.ToNetworkGraph()
-            Dim louvain As LouvainCommunity = Builder.Load(Of Vertex, VertexEdge)(g, eps:=opts.resolution, leiden:=opts.useLeiden)
+            Dim g As NetworkGraph(Of Node, Edge(Of Node)) = knn.ToNetworkGraph()
+            Dim louvain As LouvainCommunity = Builder.Load(Of Node, Edge(Of Node))(g, eps:=opts.resolution, leiden:=opts.useLeiden)
 
             Call louvain.SolveClustersParallel()
             Dim labelsStr = louvain.GetCommunity()

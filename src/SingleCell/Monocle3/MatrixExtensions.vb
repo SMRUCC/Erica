@@ -89,7 +89,7 @@ Namespace SMRUCC.genomics.SingleCell.Monocle3
         Public Function ToRowVectors(matrix As Double(,)) As Double()()
             Dim n = matrix.GetLength(0)
             Dim m = matrix.GetLength(1)
-            Dim rows(n - 1) As Double()
+            Dim rows As Double()() = New Double(n - 1)() {}
             For i As Integer = 0 To n - 1
                 Dim row(m - 1) As Double
                 For j As Integer = 0 To m - 1
