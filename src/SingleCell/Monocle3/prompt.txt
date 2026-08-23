@@ -10,3 +10,5 @@
 6. G:\GCModeller\src\runtime\sciBASIC#\gr\network-visualization\Datavisualization.Network\Analysis\PAGA.vb  PAGA算法模块
 7. G:\GCModeller\src\runtime\sciBASIC#\Data_science\Graph\Analysis\Dijkstra\DijkstraAlgoritm.vb  最短路径算法模块
 8. G:\GCModeller\src\runtime\sciBASIC#\Microsoft.VisualBasic.Core\src\Drawing\Math\Geometry\Moran.vb  莫兰指数算法模块
+
+在"K:\hsa\Homo_sapiens_expr_advanced_all_conditions.csv"中有一个包含有1800多个样本的转录组表达矩阵，你可以在完成了算法实现后，使用此表达矩阵进行验证。验证测试的demo代码编写在Monocle3\test\test.vbproj这个命令行项目之中。
