@@ -22,7 +22,7 @@
 
         <h3>Description</h3>
 
-        <p>Reference-free cell-type deconvolution of pixel-resolution spatially resolved transcriptomics data</p>
+        <p>Reference-free cell-type deconvolution of pixel-resolution spatially resolved transcriptomics data
 
         <h3>Usage</h3>
 
@@ -46,31 +46,26 @@
         <table>
             
 <dt>expr.mat</dt>
-<dd><p><p>a dataframe object or a GCModeller expression matrix object, the matrix
-object should be in format of spatial spot in rows and the gene features in
-columns.</p></p></dd>
+<dd><p><p>a dataframe object or a GCModeller expression matrix object, the matrix object should be in format of spatial spot in rows and the gene features in columns.</p></dd>
 
 
 <dt>n.layers</dt>
-<dd><p><p>an integer value for specific the cell layer class number</p></p></dd>
+<dd><p><p>an integer value for specific the cell layer class number</p></dd>
 
 
 <dt>top.genes</dt>
-<dd><p><p>set the number of top genes when export the expression matrix
-in each cell layers</p></p></dd>
+<dd><p><p>set the number of top genes when export the expression matrix in each cell layers</p></dd>
 
 
 <dt>n.threads</dt>
-<dd><p><p>default null means controls the thread number for parallel sampling via
-the r environment config: <code>getOption("n_threads")</code>.</p></p></dd>
+<dd><p><p>default null means controls the thread number for parallel sampling via the r environment config: <code>getOption("n_threads")</code>.</p></dd>
 
         </table>
 
 
         <h3 style="display: block;">Details</h3>
 
-        <p>the generated expression matrix object could be save as csv matrix by use
-the function <code>geneExpression::write.expr_matrix</code> from the GCModeller package.</p>
+        <p>the generated expression matrix object could be save as csv matrix by use the function <code>geneExpression::write.expr_matrix</code> from the GCModeller package.
 
         <h3 style="display: block">Authors</h3>
 
@@ -79,18 +74,24 @@ the function <code>geneExpression::write.expr_matrix</code> from the GCModeller 
         <h3>Value</h3>
 
         <p>A tuple list object that contains multiple result object inside:
+
+
 <ol>
-<li>single_cells: an expression matrix object that contains the single cell data</li>
-<li>deconv_spatial: an expression matrix object that contains the cell</li>
-</ol></p>
+<li><p>single_cells: an expression matrix object that contains the single cell data</li>
+<li><p>deconv_spatial: an expression matrix object that contains the cell</li>
+</ol>
+
 
 <p>layer deconvolution result data
-<ol>
-<li>cell_layers: the cell layer composition data</li>
-<li>gibbs_LDA: the result of the LDA gibbs sampling result outputs, the top</li>
-</ol></p>
 
-<p>features in each cell class</p>
+
+<ol start="3">
+<li><p>cell_layers: the cell layer composition data</li>
+<li><p>gibbs_LDA: the result of the LDA gibbs sampling result outputs, the top</li>
+</ol>
+
+
+<p>features in each cell class
 
         <h3 style="display: none;">Examples</h3>
 

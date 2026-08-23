@@ -256,7 +256,7 @@ Namespace SpatialOmics.SpatialGE
 
                 ' 更新新聚类到其他聚类的距离（Ward 平均链接）
                 ' 用 Lance-Williams 公式更新距离
-                ReDim Preserve D(maxClusterId, maxClusterId)
+                D = D.Resize(maxClusterId + 1, maxClusterId + 1)
                 Dim ni = clusterSizes(minI)
                 Dim nj = clusterSizes(minJ)
                 Dim nk = clusterSizes(newId)

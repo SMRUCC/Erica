@@ -11,7 +11,7 @@
           "Erica.Analysis.SingleCell.SpatialDeconvolve": "1.0.0",
           "Microsoft.VisualBasic.Data.NLP": "1.0.0",
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389",
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911",
           "SMRUCC.genomics.Analysis.HTS.DataFrame": "1.0.0",
           "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner": "1.0.0",
           "Erica.Analysis.SingleCell.SpatialDeconvolve.Reference": "1.0.0.0",
@@ -153,7 +153,7 @@
         "dependencies": {
           "Microsoft.VisualBasic.Data.NLP": "1.0.0",
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389",
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911",
           "SMRUCC.genomics.Analysis.HTS.DataFrame": "1.0.0",
           "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner": "1.0.0",
           "System.Configuration.ConfigurationManager": "10.0.11"
@@ -167,7 +167,7 @@
       "Microsoft.VisualBasic.Data.Bootstrapping.Fittings/5.0.1.2389": {
         "dependencies": {
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911"
         },
         "runtime": {
           "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.dll": {
@@ -177,7 +177,7 @@
       },
       "Microsoft.VisualBasic.Data.Framework/5.0.123": {
         "dependencies": {
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911"
         },
         "runtime": {
           "Microsoft.VisualBasic.Data.Framework.dll": {
@@ -189,7 +189,7 @@
         "dependencies": {
           "Microsoft.VisualBasic.Data.Framework": "5.0.123",
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911"
         },
         "runtime": {
           "Microsoft.VisualBasic.Data.NLP.dll": {
@@ -199,7 +199,7 @@
       },
       "Microsoft.VisualBasic.Math.Core/5.0.1.2389": {
         "dependencies": {
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911"
         },
         "runtime": {
           "Microsoft.VisualBasic.Math.Core.dll": {
@@ -210,7 +210,7 @@
       "Microsoft.VisualBasic.Math.Statistics/1.0.0": {
         "dependencies": {
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911"
         },
         "runtime": {
           "Microsoft.VisualBasic.Math.Statistics.dll": {
@@ -218,7 +218,7 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Runtime/5.0.1.2389": {
+      "Microsoft.VisualBasic.Runtime/10.5.3.8911": {
         "dependencies": {
           "System.Composition": "10.0.11",
           "System.Resources.Extensions": "10.0.11"
@@ -234,7 +234,7 @@
           "Microsoft.VisualBasic.Data.Bootstrapping.Fittings": "5.0.1.2389",
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
           "Microsoft.VisualBasic.Math.Statistics": "1.0.0",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389",
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911",
           "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner": "1.0.0",
           "System.Composition": "10.0.11",
           "System.Resources.Extensions": "10.0.11"
@@ -247,7 +247,7 @@
       },
       "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner/1.0.0": {
         "dependencies": {
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389",
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911",
           "System.Composition": "10.0.11",
           "System.Resources.Extensions": "10.0.11"
         },
@@ -444,7 +444,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Runtime/5.0.1.2389": {
+    "Microsoft.VisualBasic.Runtime/10.5.3.8911": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

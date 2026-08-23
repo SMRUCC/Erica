@@ -294,6 +294,19 @@ Namespace SpatialOmics.SpatialGE
                 Next
             Next
 
+            ' S1 = 1/2 · Σᵢ (Σⱼ wᵢⱼ + Σⱼ wⱼᵢ)²
+            Dim S1 As Double = 0.0
+            For I As Integer = 0 To n - 1
+                Dim rowSum As Double = 0.0
+                Dim colSum As Double = 0.0
+                For j = 0 To n - 1
+                    rowSum += W(I, j)
+                    colSum += W(j, I)
+                Next
+                S1 += (rowSum + colSum) ^ 2
+            Next
+            S1 /= 2.0
+
             Dim C = ((n - 1) / (2.0 * S0)) * numerator / ss
             Dim expected = 1.0
 

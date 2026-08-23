@@ -432,6 +432,26 @@ Namespace SpatialOmics.Math
             Return CType(_data.Clone(), Double(,))
         End Function
 
+        ''' <summary>
+        ''' 扩容/缩容矩阵，保留左上角原数据，新增区域默认 0.0。
+        ''' 返回新的 Matrix 实例（不修改原实例）。
+        ''' </summary>
+        Public Function Resize(newRows As Integer, newCols As Integer) As Matrix
+            If newRows <= 0 OrElse newCols <= 0 Then
+                Throw New ArgumentException("Matrix dimensions must be positive.")
+            End If
+            Dim result As New Matrix(newRows, newCols)
+            Dim copyRows As Integer = std.Min(_rows, newRows)
+            Dim copyCols As Integer = std.Min(_cols, newCols)
+            For I As Integer = 0 To copyRows - 1
+                For j = 0 To copyCols - 1
+                    result._data(I, j) = _data(I, j)
+                Next
+            Next
+            Return result
+        End Function
+
+
         ''' <summary>深拷贝</summary>
         Public Function Clone() As Object Implements ICloneable.Clone
             Return New Matrix(_data)

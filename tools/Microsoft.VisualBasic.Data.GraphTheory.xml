@@ -6,175 +6,6 @@ Microsoft.VisualBasic.Data.GraphTheory
 </name>
 </assembly>
 <members>
-<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter">
- <summary>
- ## Dijkstra:Shortest Route Calculation - Object Oriented
- 
- > Michael Demeersseman, 4 Jan 2008
- > http://www.codeproject.com/Articles/22647/Dijkstra-Shortest-Route-Calculation-Object-Oriente
- </summary>
-</member>
-<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter.links">
- <summary>
- 存在方向的
- </summary>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter.#ctor(Microsoft.VisualBasic.Data.GraphTheory.Graph,System.Boolean)">
- <summary>
- Create a new Dijkstra shortest path router model
- </summary>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter.FromNetwork``2(Microsoft.VisualBasic.Data.GraphTheory.Network.NetworkGraph{``0,``1},System.Boolean)">
- <summary>
- Create a router object from the network graph object
- </summary>
- <typeparam name="TNode"></typeparam>
- <typeparam name="TEdge"></typeparam>
- <param name="g"></param>
- <param name="undirected"></param>
- <returns></returns>
- <remarks>
- this function keeps the raw vector node object, but the edge is replaced as <see cref="T:Microsoft.VisualBasic.Data.GraphTheory.VertexEdge"/>. 
- but the edge still can be get from the source graph via its unique reference <see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Edge`1.ID"/>
- </remarks>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter.GetLocation(System.String)">
- <summary>
- Get graph node element by label id
- </summary>
- <param name="label$"></param>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter.CalculateMinCost(Microsoft.VisualBasic.Data.GraphTheory.Vertex)">
- <summary>
- Calculates the shortest route to all the other locations.
- </summary>
- <param name="startPos"></param>
- <returns>List of all locations and their shortest route</returns>
- <remarks>
- (这个函数会枚举出从出发点<paramref name="startPos"/>到网络之中的所有节点的最短路径)
- </remarks>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter.CalculateMinCost(Microsoft.VisualBasic.Data.GraphTheory.Vertex,Microsoft.VisualBasic.Data.GraphTheory.Vertex)">
- <summary>
- 查找两点之间的最短路径
- </summary>
- <param name="startPos"></param>
- <param name="endPos"></param>
- <returns>当函数找不到路径的时候会返回空值</returns>
-</member>
-<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.Node">
- <summary>
- Holds all the details of a node in the graph.
- </summary>
-</member>
-<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.vertices">
- <summary>
- 网络图中的节点总数
- </summary>
-</member>
-<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.pathCache">
- <summary>
- 缓存不同起点的计算结果，Key为startIndex
- </summary>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.#ctor(Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.SparseMatrix,System.Int32)">
- <param name="graph">The adjacency matrix of the graph.</param>
- <param name="vertices">Total number of vertices.</param>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.DistanceFinder(System.Int32)">
- <summary>
- Calculates the minimum possible distance from root node to all other nodes.
- </summary>
- <param name="startIndex"></param>
- <returns></returns>
- 
-</member>
-<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.DistanceFinderInternal(System.Int32,System.Nullable{System.Int32})">
- <summary>
- Calculates the minimum possible distance from root node to all other nodes.
- </summary>
- <param name="startIndex"></param>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.FindPathBiDirectional(Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.SparseMatrix@,System.Int32,System.Int32,System.Int32)">
- <summary>
- Calculates the shortest path using Bi-Directional Dijkstra algorithm.
- </summary>
- <param name="graph">The adjacency matrix of the graph.</param>
- <param name="vertices">Total number of vertices.</param>
- <param name="startIndex">The starting node index.</param>
- <param name="endIndex">The target node index.</param>
- <returns>Returns the target Node containing path and distance info. Returns Nothing if path not found.</returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.FindPath(System.Int32,System.Int32)">
- <summary>
- Calculates the shortest path from startIndex to endIndex specifically.
- </summary>
- <param name="startIndex">The starting node index.</param>
- <param name="endIndex">The target node index.</param>
- <returns>Returns the target Node containing path and distance info. Returns Nothing if path not found.</returns>
-</member>
-<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Calculator`1">
- <summary>
- calculates all-pairs shortest paths or shortest paths from a single node
- </summary>
- <typeparam name="Link"></typeparam>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Calculator`1.#ctor(System.Int32,System.Collections.Generic.IEnumerable{`0},System.Func{`0,System.Double},System.Func{`0,System.Double},System.Func{`0,System.Double})">
- <summary>
- 
- </summary>
- <param name="n">number of nodes</param>
- <param name="es">array of edges</param>
- <param name="getSourceIndex"></param>
- <param name="getTargetIndex"></param>
- <param name="getLength"></param>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Calculator`1.DistanceMatrix">
- <summary>
- compute shortest paths for graph over n nodes with edges an array of source/target pairs
- edges may optionally have a length attribute.  1 is the default.
- Uses Johnson's algorithm.
- </summary>
- <returns>return the distance matrix</returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Calculator`1.DistancesFromNode(System.Int32)">
- <summary>
- get shortest paths from a specified start node
- </summary>
- <param name="start">start node index</param>
- <returns>array of path lengths</returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Calculator`1.PathFromNodeToNodeWithPrevCost(System.Int32,System.Int32,System.Func{System.Int32,System.Int32,System.Int32,System.Double})">
- <summary>
- find shortest path from start to end, with the opportunity at
- each edge traversal to compute a custom cost based on the
- previous edge.  For example, to penalise bends.
- </summary>
- <param name="start"></param>
- <param name="[end]"></param>
- <param name="prevCost"></param>
- <returns></returns>
-</member>
-<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.RoutePathway.Cost">
- <summary>
- sum edge weight as cost
- </summary>
- <returns></returns>
-</member>
-<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.RoutePathway.Count">
- <summary>
- size/length of the route path
- </summary>
- <returns></returns>
-</member>
-<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Route">
- <summary>
- 从出发点到终点所经过的路径
- </summary>
-</member>
 <member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.FastUnfolding.FastUnfolding">
  <summary>
  Fast unfolding of communities in large networks.
@@ -202,25 +33,6 @@ Microsoft.VisualBasic.Data.GraphTheory
  </summary>
  <param name="tags"></param>
  <param name="map_dict"></param>
- <returns></returns>
- 
-</member>
-<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.GraphAnalysis.FindShortestPath(Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter,System.String,System.String)">
- <summary>
- Calculation of the shortest path between x points
- </summary>
- <param name="finder"></param>
- <param name="start$"></param>
- <param name="ends$"></param>
- <returns></returns>
- <remarks>
- http://www.codeproject.com/Articles/22647/Dijkstra-Shortest-Route-Calculation-Object-Oriente
- </remarks>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.GraphAnalysis.BetweennessCentrality(Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter)">
- <summary>
- 中介中心度，计算经过一个点的最短路径的数量。经过一个点的最短路径的数量越多，就说明它的中介中心度越高。
- </summary>
  <returns></returns>
  
 </member>
@@ -539,6 +351,20 @@ Microsoft.VisualBasic.Data.GraphTheory
  rebuild graph
  </summary>
 </member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.EvaluateBestCluster(System.Int32)">
+ <summary>
+ 纯计算逻辑：评估节点 i 应该移动到哪个簇，但不实际移动
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.SolveClustersParallel(System.Int32)">
+ <summary>
+ 
+ </summary>
+ <param name="max_clusters">
+ set the limits of the max number of the node class we finally have.
+ </param>
+ <returns></returns>
+</member>
 <member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.LouvainCommunity.SolveClusters(System.Int32)">
  <summary>
  
@@ -547,6 +373,321 @@ Microsoft.VisualBasic.Data.GraphTheory
  set the limits of the max number of the node class we finally have.
  </param>
  <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.Builder">
+ <summary>
+ 将<see cref="T:Microsoft.VisualBasic.Data.GraphTheory.Network.NetworkGraph`2"/>网络图对象构建为LPA标签传播算法
+ 所需要的链式前向星邻接表数据结构
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.Builder.Load``2(Microsoft.VisualBasic.Data.GraphTheory.Network.NetworkGraph{``0,``1},System.Int32)">
+ <summary>
+ 从网络图对象构建LPA标签传播算法对象
+ </summary>
+ <typeparam name="Node"></typeparam>
+ <typeparam name="Edge"></typeparam>
+ <param name="g">
+ 目标网络图，要求图之中的节点的ID编号为从0开始的连续编号
+ （与Louvain模块的要求相一致）
+ </param>
+ <param name="maxIterations">最大迭代次数上限，默认为100</param>
+ <returns>
+ 返回完成初始化之后的<see cref="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.LabelPropagation"/>算法对象，
+ 每个节点都会被分配得到一个独一无二的独立标签
+ </returns>
+ <remarks>
+ 假若网络图之中的所有的边的权重值都是零，则会被看作为无权图，
+ 所有的边的权重值都会被设置为1。
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.Edge">
+ <summary>
+ LPA邻接表之中所使用的边的数据结构（链式前向星）
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.Edge.v">
+ <summary>
+ v表示连接点的编号,w表示此边的权值
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.Edge.next">
+ <summary>
+ next负责连接和此点相关的边
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.LabelPropagation">
+ <summary>
+ Label Propagation Algorithm, LPA community detection
+ </summary>
+ <remarks>
+ Raghavan U N, Albert R, Kumara S. Near linear time algorithm to 
+ detect community structures In large-scale networks[J]. Physical 
+ Review E, 2007, 76(3): 036106.
+ 
+ 算法的迭代逻辑：每个节点把自己的标签改成邻居之中出现次数（加权）最多的标签，
+ 收敛之后节点的标签值即为其所归属的社区编号。
+ </remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.LabelPropagation.n">
+ <summary>
+ number of vertex
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.LabelPropagation.m">
+ <summary>
+ number of edges(有向边的数目，即无向边数目的两倍)
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.LabelPropagation.label">
+ <summary>
+ 每个节点当前所拥有的标签值，标签值即社区编号
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.LabelPropagation.edge">
+ <summary>
+ 邻接表
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.LabelPropagation.head">
+ <summary>
+ 头节点下标
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.LabelPropagation.top">
+ <summary>
+ 已用边的个数
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.LabelPropagation.nodeLabels">
+ <summary>
+ 节点ID下标所对应的节点label名字，用于社区划分结果的输出
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.LabelPropagation.maxIterations">
+ <summary>
+ 最大迭代次数上限，LPA一般经过少数几轮迭代之后就会收敛
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.LabelPropagation.GetClusterCount">
+ <summary>
+ get the number of the community class the graph it has currently.
+ (获取当前图结构之中的社区的数量)
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.LabelPropagation.GetClusters">
+ <summary>
+ 获取社区划分的结果
+ </summary>
+ <returns>
+ 返回一个字典：字典的key为社区标签编号（字符串），字典的value为
+ 该社区之中的所有成员节点的<see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Vertex.label"/>名字列表
+ </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.LabelPropagation.SolveClusters">
+ <summary>
+ 执行标签传播迭代：按照随机节点序列进行异步更新，每一轮迭代都将节点的标签
+ 修改为其邻居之中加权票数最多的标签，直到某一轮迭代之中所有的节点的标签
+ 都不再发生变化（收敛）或者达到最大迭代次数上限为止。
+ </summary>
+ <returns>返回当前对象自身，以便于进行链式调用</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.LabelPropagation.propagateLabel(System.Int32,System.Double[],System.Collections.Generic.List{System.Int32})">
+ <summary>
+ 标签传播的单节点更新：将节点i的标签修改为其邻居之中加权票数最多的标签
+ </summary>
+ <param name="i">目标节点下标</param>
+ <param name="labelCounter">所有节点所共享的标签票数计数器</param>
+ <param name="touched">当前节点所统计到的标签列表，用于计数器的重置</param>
+ <returns>节点的标签是否发生了变化</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter">
+ <summary>
+ ## Dijkstra:Shortest Route Calculation - Object Oriented
+ 
+ > Michael Demeersseman, 4 Jan 2008
+ > http://www.codeproject.com/Articles/22647/Dijkstra-Shortest-Route-Calculation-Object-Oriente
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter.links">
+ <summary>
+ 存在方向的
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter.#ctor(Microsoft.VisualBasic.Data.GraphTheory.Graph,System.Boolean)">
+ <summary>
+ Create a new Dijkstra shortest path router model
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter.FromNetwork``2(Microsoft.VisualBasic.Data.GraphTheory.Network.NetworkGraph{``0,``1},System.Boolean)">
+ <summary>
+ Create a router object from the network graph object
+ </summary>
+ <typeparam name="TNode"></typeparam>
+ <typeparam name="TEdge"></typeparam>
+ <param name="g"></param>
+ <param name="undirected"></param>
+ <returns></returns>
+ <remarks>
+ this function keeps the raw vector node object, but the edge is replaced as <see cref="T:Microsoft.VisualBasic.Data.GraphTheory.VertexEdge"/>. 
+ but the edge still can be get from the source graph via its unique reference <see cref="P:Microsoft.VisualBasic.Data.GraphTheory.Edge`1.ID"/>
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter.GetLocation(System.String)">
+ <summary>
+ Get graph node element by label id
+ </summary>
+ <param name="label$"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter.CalculateMinCost(Microsoft.VisualBasic.Data.GraphTheory.Vertex)">
+ <summary>
+ Calculates the shortest route to all the other locations.
+ </summary>
+ <param name="startPos"></param>
+ <returns>List of all locations and their shortest route</returns>
+ <remarks>
+ (这个函数会枚举出从出发点<paramref name="startPos"/>到网络之中的所有节点的最短路径)
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter.CalculateMinCost(Microsoft.VisualBasic.Data.GraphTheory.Vertex,Microsoft.VisualBasic.Data.GraphTheory.Vertex)">
+ <summary>
+ 查找两点之间的最短路径
+ </summary>
+ <param name="startPos"></param>
+ <param name="endPos"></param>
+ <returns>当函数找不到路径的时候会返回空值</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.Node">
+ <summary>
+ Holds all the details of a node in the graph.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.vertices">
+ <summary>
+ 网络图中的节点总数
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.pathCache">
+ <summary>
+ 缓存不同起点的计算结果，Key为startIndex
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.#ctor(Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.SparseMatrix,System.Int32)">
+ <param name="graph">The adjacency matrix of the graph.</param>
+ <param name="vertices">Total number of vertices.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.DistanceFinder(System.Int32)">
+ <summary>
+ Calculates the minimum possible distance from root node to all other nodes.
+ </summary>
+ <param name="startIndex"></param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.DistanceFinderInternal(System.Int32,System.Nullable{System.Int32})">
+ <summary>
+ Calculates the minimum possible distance from root node to all other nodes.
+ </summary>
+ <param name="startIndex"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.FindPathBiDirectional(Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.SparseMatrix@,System.Int32,System.Int32,System.Int32)">
+ <summary>
+ Calculates the shortest path using Bi-Directional Dijkstra algorithm.
+ </summary>
+ <param name="graph">The adjacency matrix of the graph.</param>
+ <param name="vertices">Total number of vertices.</param>
+ <param name="startIndex">The starting node index.</param>
+ <param name="endIndex">The target node index.</param>
+ <returns>Returns the target Node containing path and distance info. Returns Nothing if path not found.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraAlgoritm.FindPath(System.Int32,System.Int32)">
+ <summary>
+ Calculates the shortest path from startIndex to endIndex specifically.
+ </summary>
+ <param name="startIndex">The starting node index.</param>
+ <param name="endIndex">The target node index.</param>
+ <returns>Returns the target Node containing path and distance info. Returns Nothing if path not found.</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Calculator`1">
+ <summary>
+ calculates all-pairs shortest paths or shortest paths from a single node
+ </summary>
+ <typeparam name="Link"></typeparam>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Calculator`1.#ctor(System.Int32,System.Collections.Generic.IEnumerable{`0},System.Func{`0,System.Double},System.Func{`0,System.Double},System.Func{`0,System.Double})">
+ <summary>
+ 
+ </summary>
+ <param name="n">number of nodes</param>
+ <param name="es">array of edges</param>
+ <param name="getSourceIndex"></param>
+ <param name="getTargetIndex"></param>
+ <param name="getLength"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Calculator`1.DistanceMatrix">
+ <summary>
+ compute shortest paths for graph over n nodes with edges an array of source/target pairs
+ edges may optionally have a length attribute.  1 is the default.
+ Uses Johnson's algorithm.
+ </summary>
+ <returns>return the distance matrix</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Calculator`1.DistancesFromNode(System.Int32)">
+ <summary>
+ get shortest paths from a specified start node
+ </summary>
+ <param name="start">start node index</param>
+ <returns>array of path lengths</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Calculator`1.PathFromNodeToNodeWithPrevCost(System.Int32,System.Int32,System.Func{System.Int32,System.Int32,System.Int32,System.Double})">
+ <summary>
+ find shortest path from start to end, with the opportunity at
+ each edge traversal to compute a custom cost based on the
+ previous edge.  For example, to penalise bends.
+ </summary>
+ <param name="start"></param>
+ <param name="[end]"></param>
+ <param name="prevCost"></param>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.RoutePathway.Cost">
+ <summary>
+ sum edge weight as cost
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.RoutePathway.Count">
+ <summary>
+ size/length of the route path
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.Route">
+ <summary>
+ 从出发点到终点所经过的路径
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.GraphAnalysis.FindShortestPath(Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter,System.String,System.String)">
+ <summary>
+ Calculation of the shortest path between x points
+ </summary>
+ <param name="finder"></param>
+ <param name="start$"></param>
+ <param name="ends$"></param>
+ <returns></returns>
+ <remarks>
+ http://www.codeproject.com/Articles/22647/Dijkstra-Shortest-Route-Calculation-Object-Oriente
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.GraphAnalysis.BetweennessCentrality(Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter)">
+ <summary>
+ 中介中心度，计算经过一个点的最短路径的数量。经过一个点的最短路径的数量越多，就说明它的中介中心度越高。
+ </summary>
+ <returns></returns>
+ 
 </member>
 <member name="P:Microsoft.VisualBasic.Data.GraphTheory.Analysis.MorganFingerprint.IMorganAtom.Type">
  <summary>
@@ -758,6 +899,11 @@ Microsoft.VisualBasic.Data.GraphTheory
  <param name="e#">(epsilon) Is the convergence criteria, usually set to a tiny value.</param>
  <returns></returns>
  
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Ullmann">
+ <summary>
+ Ullmann算法是子图同构 问题的经典回溯算法，由J.R. Ullmann于1976年提出。它在网络图分析、化学信息学（分子结构匹配）、模式识别等领域有广泛应用。
+ </summary>
 </member>
 <member name="F:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Ullmann.T">
  <summary>

@@ -22,7 +22,7 @@
 
         <h3>Description</h3>
 
-        
+        <p>Represents a complete Seurat object read from a GNU R .rda/.rds file. This is the top-level container for single-cell / spatial transcriptomics data.
 
         <h3>Declare</h3>        
 
@@ -30,7 +30,26 @@
             <code id="clr_ts">
 # namespace Erica.Analysis.SpatialTissue.RaidData
 export class SeuratObject {
-   assays: <i>any</i> kind;
+   # The name of the currently active assay.
+   ActiveAssay: string;
+   # The active cluster identity (factor levels per cell).
+   ActiveIdent: string;
+   # All assays in the Seurat object (e.g. RNA, Spatial). Key: assay name, Value: the assay data.
+   Assays: list;
+   # Cell/spot barcode names.
+   CellNames: string;
+   # Spatial images (for spatial transcriptomics data). Key: image name, Value: the image data.
+   Images: list;
+   # Cell-level metadata. Keys: metadata column names (e.g. "orig.ident", "nCount_RNA", "nFeature_RNA") Values: arrays of per-cell values.
+   MetaData: list;
+   # Number of cells in this Seurat object.
+   nCells: integer;
+   # Total number of features across all assays.
+   nFeatures: integer;
+   # Dimensionality reduction results. Key: reduction name (e.g. "pca", "umap"), Value: the reduction data.
+   Reductions: list;
+   # Seurat version string (e.g. "5.0.1")
+   Version: string;
 }
 </code>
         </pre>
@@ -38,7 +57,10 @@ export class SeuratObject {
         <h3>.NET clr type reference tree</h3>
 
         <ol>
-<li>use by <i>property</i> member <code>assays</code>: <i>any</i> kind</li>
+<li>use by <i>property</i> member <code>Assays</code>: list</li>
+<li>use by <i>property</i> member <code>Images</code>: list</li>
+<li>use by <i>property</i> member <code>MetaData</code>: list</li>
+<li>use by <i>property</i> member <code>Reductions</code>: list</li>
 </ol>
 
 

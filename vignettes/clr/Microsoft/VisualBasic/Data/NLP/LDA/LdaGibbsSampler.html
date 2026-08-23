@@ -22,15 +22,11 @@
 
         <h3>Description</h3>
 
-        <p>Gibbs sampler for estimating the best assignments of topics for words and
- documents in a corpus. The algorithm is introduced in Tom Griffiths' paper
- "Gibbs sampling in the generative model of Latent Dirichlet Allocation"
- (2002).
- Gibbs sampler采样算法的实现
- 
- @author heinrich
+        <p>Gibbs sampler for estimating the best assignments of topics for words and documents in a corpus. The algorithm is introduced in Tom Griffiths' paper "Gibbs sampling in the generative model of Latent Dirichlet Allocation" (2002). Gibbs sampler采样算法的实现
 
-<a href='https://github.com/hankcs/LDA4j' title='https://github.com/hankcs/LDA4j'>https://github.com/hankcs/LDA4j</a></p>
+<p>@author heinrich
+
+<p><a href="https://github.com/hankcs/LDA4j" title="https://github.com/hankcs/LDA4j">https://github.com/hankcs/LDA4j</a>
 
         <h3>Declare</h3>        
 
@@ -38,16 +34,11 @@
             <code id="clr_ts">
 # namespace Microsoft.VisualBasic.Data.NLP.LDA
 export class LdaGibbsSampler {
-   # number of topics
-   #  主题数目
+   # number of topics 主题数目
    K: integer;
-   # Retrieve estimated topic--word associations. If sample lag > 0 then the
-   #  mean value of all sampled statistics for phi[][] is taken.
-   #  获取主题——词语矩阵
+   # Retrieve estimated topic--word associations. If sample lag &gt; 0 then the mean value of all sampled statistics for phi[][] is taken. 获取主题——词语矩阵
    Phi: <a href="/vignettes/clr/System/Double[].html">Double[][]</a>;
-   # Retrieve estimated document--topic associations. If sample lag > 0 then
-   #  the mean value of all sampled statistics for theta[][] is taken.
-   #  获取文档——主题矩阵
+   # Retrieve estimated document--topic associations. If sample lag &gt; 0 then the mean value of all sampled statistics for theta[][] is taken. 获取文档——主题矩阵
    Theta: <a href="/vignettes/clr/System/Double[].html">Double[][]</a>;
 }
 </code>

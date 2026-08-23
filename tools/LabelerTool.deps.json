@@ -15,7 +15,7 @@
           "Microsoft.VisualBasic.Imaging": "1.0.0",
           "Microsoft.VisualBasic.MIME.Html": "1.0.0",
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389",
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911",
           "Erica.Analysis.SpatialTissue.HEView.Reference": "1.0.0.0",
           "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.Reference": "5.0.1.2389",
           "Microsoft.VisualBasic.Data.ChartPlots.Reference": "1.0.0.0",
@@ -252,7 +252,7 @@
           "Microsoft.VisualBasic.Imaging.Physics": "1.0.0",
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
           "Microsoft.VisualBasic.Math.MachineVision": "1.0.0",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911"
         },
         "runtime": {
           "Erica.Analysis.SpatialTissue.HEView.dll": {
@@ -263,7 +263,7 @@
       "Microsoft.VisualBasic.Data.Bootstrapping.Fittings/5.0.1.2389": {
         "dependencies": {
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911"
         },
         "runtime": {
           "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.dll": {
@@ -276,7 +276,7 @@
           "Microsoft.VisualBasic.Imaging": "1.0.0",
           "Microsoft.VisualBasic.MIME.Html": "1.0.0",
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911"
         },
         "runtime": {
           "Microsoft.VisualBasic.Data.ChartPlots.dll": {
@@ -286,7 +286,7 @@
       },
       "Microsoft.VisualBasic.Data.Framework/5.0.123": {
         "dependencies": {
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911"
         },
         "runtime": {
           "Microsoft.VisualBasic.Data.Framework.dll": {
@@ -297,7 +297,7 @@
       "Microsoft.VisualBasic.Data.GraphTheory/1.0.0": {
         "dependencies": {
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911"
         },
         "runtime": {
           "Microsoft.VisualBasic.Data.GraphTheory.dll": {
@@ -310,7 +310,7 @@
           "Microsoft.VisualBasic.Data.GraphTheory": "1.0.0",
           "Microsoft.VisualBasic.DataMining.Framework": "1.0.0",
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389",
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911",
           "System.Composition": "10.0.11"
         },
         "runtime": {
@@ -322,7 +322,7 @@
       "Microsoft.VisualBasic.DataMining.Framework/1.0.0": {
         "dependencies": {
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911"
         },
         "runtime": {
           "Microsoft.VisualBasic.DataMining.Framework.dll": {
@@ -335,7 +335,7 @@
           "Microsoft.VisualBasic.Imaging": "1.0.0",
           "Microsoft.VisualBasic.MIME.Html": "1.0.0",
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389",
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911",
           "SkiaSharp": "4.151.1",
           "SkiaSharp.Extended": "3.0.0",
           "SkiaSharp.NativeAssets.Linux": "4.151.1",
@@ -354,7 +354,7 @@
         "dependencies": {
           "Microsoft.VisualBasic.MIME.Html": "1.0.0",
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911"
         },
         "runtime": {
           "Microsoft.VisualBasic.Drawing.Windows.dll": {
@@ -367,7 +367,7 @@
           "Microsoft.VisualBasic.Drawing.Windows": "1.0.0",
           "Microsoft.VisualBasic.MIME.Html": "1.0.0",
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911"
         },
         "runtime": {
           "Microsoft.VisualBasic.Imaging.dll": {
@@ -379,7 +379,7 @@
         "dependencies": {
           "Microsoft.VisualBasic.Data.GraphTheory": "1.0.0",
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911"
         },
         "runtime": {
           "Microsoft.VisualBasic.Imaging.Physics.dll": {
@@ -389,7 +389,7 @@
       },
       "Microsoft.VisualBasic.Math.Core/5.0.1.2389": {
         "dependencies": {
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911"
         },
         "runtime": {
           "Microsoft.VisualBasic.Math.Core.dll": {
@@ -401,7 +401,7 @@
         "dependencies": {
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
           "Microsoft.VisualBasic.Math.SignalProcessing": "1.0.0",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911"
         },
         "runtime": {
           "Microsoft.VisualBasic.Math.MachineVision.dll": {
@@ -413,7 +413,7 @@
         "dependencies": {
           "Microsoft.VisualBasic.Data.Bootstrapping.Fittings": "5.0.1.2389",
           "Microsoft.VisualBasic.Math.Core": "5.0.1.2389",
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911"
         },
         "runtime": {
           "Microsoft.VisualBasic.Math.SignalProcessing.dll": {
@@ -423,7 +423,7 @@
       },
       "Microsoft.VisualBasic.MIME.Html/1.0.0": {
         "dependencies": {
-          "Microsoft.VisualBasic.Runtime": "5.0.1.2389"
+          "Microsoft.VisualBasic.Runtime": "10.5.3.8911"
         },
         "runtime": {
           "Microsoft.VisualBasic.MIME.Html.dll": {
@@ -431,7 +431,7 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Runtime/5.0.1.2389": {
+      "Microsoft.VisualBasic.Runtime/10.5.3.8911": {
         "dependencies": {
           "System.Composition": "10.0.11"
         },
@@ -728,7 +728,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Runtime/5.0.1.2389": {
+    "Microsoft.VisualBasic.Runtime/10.5.3.8911": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
