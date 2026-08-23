@@ -28,6 +28,9 @@
     <Project Path="../../../GCModeller/src/runtime/sciBASIC#/Data_science/Mathematica/Math/Randomizer/randomizer-netcore5.vbproj">
       <Platform Solution="*|x64" Project="x64" />
     </Project>
+    <Project Path="../../../GCModeller/src/runtime/sciBASIC#/gr/network-visualization/Datavisualization.Network/network_graph-netcore5.vbproj">
+      <Platform Solution="*|x64" Project="x64" />
+    </Project>
     <Project Path="../../../GCModeller/src/runtime/sciBASIC#/Microsoft.VisualBasic.Core/src/Core.vbproj">
       <Platform Solution="*|x64" Project="x64" />
     </Project>
@@ -42,5 +45,8 @@
   </Folder>
   <Project Path="Monocle3/Monocle3.vbproj">
     <Platform Solution="*|x64" Project="x64" />
+  </Project>
+  <Project Path="Monocle3/test/test.vbproj" Id="ee92c20b-473b-49f3-9946-a69c5e6d7a8a">
+    <Platform Solution="Debug|x64" Project="x64" />
   </Project>
 </Solution>

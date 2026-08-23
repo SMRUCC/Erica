@@ -1,0 +1,12 @@
+目前我想要你基于vb.net语言在.net 10环境中基于现有的代码基础为我编写一个针对Monocle3算法的实现。在Monocle3.md文档中详细的描述了Monocle3算法的实现细节，请你基于此文档中的算法描述为我编写一个基于vb.net语言的实现。
+
+在这个文档中所提到的一些基础的算法模块，目前在我的代码库中已经完成了实现，具体你可以直接利用的代码模块有：
+
+1. G:\GCModeller\src\GCModeller\analysis\HTS_matrix\Matrix\Matrix.vb  这是一个用于在内存中按行存储基因表达矩阵数据的数据结构，你可以通过LoadData函数直接从csv文件中加载表达矩阵到内存中。所加载的表达矩阵的格式要求为行为基因表达数据，列为样本数据。
+2. G:\GCModeller\src\runtime\sciBASIC#\Data_science\Mathematica\Math\ANOVA\MultivariateAnalysis\PCA.vb  PCA将为模块，将基因表达矩阵降维至50个主成分
+3. G:\GCModeller\src\runtime\sciBASIC#\Data_science\DataMining\UMAP\Umap.vb  UMAP算法模块，可以使用UMAP算法针对PCA的结果继续降维至3个维度，以方便做后续分析
+4. G:\GCModeller\src\runtime\sciBASIC#\Data_science\Graph\Analysis\Community\Louvain\Builder.vb  针对网络图进行Louvain或者Leiden进行社区划分
+5. G:\GCModeller\src\runtime\sciBASIC#\Data_science\Graph\MST\  最小生成树算法模块
+6. G:\GCModeller\src\runtime\sciBASIC#\gr\network-visualization\Datavisualization.Network\Analysis\PAGA.vb  PAGA算法模块
+7. G:\GCModeller\src\runtime\sciBASIC#\Data_science\Graph\Analysis\Dijkstra\DijkstraAlgoritm.vb  最短路径算法模块
+8. G:\GCModeller\src\runtime\sciBASIC#\Microsoft.VisualBasic.Core\src\Drawing\Math\Geometry\Moran.vb  莫兰指数算法模块
