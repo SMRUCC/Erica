@@ -1,5 +1,6 @@
-Imports Microsoft.VisualBasic.Data.GraphTheory.Vertex
-Imports Microsoft.VisualBasic.Data.GraphTheory.Network.MinimumSpanningTree
+Imports Microsoft.VisualBasic.Data.GraphTheory.Network
+Imports Microsoft.VisualBasic.Data.GraphTheory.MinimumSpanningTree
+Imports Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra
 Imports Microsoft.VisualBasic.Math.LinearAlgebra.Matrix
 Imports stdNum = System.Math
 
@@ -110,7 +111,7 @@ Namespace SMRUCC.genomics.SingleCell.Monocle3
                 Call adj.Set(e.v, e.u, e.weight)
             Next
 
-            Dim dijkstra = New Dijkstra(adj, k)
+            Dim dijkstra = New DijkstraAlgoritm(adj, k)
             Dim distNodes = dijkstra.DistanceFinder(rootIdx)
             Dim clusterPseudotime(k - 1) As Double
             For ci As Integer = 0 To k - 1

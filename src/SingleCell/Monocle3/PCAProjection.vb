@@ -1,4 +1,4 @@
-Imports Microsoft.VisualBasic.Math.Statistics.ANOVA
+Imports Microsoft.VisualBasic.Math.Statistics.Hypothesis.ANOVA
 Imports Microsoft.VisualBasic.Serialization.JSON
 Imports stdNum = System.Math
 

@@ -1,4 +1,4 @@
-Imports SMRUCC.genomics.Analysis.HTS_matrix
+Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports stdNum = System.Math
 
 Namespace SMRUCC.genomics.SingleCell.Monocle3

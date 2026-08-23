@@ -1,4 +1,4 @@
-Imports Microsoft.VisualBasic.Data.visualize.Network.Analysis.Louvain
+Imports Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain
 Imports Microsoft.VisualBasic.Data.GraphTheory.Network
 Imports stdNum = System.Math
 

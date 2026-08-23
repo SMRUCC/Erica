@@ -1,3 +1,5 @@
+Imports Microsoft.VisualBasic.Data.GraphTheory.Network
+
 Namespace SMRUCC.genomics.SingleCell.Monocle3
 
     ''' <summary>
