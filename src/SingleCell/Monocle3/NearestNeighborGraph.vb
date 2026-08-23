@@ -1,3 +1,4 @@
+Imports Microsoft.VisualBasic.Data.GraphTheory
 Imports Microsoft.VisualBasic.Data.GraphTheory.Network
 Imports stdNum = System.Math
 
@@ -74,9 +75,9 @@ Namespace SMRUCC.genomics.SingleCell.Monocle3
         End Function
 
         ''' <summary>
-        ''' 将轻量图转换为 Louvain 所需的 <see cref="NetworkGraph(Of Integer, Edge(Of Integer))"/>。
+        ''' 将轻量图转换为 Louvain 所需的 <see cref="NetworkGraph(Of Node, VertexEdge)"/>。
         ''' </summary>
-        Public Shared Function ToNetworkGraph(g As GraphData) As NetworkGraph(Of Integer, Edge(Of Integer))
+        Public Shared Function ToNetworkGraph(g As GraphData) As NetworkGraph(Of Node, VertexEdge)
             Return g.ToNetworkGraph()
         End Function
     End Class

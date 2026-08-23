@@ -11,20 +11,20 @@ Namespace SMRUCC.genomics.SingleCell.Monocle3
     ''' </summary>
     Public Class UMAPEmbedding
 
-        Public Shared Function Embed(score As Double(,), opts As Monocle3Options, cache As CacheStore, Optional targetDim As Integer = -1) As Double(,)
-            If targetDim <= 0 Then targetDim = opts.umapDim
-            Dim key = If(targetDim = 2, "03b_umap2d.csv", "03_umap3d.csv")
+        Public Shared Function Embed(score As Double(,), opts As Monocle3Options, cache As CacheStore, Optional [dim] As Integer = -1) As Double(,)
+            If [dim] <= 0 Then [dim] = opts.umapDim
+            Dim key = If([dim] = 2, "03b_umap2d.csv", "03_umap3d.csv")
 
             If opts.useCache AndAlso Not opts.overwriteCache AndAlso cache.Hit(key) Then
-                Call Console.WriteLine($"[cache] load UMAP({targetDim}d) from {cache.Path(key)}")
+                Call Console.WriteLine($"[cache] load UMAP({[dim]}d) from {cache.Path(key)}")
                 Return cache.LoadMatrix(key)
             End If
 
             Dim n = score.GetLength(0)
-            Call Console.WriteLine($"[umap] computing {targetDim}d embedding on {n} samples ...")
+            Call Console.WriteLine($"[umap] computing {[dim]}d embedding on {n} samples ...")
 
             Dim rows As Double()() = MatrixExtensions.ToRowVectors(score)
-            Dim umap As New Umap(dimensions:=targetDim)
+            Dim umap As New Umap(dimensions:=[dim])
             Call umap.InitializeFit(rows)
 
             ' 默认迭代轮次，足以在中大规模数据上收敛
@@ -33,15 +33,15 @@ Namespace SMRUCC.genomics.SingleCell.Monocle3
             Next
 
             Dim embedding = umap.GetEmbedding()
-            Dim out(n - 1, targetDim - 1) As Double
+            Dim out(n - 1, [dim] - 1) As Double
             For i As Integer = 0 To n - 1
-                For j As Integer = 0 To targetDim - 1
+                For j As Integer = 0 To [dim] - 1
                     out(i, j) = embedding(i)(j)
                 Next
             Next
 
             Call cache.SaveMatrix(key, out)
-            Call Console.WriteLine($"[umap] done ({targetDim}d) -> cached {cache.Path(key)}")
+            Call Console.WriteLine($"[umap] done ({[dim]}d) -> cached {cache.Path(key)}")
 
             Return out
         End Function

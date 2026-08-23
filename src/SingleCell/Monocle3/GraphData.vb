@@ -1,3 +1,4 @@
+Imports Microsoft.VisualBasic.Data.GraphTheory
 Imports Microsoft.VisualBasic.Data.GraphTheory.Network
 
 Namespace SMRUCC.genomics.SingleCell.Monocle3
@@ -27,22 +28,22 @@ Namespace SMRUCC.genomics.SingleCell.Monocle3
         End Function
 
         ''' <summary>
-        ''' 转换为 sciBASIC# 的 <see cref="NetworkGraph(Of Integer)"/>。
+        ''' 转换为 sciBASIC# 的 <see cref="NetworkGraph(Of Node, VertexEdge)"/>。
         ''' 节点 data 设为其在 nodes 数组中的下标，便于按样本索引回溯。
         ''' </summary>
-        Public Function ToNetworkGraph() As NetworkGraph(Of Integer)
-            Dim nodeList(nodes.Length - 1) As Node(Of Integer)
-            Dim edgeList(edges.Length - 1) As Edge(Of Integer)
+        Public Function ToNetworkGraph() As NetworkGraph(Of Node, VertexEdge)
+            Dim nodeList(nodes.Length - 1) As Node
+            Dim edgeList(edges.Length - 1) As VertexEdge
 
             For i As Integer = 0 To nodes.Length - 1
                 nodeList(i) = New Node(Of Integer)(nodes(i), i)
             Next
             For i As Integer = 0 To edges.Length - 1
                 Dim e = edges(i)
-                edgeList(i) = New Edge(Of Integer)(nodeList(e.u), nodeList(e.v), e.weight)
+                edgeList(i) = New VertexEdge(nodeList(e.u), nodeList(e.v), e.weight)
             Next
 
-            Return New NetworkGraph(Of Integer, Edge(Of Integer))(nodeList, edgeList)
+            Return New NetworkGraph(Of Node, VertexEdge)(nodeList, edgeList)
         End Function
     End Class
 
