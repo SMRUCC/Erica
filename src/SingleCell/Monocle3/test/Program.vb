@@ -1,7 +1,7 @@
 Imports System.IO
 Imports Erica.Analysis.SingleCell.Monocle3
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
-Imports SampleInfoType = SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.Templates.SampleInfo
+Imports SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner
 
 Module Program
     Sub Main(args As String())
@@ -115,7 +115,7 @@ Module Program
     ''' 把 ToSampleInfo 生成的 SampleInfo 集合导出为 CSV：固定列 ID, sample_name，
     ''' 其余列为各样本 metadata 字典的键（按排序保证列顺序稳定）。
     ''' </summary>
-    Private Sub ExportSampleInfo(file As String, samples As SampleInfoType())
+    Private Sub ExportSampleInfo(file As String, samples As SampleInfo())
         ' 收集所有 metadata 键的合集，排序以保证列顺序确定（mon_* 字段自然成块）
         Dim metaKeys As New SortedSet(Of String)
         For Each s In samples

@@ -1,5 +1,5 @@
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
-Imports SampleInfoType = SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.Templates.SampleInfo
+Imports SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner
 
 ''' <summary>
 ''' Monocle3 分析管线配置项。
@@ -64,7 +64,7 @@ Public Class Monocle3Result
     ''' </summary>
     ''' <param name="sampleNames">样本名数组，顺序必须与 pcaScore/umap*/clusters/pseudotime 的行一致。</param>
     ''' <returns>与 sampleNames 一一对应的 SampleInfo 集合。</returns>
-    Public Function ToSampleInfo(sampleNames As String()) As SampleInfoType()
+    Public Function ToSampleInfo(sampleNames As String()) As SampleInfo()
         Dim n = sampleNames.Length
 
         If pseudotime Is Nothing OrElse pseudotime.Length <> n Then
@@ -84,7 +84,7 @@ Public Class Monocle3Result
         End If
 
         Dim nPCA = pcaScore.GetLength(1)
-        Dim samples(n - 1) As SampleInfoType
+        Dim samples(n - 1) As SampleInfo
 
         For i As Integer = 0 To n - 1
             Dim sampleId = sampleNames(i)
@@ -103,7 +103,7 @@ Public Class Monocle3Result
                 meta($"mon_pca_{c + 1}") = pcaScore(i, c).ToString("G17")
             Next
 
-            samples(i) = New SampleInfoType With {
+            samples(i) = New SampleInfo With {
                 .ID = sampleId,
                 .sample_name = sampleId,
                 .metadata = meta
