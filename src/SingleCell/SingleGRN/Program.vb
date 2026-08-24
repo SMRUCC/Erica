@@ -231,23 +231,22 @@ Namespace SingleGRN
         Private Function BuildVelocityPrior(dbnOut As DBNSampleProcessing.DBNPreprocessOutput) As PriorNetwork
             Dim prior As New PriorNetwork()
 
-            If dbnOut Is Nothing OrElse dbnOut.geneNames Is Nothing OrElse dbnOut.trendSign Is Nothing Then
+            If dbnOut Is Nothing OrElse dbnOut.selectedGenes Is Nothing OrElse dbnOut.trendSign Is Nothing Then
                 Return prior
             End If
 
-            ' gene -> trend
-            Dim trend As New Dictionary(Of String, Double)(StringComparer.OrdinalIgnoreCase)
-            For i As Integer = 0 To dbnOut.geneNames.Length - 1
-                trend(dbnOut.geneNames(i)) = dbnOut.trendSign(i)
+            ' trendSign(i) 与 selectedGenes(i) 一一对应
+            Dim genes = dbnOut.selectedGenes
+            Dim trend = dbnOut.trendSign
+            Dim pairs As New List(Of (gene As String, t As Double))
+            For i As Integer = 0 To genes.Length - 1
+                If i < trend.Length Then
+                    pairs.Add((gene := genes(i), t := trend(i)))
+                End If
             Next
 
-            ' 仅对选中基因构造先验，取趋势幅度最大的 Top50
-            Dim sel = dbnOut.selectedGenes _
-                .Where(Function(g) trend.ContainsKey(g)) _
-                .Select(Function(g) (gene := g, t := trend(g))) _
-                .OrderByDescending(Function(x) Abs(x.t)) _
-                .Take(50) _
-                .ToArray()
+            ' 取趋势幅度 |t| 最大的 Top50 候选
+            Dim sel = pairs.OrderByDescending(Function(x) Abs(x.t)).Take(50).ToArray()
 
             If sel.Length < 2 Then
                 Return prior
@@ -282,20 +281,20 @@ Namespace SingleGRN
             If dbnOut Is Nothing OrElse dbnOut.selectedGenes Is Nothing OrElse dbnOut.selectedGenes.Length = 0 Then
                 Return {}
             End If
-            If dbnOut.geneNames Is Nothing OrElse dbnOut.trendSign Is Nothing Then
+            If dbnOut.trendSign Is Nothing Then
                 Return dbnOut.selectedGenes.Take(n).ToArray()
             End If
 
-            Dim trend As New Dictionary(Of String, Double)(StringComparer.OrdinalIgnoreCase)
-            For i As Integer = 0 To dbnOut.geneNames.Length - 1
-                trend(dbnOut.geneNames(i)) = dbnOut.trendSign(i)
-            Next
-
-            Return dbnOut.selectedGenes _
-                .Where(Function(g) trend.ContainsKey(g)) _
-                .OrderByDescending(Function(g) Abs(trend(g))) _
+            ' trendSign(i) 与 selectedGenes(i) 一一对应
+            Dim genes = dbnOut.selectedGenes
+            Dim trend = dbnOut.trendSign
+            Dim idx = Enumerable.Range(0, genes.Length) _
+                .Where(Function(i) i < trend.Length) _
+                .OrderByDescending(Function(i) Abs(trend(i))) _
                 .Take(n) _
                 .ToArray()
+
+            Return idx.Select(Function(i) genes(i)).ToArray()
         End Function
     End Module
 End Namespace
