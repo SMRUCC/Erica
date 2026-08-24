@@ -1,5 +1,6 @@
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner
+Imports std = System.Math
 
 ''' <summary>
 ''' Monocle3 分析管线配置项。
@@ -85,6 +86,8 @@ Public Class Monocle3Result
 
         Dim nPCA = pcaScore.GetLength(1)
         Dim samples(n - 1) As SampleInfo
+
+        nPCA = std.Min(3, nPCA)
 
         For i As Integer = 0 To n - 1
             Dim sampleId = sampleNames(i)
