@@ -26,12 +26,12 @@ Public Class PCAProjection
         Dim stat = New StatisticsObject(rows, y)
         Dim result = PCA.PrincipalComponentAnalysis(stat, opts.numPCA)
         Dim scores = result.TPreds
+        ' scores(k) 为第 k 个主成分的得分向量，长度 = 样本数 n（即 [PC × 样本] 组织）
         Dim scoreMatrix(n - 1, opts.numPCA - 1) As Double
 
         For i As Integer = 0 To n - 1
-            Dim row = scores(i)
             For j As Integer = 0 To opts.numPCA - 1
-                scoreMatrix(i, j) = row(j)
+                scoreMatrix(i, j) = scores(j)(i)
             Next
         Next
 

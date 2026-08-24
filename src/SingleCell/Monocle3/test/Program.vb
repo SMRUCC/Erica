@@ -1,5 +1,5 @@
 Imports System.IO
-Imports Erica.Analysis.SingleCell.Monocle3
+Imports SMRUCC.genomics.SingleCell.Monocle3
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 
 Module Program
@@ -18,10 +18,6 @@ Module Program
             Call Directory.CreateDirectory(outDir)
         End If
 
-        Call Console.WriteLine($"Loading expression matrix: {exprFile}")
-        Dim matrix As Matrix = Matrix.LoadData(exprFile)
-        Call Console.WriteLine($"Loaded {matrix.expression.Length} genes x {matrix.sampleID.Length} samples")
-
         Dim opts = New Monocle3Options With {
             .numPCA = 50,
             .umapDim = 3,
@@ -33,17 +29,36 @@ Module Program
             .cacheDir = Path.Combine(outDir, "cache")
         }
 
-        Dim result = Monocle3.Run(matrix, opts)
+        Dim cache = New CacheStore(opts.cacheDir)
+        Dim sampleNames As String()
+        Dim result As Monocle3Result
+
+        ' 若 01 缓存（预处理后的 [样本 × 基因] 矩阵）命中，则跳过耗时的 Matrix.LoadData
+        If opts.useCache AndAlso Not opts.overwriteCache AndAlso cache.Hit("01_expr_hv.csv") Then
+            Call Console.WriteLine("[cache] hit 01_expr_hv.csv, skip Matrix.LoadData")
+            Dim sampleByGene = cache.LoadMatrix("01_expr_hv.csv")
+            Dim geneNames = cache.LoadLabels("01_genes_hv.txt")
+            sampleNames = cache.LoadLabels("01_samples.txt")
+            result = Monocle3.Run(sampleByGene, geneNames, sampleNames, opts)
+        Else
+            Call Console.WriteLine($"Loading expression matrix: {exprFile}")
+            Dim swLoad = System.Diagnostics.Stopwatch.StartNew()
+            Dim matrix As Matrix = Matrix.LoadData(exprFile)
+            swLoad.Stop()
+            Call Console.WriteLine($"Loaded {matrix.expression.Length} genes x {matrix.sampleID.Length} samples  (LoadData: {swLoad.Elapsed.TotalSeconds:F1}s)")
+            sampleNames = matrix.sampleID
+            result = Monocle3.Run(matrix, opts)
+        End If
 
         ' 导出分群
         Call ExportVector(Path.Combine(outDir, "clusters.csv"),
-                          matrix.sampleID,
+                          sampleNames,
                           result.clusters.Select(Function(c) c.ToString).ToArray,
                           "sample", "cluster")
 
         ' 导出伪时间
         Call ExportVector(Path.Combine(outDir, "pseudotime.csv"),
-                          matrix.sampleID,
+                          sampleNames,
                           result.pseudotime.Select(Function(p) p.ToString("G17")).ToArray,
                           "sample", "pseudotime")
 
@@ -63,7 +78,7 @@ Module Program
 
         Call Console.WriteLine()
         Call Console.WriteLine($"=== Summary ===")
-        Call Console.WriteLine($"samples          : {matrix.sampleID.Length}")
+        Call Console.WriteLine($"samples          : {sampleNames.Length}")
         Call Console.WriteLine($"num clusters     : {result.clusters.Distinct.Count}")
         Call Console.WriteLine($"global Moran I   : {result.moranGlobal:0.000000}")
         Call Console.WriteLine($"MST edges        : {result.clusterGraph.edges.Length}")

@@ -98,5 +98,45 @@ Public Module MatrixExtensions
         Next
         Return rows
     End Function
+
+    ''' <summary>
+    ''' 按每基因（列）的表达方差筛选 top <paramref name="topN"/> 高变基因（highly variable genes）。
+    ''' PCA 在全基因（数万维）上计算量爆炸，先降维到高变基因可使其保持高效，亦符合 Monocle3 标准流程。
+    ''' </summary>
+    Public Function SelectHighlyVariableGenes(matrix As Double(,),
+                                              geneNames As String(),
+                                              topN As Integer) As (matrix As Double(,), names As String())
+        Dim n = matrix.GetLength(0)
+        Dim m = matrix.GetLength(1)
+        Dim k = If(topN < m, topN, m)
+
+        ' 每列（基因）方差
+        Dim variance(m - 1) As Double
+        For j As Integer = 0 To m - 1
+            Dim sum = 0.0, sumSq = 0.0
+            For i As Integer = 0 To n - 1
+                Dim v = matrix(i, j)
+                sum += v
+                sumSq += v * v
+            Next
+            Dim mean = sum / n
+            variance(j) = sumSq / n - mean * mean
+        Next
+
+        ' 按方差降序取前 k 个基因索引
+        Dim order = Enumerable.Range(0, m).OrderByDescending(Function(j) variance(j)).Take(k).ToArray
+
+        Dim out(n - 1, k - 1) As Double
+        Dim names(k - 1) As String
+        For j2 As Integer = 0 To k - 1
+            Dim src = order(j2)
+            For i As Integer = 0 To n - 1
+                out(i, j2) = matrix(i, src)
+            Next
+            names(j2) = geneNames(src)
+        Next
+
+        Return (out, names)
+    End Function
 End Module
 

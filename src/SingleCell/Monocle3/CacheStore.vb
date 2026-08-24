@@ -1,4 +1,5 @@
 Imports System.IO
+Imports Microsoft.VisualBasic.Serialization.JSON
 
 ''' <summary>
 ''' 中间数据缓存基础设施。
@@ -135,15 +136,15 @@ Public Class CacheStore
     ''' <summary>
     ''' 将任意可序列化对象以 JSON 形式缓存（sciBASIC# DataContractJsonSerializer）。
     ''' </summary>
-    Public Sub SaveJson(key As String, obj As Object)
-        Call File.WriteAllText(Path(key), obj.GetJson, Text.Encoding.UTF8)
+    Public Sub SaveJson(Of T As New)(key As String, obj As T)
+        Call File.WriteAllText(Path(key), JsonContract.GetJson(obj), Text.Encoding.UTF8)
     End Sub
 
     ''' <summary>
     ''' 从 JSON 缓存反序列化对象。
     ''' </summary>
     Public Function LoadJson(Of T As New)(key As String) As T
-        Return LoadJson(Of T)(IO.File.ReadAllText(Path(key)))
+        Return JsonContract.LoadJSON(Of T)(IO.File.ReadAllText(Path(key)))
     End Function
 
     ' ===================== 轻量图缓存（自定义边表） =====================

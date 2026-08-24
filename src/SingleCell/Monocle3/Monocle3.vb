@@ -6,6 +6,9 @@ Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Public Class Monocle3Options
     ''' <summary>PCA 主成分数量，默认 50。</summary>
     Public Property numPCA As Integer = 50
+    ''' <summary>用于 PCA 的高变基因（highly variable genes）数量，默认 2000。
+    ''' 在 PCA 前按表达方差筛选 top N 基因，避免在全基因（数万维）上做 PCA 导致极慢。</summary>
+    Public Property numHVGenes As Integer = 2000
     ''' <summary>UMAP 嵌入维度，默认 3。</summary>
     Public Property umapDim As Integer = 3
     ''' <summary>KNN 近邻数，默认 15。</summary>
@@ -69,13 +72,44 @@ Public Class Monocle3
     Public Shared Function Run(matrix As Matrix, Optional opts As Monocle3Options = Nothing) As Monocle3Result
         If opts Is Nothing Then opts = New Monocle3Options
         Dim cache = New CacheStore(opts.cacheDir)
+        Dim expr = LoadExpression(matrix, opts, cache)
+        Return RunCore(expr.sampleByGene, expr.geneNames, expr.sampleNames, opts, cache)
+    End Function
 
+    ''' <summary>
+    ''' 缓存感知的"加载 + 转置 + 低表达过滤 + log 归一化 + 高变基因选择"步骤。
+    ''' 命中缓存时直接读取预处理后的 [样本 × 高变基因] 矩阵，跳过 Matrix.LoadData 与全矩阵遍历。
+    ''' </summary>
+    Private Shared Function LoadExpression(matrix As Matrix, opts As Monocle3Options, cache As CacheStore) As (sampleByGene As Double(,), geneNames As String(), sampleNames As String())
+        If opts.useCache AndAlso Not opts.overwriteCache AndAlso cache.Hit("01_expr_hv.csv") Then
+            Call Console.WriteLine("[cache] hit 01_expr_hv.csv (skip load + preprocess + HVG)")
+            Return (cache.LoadMatrix("01_expr_hv.csv"), cache.LoadLabels("01_genes_hv.txt"), cache.LoadLabels("01_samples.txt"))
+        End If
+
+        Dim sw = System.Diagnostics.Stopwatch.StartNew()
+        Dim full = MatrixExtensions.ToSampleByGeneMatrix(matrix, minSamples:=1, logNormalize:=True)
+        Dim fullGenes = MatrixExtensions.KeptGeneNames(matrix, minSamples:=1)
+        Dim hv = MatrixExtensions.SelectHighlyVariableGenes(full, fullGenes, opts.numHVGenes)
+        sw.Stop()
+        Call Console.WriteLine($"[01] preprocess + HVG done: {hv.matrix.GetLength(0)} samples x {hv.matrix.GetLength(1)} HV genes ({sw.Elapsed.TotalSeconds:F1}s)")
+
+        Call cache.SaveMatrix("01_expr_hv.csv", hv.matrix)
+        Call cache.SaveLabels("01_genes_hv.txt", hv.names)
+        Call cache.SaveLabels("01_samples.txt", matrix.sampleID)
+        Return (hv.matrix, hv.names, matrix.sampleID)
+    End Function
+
+    ''' <summary>
+    ''' 直接以预处理后的 [样本 × 基因] 矩阵作为输入运行管线（可绕过 Matrix.LoadData，配合外部缓存使用）。
+    ''' </summary>
+    Public Shared Function Run(sampleByGene As Double(,), geneNames As String(), sampleNames As String(), Optional opts As Monocle3Options = Nothing) As Monocle3Result
+        If opts Is Nothing Then opts = New Monocle3Options
+        Dim cache = New CacheStore(opts.cacheDir)
+        Return RunCore(sampleByGene, geneNames, sampleNames, opts, cache)
+    End Function
+
+    Private Shared Function RunCore(sampleByGene As Double(,), geneNames As String(), sampleNames As String(), opts As Monocle3Options, cache As CacheStore) As Monocle3Result
         Call Console.WriteLine($"=== Monocle3 pipeline start (cacheDir={opts.cacheDir}, useCache={opts.useCache}) ===")
-
-        ' 步骤 1：转置 + 低表达过滤 + log 归一化
-        Dim sampleByGene = MatrixExtensions.ToSampleByGeneMatrix(matrix, minSamples:=1, logNormalize:=True)
-        Dim geneNames = MatrixExtensions.KeptGeneNames(matrix, minSamples:=1)
-        Dim sampleNames = matrix.sampleID
 
         ' 步骤 2：PCA
         Dim pcaScore = PCAProjection.Project(sampleByGene, opts, cache)
