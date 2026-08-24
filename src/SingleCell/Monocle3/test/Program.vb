@@ -1,6 +1,7 @@
 Imports System.IO
 Imports Erica.Analysis.SingleCell.Monocle3
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
+Imports SampleInfoType = SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.Templates.SampleInfo
 
 Module Program
     Sub Main(args As String())
@@ -68,6 +69,10 @@ Module Program
         ' 导出 PAGA 图边
         Call ExportGraph(Path.Combine(outDir, "paga_graph.csv"), result.pagaGraph)
 
+        ' 回写样本级结果到 SampleInfo.metadata，并导出为 CSV
+        Dim samples = result.ToSampleInfo(sampleNames)
+        Call ExportSampleInfo(Path.Combine(outDir, "sampleinfo.csv"), samples)
+
         ' 导出 top 变化基因（按 |Moran I|）
         Using sw As New StreamWriter(Path.Combine(outDir, "moran_top_genes.csv"))
             Call sw.WriteLine("gene,moranI")
@@ -83,6 +88,7 @@ Module Program
         Call Console.WriteLine($"global Moran I   : {result.moranGlobal:0.000000}")
         Call Console.WriteLine($"MST edges        : {result.clusterGraph.edges.Length}")
         Call Console.WriteLine($"PAGA edges       : {result.pagaGraph.edges.Length}")
+        Call Console.WriteLine($"sample info rows : {samples.Length}  (sampleinfo.csv)")
         Call Console.WriteLine($"outputs          : {outDir}")
         Call Console.WriteLine("Done.")
     End Sub
@@ -101,6 +107,39 @@ Module Program
             Call sw.WriteLine("source,target,weight")
             For Each e In g.edges
                 Call sw.WriteLine($"{g.nodes(e.u)},{g.nodes(e.v)},{e.weight:0.000000}")
+            Next
+        End Using
+    End Sub
+
+    ''' <summary>
+    ''' 把 ToSampleInfo 生成的 SampleInfo 集合导出为 CSV：固定列 ID, sample_name，
+    ''' 其余列为各样本 metadata 字典的键（按排序保证列顺序稳定）。
+    ''' </summary>
+    Private Sub ExportSampleInfo(file As String, samples As SampleInfoType())
+        ' 收集所有 metadata 键的合集，排序以保证列顺序确定（mon_* 字段自然成块）
+        Dim metaKeys As New SortedSet(Of String)
+        For Each s In samples
+            If s.metadata IsNot Nothing Then
+                For Each key In s.metadata.Keys
+                    Call metaKeys.Add(key)
+                Next
+            End If
+        Next
+
+        Using sw As New StreamWriter(file)
+            Dim header = "ID,sample_name"
+            For Each key In metaKeys
+                header &= "," & key
+            Next
+            Call sw.WriteLine(header)
+
+            For Each s In samples
+                Dim line = $"{s.ID},{s.sample_name}"
+                For Each key In metaKeys
+                    Dim v = If(s.metadata IsNot Nothing AndAlso s.metadata.ContainsKey(key), s.metadata(key), "")
+                    line &= "," & v
+                Next
+                Call sw.WriteLine(line)
             Next
         End Using
     End Sub
