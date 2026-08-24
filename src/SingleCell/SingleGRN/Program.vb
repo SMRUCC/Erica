@@ -3,6 +3,9 @@ Imports System.Math
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports Erica.Analysis.SingleCell.Monocle3
 Imports SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner
+Imports SMRUCC.genomics.Analysis.CellPhenotype
+Imports SMRUCC.genomics.Analysis.BNLearn
+Imports SMRUCC.genomics.Analysis.BNLearn.Core
 
 Namespace SingleGRN
 
@@ -124,7 +127,30 @@ Namespace SingleGRN
                                     result.pseudoVelocity.geneNames, sampleNames, result.pseudoVelocity.velocity)
             End If
 
-            ' ==================== ⑥ Summary ====================
+            ' ==================== ⑥ 基因调控网络构建与虚拟扰动分析 ====================
+            ' 基于 DBN 时间序列（GeneExpressionData）构建 BNLearn 高斯贝叶斯网络，融合伪速率趋势方向先验，
+            ' 训练后做虚拟敲除 / 过表达 / 动态级联敲除 / 批量敲除，并导出扰动对比结果。
+            Dim grnDir = Path.Combine(monoDir, "dbn_grn")
+            If Not Directory.Exists(grnDir) Then Call Directory.CreateDirectory(grnDir)
+
+            Call Console.WriteLine("构建基因表达调控网络并虚拟扰动分析...")
+            Dim prior = BuildVelocityPrior(dbnOut)
+            Dim knockGenes = SelectDemoGenes(dbnOut, 3)
+            Dim overExprList As New List(Of (Gene As String, Fold As Double))
+            If knockGenes.Length > 0 Then
+                overExprList.Add((Gene:=knockGenes(0), Fold:=3.0))
+            End If
+
+            Dim grn = GeneRegulatoryNetwork.TrainAndIntervene(
+                dbnOut.timeSeries, prior, knockGenes,
+                overExprList.ToArray, dynamicSteps:=10, outputDir:=grnDir)
+
+            Call Console.WriteLine($"  调控网络节点    : {dbnOut.timeSeries.NGene}  (伪时间 bin={dbnOut.timeSeries.TimePoints.Length})")
+            Call Console.WriteLine($"  方向先验边      : {prior.Edges.Count}  (PseudoVelo trend)")
+            Call Console.WriteLine($"  扰动演示基因    : {String.Join(", ", knockGenes)}")
+            Call Console.WriteLine($"  扰动结果目录    : {grnDir}\")
+
+            ' ==================== ⑦ Summary ====================
             Call Console.WriteLine()
             Call Console.WriteLine("=== SingleGRN 端到端流程完成 ===")
             Call Console.WriteLine($"原始表达矩阵    : {exprFile}")
@@ -193,5 +219,83 @@ Namespace SingleGRN
                 Next
             End Using
         End Sub
+
+        ' ==================== 调控网络 / 虚拟扰动辅助 ====================
+
+        ''' <summary>
+        ''' 由 DBN 预处理结果中的伪速率趋势（trendSign，按 geneNames 顺序）构造因果方向先验。
+        ''' 启发式：取趋势幅度 |trend| 最大的 Top50 选中基因，按趋势正负分为上游（正）/下游（负），
+        ''' 在上游→下游间连激活边（权重为两侧 |trend| 均值，evidence="PseudoVelo trend"）。
+        ''' 该先验为弱方向约束，缺失（候选不足或全同号）时返回空网络，退化为纯数据驱动 MMHC。
+        ''' </summary>
+        Private Function BuildVelocityPrior(dbnOut As DBNSampleProcessing.DBNPreprocessOutput) As PriorNetwork
+            Dim prior As New PriorNetwork()
+
+            If dbnOut Is Nothing OrElse dbnOut.geneNames Is Nothing OrElse dbnOut.trendSign Is Nothing Then
+                Return prior
+            End If
+
+            ' gene -> trend
+            Dim trend As New Dictionary(Of String, Double)(StringComparer.OrdinalIgnoreCase)
+            For i As Integer = 0 To dbnOut.geneNames.Length - 1
+                trend(dbnOut.geneNames(i)) = dbnOut.trendSign(i)
+            Next
+
+            ' 仅对选中基因构造先验，取趋势幅度最大的 Top50
+            Dim sel = dbnOut.selectedGenes _
+                .Where(Function(g) trend.ContainsKey(g)) _
+                .Select(Function(g) (gene := g, t := trend(g))) _
+                .OrderByDescending(Function(x) Abs(x.t)) _
+                .Take(50) _
+                .ToArray()
+
+            If sel.Length < 2 Then
+                Return prior
+            End If
+
+            Dim pos = sel.Where(Function(x) x.t >= 0).ToArray()
+            Dim neg = sel.Where(Function(x) x.t < 0).ToArray()
+            If pos.Length = 0 OrElse neg.Length = 0 Then
+                Return prior
+            End If
+
+            Dim maxEdges = 200
+            Dim edges = 0
+            For Each p In pos
+                For Each n In neg
+                    prior.AddEdge(p.gene, n.gene, Effector.Activator, (Abs(p.t) + Abs(n.t)) / 2.0, "PseudoVelo trend")
+                    edges += 1
+                    If edges >= maxEdges Then Exit For
+                Next
+                If edges >= maxEdges Then Exit For
+            Next
+
+            Call Console.WriteLine($"  [prior] 由伪速率趋势构造方向先验边 {prior.Edges.Count} (候选 {sel.Length}: 正 {pos.Length} / 负 {neg.Length})")
+            Return prior
+        End Function
+
+        ''' <summary>
+        ''' 选取演示虚拟扰动的目标基因：按伪速率趋势幅度 |trend| 降序取前 n 个选中基因
+        ''' （趋势幅度大者代表性更强）；若缺少趋势数据则退化为前 n 个选中基因。
+        ''' </summary>
+        Private Function SelectDemoGenes(dbnOut As DBNSampleProcessing.DBNPreprocessOutput, n As Integer) As String()
+            If dbnOut Is Nothing OrElse dbnOut.selectedGenes Is Nothing OrElse dbnOut.selectedGenes.Length = 0 Then
+                Return {}
+            End If
+            If dbnOut.geneNames Is Nothing OrElse dbnOut.trendSign Is Nothing Then
+                Return dbnOut.selectedGenes.Take(n).ToArray()
+            End If
+
+            Dim trend As New Dictionary(Of String, Double)(StringComparer.OrdinalIgnoreCase)
+            For i As Integer = 0 To dbnOut.geneNames.Length - 1
+                trend(dbnOut.geneNames(i)) = dbnOut.trendSign(i)
+            Next
+
+            Return dbnOut.selectedGenes _
+                .Where(Function(g) trend.ContainsKey(g)) _
+                .OrderByDescending(Function(g) Abs(trend(g))) _
+                .Take(n) _
+                .ToArray()
+        End Function
     End Module
 End Namespace
