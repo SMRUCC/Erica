@@ -98,6 +98,12 @@ Namespace SingleGRN
                                        pseudotimeCsv As String,
                                        velocityCsv As String,
                                        opts As DBNSampleOptions) As DBNPreprocessOutput
+            ' ByRef 输出参数需先声明局部变量
+            Dim geneNames As String() = Nothing
+            Dim sampleNames As String() = Nothing
+            Dim velGenes As String() = Nothing
+            Dim velSamples As String() = Nothing
+
             ' 1. 读表达矩阵（基因 × 样本）→ 转 样本 × 基因
             Dim exprMat = ReadGeneBySampleMatrix(expressionCsv, geneNames, sampleNames)
 
