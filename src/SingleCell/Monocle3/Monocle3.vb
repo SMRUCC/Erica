@@ -1,3 +1,4 @@
+Imports Erica.Analysis.SingleCell.Monocle3.PseudoVelo
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner
 Imports std = System.Math
@@ -29,6 +30,16 @@ Public Class Monocle3Options
     Public Property useCache As Boolean = True
     ''' <summary>是否强制覆盖缓存（重算所有步骤）。默认 False。</summary>
     Public Property overwriteCache As Boolean = False
+
+    ' ===== PseudoVelo（伪 RNA 速率）配置 =====
+    ''' <summary>是否启用 PseudoVelo 伪速度计算。默认 True。</summary>
+    Public Property pseudoVeloEnabled As Boolean = True
+    ''' <summary>平滑窗口半宽（实际窗宽 = 2*window+1），默认 2（窗宽 5）。</summary>
+    Public Property pseudoVeloWindow As Integer = 2
+    ''' <summary>预留：若改用 LOESS 平滑时的 span 参数（0~1）。默认 0.3。</summary>
+    Public Property pseudoVeloSpan As Double = 0.3
+    ''' <summary>是否把细胞伪速度投影到 UMAP2D 坐标（生成 velocityUMAP）。默认 True。</summary>
+    Public Property useVelocityProjection As Boolean = True
 End Class
 
 ''' <summary>
@@ -54,6 +65,9 @@ Public Class Monocle3Result
     Public Property moranGlobal As Double
     ''' <summary>按 |Moran I| 排序的 top 变化基因。</summary>
     Public Property topVariableGenes As (gene As String, moranI As Double)()
+
+    ''' <summary>PseudoVelo 伪 RNA 速率结果（基因×细胞 伪速度矩阵 + 可选 UMAP 速度向量）；未计算时为 Nothing。</summary>
+    Public Property pseudoVelocity As PseudoVelocityResult
 
     ''' <summary>
     ''' 把样本级分析结果回写到 GCModeller 实验设计体系的 <see cref="SampleInfo"/> 集合中。
@@ -208,6 +222,12 @@ Public Class Monocle3
             .moranGlobal = moran.globalPseudotimeI,
             .topVariableGenes = moran.topVariableGenes
         }
+
+        ' 步骤 9：PseudoVelo 伪 RNA 速率（基于伪时间对表达曲线求导）
+        If opts.pseudoVeloEnabled Then
+            result.pseudoVelocity = PseudoVelo.Compute(result, sampleByGene, geneNames, sampleNames, opts, cache)
+            Call Console.WriteLine($"=== PseudoVelo done: {result.pseudoVelocity} ===")
+        End If
 
         Call Console.WriteLine($"=== Monocle3 pipeline done (global Moran I={result.moranGlobal:0.000}) ===")
         Return result

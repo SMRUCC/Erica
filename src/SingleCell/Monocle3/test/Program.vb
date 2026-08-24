@@ -73,6 +73,18 @@ Module Program
         Dim samples = result.ToSampleInfo(sampleNames)
         Call ExportSampleInfo(Path.Combine(outDir, "sampleinfo.csv"), samples)
 
+        ' 导出 PseudoVelo 伪 RNA 速率
+        If result.pseudoVelocity IsNot Nothing Then
+            Call ExportVelocity(Path.Combine(outDir, "pseudovelo_velocity.csv"),
+                                result.pseudoVelocity.geneNames,
+                                sampleNames,
+                                result.pseudoVelocity.velocity)
+            If result.pseudoVelocity.velocityUMAP IsNot Nothing Then
+                Call ExportUMAPVelocity(Path.Combine(outDir, "pseudovelo_umap.csv"),
+                                         sampleNames, result.umap2d, result.pseudoVelocity.velocityUMAP)
+            End If
+        End If
+
         ' 导出 top 变化基因（按 |Moran I|）
         Using sw As New StreamWriter(Path.Combine(outDir, "moran_top_genes.csv"))
             Call sw.WriteLine("gene,moranI")
@@ -89,6 +101,12 @@ Module Program
         Call Console.WriteLine($"MST edges        : {result.clusterGraph.edges.Length}")
         Call Console.WriteLine($"PAGA edges       : {result.pagaGraph.edges.Length}")
         Call Console.WriteLine($"sample info rows : {samples.Length}  (sampleinfo.csv)")
+        If result.pseudoVelocity IsNot Nothing Then
+            Call Console.WriteLine($"pseudo-velocity  : {result.pseudoVelocity.geneNames.Length} genes x {sampleNames.Length} cells  (pseudovelo_velocity.csv)")
+            Call Console.WriteLine($"velocity UMAP    : {If(result.pseudoVelocity.useProjection, "projected", "disabled")}  (pseudovelo_umap.csv)")
+        Else
+            Call Console.WriteLine($"pseudo-velocity  : disabled")
+        End If
         Call Console.WriteLine($"outputs          : {outDir}")
         Call Console.WriteLine("Done.")
     End Sub
@@ -140,6 +158,42 @@ Module Program
                     line &= "," & v
                 Next
                 Call sw.WriteLine(line)
+            Next
+        End Using
+    End Sub
+
+    ''' <summary>
+    ''' 导出 PseudoVelo 伪速度矩阵（基因 × 细胞）：首列基因名，其余列为各样本伪速度值。
+    ''' </summary>
+    Private Sub ExportVelocity(file As String, geneNames As String(), sampleNames As String(), velocity As Double(,))
+        Using sw As New StreamWriter(file)
+            Dim header = "gene"
+            For Each s In sampleNames
+                header &= "," & s
+            Next
+            Call sw.WriteLine(header)
+
+            Dim nGenes = velocity.GetLength(0)
+            Dim nCells = velocity.GetLength(1)
+            For g As Integer = 0 To nGenes - 1
+                Dim line = geneNames(g)
+                For j As Integer = 0 To nCells - 1
+                    line &= "," & velocity(g, j).ToString("G17")
+                Next
+                Call sw.WriteLine(line)
+            Next
+        End Using
+    End Sub
+
+    ''' <summary>
+    ''' 导出 UMAP 速度向量：每行一个样本，含 UMAP2D 坐标与其上的伪速度向量（供流线/箭头可视化）。
+    ''' </summary>
+    Private Sub ExportUMAPVelocity(file As String, sampleNames As String(), umap2d As Double(,), velUMAP As Double(,))
+        Using sw As New StreamWriter(file)
+            Call sw.WriteLine("sample,umap2d_x,umap2d_y,velo_umap_x,velo_umap_y")
+            Dim n = sampleNames.Length
+            For i As Integer = 0 To n - 1
+                Call sw.WriteLine($"{sampleNames(i)},{umap2d(i, 0):G17},{umap2d(i, 1):G17},{velUMAP(i, 0):G17},{velUMAP(i, 1):G17}")
             Next
         End Using
     End Sub
