@@ -23,7 +23,7 @@ Namespace SingleGRN
     ''' </summary>
     Module Program
         Sub Main(args As String())
-            Dim exprFile = If(args.Length > 0 AndAlso args(0).Length > 0, args(0), "K:\hsa\Homo_sapiens_expr_advanced_all_conditions.csv")
+            Dim exprFile = If(args.Length > 0 AndAlso args(0).Length > 0, args(0), "K:\hsa\Homo_sapiens_expr_advanced_all_conditions.dat")
             Dim monoDir = If(args.Length > 1 AndAlso args(1).Length > 0, args(1), "K:\hsa\monocle3_output")
             Dim dbnDir = If(args.Length > 2 AndAlso args(2).Length > 0, args(2), Path.Combine(monoDir, "dbn_timeseries"))
 
@@ -39,7 +39,7 @@ Namespace SingleGRN
             ' ==================== ① 加载原始表达矩阵 ====================
             Call Console.WriteLine($"加载原始表达矩阵: {exprFile}")
             Dim swLoad = Diagnostics.Stopwatch.StartNew()
-            Dim matrix As Matrix = Matrix.LoadData(exprFile)
+            Dim matrix As Matrix = Matrix.LoadStreamData(exprFile)
             swLoad.Stop()
             Dim sampleNames = matrix.sampleID
             Call Console.WriteLine($"  基因={matrix.expression.Length} x 样本={sampleNames.Length}  (LoadData: {swLoad.Elapsed.TotalSeconds:F1}s)")
