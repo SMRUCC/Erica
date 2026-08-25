@@ -61,5 +61,7 @@
   <Project Path="Monocle3/test/test.vbproj" Id="ee92c20b-473b-49f3-9946-a69c5e6d7a8a">
     <Platform Solution="Debug|x64" Project="x64" />
   </Project>
-  <Project Path="SingleGRN/SingleGRN.vbproj" Id="0aff562a-a3db-4179-98cf-0a78d08cc9e3" />
+  <Project Path="SingleGRN/SingleGRN.vbproj" Id="0aff562a-a3db-4179-98cf-0a78d08cc9e3">
+    <Platform Solution="Debug|x64" Project="x64" />
+  </Project>
 </Solution>
