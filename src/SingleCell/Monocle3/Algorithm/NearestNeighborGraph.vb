@@ -1,3 +1,4 @@
+Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.Data.GraphTheory.Network
 Imports std = System.Math
 
@@ -74,6 +75,8 @@ Public Class NearestNeighborGraph
     ''' <summary>
     ''' 将轻量图转换为 Louvain 所需的 <see cref="NetworkGraph(Of Node, Edge(Of Node))"/>。
     ''' </summary>
+    ''' 
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Public Shared Function ToNetworkGraph(g As GraphData) As NetworkGraph(Of Node, Edge(Of Node))
         Return g.ToNetworkGraph()
     End Function
