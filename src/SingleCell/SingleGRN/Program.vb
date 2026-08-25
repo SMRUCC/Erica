@@ -46,7 +46,7 @@ Namespace SingleGRN
 
             ' ==================== ② Monocle3 伪时间排序 + PseudoVelo 伪速率 ====================
             Dim monoOpts = New Monocle3Options With {
-                .numPCA = 50,
+                .numPCA = 10,
                 .umapDim = 3,
                 .knnK = 15,
                 .resolution = 1.0,
@@ -102,7 +102,7 @@ Namespace SingleGRN
             ' ==================== ④ DBN 时间序列预处理（分箱聚合） ====================
             Dim dbnOpts = New DBNSampleProcessing.DBNSampleOptions With {
                 .method = "bins",
-                .numBins = 30,
+                .numBins = 300,
                 .geneSelection = "top",
                 .topGeneFraction = 0.3,
                 .discretize = False
