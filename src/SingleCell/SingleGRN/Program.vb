@@ -29,7 +29,7 @@ Namespace SingleGRN
             Dim wgcna As IEnumerable(Of RelationshipScore) = NetworkFileIO.ReadEdges(Of RelationshipScore)("K:\hsa_grn\network-edges.csv")
             Dim exprFile As String = "K:\hsa\Homo_sapiens_expr_advanced_all_conditions.dat"
             Dim matrix As Matrix = Matrix.LoadStreamData(exprFile)
-            Dim hsaTF As String() = DataFrameResolver.Load("K:\hsa_grn\Homo_sapiens_TF.txt")("Ensembl")
+            Dim hsaTF As String() = DataFrameResolver.Load("K:\hsa_grn\Homo_sapiens_TF.txt", tsv:=True)("Ensembl")
             Dim monoDir = "K:\hsa\monocle3_output"
             Dim grnDir = Path.Combine(monoDir, "dbn_grn")
             Dim dbnDir = Path.Combine(monoDir, "dbn_timeseries")
@@ -51,7 +51,8 @@ Namespace SingleGRN
                 .pseudoVeloEnabled = True,
                 .pseudoVeloWindow = 2,
                 .pseudoVeloSpan = 0.3,
-                .useVelocityProjection = True
+                .useVelocityProjection = True,
+                .numHVGenes = 3000
             }
             ' ==================== ④ DBN 时间序列预处理（分箱聚合） ====================
             Dim dbnOpts = New DBNSampleOptions With {
