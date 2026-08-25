@@ -1,9 +1,11 @@
 Imports System.IO
 Imports System.Math
 Imports Erica.Analysis.SingleCell.Monocle3
+Imports Microsoft.VisualBasic.Data.visualize.Network
 Imports SMRUCC.genomics.Analysis.CellPhenotype
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner
+Imports SMRUCC.genomics.InteractionModel
 
 Namespace SingleGRN
 
@@ -24,6 +26,7 @@ Namespace SingleGRN
             Dim exprFile = If(args.Length > 0 AndAlso args(0).Length > 0, args(0), "K:\hsa\Homo_sapiens_expr_advanced_all_conditions.dat")
             Dim monoDir = If(args.Length > 1 AndAlso args(1).Length > 0, args(1), "K:\hsa\monocle3_output")
             Dim dbnDir = If(args.Length > 2 AndAlso args(2).Length > 0, args(2), Path.Combine(monoDir, "dbn_timeseries"))
+            Dim wgcna As IEnumerable(Of RelationshipScore) = NetworkFileIO.ReadEdges(Of RelationshipScore)("K:\hsa_grn\network-edges.csv")
 
             If Not File.Exists(exprFile) Then
                 Call Console.WriteLine($"[error] 原始表达矩阵不存在: {exprFile}")
