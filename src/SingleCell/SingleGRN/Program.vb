@@ -100,7 +100,7 @@ Namespace SingleGRN
             Call Console.WriteLine($"  HV 基因表达矩阵: 样本={nSamples} x 基因={nHV} (log1p)")
 
             ' ==================== ④ DBN 时间序列预处理（分箱聚合） ====================
-            Dim dbnOpts = New DBNSampleProcessing.DBNSampleOptions With {
+            Dim dbnOpts = New DBNSampleOptions With {
                 .method = "bins",
                 .numBins = 300,
                 .geneSelection = "top",
@@ -228,7 +228,7 @@ Namespace SingleGRN
         ''' 在上游→下游间连激活边（权重为两侧 |trend| 均值，evidence="PseudoVelo trend"）。
         ''' 该先验为弱方向约束，缺失（候选不足或全同号）时返回空网络，退化为纯数据驱动 MMHC。
         ''' </summary>
-        Private Function BuildVelocityPrior(dbnOut As DBNSampleProcessing.DBNPreprocessOutput) As PriorNetwork
+        Private Function BuildVelocityPrior(dbnOut As DBNPreprocessOutput) As PriorNetwork
             Dim prior As New PriorNetwork()
 
             If dbnOut Is Nothing OrElse dbnOut.selectedGenes Is Nothing OrElse dbnOut.trendSign Is Nothing Then
@@ -241,7 +241,7 @@ Namespace SingleGRN
             Dim pairs As New List(Of (gene As String, t As Double))
             For i As Integer = 0 To genes.Length - 1
                 If i < trend.Length Then
-                    pairs.Add((gene := genes(i), t := trend(i)))
+                    pairs.Add((gene:=genes(i), t:=trend(i)))
                 End If
             Next
 
@@ -277,7 +277,7 @@ Namespace SingleGRN
         ''' 选取演示虚拟扰动的目标基因：按伪速率趋势幅度 |trend| 降序取前 n 个选中基因
         ''' （趋势幅度大者代表性更强）；若缺少趋势数据则退化为前 n 个选中基因。
         ''' </summary>
-        Private Function SelectDemoGenes(dbnOut As DBNSampleProcessing.DBNPreprocessOutput, n As Integer) As String()
+        Private Function SelectDemoGenes(dbnOut As DBNPreprocessOutput, n As Integer) As String()
             If dbnOut Is Nothing OrElse dbnOut.selectedGenes Is Nothing OrElse dbnOut.selectedGenes.Length = 0 Then
                 Return {}
             End If
