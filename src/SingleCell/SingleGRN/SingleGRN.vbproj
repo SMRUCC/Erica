@@ -3,7 +3,7 @@
   <PropertyGroup>
     <RootNamespace>Erica.Analysis.SingleCell.VirtualGRN</RootNamespace>
     <TargetFramework>net10.0</TargetFramework>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AssemblyName>Erica.Analysis.SingleCell.VirtualGRN</AssemblyName>
     <AssemblyTitle>Reconstruct of the gene regulatory network model based on single cells data</AssemblyTitle>
     <Platforms>AnyCPU;x64</Platforms>
