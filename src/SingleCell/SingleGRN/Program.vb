@@ -1,11 +1,11 @@
 Imports System.IO
 Imports System.Math
-Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports Erica.Analysis.SingleCell.Monocle3
-Imports SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner
-Imports SMRUCC.genomics.Analysis.CellPhenotype
 Imports SMRUCC.genomics.Analysis.BNLearn
 Imports SMRUCC.genomics.Analysis.BNLearn.Core
+Imports SMRUCC.genomics.Analysis.CellPhenotype
+Imports SMRUCC.genomics.Analysis.HTS.DataFrame
+Imports SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner
 
 Namespace SingleGRN
 
@@ -62,7 +62,7 @@ Namespace SingleGRN
 
             Call Console.WriteLine("运行 Monocle3（伪时间排序 + PseudoVelo 伪速率）...")
             Dim swMono = Diagnostics.Stopwatch.StartNew()
-            Dim result = Monocle3.Run(matrix, monoOpts)
+            Dim result = Erica.Analysis.SingleCell.Monocle3.Monocle3.Run(matrix, monoOpts)
             swMono.Stop()
             Call Console.WriteLine($"  Monocle3 完成 (伪时间/速率计算: {swMono.Elapsed.TotalSeconds:F1}s)")
 
