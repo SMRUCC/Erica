@@ -3,6 +3,7 @@ Imports System.Math
 Imports Erica.Analysis.SingleCell.Monocle3
 Imports Microsoft.VisualBasic.Data.Framework.StorageProvider
 Imports Microsoft.VisualBasic.Data.visualize.Network
+Imports SMRUCC.genomics.Analysis.BNLearn.Core
 Imports SMRUCC.genomics.Analysis.CellPhenotype
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner
@@ -23,12 +24,124 @@ Namespace SingleGRN
     '''   - dbnOutDir       DBN 时间序列输出目录。默认 &lt;monocle3OutDir&gt;\dbn_timeseries
     ''' </summary>
     Module Program
+
+        Sub RunModel()
+            Dim wgcna As IEnumerable(Of RelationshipScore) = NetworkFileIO.ReadEdges(Of RelationshipScore)("K:\hsa_grn\network-edges.csv")
+            Dim exprFile As String = "K:\hsa\Homo_sapiens_expr_advanced_all_conditions.dat"
+            Dim matrix As Matrix = Matrix.LoadStreamData(exprFile)
+            Dim hsaTF As String() = DataFrameResolver.Load("K:\hsa_grn\Homo_sapiens_TF.txt")("Ensembl")
+            Dim monoDir = "K:\hsa\monocle3_output"
+            Dim grnDir = Path.Combine(monoDir, "dbn_grn")
+            Dim dbnDir = Path.Combine(monoDir, "dbn_timeseries")
+
+            Call Console.WriteLine($"  基因={matrix.expression.Length} x 样本={matrix.sample_count}")
+
+            ' 仅有少部分基因有TF调控网络关联信息
+            Dim prior As PriorNetwork = wgcna.BuildPriorNetwork(New HashSet(Of String)(hsaTF))
+            ' ==================== ② Monocle3 伪时间排序 + PseudoVelo 伪速率 ====================
+            Dim monoOpts = New Monocle3Options With {
+                .numPCA = 10,
+                .umapDim = 3,
+                .knnK = 15,
+                .resolution = 1.0,
+                .useLeiden = False,
+                .useCache = True,
+                .overwriteCache = False,
+                .cacheDir = Path.Combine(monoDir, "cache"),
+                .pseudoVeloEnabled = True,
+                .pseudoVeloWindow = 2,
+                .pseudoVeloSpan = 0.3,
+                .useVelocityProjection = True
+            }
+            ' ==================== ④ DBN 时间序列预处理（分箱聚合） ====================
+            Dim dbnOpts = New DBNSampleOptions With {
+                .method = "bins",
+                .numBins = 300,
+                .geneSelection = "top",
+                .topGeneFraction = 0.3,
+                .discretize = False
+            }
+            Dim result = Erica.Analysis.SingleCell.Monocle3.Monocle3.Run(matrix, monoOpts)
+            ' ==================== ③ 提取 HV 基因表达（log1p，与 Monocle3 内部尺度一致） ====================
+            ' Monocle3.RunCore 内部对表达做 log1p 后再算伪时间/速度，故 DBN 时间序列也用 log1p 表达，
+            ' 使分箱聚合的表达与 velocity 同源；velocity 缺失时回退为全基因表达。
+            Dim hvGenes As String()
+            If result.pseudoVelocity IsNot Nothing AndAlso
+               result.pseudoVelocity.geneNames IsNot Nothing AndAlso
+               result.pseudoVelocity.geneNames.Length > 0 Then
+                hvGenes = result.pseudoVelocity.geneNames
+            Else
+                hvGenes = matrix.expression.Select(Function(r) r.geneID).ToArray()
+            End If
+
+            Dim nSamples = matrix.sampleID.Length
+            Dim nHV = hvGenes.Length
+            Dim geneRow As New Dictionary(Of String, Integer)(StringComparer.OrdinalIgnoreCase)
+            For r As Integer = 0 To matrix.expression.Length - 1
+                geneRow(matrix.expression(r).geneID) = r
+            Next
+
+            Dim sampleByGene(nSamples - 1, nHV - 1) As Double
+            For g As Integer = 0 To nHV - 1
+                If Not geneRow.ContainsKey(hvGenes(g)) Then
+                    Call Console.WriteLine($"[warn] HV 基因 {hvGenes(g)} 不在原始矩阵中，已跳过")
+                    Continue For
+                End If
+                Dim row = geneRow(hvGenes(g))
+                For j As Integer = 0 To nSamples - 1
+                    ' log1p：与 Monocle3 内部 exprData 尺度一致
+                    sampleByGene(j, g) = Log(1 + matrix.expression(row).experiments(j))
+                Next
+            Next
+            Call Console.WriteLine($"  HV 基因表达矩阵: 样本={nSamples} x 基因={nHV} (log1p)")
+            Dim dbnOut As DBNPreprocessOutput = DBNSampleProcessing.BuildFromMonocle3(result, sampleByGene, hvGenes, matrix.sampleID, dbnOpts)
+
+            ' merge wgcna network and velocity network
+            prior = VelocityNetwork.BuildVelocityPrior(dbnOut, prior)
+
+            Dim knockGenes = SelectDemoGenes(dbnOut, 3)
+            Dim overExprList As New List(Of (Gene As String, Fold As Double))
+            If knockGenes.Length > 0 Then
+                overExprList.Add((Gene:=knockGenes(0), Fold:=3.0))
+            End If
+
+            Dim grn = GeneRegulatoryNetwork.TrainAndIntervene(
+                dbnOut.timeSeries, prior, knockGenes,
+                overExprList.ToArray, dynamicSteps:=10, outputDir:=grnDir)
+
+            Call Console.WriteLine($"  调控网络节点    : {dbnOut.timeSeries.NGene}  (伪时间 bin={dbnOut.timeSeries.TimePoints.Length})")
+            Call Console.WriteLine($"  方向先验边      : {prior.Edges.Count}  (PseudoVelo trend)")
+            Call Console.WriteLine($"  扰动演示基因    : {String.Join(", ", knockGenes)}")
+            Call Console.WriteLine($"  扰动结果目录    : {grnDir}\")
+
+            ' ==================== ⑦ Summary ====================
+            Call Console.WriteLine()
+            Call Console.WriteLine("=== SingleGRN 端到端流程完成 ===")
+            Call Console.WriteLine($"原始表达矩阵    : {exprFile}")
+            Call Console.WriteLine($"样本数          : {matrix.sampleID.Length}")
+            Call Console.WriteLine($"全局 Moran I    : {result.moranGlobal:0.000000}")
+            Call Console.WriteLine($"分群数          : {result.clusters.Distinct.Count}")
+            Call Console.WriteLine($"HV 基因数       : {nHV}  (伪速率基因集)")
+            If result.pseudoVelocity IsNot Nothing Then
+                Call Console.WriteLine($"伪速率矩阵      : {result.pseudoVelocity.geneNames.Length} x {nSamples}  (pseudovelo_velocity.csv)")
+            Else
+                Call Console.WriteLine($"伪速率矩阵      : 未启用")
+            End If
+            Call Console.WriteLine($"选中基因        : {dbnOut.selectedGenes.Length} / {dbnOut.geneNames.Length}")
+            Call Console.WriteLine($"伪时间点(bin)   : {dbnOut.binTimePoints.Length}")
+            Call Console.WriteLine($"DBN 时间序列    : {dbnDir}\dbn_timeseries.csv")
+            Call Console.WriteLine($"对照产物        : {monoDir}\sampleinfo.csv, {monoDir}\pseudovelo_velocity.csv")
+            Call Console.WriteLine("Done.")
+        End Sub
+
         Sub Main(args As String())
+            Call RunModel()
+        End Sub
+
+        Sub RunDemo1(args As String())
             Dim exprFile = If(args.Length > 0 AndAlso args(0).Length > 0, args(0), "K:\hsa\Homo_sapiens_expr_advanced_all_conditions.dat")
             Dim monoDir = If(args.Length > 1 AndAlso args(1).Length > 0, args(1), "K:\hsa\monocle3_output")
             Dim dbnDir = If(args.Length > 2 AndAlso args(2).Length > 0, args(2), Path.Combine(monoDir, "dbn_timeseries"))
-            Dim wgcna As IEnumerable(Of RelationshipScore) = NetworkFileIO.ReadEdges(Of RelationshipScore)("K:\hsa_grn\network-edges.csv")
-            Dim hsaTF As String() = DataFrameResolver.Load("K:\hsa_grn\Homo_sapiens_TF.txt")("Ensembl")
 
             If Not File.Exists(exprFile) Then
                 Call Console.WriteLine($"[error] 原始表达矩阵不存在: {exprFile}")

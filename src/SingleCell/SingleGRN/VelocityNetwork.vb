@@ -14,9 +14,7 @@ Public Module VelocityNetwork
     ''' 该先验为弱方向约束，缺失（候选不足或全同号）时返回空网络，退化为纯数据驱动 MMHC。
     ''' </summary>
     <Extension>
-    Public Function BuildVelocityPrior(dbnOut As DBNPreprocessOutput) As PriorNetwork
-        Dim prior As New PriorNetwork()
-
+    Public Function BuildVelocityPrior(dbnOut As DBNPreprocessOutput， prior As PriorNetwork) As PriorNetwork
         If dbnOut Is Nothing OrElse dbnOut.selectedGenes Is Nothing OrElse dbnOut.trendSign Is Nothing Then
             Return prior
         End If
@@ -57,5 +55,22 @@ Public Module VelocityNetwork
 
         Call Console.WriteLine($"  [prior] 由伪速率趋势构造方向先验边 {prior.Edges.Count} (候选 {sel.Length}: 正 {pos.Length} / 负 {neg.Length})")
         Return prior
+    End Function
+
+    ''' <summary>
+    ''' 由 DBN 预处理结果中的伪速率趋势（trendSign，按 geneNames 顺序）构造因果方向先验。
+    ''' 启发式：取趋势幅度 |trend| 最大的 Top50 选中基因，按趋势正负分为上游（正）/下游（负），
+    ''' 在上游→下游间连激活边（权重为两侧 |trend| 均值，evidence="PseudoVelo trend"）。
+    ''' 该先验为弱方向约束，缺失（候选不足或全同号）时返回空网络，退化为纯数据驱动 MMHC。
+    ''' </summary>
+    <Extension>
+    Public Function BuildVelocityPrior(dbnOut As DBNPreprocessOutput) As PriorNetwork
+        Dim prior As New PriorNetwork()
+
+        If dbnOut Is Nothing OrElse dbnOut.selectedGenes Is Nothing OrElse dbnOut.trendSign Is Nothing Then
+            Return prior
+        Else
+            Return BuildVelocityPrior(dbnOut, prior)
+        End If
     End Function
 End Module
