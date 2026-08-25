@@ -59,7 +59,7 @@ Namespace SingleGRN
                 .method = "bins",
                 .numBins = 300,
                 .geneSelection = "top",
-                .topGeneFraction = 0.3,
+                .topGeneFraction = 0.9,
                 .discretize = False
             }
             Dim result = Erica.Analysis.SingleCell.Monocle3.Monocle3.Run(matrix, monoOpts)
@@ -100,7 +100,7 @@ Namespace SingleGRN
             ' merge wgcna network and velocity network
             prior = VelocityNetwork.BuildVelocityPrior(dbnOut, prior)
 
-            Dim knockGenes = SelectDemoGenes(dbnOut, 3)
+            Dim knockGenes = SelectDemoGenes(dbnOut, 15)
             Dim overExprList As New List(Of (Gene As String, Fold As Double))
             If knockGenes.Length > 0 Then
                 overExprList.Add((Gene:=knockGenes(0), Fold:=3.0))

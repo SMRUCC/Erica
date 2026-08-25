@@ -14,7 +14,7 @@ Public Module VelocityNetwork
     ''' 该先验为弱方向约束，缺失（候选不足或全同号）时返回空网络，退化为纯数据驱动 MMHC。
     ''' </summary>
     <Extension>
-    Public Function BuildVelocityPrior(dbnOut As DBNPreprocessOutput， prior As PriorNetwork) As PriorNetwork
+    Public Function BuildVelocityPrior(dbnOut As DBNPreprocessOutput， prior As PriorNetwork, Optional pect As Double = 0.3) As PriorNetwork
         If dbnOut Is Nothing OrElse dbnOut.selectedGenes Is Nothing OrElse dbnOut.trendSign Is Nothing Then
             Return prior
         End If
@@ -30,7 +30,8 @@ Public Module VelocityNetwork
         Next
 
         ' 取趋势幅度 |t| 最大的 Top50 候选
-        Dim sel = pairs.OrderByDescending(Function(x) std.Abs(x.t)).Take(50).ToArray()
+        Dim nk As Integer = pect * pairs.Count
+        Dim sel = pairs.OrderByDescending(Function(x) std.Abs(x.t)).Take(nk).ToArray()
 
         If sel.Length < 2 Then
             Return prior
