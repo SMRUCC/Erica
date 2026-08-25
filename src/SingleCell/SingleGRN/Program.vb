@@ -1,6 +1,7 @@
 Imports System.IO
 Imports System.Math
 Imports Erica.Analysis.SingleCell.Monocle3
+Imports Microsoft.VisualBasic.Data.Framework.StorageProvider
 Imports Microsoft.VisualBasic.Data.visualize.Network
 Imports SMRUCC.genomics.Analysis.CellPhenotype
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
@@ -27,6 +28,7 @@ Namespace SingleGRN
             Dim monoDir = If(args.Length > 1 AndAlso args(1).Length > 0, args(1), "K:\hsa\monocle3_output")
             Dim dbnDir = If(args.Length > 2 AndAlso args(2).Length > 0, args(2), Path.Combine(monoDir, "dbn_timeseries"))
             Dim wgcna As IEnumerable(Of RelationshipScore) = NetworkFileIO.ReadEdges(Of RelationshipScore)("K:\hsa_grn\network-edges.csv")
+            Dim hsaTF As String() = DataFrameResolver.Load("K:\hsa_grn\Homo_sapiens_TF.txt")("Ensembl")
 
             If Not File.Exists(exprFile) Then
                 Call Console.WriteLine($"[error] 原始表达矩阵不存在: {exprFile}")
