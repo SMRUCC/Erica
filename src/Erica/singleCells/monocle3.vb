@@ -8,6 +8,8 @@ Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.genomics.Analysis.BNLearn.Core
 Imports SMRUCC.genomics.Analysis.CellPhenotype
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
+Imports SMRUCC.Rsharp.Runtime.Components
+Imports SMRUCC.Rsharp.Runtime.Interop
 Imports SMRUCC.Rsharp.Runtime.Vectorization
 Imports std = System.Math
 
@@ -115,7 +117,7 @@ Module monocle3Tool
     ''' <returns></returns>
     ''' 
     <ExportAPI("make_sample")>
-    Public Function make_sample(monocle3 As Monocle3Result, dbn_sample As NumericMatrix, hvgenes As Object(),
+    Public Function make_sample(monocle3 As Monocle3Result, dbn_sample As NumericMatrix, <RRawVectorArgument(TypeCodes.string)> hvgenes As Object,
                                 Optional method As String = "bins",
                                 Optional numBins As Integer = 30,
                                 Optional windowSize As Integer = 5,
