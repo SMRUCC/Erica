@@ -235,7 +235,7 @@ Namespace SingleGRN
 
             ' ==================== ⑤ 导出对照产物（与 Monocle3 test 格式一致） ====================
             ' sampleinfo（含 mon_pseudotime 等样本级结果）
-            Dim samples = result.ToSampleInfo(sampleNames)
+            Dim samples = result.ToSampleInfo
             Call ExportSampleInfo(Path.Combine(monoDir, "sampleinfo.csv"), samples)
 
             ' 伪速率矩阵（基因 × 细胞）
