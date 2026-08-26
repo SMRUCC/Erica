@@ -15,7 +15,7 @@ print("TF id list:");
 print(TF$Ensembl);
 
 let net_model = WGCNA::bnnet(wgcna, TF$Ensembl);
-let monocle3 = monocle3::new( cacheDir = "K:\\hsa_grn/GRN");
+let monocle3 = monocle3::new( cacheDir = "K:\\hsa_grn/GRN", num_HVgenes = 30000);
 let expr = load.expr0("K:\\hsa\\Homo_sapiens_expr_advanced_all_conditions.dat");
 
 monocle3 = monocle3::cell_rank(expr, opts = monocle3);
@@ -23,7 +23,7 @@ monocle3 = monocle3::cell_rank(expr, opts = monocle3);
 let hvgenes = monocle3::hvgenes(monocle3 );
 
 expr <- dbn_sample(expr , hvgenes);
-expr <- GRN::make_sample(monocle3, expr, hvgenes, method = "sliding", numBins = 300,  top_gene_fraction = 0.8);
+expr <- GRN::make_sample(monocle3, expr, hvgenes, method = "sliding", num_bins = 300,  top_gene_fraction = 0.8);
 
 net_model = GRN::merge_prior(expr, net_model);
 net_model = GRN::learn_grn(expr, net_model, maxIters = 100);
