@@ -19,7 +19,7 @@ Public Class SpatialAutocorrelation
         Dim key = "09_moran.json"
 
         If opts.useCache AndAlso Not opts.overwriteCache AndAlso cache.Hit(key) Then
-            Call Console.WriteLine($"[cache] load Moran result from {cache.Path(key)}")
+            Call $"[cache] load Moran result from {cache.Path(key)}".info
             Return cache.LoadJson(Of MoranResult)(key)
         End If
 
@@ -31,18 +31,18 @@ Public Class SpatialAutocorrelation
             c2(i) = umap2d(i, 1)
         Next
 
-        Call Console.WriteLine($"[moran] computing global pseudotime autocorrelation ...")
+        Call $"[moran] computing global pseudotime autocorrelation ...".debug
         Dim globalI = Moran.calc_moran(pseudotime, c1, c2).observed
 
-        Call Console.WriteLine($"[moran] computing gene-level autocorrelation over {geneNames.Length} genes ...")
-        Dim moranOfGene(geneNames.Length - 1) As (gene As String, moranI As Double)
+        Call $"[moran] computing gene-level autocorrelation over {geneNames.Length} genes ...".debug
+        Dim moranOfGene(geneNames.Length - 1) As VariantGene
         For g As Integer = 0 To geneNames.Length - 1
             Dim expr(n - 1) As Double
             For i As Integer = 0 To n - 1
                 expr(i) = geneExpr(i, g)
             Next
             Dim mi = Moran.calc_moran(expr, c1, c2).observed
-            moranOfGene(g) = (geneNames(g), mi)
+            moranOfGene(g) = New VariantGene(geneNames(g), mi)
         Next
 
         ' 按 |Moran I| 降序取 top N 变化基因
@@ -56,7 +56,7 @@ Public Class SpatialAutocorrelation
             .topVariableGenes = top
         }
         Call cache.SaveJson(key, result)
-        Call Console.WriteLine($"[moran] done: global I={globalI:0.000} -> cached {cache.Path(key)}")
+        Call $"[moran] done: global I={globalI:0.000} -> cached {cache.Path(key)}".debug
 
         Return result
     End Function

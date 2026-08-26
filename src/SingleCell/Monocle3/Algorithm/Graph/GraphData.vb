@@ -3,7 +3,7 @@ Imports Microsoft.VisualBasic.Data.GraphTheory.Network
 ''' <summary>
 ''' 轻量级、可 JSON 序列化的无向加权图结构，用于在 Monocle3 各步骤之间
 ''' 缓存图数据（KNN 图、MST 主图、PAGA 图等）。运行时再按需转换为
-''' <see cref="NetworkGraph(Of Integer)"/> 供 Louvain / PAGA / Dijkstra 使用。
+''' NetworkGraph(Of Integer) 供 Louvain / PAGA / Dijkstra 使用。
 ''' </summary>
 Public Class GraphData
 
@@ -25,7 +25,7 @@ Public Class GraphData
     End Function
 
     ''' <summary>
-    ''' 转换为 sciBASIC# 的 <see cref="NetworkGraph(Of Node, Edge(Of ?))"/>。
+    ''' 转换为 sciBASIC# 的 NetworkGraph。
     ''' 节点 ID 在 NetworkGraph 构造时自动赋为顺序索引（从 0/1 起），
     ''' 因此样本 i 对应节点 ID = i + 1，可据此回溯。
     ''' </summary>

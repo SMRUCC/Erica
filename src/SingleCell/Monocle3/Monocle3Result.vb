@@ -5,6 +5,7 @@ Imports std = System.Math
 ''' Monocle3 分析结果聚合。
 ''' </summary>
 Public Class Monocle3Result
+
     Public Property cacheDir As String
     ''' <summary>PCA 50 维 score 矩阵（样本 × 50）。</summary>
     Public Property pcaScore As Double(,)
@@ -23,7 +24,7 @@ Public Class Monocle3Result
     ''' <summary>伪时间向量的全局 Moran's I。</summary>
     Public Property moranGlobal As Double
     ''' <summary>按 |Moran I| 排序的 top 变化基因。</summary>
-    Public Property topVariableGenes As (gene As String, moranI As Double)()
+    Public Property topVariableGenes As VariantGene()
     Public Property featureIds As String()
     Public Property sampleNames As String()
     ''' <summary>PseudoVelo 伪 RNA 速率结果（基因×细胞 伪速度矩阵 + 可选 UMAP 速度向量）；未计算时为 Nothing。</summary>
@@ -37,7 +38,6 @@ Public Class Monocle3Result
     ''' <c>mon_umap2d_x/y</c>、<c>mon_pca_1..N</c>、<c>mon_moran_global</c>。
     ''' cluster 级（clusterGraph/pagaGraph）与基因级（topVariableGenes）结果不属于样本级，不写入。
     ''' </summary>
-    ''' <param name="sampleNames">样本名数组，顺序必须与 pcaScore/umap*/clusters/pseudotime 的行一致。</param>
     ''' <returns>与 sampleNames 一一对应的 SampleInfo 集合。</returns>
     Public Function ToSampleInfo() As SampleInfo()
         Dim n = sampleNames.Length

@@ -84,7 +84,7 @@ Module monocle3Tool
         Dim sampleByGene As New NumericMatrix(nSamples, nHV)
         For g As Integer = 0 To nHV - 1
             If Not geneRow.ContainsKey(hvgenes(g)) Then
-                Call Console.WriteLine($"[warn] HV 基因 {hvgenes(g)} 不在原始矩阵中，已跳过")
+                Call $"[warn] HV 基因 {hvgenes(g)} 不在原始矩阵中，已跳过".debug
                 Continue For
             End If
             Dim row = geneRow(hvgenes(g))
@@ -93,7 +93,7 @@ Module monocle3Tool
                 sampleByGene(j, g) = std.Log(1 + matrix.expression(row).experiments(j))
             Next
         Next
-        Call Console.WriteLine($"  HV 基因表达矩阵: 样本={nSamples} x 基因={nHV} (log1p)")
+        Call $"  HV 基因表达矩阵: 样本={nSamples} x 基因={nHV} (log1p)".info
 
         Return sampleByGene
     End Function
