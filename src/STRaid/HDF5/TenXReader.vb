@@ -9,10 +9,7 @@
 ' 大矩阵用 Microsoft.VisualBasic.Math.LinearAlgebra.Matrix.SparseMatrix（COO 三元组构造）承载，
 ' 稠密化约 940GB 的表达矩阵因此以稀疏形式常驻内存（约数 GB）。
 
-Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.Data.IO.HDF5
-Imports Microsoft.VisualBasic.Data.IO.HDF5.Microsoft.VisualBasic.Data.IO.HDF5
-Imports Microsoft.VisualBasic.Data.IO.HDF5.struct
 Imports Microsoft.VisualBasic.Language
 
 Namespace HDF5
