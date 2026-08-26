@@ -150,7 +150,7 @@ Public Module DBNSampleProcessing
             Dim members = binMembers(b)
             If members.Count = 0 Then
                 ' 空 bin：回退为 0 并告警（不影响 TimePoints 连续性）
-                Call Console.WriteLine($"[DBN-Pre] warn: bin {b} 无样本，表达/速度置 0")
+                Call $"[DBN-Pre] warn: bin {b} 无样本，表达/速度置 0".debug
                 Continue For
             End If
             For si As Integer = 0 To nSel - 1
