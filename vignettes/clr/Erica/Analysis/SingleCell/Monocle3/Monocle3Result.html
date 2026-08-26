@@ -22,7 +22,7 @@
 
         <h3>Description</h3>
 
-        
+        <p>Monocle3 分析结果聚合。
 
         <h3>Declare</h3>        
 
@@ -31,17 +31,27 @@
 # namespace Erica.Analysis.SingleCell.Monocle3
 export class Monocle3Result {
    cacheDir: string;
+   # 轨迹主图（cluster 级最小生成树）。
    clusterGraph: <a href="/vignettes/clr/Erica/Analysis/SingleCell/Monocle3/GraphData.html">GraphData</a>;
+   # 每个样本的 cluster 标签。
    clusters: integer;
    featureIds: string;
+   # 伪时间向量的全局 Moran's I。
    moranGlobal: double;
+   # PAGA 团簇连接图。
    pagaGraph: <a href="/vignettes/clr/Erica/Analysis/SingleCell/Monocle3/GraphData.html">GraphData</a>;
+   # PCA 50 维 score 矩阵（样本 × 50）。
    pcaScore: <a href="/vignettes/clr/System/Double.html">Double[,]</a>;
+   # 每个样本的伪时间（pseudotime）。
    pseudotime: double;
+   # PseudoVelo 伪 RNA 速率结果（基因×细胞 伪速度矩阵 + 可选 UMAP 速度向量）；未计算时为 Nothing。
    pseudoVelocity: <a href="/vignettes/clr/Erica/Analysis/SingleCell/Monocle3/PseudoVelocityResult.html">PseudoVelocityResult</a>;
    sampleNames: string;
-   topVariableGenes: <a href="/vignettes/clr/System/ValueTuple`2.html">ValueTuple`2[]</a>;
+   # 按 |Moran I| 排序的 top 变化基因。
+   topVariableGenes: <a href="/vignettes/clr/Erica/Analysis/SingleCell/Monocle3/VariantGene.html">VariantGene[]</a>;
+   # UMAP 2 维嵌入（样本 × 2）。
    umap2d: <a href="/vignettes/clr/System/Double.html">Double[,]</a>;
+   # UMAP 3 维嵌入（样本 × 3）。
    umap3d: <a href="/vignettes/clr/System/Double.html">Double[,]</a>;
 }
 </code>
@@ -54,7 +64,7 @@ export class Monocle3Result {
 <li>use by <i>property</i> member <code>pagaGraph</code>: <a href="/vignettes/clr/Erica/Analysis/SingleCell/Monocle3/GraphData.html">GraphData</a></li>
 <li>use by <i>property</i> member <code>pcaScore</code>: <a href="/vignettes/clr/System/Double.html">Double</a></li>
 <li>use by <i>property</i> member <code>pseudoVelocity</code>: <a href="/vignettes/clr/Erica/Analysis/SingleCell/Monocle3/PseudoVelocityResult.html">PseudoVelocityResult</a></li>
-<li>use by <i>property</i> member <code>topVariableGenes</code>: <a href="/vignettes/clr/System/ValueTuple`2.html">ValueTuple`2</a></li>
+<li>use by <i>property</i> member <code>topVariableGenes</code>: <a href="/vignettes/clr/Erica/Analysis/SingleCell/Monocle3/VariantGene.html">VariantGene</a></li>
 <li>use by <i>property</i> member <code>umap2d</code>: <a href="/vignettes/clr/System/Double.html">Double</a></li>
 <li>use by <i>property</i> member <code>umap3d</code>: <a href="/vignettes/clr/System/Double.html">Double</a></li>
 </ol>

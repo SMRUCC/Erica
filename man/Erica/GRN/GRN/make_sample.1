@@ -1,0 +1,64 @@
+.\" man page create by R# package system.
+.TH GRN 1 2000-1月 "make_sample" "make_sample"
+.SH NAME
+make_sample \- 
+.SH SYNOPSIS
+\fImake_sample(\fBmonocle3\fR as <generic> Monocle3Result, 
+\fBdbn_sample\fR as <generic> NumericMatrix, 
+\fBhvgenes\fR as any, 
+\fBmethod\fR as string = "bins", 
+\fBnum_bins\fR as integer = 30, 
+\fBwindow_size\fR as integer = 5, 
+\fBstep\fR as integer = 1, 
+\fBgene_selection\fR as string = "top", 
+\fBtop_gene_fraction\fR as double = 0.3, 
+\fBvelocity_thres\fR as double = NAN, 
+\fBdiscretize\fR as boolean = FALSE, 
+\fBnum_levels\fR as integer = 3, 
+\fBgroupBy\fR as integer = \fB<NULL>\fR);\fR
+.SH OPTIONS
+.PP
+\fBmonocle3\fB \fR\- -. 
+.PP
+.PP
+\fBdbn_sample\fB \fR\- -. 
+.PP
+.PP
+\fBhvgenes\fB \fR\- -. 
+.PP
+.PP
+\fBmethod\fB \fR\- 分箱模式："bins"（等宽分箱，默认）或 "sliding"（滑动窗口）。. 
+.PP
+.PP
+\fBnum_bins\fB \fR\- 等宽分箱数量（method="bins" 时有效）。默认 30。. 
+.PP
+.PP
+\fBwindow_size\fB \fR\- 滑动窗口宽度（method="sliding" 时有效）。默认 5。. 
+.PP
+.PP
+\fBstep\fB \fR\- 滑动窗口步长（method="sliding" 时有效）。默认 1。. 
+.PP
+.PP
+\fBgene_selection\fB \fR\- 基因筛选方式："top"（取速度幅度最高的 topGeneFraction 比例）或 "threshold"（速度幅度 > velocityThreshold）。默认 "top"。. 
+.PP
+.PP
+\fBtop_gene_fraction\fB \fR\- top 模式下保留的基因比例（0~1）。默认 0.3。. 
+.PP
+.PP
+\fBvelocity_thres\fB \fR\- threshold 模式的绝对阈值；设为 NaN 时自动取速度幅度中位数 × 2。. 
+.PP
+.PP
+\fBdiscretize\fB \fR\- 是否对 bin 表达矩阵做分位数离散化（供离散 DBN）。默认 False。. 
+.PP
+.PP
+\fBnum_levels\fB \fR\- 离散化等级数（discretize=True 时有效）。默认 3。. 
+.PP
+.PP
+\fBgroupBy\fB \fR\- 分支标签（每细胞所属 group）；为 Nothing 时按整体单轨迹分箱。预留（本次不启用分支）。. 
+.PP
+.SH SEE ALSO
+GRN
+.SH FILES
+.PP
+Erica.dll
+.PP

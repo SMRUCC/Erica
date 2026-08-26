@@ -20,41 +20,41 @@ Module GRN
     ''' <param name="dbn_sample"></param>
     ''' <param name="hvgenes"></param>
     ''' <param name="method">分箱模式："bins"（等宽分箱，默认）或 "sliding"（滑动窗口）。</param>
-    ''' <param name="numBins">等宽分箱数量（method="bins" 时有效）。默认 30。</param>
-    ''' <param name="windowSize">滑动窗口宽度（method="sliding" 时有效）。默认 5。</param>
+    ''' <param name="num_bins">等宽分箱数量（method="bins" 时有效）。默认 30。</param>
+    ''' <param name="window_size">滑动窗口宽度（method="sliding" 时有效）。默认 5。</param>
     ''' <param name="step">滑动窗口步长（method="sliding" 时有效）。默认 1。</param>
-    ''' <param name="geneSelection">基因筛选方式："top"（取速度幅度最高的 topGeneFraction 比例）或 "threshold"（速度幅度 > velocityThreshold）。默认 "top"。</param>
-    ''' <param name="topGeneFraction">top 模式下保留的基因比例（0~1）。默认 0.3。</param>
-    ''' <param name="velocityThreshold">threshold 模式的绝对阈值；设为 NaN 时自动取速度幅度中位数 × 2。</param>
+    ''' <param name="gene_selection">基因筛选方式："top"（取速度幅度最高的 topGeneFraction 比例）或 "threshold"（速度幅度 > velocityThreshold）。默认 "top"。</param>
+    ''' <param name="top_gene_fraction">top 模式下保留的基因比例（0~1）。默认 0.3。</param>
+    ''' <param name="velocity_thres">threshold 模式的绝对阈值；设为 NaN 时自动取速度幅度中位数 × 2。</param>
     ''' <param name="discretize">是否对 bin 表达矩阵做分位数离散化（供离散 DBN）。默认 False。</param>
-    ''' <param name="numLevels">离散化等级数（discretize=True 时有效）。默认 3。</param>
+    ''' <param name="num_levels">离散化等级数（discretize=True 时有效）。默认 3。</param>
     ''' <param name="groupBy">分支标签（每细胞所属 group）；为 Nothing 时按整体单轨迹分箱。预留（本次不启用分支）。</param>
     ''' <returns></returns>
     ''' 
     <ExportAPI("make_sample")>
     Public Function make_sample(monocle3 As Monocle3Result, dbn_sample As NumericMatrix, <RRawVectorArgument(TypeCodes.string)> hvgenes As Object,
                                 Optional method As String = "bins",
-                                Optional numBins As Integer = 30,
-                                Optional windowSize As Integer = 5,
+                                Optional num_bins As Integer = 30,
+                                Optional window_size As Integer = 5,
                                 Optional [step] As Integer = 1,
-                                Optional geneSelection As String = "top",
-                                Optional topGeneFraction As Double = 0.3,
-                                Optional velocityThreshold As Double = Double.NaN,
+                                Optional gene_selection As String = "top",
+                                Optional top_gene_fraction As Double = 0.3,
+                                Optional velocity_thres As Double = Double.NaN,
                                 Optional discretize As Boolean = False,
-                                Optional numLevels As Integer = 3,
+                                Optional num_levels As Integer = 3,
                                 Optional groupBy As Integer() = Nothing) As DBNPreprocessOutput
 
         Dim dbnOpts As New DBNSampleOptions With {
             .discretize = discretize,
-            .geneSelection = geneSelection,
+            .geneSelection = gene_selection,
             .groupBy = groupBy,
             .method = method,
-            .numBins = numBins,
-            .numLevels = numLevels,
+            .numBins = num_bins,
+            .numLevels = num_levels,
             .[step] = [step],
-            .topGeneFraction = topGeneFraction,
-            .velocityThreshold = velocityThreshold,
-            .windowSize = windowSize
+            .topGeneFraction = top_gene_fraction,
+            .velocityThreshold = velocity_thres,
+            .windowSize = window_size
         }
         Dim sampleByGene As Double(,) = dbn_sample.ToMatrix
         Dim hvGeneIds As String() = CLRVector.asCharacter(hvgenes)

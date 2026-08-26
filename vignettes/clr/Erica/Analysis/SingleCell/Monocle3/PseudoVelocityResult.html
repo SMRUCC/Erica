@@ -22,7 +22,7 @@
 
         <h3>Description</h3>
 
-        
+        <p>PseudoVelo 的计算结果。
 
         <h3>Declare</h3>        
 
@@ -30,12 +30,19 @@
             <code id="clr_ts">
 # namespace Erica.Analysis.SingleCell.Monocle3
 export class PseudoVelocityResult {
+   # 基因名（与 velocity 行序一致）。
    geneNames: string;
+   # 按伪时间升序排好的样本下标（原始顺序 → 排序后位置）。
    orderIndex: integer;
+   # 样本名（与 velocity 列序、velocityUMAP 行序一致）。
    sampleNames: string;
+   # 是否计算了 UMAP 投影。
    useProjection: boolean;
+   # 伪速度矩阵，约定为 基因 × 细胞（行=基因，列=样本，与 result.pseudotime 顺序一致）。
    velocity: <a href="/vignettes/clr/System/Double.html">Double[,]</a>;
+   # 各细胞在 UMAP2D 空间的速度向量（样本×2）；若关闭 UMAP 投影则为 Nothing。
    velocityUMAP: <a href="/vignettes/clr/System/Double.html">Double[,]</a>;
+   # 实际使用的平滑窗口半宽。
    window: integer;
 }
 </code>

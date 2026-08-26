@@ -22,7 +22,7 @@
 
         <h3>Description</h3>
 
-        
+        <p>预处理结果。
 
         <h3>Declare</h3>        
 
@@ -30,15 +30,25 @@
             <code id="clr_ts">
 # namespace Erica.Analysis.SingleCell.VirtualGRN
 export class DBNPreprocessOutput {
+   # bin 标签（"bin_1".."bin_K"）。
    binLabels: string;
+   # 每个 bin 的伪时间点（平均伪时间）。
    binTimePoints: double;
+   # 每个 bin 内聚合的基因伪速度矩阵（基因 × bin），供 DBN 因果方向先验。
    binVelocity: <a href="/vignettes/clr/System/Double.html">Double[,]</a>;
+   # 被剔除的基因名。
    geneExcluded: string;
+   # 原始基因名（与输入一致）。
    geneNames: string;
+   # 原始样本名（与输入一致）。
    sampleNames: string;
+   # 筛选后保留的基因名（与 timeSeries.Matrix 行序一致）。
    selectedGenes: string;
+   # 每基因的速度幅度统计（与 geneNames 顺序一致）。
    speedStat: double;
+   # DBN 时间序列（基因 × Kbin，TimePoints = bin 平均伪时间），可直接喂 GeneRegulatoryNetwork.ToTimeSeries。
    timeSeries: <a href="/vignettes/clr/SMRUCC/genomics/Analysis/BNLearn/Core/GeneExpressionData.html">GeneExpressionData</a>;
+   # 每基因沿轨迹的整体趋势方向（sign(mean bin velocity)）。
    trendSign: double;
 }
 </code>

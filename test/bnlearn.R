@@ -23,7 +23,7 @@ monocle3 = monocle3::cell_rank(expr, opts = monocle3);
 let hvgenes = monocle3::hvgenes(monocle3 );
 
 expr <- dbn_sample(expr , hvgenes);
-expr <- GRN::make_sample(monocle3, expr, hvgenes, method = "bins", numBins = 300);
+expr <- GRN::make_sample(monocle3, expr, hvgenes, method = "sliding", numBins = 300,  top_gene_fraction = 0.8);
 
 net_model = GRN::merge_prior(expr, net_model);
 net_model = GRN::learn_grn(expr, net_model, maxIters = 100);

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Erica.Analysis.SingleCell.Monocle3.GraphData</title>
+    <title>Erica.Analysis.SingleCell.Monocle3.VariantGene</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <link rel="stylesheet" type="text/css" href="../../_assets/page.css">
@@ -13,36 +13,32 @@
 
         <table style="width: 100%;">
             <tr>
-                <td>GraphData {Erica.Analysis.SingleCell.Monocle3}</td>
+                <td>VariantGene {Erica.Analysis.SingleCell.Monocle3}</td>
                 <td style="text-align: right;">.NET clr documentation</td>
             </tr>
         </table>
 
-        <h2>GraphData</h2>
+        <h2>VariantGene</h2>
 
         <h3>Description</h3>
 
-        <p>轻量级、可 JSON 序列化的无向加权图结构，用于在 Monocle3 各步骤之间 缓存图数据（KNN 图、MST 主图、PAGA 图等）。运行时再按需转换为 NetworkGraph(Of Integer) 供 Louvain / PAGA / Dijkstra 使用。
+        
 
         <h3>Declare</h3>        
 
         <pre>
             <code id="clr_ts">
 # namespace Erica.Analysis.SingleCell.Monocle3
-export class GraphData {
-   # 边表：u、v 为节点索引（对应 <a href="/vignettes/clr/Erica/Analysis/SingleCell/Monocle3/GraphData.html">GraphData</a>.<a href="#">nodes</a> 下标），weight 为权重。
-   edges: <a href="/vignettes/clr/Erica/Analysis/SingleCell/Monocle3/EdgeData.html">EdgeData[]</a>;
-   # 节点标签（字符串 id）。索引隐含节点编号。
-   nodes: string;
+export class VariantGene {
+   gene: string;
+   moranI: double;
 }
 </code>
         </pre>
 
         <h3>.NET clr type reference tree</h3>
 
-        <ol>
-<li>use by <i>property</i> member <code>edges</code>: <a href="/vignettes/clr/Erica/Analysis/SingleCell/Monocle3/EdgeData.html">EdgeData</a></li>
-</ol>
+        this clr type has no other .net clr type reference.
 
 
         <hr />

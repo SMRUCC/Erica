@@ -22,7 +22,7 @@ Module monocle3Tool
                 Optional pseudoVeloWindow As Integer = 2,
                 Optional pseudoVeloSpan As Double = 0.3,
                 Optional useVelocityProjection As Boolean = True,
-                Optional numHVGenes As Integer = 3000) As Monocle3Options
+                Optional num_HVgenes As Integer = 3000) As Monocle3Options
 
         Return New Monocle3Options With {
             .numPCA = numPCA,
@@ -37,7 +37,7 @@ Module monocle3Tool
             .pseudoVeloWindow = pseudoVeloWindow,
             .pseudoVeloSpan = pseudoVeloSpan,
             .useVelocityProjection = useVelocityProjection,
-            .numHVGenes = numHVGenes
+            .numHVGenes = num_HVgenes
         }
     End Function
 
