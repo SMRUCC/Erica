@@ -57,7 +57,7 @@ declare namespace monocle3 {
      * 
      * + default value Is ``null``.
    */
-   function make_sample(monocle3: object, dbn_sample: object, hvgenes: object, method?: string, numBins?: object, windowSize?: object, step?: object, geneSelection?: string, topGeneFraction?: number, velocityThreshold?: number, discretize?: boolean, numLevels?: object, groupBy?: object): object;
+   function make_sample(monocle3: object, dbn_sample: object, hvgenes: any, method?: string, numBins?: object, windowSize?: object, step?: object, geneSelection?: string, topGeneFraction?: number, velocityThreshold?: number, discretize?: boolean, numLevels?: object, groupBy?: object): object;
    /**
    */
    function merge_prior(velocity_prior: object, prior: object): object;
