@@ -125,20 +125,24 @@ Namespace SpatialOmics.Math
 
             For iter = 1 To maxIter
                 Dim improved As Boolean = False
-                For I As Integer = 0 To n - 1
+                For i As Integer = 0 To n - 1
                     ' 一维搜索：固定其他维度，优化第 i 维
-                    Dim xi = x(I)
+                    Dim xi = x(i)
+                    Dim fi As Integer = i
                     Dim f1D As Func(Of Double, Double) = Function(t)
-                                                             x(I) = t
+                                                             x(fi) = t
                                                              Return f(x)
                                                          End Function
-                    Dim __ As (bestT#, bestF#) = BrentMinimize(f1D, bounds(I).lo, bounds(I).hi, tol)
-                    x(I) = __.bestT
+                    Dim __ As (bestT#, bestF#) = BrentMinimize(f1D, bounds(i).lo, bounds(i).hi, tol)
+                    x(i) = __.bestT
                     If __.bestF < fPrev - tol Then improved = True
                 Next
                 Dim fNew = f(x)
-                If Not improved AndAlso std.Abs(fPrev - fNew) < tol Then Exit For
-                fPrev = fNew
+                If Not improved AndAlso std.Abs(fPrev - fNew) < tol Then
+                    Exit For
+                Else
+                    fPrev = fNew
+                End If
             Next
             Return x
         End Function
