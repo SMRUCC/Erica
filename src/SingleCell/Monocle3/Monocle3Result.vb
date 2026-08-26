@@ -24,7 +24,8 @@ Public Class Monocle3Result
     Public Property moranGlobal As Double
     ''' <summary>按 |Moran I| 排序的 top 变化基因。</summary>
     Public Property topVariableGenes As (gene As String, moranI As Double)()
-
+    Public Property featureIds As String()
+    Public Property sampleNames As String()
     ''' <summary>PseudoVelo 伪 RNA 速率结果（基因×细胞 伪速度矩阵 + 可选 UMAP 速度向量）；未计算时为 Nothing。</summary>
     Public Property pseudoVelocity As PseudoVelocityResult
 
@@ -38,7 +39,7 @@ Public Class Monocle3Result
     ''' </summary>
     ''' <param name="sampleNames">样本名数组，顺序必须与 pcaScore/umap*/clusters/pseudotime 的行一致。</param>
     ''' <returns>与 sampleNames 一一对应的 SampleInfo 集合。</returns>
-    Public Function ToSampleInfo(sampleNames As String()) As SampleInfo()
+    Public Function ToSampleInfo() As SampleInfo()
         Dim n = sampleNames.Length
 
         If pseudotime Is Nothing OrElse pseudotime.Length <> n Then

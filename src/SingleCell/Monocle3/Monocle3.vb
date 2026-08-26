@@ -1,6 +1,5 @@
+Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
-Imports SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner
-Imports std = System.Math
 
 ''' <summary>
 ''' Monocle3 轨迹推断主入口。
@@ -21,7 +20,10 @@ Public Class Monocle3
         If opts Is Nothing Then opts = New Monocle3Options
         Dim cache = New CacheStore(opts.cacheDir)
         Dim expr = LoadExpression(matrix, opts, cache)
-        Return RunCore(expr.sampleByGene, expr.geneNames, expr.sampleNames, opts, cache)
+        Dim result = RunCore(expr.sampleByGene, expr.geneNames, expr.sampleNames, opts, cache)
+        result.featureIds = matrix.expression.Keys
+        result.sampleNames = matrix.sampleID.ToArray
+        Return result
     End Function
 
     ''' <summary>
