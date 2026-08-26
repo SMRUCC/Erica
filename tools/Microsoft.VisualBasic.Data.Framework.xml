@@ -248,6 +248,50 @@ Microsoft.VisualBasic.Data.Framework
  <param name="file"></param>
  <param name="blank"></param>
 </member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.Mapper.as_dataframe``1(System.Collections.Generic.IEnumerable{``0},System.Boolean,System.String,System.Boolean,System.Collections.Generic.Dictionary{System.String,System.String},System.Int32,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Boolean,System.Boolean)">
+ <summary>
+ cast the clr object collection as the dataframe
+ </summary>
+ <remarks>
+ this function will create a new dataframe object, and the dataframe object will be
+ created by the given clr object collection
+ </remarks>
+ <example>
+ <code>
+ Dim df As DataFrame = list.StreamToFrame()
+ </code>
+ </example>
+ <typeparam name="T"></typeparam>
+ <param name="list">a generic clr object collection for make data cast</param>
+ <param name="strict">only extract the property/field value which has column attribute tagged if this parameter value is config as TRUE.</param>
+ <param name="metaBlank"></param>
+ <param name="nonParallel"></param>
+ <param name="maps"></param>
+ <param name="reorderKeys"></param>
+ <param name="layout"></param>
+ <param name="transpose"></param>
+ <param name="silent"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.Mapper.StreamToFrame(System.Object[],System.Type,System.Boolean,System.String,System.Boolean,System.Collections.Generic.Dictionary{System.String,System.String},System.Int32,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Boolean,System.Boolean)">
+ <summary>
+ cast the clr object collection as the dataframe
+ </summary>
+ <remarks>
+ this function will create a new dataframe object, and the dataframe object will be
+ created by the given clr object collection
+ </remarks>
+ <param name="source">a generic clr object collection for make data cast</param>
+ <param name="strict">only extract the property/field value which has column attribute tagged if this parameter value is config as TRUE.</param>
+ <param name="metaBlank"></param>
+ <param name="nonParallel"></param>
+ <param name="maps"></param>
+ <param name="reorderKeys"></param>
+ <param name="layout"></param>
+ <param name="transpose"></param>
+ <param name="silent"></param>
+ <returns></returns>
+</member>
 <member name="M:Microsoft.VisualBasic.Data.Framework.NumericDataSet.NumericGetter(Microsoft.VisualBasic.Data.Framework.FeatureVector)">
  <summary>
  a getter delegate helper for number type
@@ -270,17 +314,17 @@ Microsoft.VisualBasic.Data.Framework
  <param name="df"></param>
  <returns></returns>
 </member>
-<member name="T:Microsoft.VisualBasic.Data.Framework.DATA.DataRows">
+<member name="T:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.DataRows">
  <summary>
  提供了类似于R语言之中的``cbind``操作类似的按照列进行数据框合并的方法
  </summary>
 </member>
-<member name="F:Microsoft.VisualBasic.Data.Framework.DATA.DataRows.entityList">
+<member name="F:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.DataRows.entityList">
  <summary>
  Row data in the csv table
  </summary>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DATA.DataRows.As``1">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.DataRows.As``1">
  <summary>
  Convert row object as target .NET object
  </summary>
@@ -288,13 +332,13 @@ Microsoft.VisualBasic.Data.Framework
  <returns></returns>
  
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DATA.DataRows.ToString">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.DataRows.ToString">
  <summary>
  Get all entity keys
  </summary>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DATA.DataRows.SaveTable(System.String,Microsoft.VisualBasic.Text.Encodings)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.DataRows.SaveTable(System.String,Microsoft.VisualBasic.Text.Encodings)">
  <summary>
  Save as csv file.
  </summary>
@@ -302,7 +346,7 @@ Microsoft.VisualBasic.Data.Framework
  <param name="encoding"></param>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DATA.DataRows.Load(System.String,Microsoft.VisualBasic.Text.Encodings,System.String,System.Boolean)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.DataRows.Load(System.String,Microsoft.VisualBasic.Text.Encodings,System.String,System.Boolean)">
  <summary>
  Load from a csv file
  </summary>
@@ -311,7 +355,7 @@ Microsoft.VisualBasic.Data.Framework
  <returns></returns>
  
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DATA.DataRows.op_Addition(Microsoft.VisualBasic.Data.Framework.DATA.DataRows,System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.Framework.IO.EntityObject})">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.DataRows.op_Addition(Microsoft.VisualBasic.Data.Framework.DataSetExtensions.DataRows,System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.Framework.IO.EntityObject})">
  <summary>
  ``cbind`` operation.
  （通过这个操作符进行两个数据集的合并，不会出现数据遗漏）
@@ -320,7 +364,7 @@ Microsoft.VisualBasic.Data.Framework
  <param name="appends">multiple</param>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DATA.DataRows.Append(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.Framework.IO.EntityObject},Microsoft.VisualBasic.Data.Framework.DATA.DataRows,System.Boolean)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.DataRows.Append(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.Framework.IO.EntityObject},Microsoft.VisualBasic.Data.Framework.DataSetExtensions.DataRows,System.Boolean)">
  <summary>
  这是一个可伸缩的Linq方法，可能会出现数据遗漏，即<paramref name="unique"/>数据集之中的数据可能会在合并之后出现缺失
  </summary>
@@ -328,12 +372,26 @@ Microsoft.VisualBasic.Data.Framework
  <param name="unique"></param>
  <returns></returns>
 </member>
-<member name="T:Microsoft.VisualBasic.Data.Framework.DATA.HTMLWriter">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.Excel.Coordinates.YValue(System.Collections.Generic.IEnumerable{System.Char})">
+ <summary>
+ 也就是获取得到列的顶点编号
+ </summary>
+ <param name="x"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.Excel.Coordinates.Spans(Microsoft.VisualBasic.Data.Framework.IO.RowObject)">
+ <summary>
+ 返回非空白列的起始列编号和结束列表号
+ </summary>
+ <param name="row"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.HTMLWriter">
  <summary>
  file generator for mshtml
  </summary>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DATA.HTMLWriter.ToHTML``1(System.Collections.Generic.IEnumerable{``0},System.String,System.String)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.HTMLWriter.ToHTML``1(System.Collections.Generic.IEnumerable{``0},System.String,System.String)">
  <summary>
  Render target object collection as a html table
  </summary>
@@ -343,7 +401,7 @@ Microsoft.VisualBasic.Data.Framework
  <param name="evenRowClassName"></param>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DATA.HTMLWriter.html(Microsoft.VisualBasic.Data.Framework.IO.File)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.HTMLWriter.html(Microsoft.VisualBasic.Data.Framework.IO.File)">
  <summary>
  只是生成table，而非完整的html文档
  </summary>
@@ -351,23 +409,23 @@ Microsoft.VisualBasic.Data.Framework
  <returns></returns>
  
 </member>
-<member name="T:Microsoft.VisualBasic.Data.Framework.DATA.MatrixProvider">
+<member name="T:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.MatrixProvider">
  <summary>
  A numeric data matrix provider
  </summary>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DATA.MatrixProvider.GetMatrix">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.MatrixProvider.GetMatrix">
  <summary>
  populate the matrix data in row by row
  </summary>
  <returns></returns>
 </member>
-<member name="T:Microsoft.VisualBasic.Data.Framework.DATA.MySQL">
+<member name="T:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.MySQL">
  <summary>
  MySQL data extensions
  </summary>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DATA.MySQL.DumpToTable``1(System.Collections.Generic.IEnumerable{``0},System.String,Microsoft.VisualBasic.Text.Encodings)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.MySQL.DumpToTable``1(System.Collections.Generic.IEnumerable{``0},System.String,Microsoft.VisualBasic.Text.Encodings)">
  <summary>
  提供了一个与SQL DUMP功能类似的拓展方法，这个函数会自动的将目标集合写入所指定的文件夹之中的某一个csv文件。
  这个csv文件的文件名为泛型类型的Class名称
@@ -378,7 +436,7 @@ Microsoft.VisualBasic.Data.Framework
  <param name="encoding"></param>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DATA.MySQL.SQLEntityData(System.String,System.String,System.Boolean)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.MySQL.SQLEntityData(System.String,System.String,System.Boolean)">
  <summary>
  将SQL脚本之中的数据转换为Excel数据框模型，这个函数仅对简单的SQL脚本有效，
  **例如仅包含有数值类型的，字符串之中不包含有逗号，双引号之类的csv格式控制符号，**
@@ -389,7 +447,7 @@ Microsoft.VisualBasic.Data.Framework
  <param name="dumpMode"></param>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DATA.MySQL.SQLData(System.String,System.Boolean)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.MySQL.SQLData(System.String,System.Boolean)">
  <summary>
  加入是以Dump模型运行的话，标题只会被解析一次，其他的行数据的标题都会使用第一行的数据的标题，
  这个函数只适用于``INSERT INTO``数据插入语句
@@ -398,7 +456,7 @@ Microsoft.VisualBasic.Data.Framework
  <param name="dumpMode"></param>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DATA.MySQL.ImportsMySQLDump(System.String)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.MySQL.ImportsMySQLDump(System.String)">
  <summary>
  
  </summary>
@@ -407,7 +465,7 @@ Microsoft.VisualBasic.Data.Framework
  </param>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DATA.MySQL.INSERT_LineParser(System.String)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.MySQL.INSERT_LineParser(System.String)">
  <summary>
  Handle the MySQL dump
  </summary>
@@ -418,26 +476,26 @@ Microsoft.VisualBasic.Data.Framework
  </param>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DATA.MySQL.SQLValues(System.String)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.MySQL.SQLValues(System.String)">
  <summary>
  Parse the ``VALUES`` data from the INSERT INTo SQL statement.
  </summary>
  <param name="insertSQL$"></param>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DATA.MySQL.SQLFields(System.String)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.MySQL.SQLFields(System.String)">
  <summary>
  Gets the fields list from INSERT INTO SQL.
  </summary>
  <param name="insertSQL$"></param>
  <returns></returns>
 </member>
-<member name="T:Microsoft.VisualBasic.Data.Framework.DATA.RDataFrameHelpers">
+<member name="T:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.RDataFrameHelpers">
  <summary>
  Helpers function for R dataframe data imports
  </summary>
 </member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.DATA.RDataFrameHelpers.StripNaN(System.String,System.String)">
+<member name="M:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.RDataFrameHelpers.StripNaN(System.String,System.String)">
  <summary>
  对于一些数学计算的数值结果，无穷大，无穷小或者非实数会被转换为中文，导致R程序无法识别
  则需要使用这个函数来将这些数值替换为目标字符串<paramref name="replaceAs"/>
@@ -446,25 +504,11 @@ Microsoft.VisualBasic.Data.Framework
  <param name="replaceAs$">默认为R之中可以识别的``NA``常数值</param>
  <returns></returns>
 </member>
-<member name="T:Microsoft.VisualBasic.Data.Framework.DATA.CbindProvider`1">
+<member name="T:Microsoft.VisualBasic.Data.Framework.DataSetExtensions.CbindProvider`1">
  <summary>
  An abstract union operation data model
  </summary>
  <typeparam name="T"></typeparam>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.Excel.Coordinates.YValue(System.Collections.Generic.IEnumerable{System.Char})">
- <summary>
- 也就是获取得到列的顶点编号
- </summary>
- <param name="x"></param>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.Data.Framework.Excel.Coordinates.Spans(Microsoft.VisualBasic.Data.Framework.IO.RowObject)">
- <summary>
- 返回非空白列的起始列编号和结束列表号
- </summary>
- <param name="row"></param>
- <returns></returns>
 </member>
 <member name="T:Microsoft.VisualBasic.Data.Framework.DataImports">
  <summary>
