@@ -1,5 +1,6 @@
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports std = System.Math
+Imports System.Threading.Tasks
 
 ''' <summary>
 ''' 针对 <see cref="Matrix"/> 的预处理与坐标转换辅助方法。
@@ -17,14 +18,16 @@ Public Module MatrixExtensions
     ''' </summary>
     Public Function ToSampleByGeneMatrix(matrix As Matrix,
                                          Optional minSamples As Integer = 1,
-                                         Optional logNormalize As Boolean = True) As Double(,)
+                                         Optional logNormalize As Boolean = True,
+                                         Optional opts As Monocle3Options = Nothing) As Double(,)
         Dim genes = matrix.expression
         Dim nGenes = genes.Length
         Dim nSamples = matrix.sampleID.Length
 
-        ' 低表达过滤：统计每个基因在多少样本中非零
-        Dim kept As New List(Of Integer)
-        For g As Integer = 0 To nGenes - 1
+        ' 低表达过滤：统计每个基因在多少样本中非零（按基因独立，可并行）。
+        ' 用布尔标志数组收集结果，避免并行写共享 List 的竞争。
+        Dim keepFlag(nGenes - 1) As Boolean
+        Dim checkGene = Sub(g As Integer)
             Dim expr = genes(g).experiments
             Dim nonzero = 0
             For s As Integer = 0 To nSamples - 1
@@ -33,9 +36,19 @@ Public Module MatrixExtensions
                     If nonzero >= minSamples Then Exit For
                 End If
             Next
-            If nonzero >= minSamples Then
-                kept.Add(g)
-            End If
+            keepFlag(g) = nonzero >= minSamples
+        End Sub
+        If opts Is Nothing OrElse opts.parallelEnabled Then
+            Parallel.For(0, nGenes, checkGene)
+        Else
+            For g As Integer = 0 To nGenes - 1
+                checkGene(g)
+            Next
+        End If
+
+        Dim kept As New List(Of Integer)
+        For g As Integer = 0 To nGenes - 1
+            If keepFlag(g) Then kept.Add(g)
         Next
 
         Dim keepIdx = kept.ToArray
@@ -58,13 +71,12 @@ Public Module MatrixExtensions
     ''' <summary>
     ''' 返回保留下来的基因名（与 <see cref="ToSampleByGeneMatrix"/> 的列顺序一致）。
     ''' </summary>
-    Public Function KeptGeneNames(matrix As Matrix, Optional minSamples As Integer = 1) As String()
+    Public Function KeptGeneNames(matrix As Matrix, Optional minSamples As Integer = 1, Optional opts As Monocle3Options = Nothing) As String()
         Dim genes = matrix.expression
         Dim nGenes = genes.Length
         Dim nSamples = matrix.sampleID.Length
-        Dim kept As New List(Of String)
-
-        For g As Integer = 0 To nGenes - 1
+        Dim keepFlag(nGenes - 1) As Boolean
+        Dim checkGene = Sub(g As Integer)
             Dim expr = genes(g).experiments
             Dim nonzero = 0
             For s As Integer = 0 To nSamples - 1
@@ -73,9 +85,19 @@ Public Module MatrixExtensions
                     If nonzero >= minSamples Then Exit For
                 End If
             Next
-            If nonzero >= minSamples Then
-                kept.Add(genes(g).geneID)
-            End If
+            keepFlag(g) = nonzero >= minSamples
+        End Sub
+        If opts Is Nothing OrElse opts.parallelEnabled Then
+            Parallel.For(0, nGenes, checkGene)
+        Else
+            For g As Integer = 0 To nGenes - 1
+                checkGene(g)
+            Next
+        End If
+
+        Dim kept As New List(Of String)
+        For g As Integer = 0 To nGenes - 1
+            If keepFlag(g) Then kept.Add(genes(g).geneID)
         Next
 
         Return kept.ToArray
@@ -84,17 +106,24 @@ Public Module MatrixExtensions
     ''' <summary>
     ''' 将 [样本 × 基因] 矩阵还原为按样本组织的向量集合（Double()()）。
     ''' </summary>
-    Public Function ToRowVectors(matrix As Double(,)) As Double()()
+    Public Function ToRowVectors(matrix As Double(,), Optional opts As Monocle3Options = Nothing) As Double()()
         Dim n = matrix.GetLength(0)
         Dim m = matrix.GetLength(1)
         Dim rows As Double()() = New Double(n - 1)() {}
-        For i As Integer = 0 To n - 1
+        Dim buildRow = Sub(i As Integer)
             Dim row(m - 1) As Double
             For j As Integer = 0 To m - 1
                 row(j) = matrix(i, j)
             Next
             rows(i) = row
-        Next
+        End Sub
+        If opts Is Nothing OrElse opts.parallelEnabled Then
+            Parallel.For(0, n, buildRow)
+        Else
+            For i As Integer = 0 To n - 1
+                buildRow(i)
+            Next
+        End If
         Return rows
     End Function
 

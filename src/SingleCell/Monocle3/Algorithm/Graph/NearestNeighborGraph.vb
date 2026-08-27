@@ -30,11 +30,11 @@ Public Class NearestNeighborGraph
             nodes(i) = i.ToString
         Next
 
-        Dim edges As New List(Of EdgeData)
-        ' 邻接集合，用于去重（无向边只保留一次）
-        Dim seen As New HashSet(Of String)
+        ' 候选边集合：并行生成时各线程产出局部边，循环结束后统一去重（无向边只保留一次）。
+        ' 避免在 Parallel.For 内共享 HashSet 造成竞争与不确定性。
+        Dim candidateEdges As New List(Of EdgeData)
 
-        For i As Integer = 0 To n - 1
+        Dim buildOne = Sub(i As Integer)
             ' 计算到所有其他样本的距离
             Dim dist(n - 1) As Double
             For j As Integer = 0 To n - 1
@@ -52,18 +52,37 @@ Public Class NearestNeighborGraph
 
             ' 取前 k 近邻
             Dim order = Enumerable.Range(0, n).OrderBy(Function(j) dist(j)).Take(opts.knnK).ToArray
+            Dim local As New List(Of EdgeData)
             For Each j In order
                 Dim a = std.Min(i, j)
                 Dim b = std.Max(i, j)
-                Dim id = $"{a}-{b}"
-                If seen.Add(id) Then
-                    edges.Add(New EdgeData With {
-                        .u = a,
-                        .v = b,
-                        .weight = 1.0 / (1.0 + dist(j))
-                    })
-                End If
+                local.Add(New EdgeData With {
+                    .u = a,
+                    .v = b,
+                    .weight = 1.0 / (1.0 + dist(j))
+                })
             Next
+            SyncLock candidateEdges
+                candidateEdges.AddRange(local)
+            End SyncLock
+        End Sub
+
+        If opts.parallelEnabled Then
+            Parallel.For(0, n, buildOne)
+        Else
+            For i As Integer = 0 To n - 1
+                buildOne(i)
+            Next
+        End If
+
+        ' 统一去重：按 min-max 键保留首次出现的边
+        Dim seen As New HashSet(Of String)
+        Dim edges As New List(Of EdgeData)
+        For Each e In candidateEdges
+            Dim id = $"{std.Min(e.u, e.v)}-{std.Max(e.u, e.v)}"
+            If seen.Add(id) Then
+                edges.Add(e)
+            End If
         Next
 
         Dim graph = GraphData.Build(nodes, edges.ToArray)
