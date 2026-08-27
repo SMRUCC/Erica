@@ -19,6 +19,11 @@ Public Class Monocle3Options
     ''' <summary>指定的根 cluster（用于伪时间计算）；为 Nothing 时自动选择最外围 cluster。</summary>
     Public Property rootCluster As Integer? = Nothing
 
+    ' ===== 并行化控制 =====
+    ''' <summary>是否启用计算密集型循环的多核并行化（Parallel.For / PLINQ）。
+    ''' 默认 True。关闭时回退为串行循环，用于验证并行结果与串行逐 bit 一致。</summary>
+    Public Property parallelEnabled As Boolean = True
+
     ' ===== 缓存控制 =====
     ''' <summary>缓存目录，默认 ./monocle3_cache。</summary>
     Public Property cacheDir As String = "./monocle3_cache"

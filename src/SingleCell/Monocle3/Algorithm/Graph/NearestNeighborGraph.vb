@@ -1,6 +1,7 @@
 Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic.Data.GraphTheory.Network
 Imports std = System.Math
+Imports System.Threading.Tasks
 
 ''' <summary>
 ''' 基于 PCA 主成分空间的距离构建 K 近邻（KNN）图。
