@@ -24,12 +24,19 @@ Imports SMRUCC.genomics.InteractionModel
 ''' </summary>
 Module Program
 
-    Sub RunModel()
-        Dim wgcna As IEnumerable(Of RelationshipScore) = NetworkFileIO.ReadEdges(Of RelationshipScore)("K:\hsa_grn\network-edges.csv")
-        Dim exprFile As String = "K:\hsa\Homo_sapiens_expr_advanced_all_conditions.dat"
+    ''' <summary>
+    ''' 端到端构建 DBN 模型：读取 WGCNA 先验 + 表达矩阵 + TF，运行 Monocle3 伪时间排序与
+    ''' PseudoVelo 伪速率，构建合并方向先验并生成分箱聚合的 DBN 时间序列。返回供虚拟扰动使用
+    ''' 的 (dbnOut, prior, hsaTF)。供 RunModel 与 ModuleDBNDemo 复用，避免重复建模链路。
+    ''' </summary>
+    Friend Function BuildModel(Optional wgcnaEdges As String = "K:\hsa_grn\network-edges.csv",
+                                      Optional exprFile As String = "K:\hsa\Homo_sapiens_expr_advanced_all_conditions.dat",
+                                      Optional tfFile As String = "K:\hsa_grn\Homo_sapiens_TF.txt",
+                                      Optional monoDir As String = "K:\hsa\monocle3_output",
+                                      Optional topGeneFraction As Double = 0.5) As (dbnOut As DBNPreprocessOutput, prior As PriorNetwork, hsaTF As String(), result As Monocle3Result, nHV As Integer, nSamples As Integer, exprFile As String)
+        Dim wgcna As IEnumerable(Of RelationshipScore) = NetworkFileIO.ReadEdges(Of RelationshipScore)(wgcnaEdges)
         Dim matrix As Matrix = Matrix.LoadStreamData(exprFile)
-        Dim hsaTF As String() = DataFrameResolver.Load("K:\hsa_grn\Homo_sapiens_TF.txt", tsv:=True)("Ensembl")
-        Dim monoDir = "K:\hsa\monocle3_output"
+        Dim hsaTF As String() = DataFrameResolver.Load(tfFile, tsv:=True)("Ensembl")
         Dim grnDir = Path.Combine(monoDir, "dbn_grn")
         Dim dbnDir = Path.Combine(monoDir, "dbn_timeseries")
 
@@ -58,7 +65,7 @@ Module Program
             .method = "bins",
             .numBins = 300,
             .geneSelection = "top",
-            .topGeneFraction = 0.5,
+            .topGeneFraction = topGeneFraction,
             .discretize = False
         }
         Dim result = Erica.Analysis.SingleCell.Monocle3.Monocle3.Run(matrix, monoOpts)
@@ -99,6 +106,19 @@ Module Program
         ' merge wgcna network and velocity network
         prior = VelocityNetwork.BuildVelocityPrior(dbnOut, prior)
 
+        Return (dbnOut, prior, hsaTF, result, nHV, nSamples, exprFile)
+    End Function
+
+    Sub RunModel()
+        Dim monoDir = "K:\hsa\monocle3_output"
+        Dim grnDir = Path.Combine(monoDir, "dbn_grn")
+        Dim dbnDir = Path.Combine(monoDir, "dbn_timeseries")
+
+        Dim model = BuildModel()
+        Dim dbnOut = model.dbnOut
+        Dim prior = model.prior
+        Dim hsaTF = model.hsaTF
+
         Dim knockGenes = SelectDemoGenes(dbnOut, 15)
         Dim overExprList As New List(Of (Gene As String, Fold As Double))
         If knockGenes.Length > 0 Then
@@ -117,13 +137,13 @@ Module Program
         ' ==================== ⑦ Summary ====================
         Call Console.WriteLine()
         Call Console.WriteLine("=== SingleGRN 端到端流程完成 ===")
-        Call Console.WriteLine($"原始表达矩阵    : {exprFile}")
-        Call Console.WriteLine($"样本数          : {matrix.sampleID.Length}")
-        Call Console.WriteLine($"全局 Moran I    : {result.moranGlobal:0.000000}")
-        Call Console.WriteLine($"分群数          : {result.clusters.Distinct.Count}")
-        Call Console.WriteLine($"HV 基因数       : {nHV}  (伪速率基因集)")
-        If result.pseudoVelocity IsNot Nothing Then
-            Call Console.WriteLine($"伪速率矩阵      : {result.pseudoVelocity.geneNames.Length} x {nSamples}  (pseudovelo_velocity.csv)")
+        Call Console.WriteLine($"原始表达矩阵    : {model.exprFile}")
+        Call Console.WriteLine($"样本数          : {model.nSamples}")
+        Call Console.WriteLine($"全局 Moran I    : {model.result.moranGlobal:0.000000}")
+        Call Console.WriteLine($"分群数          : {model.result.clusters.Distinct.Count}")
+        Call Console.WriteLine($"HV 基因数       : {model.nHV}  (伪速率基因集)")
+        If model.result.pseudoVelocity IsNot Nothing Then
+            Call Console.WriteLine($"伪速率矩阵      : {model.result.pseudoVelocity.geneNames.Length} x {model.nSamples}  (pseudovelo_velocity.csv)")
         Else
             Call Console.WriteLine($"伪速率矩阵      : 未启用")
         End If
