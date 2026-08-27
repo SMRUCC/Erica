@@ -22,7 +22,7 @@ Public Class PCAProjection
         Call Console.WriteLine($"[pca] computing {opts.numPCA} principal components on {n} samples x {data.GetLength(1)} genes ...")
 
         ' PCA 接受 StatisticsObject：需将 [样本 × 基因] 的 Double(,) 转为 Double()()（每行一个样本）
-        Dim rows = MatrixExtensions.ToRowVectors(data)
+        Dim rows = MatrixExtensions.ToRowVectors(data, opts)
         Dim stat = New StatisticsObject(rows, y)
         Dim result = PCA.PrincipalComponentAnalysis(stat, opts.numPCA)
         Dim scores = result.TPreds

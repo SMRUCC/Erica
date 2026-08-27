@@ -37,9 +37,9 @@ Public Class Monocle3
         End If
 
         Dim sw = System.Diagnostics.Stopwatch.StartNew()
-        Dim full = MatrixExtensions.ToSampleByGeneMatrix(matrix, minSamples:=1, logNormalize:=True)
-        Dim fullGenes = MatrixExtensions.KeptGeneNames(matrix, minSamples:=1)
-        Dim hv = MatrixExtensions.SelectHighlyVariableGenes(full, fullGenes, opts.numHVGenes)
+        Dim full = MatrixExtensions.ToSampleByGeneMatrix(matrix, minSamples:=1, logNormalize:=True, opts:=opts)
+        Dim fullGenes = MatrixExtensions.KeptGeneNames(matrix, minSamples:=1, opts:=opts)
+        Dim hv = MatrixExtensions.SelectHighlyVariableGenes(full, fullGenes, opts.numHVGenes, opts:=opts)
         sw.Stop()
         Call Console.WriteLine($"[01] preprocess + HVG done: {hv.matrix.GetLength(0)} samples x {hv.matrix.GetLength(1)} HV genes ({sw.Elapsed.TotalSeconds:F1}s)")
 

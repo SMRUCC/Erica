@@ -22,7 +22,7 @@ Public Class UMAPEmbedding
 
         Call $"[umap] computing {[dim]}d embedding on {n} samples ...".debug
 
-        Dim rows As Double()() = MatrixExtensions.ToRowVectors(score)
+        Dim rows As Double()() = MatrixExtensions.ToRowVectors(score, opts)
         Dim umap As New Umap(dimensions:=[dim])
         Call umap.InitializeFit(rows)
 

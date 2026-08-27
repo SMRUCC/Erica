@@ -133,14 +133,15 @@ Public Module MatrixExtensions
     ''' </summary>
     Public Function SelectHighlyVariableGenes(matrix As Double(,),
                                               geneNames As String(),
-                                              topN As Integer) As (matrix As Double(,), names As String())
+                                              topN As Integer,
+                                              Optional opts As Monocle3Options = Nothing) As (matrix As Double(,), names As String())
         Dim n = matrix.GetLength(0)
         Dim m = matrix.GetLength(1)
         Dim k = If(topN < m, topN, m)
 
-        ' 每列（基因）方差
+        ' 每列（基因）方差（按列独立，可并行）
         Dim variance(m - 1) As Double
-        For j As Integer = 0 To m - 1
+        Dim computeVar = Sub(j As Integer)
             Dim sum = 0.0, sumSq = 0.0
             For i As Integer = 0 To n - 1
                 Dim v = matrix(i, j)
@@ -149,7 +150,14 @@ Public Module MatrixExtensions
             Next
             Dim mean = sum / n
             variance(j) = sumSq / n - mean * mean
-        Next
+        End Sub
+        If opts Is Nothing OrElse opts.parallelEnabled Then
+            Parallel.For(0, m, computeVar)
+        Else
+            For j As Integer = 0 To m - 1
+                computeVar(j)
+            Next
+        End If
 
         ' 按方差降序取前 k 个基因索引
         Dim order = Enumerable.Range(0, m).OrderByDescending(Function(j) variance(j)).Take(k).ToArray
