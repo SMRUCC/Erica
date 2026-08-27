@@ -1,5 +1,6 @@
 Imports System.IO
 Imports std = System.Math
+Imports System.Threading.Tasks
 
 ''' <summary>
 ''' PseudoVelo：在 Monocle3 伪时间的基础上近似计算单细胞“伪 RNA 速率”。
@@ -59,7 +60,7 @@ Public Class PseudoVelo
         Dim velocity(nGenes - 1, nCells - 1) As Double
         Dim timer = Stopwatch.StartNew()
 
-        For g As Integer = 0 To nGenes - 1
+        Dim computeGene = Sub(g As Integer)
             ' 按排序后的伪时间顺序取该基因表达
             Dim ySorted(nCells - 1) As Double
             For i As Integer = 0 To nCells - 1
@@ -79,7 +80,14 @@ Public Class PseudoVelo
             For i As Integer = 0 To nCells - 1
                 velocity(g, order(i)) = vSorted(i)
             Next
-        Next
+        End Sub
+        If opts.parallelEnabled Then
+            Parallel.For(0, nGenes, computeGene)
+        Else
+            For g As Integer = 0 To nGenes - 1
+                computeGene(g)
+            Next
+        End If
 
         timer.[Stop]()
         Call Console.WriteLine($"[PseudoVelo] 计算伪速度矩阵完成: {nGenes} 基因 × {nCells} 细胞, 耗时 {timer.Elapsed.TotalSeconds:0.00}s")
@@ -87,7 +95,7 @@ Public Class PseudoVelo
         ' 4. 可选：把细胞速度投影到 UMAP2D
         Dim velocityUMAP As Double(,) = Nothing
         If opts.useVelocityProjection Then
-            velocityUMAP = ProjectToUMAP(result, sampleByGene, geneNames, velocity, order, tSorted, sampleNames)
+            velocityUMAP = ProjectToUMAP(result, sampleByGene, geneNames, velocity, order, tSorted, sampleNames, opts)
         End If
 
         Dim outResult = New PseudoVelocityResult With {
@@ -183,7 +191,8 @@ Public Class PseudoVelo
                                             velocity As Double(,),
                                             order As Integer(),
                                             tSorted As Double(),
-                                            sampleNames As String()) As Double(,)
+                                            sampleNames As String(),
+                                            Optional opts As Monocle3Options = Nothing) As Double(,)
         Dim n = sampleNames.Length
         Dim umap = result.umap2d
         Dim pca = result.pcaScore
@@ -199,7 +208,7 @@ Public Class PseudoVelo
             pcaNorm(i) = std.Sqrt(s)
         Next
 
-        For i As Integer = 0 To n - 1
+        Dim projectCell = Sub(i As Integer)
             Dim wi = pcaNorm(i)
             Dim sumX = 0.0, sumY = 0.0, sumW = 0.0
 
@@ -233,7 +242,14 @@ Public Class PseudoVelo
                 velUMAP(i, 0) = 0.0
                 velUMAP(i, 1) = 0.0
             End If
-        Next
+        End Sub
+        If opts.parallelEnabled Then
+            Parallel.For(0, n, projectCell)
+        Else
+            For i As Integer = 0 To n - 1
+                projectCell(i)
+            Next
+        End If
 
         Call Console.WriteLine("[PseudoVelo] UMAP 速度向量投影完成")
         Return velUMAP
