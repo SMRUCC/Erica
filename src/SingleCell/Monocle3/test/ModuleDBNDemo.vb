@@ -53,13 +53,13 @@ Module ModuleDBNDemo
         End If
 
         ' ==================== ① WGCNA 先验 + TF 注释 ====================
-        Dim wgcna = NetworkFileIO.ReadEdges(Of RelationshipScore)(wgcnaEdges)
-        Dim matrix = Matrix.LoadStreamData(exprFile)
+        Dim wgcnaNet = NetworkFileIO.ReadEdges(Of RelationshipScore)(wgcnaEdges)
+        Dim exprMatrix = Matrix.LoadStreamData(exprFile)
         Dim hsaTF = DataFrameResolver.Load(tfFile, tsv:=True)("Ensembl")
-        Call Console.WriteLine($"  基因={matrix.expression.Length} x 样本={matrix.sample_count}")
-        Call Console.WriteLine($"  WGCNA 边={wgcna.Count}  TF={hsaTF.Length}")
+        Call Console.WriteLine($"  基因={exprMatrix.expression.Length} x 样本={exprMatrix.sample_count}")
+        Call Console.WriteLine($"  WGCNA 边={wgcnaNet.Count}  TF={hsaTF.Length}")
 
-        Dim prior = wgcna.BuildPriorNetwork(New HashSet(Of String)(hsaTF))
+        Dim prior = wgcnaNet.BuildPriorNetwork(New HashSet(Of String)(hsaTF))
 
         ' ==================== ② Monocle3 伪时间排序 + PseudoVelo 伪速率 ====================
         Dim monoDir = "K:\hsa\monocle3_output_moduledbn"
@@ -93,14 +93,14 @@ Module ModuleDBNDemo
            result.pseudoVelocity.geneNames.Length > 0 Then
             hvGenes = result.pseudoVelocity.geneNames
         Else
-            hvGenes = matrix.expression.Select(Function(r) r.geneID).ToArray()
+            hvGenes = exprMatrix.expression.Select(Function(r) r.geneID).ToArray()
         End If
 
-        Dim nSamples = matrix.sampleID.Length
+        Dim nSamples = exprMatrix.sampleID.Length
         Dim nHV = hvGenes.Length
         Dim geneRow As New Dictionary(Of String, Integer)(StringComparer.OrdinalIgnoreCase)
-        For r As Integer = 0 To matrix.expression.Length - 1
-            geneRow(matrix.expression(r).geneID) = r
+        For r As Integer = 0 To exprMatrix.expression.Length - 1
+            geneRow(exprMatrix.expression(r).geneID) = r
         Next
 
         Dim sampleByGene(nSamples - 1, nHV - 1) As Double
@@ -108,7 +108,7 @@ Module ModuleDBNDemo
             If Not geneRow.ContainsKey(hvGenes(g)) Then Continue For
             Dim row = geneRow(hvGenes(g))
             For j As Integer = 0 To nSamples - 1
-                sampleByGene(j, g) = Log(1 + matrix.expression(row).experiments(j))
+                sampleByGene(j, g) = Log(1 + exprMatrix.expression(row).experiments(j))
             Next
         Next
         Call Console.WriteLine($"  HV 基因表达矩阵: 样本={nSamples} x 基因={nHV} (log1p)")
@@ -123,7 +123,7 @@ Module ModuleDBNDemo
             .topGeneFraction = 0.3,
             .discretize = False
         }
-        Dim dbnOut = DBNSampleProcessing.BuildFromMonocle3(result, sampleByGene, hvGenes, matrix.sampleID, dbnOpts)
+        Dim dbnOut = DBNSampleProcessing.BuildFromMonocle3(result, sampleByGene, hvGenes, exprMatrix.sampleID, dbnOpts)
         Call DBNSampleProcessing.SaveOutput(dbnOut, dbnDir)
         Call Console.WriteLine($"  DBN 时间序列: 基因={dbnOut.timeSeries.NGene} x 伪时间 bin={dbnOut.timeSeries.TimePoints.Length}")
 
