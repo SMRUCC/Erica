@@ -1277,6 +1277,18 @@ Microsoft.VisualBasic.Data.Framework
  <param name="trimBlanks">如果这个选项为真，则会移除所有全部都是逗号分隔符``,,,,,,,,,``的空白行</param>
  <returns></returns>
 </member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.IO.CSVFile.FileLoader.LoadTableData(System.String[],System.Int32,System.Boolean,System.Func{System.String,System.Boolean})">
+ <summary>
+ 
+ </summary>
+ <param name="buf"></param>
+ <param name="headerIndex"></param>
+ <param name="isTsv"></param>
+ <param name="skipWhile"></param>
+ <returns>
+ table content data with header has already been removed
+ </returns>
+</member>
 <member name="M:Microsoft.VisualBasic.Data.Framework.IO.CSVFile.RowHelpers.Pointer(Microsoft.VisualBasic.Data.Framework.IO.RowObject)">
  <summary>
  获取一个数据行对象的游标操作符对象
