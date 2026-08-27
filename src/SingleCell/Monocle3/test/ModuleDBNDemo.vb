@@ -6,8 +6,8 @@ Imports Erica.Analysis.SingleCell.VirtualGRN
 Imports Microsoft.VisualBasic.Data.Framework.StorageProvider
 Imports Microsoft.VisualBasic.Data.visualize.Network
 Imports SMRUCC.genomics.Analysis.BNLearn.Core
-Imports SMRUCC.genomics.Analysis.CellPhenotype
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
+Imports SMRUCC.genomics.Analysis.CellPhenotype
 Imports SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner
 Imports SMRUCC.genomics.InteractionModel
 
@@ -144,7 +144,7 @@ Module ModuleDBNDemo
         End If
         Call Console.WriteLine($"  扰动演示基因: {String.Join(", ", knockGenes)}")
 
-        Dim grn = GeneRegulatoryNetwork.TrainModularDBNIntervene(
+        Dim grn = SMRUCC.genomics.Analysis.CellPhenotype.GeneRegulatoryNetwork.TrainModularDBNIntervene(
             dbnOut.timeSeries, modules, prior, hsaTF, knockGenes,
             dynamicSteps:=10, crossModuleCorThreshold:=0.3, outputDir:=grnDir)
 
