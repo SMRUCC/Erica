@@ -135,7 +135,12 @@ Module Program
     End Sub
 
     Sub Main(args As String())
-        Call RunModel()
+        ' 优化版模块化 DBN 演示：基于 WGCNA 模块分块训练子网络并做全局级联虚拟扰动
+        If args.Length > 0 AndAlso String.Equals(args(0), "moduledbn", StringComparison.OrdinalIgnoreCase) Then
+            Call ModuleDBNDemo.Run(args.Skip(1).ToArray())
+        Else
+            Call RunModel()
+        End If
     End Sub
 
     Sub RunDemo1(args As String())
