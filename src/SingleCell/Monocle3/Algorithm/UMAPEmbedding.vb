@@ -1,3 +1,4 @@
+Imports Microsoft.VisualBasic.ApplicationServices.Terminal.ProgressBar.Tqdm
 Imports Microsoft.VisualBasic.DataMining.UMAP
 
 ''' <summary>
@@ -13,20 +14,21 @@ Public Class UMAPEmbedding
         Dim key = If([dim] = 2, "03b_umap2d.csv", "03_umap3d.csv")
 
         If opts.useCache AndAlso Not opts.overwriteCache AndAlso cache.Hit(key) Then
-            Call Console.WriteLine($"[cache] load UMAP({[dim]}d) from {cache.Path(key)}")
+            Call $"[cache] load UMAP({[dim]}d) from {cache.Path(key)}".debug
             Return cache.LoadMatrix(key)
         End If
 
         Dim n = score.GetLength(0)
-        Call Console.WriteLine($"[umap] computing {[dim]}d embedding on {n} samples ...")
+
+        Call $"[umap] computing {[dim]}d embedding on {n} samples ...".debug
 
         Dim rows As Double()() = MatrixExtensions.ToRowVectors(score)
         Dim umap As New Umap(dimensions:=[dim])
         Call umap.InitializeFit(rows)
 
         ' 默认迭代轮次，足以在中大规模数据上收敛
-        For i As Integer = 1 To 500
-            Call umap.Step(50)
+        For Each i As Integer In TqdmWrapper.Range(1, 500)
+            Call umap.Step(50, tqdm_wrap:=False)
         Next
 
         Dim embedding = umap.GetEmbedding()
@@ -38,7 +40,7 @@ Public Class UMAPEmbedding
         Next
 
         Call cache.SaveMatrix(key, out)
-        Call Console.WriteLine($"[umap] done ({[dim]}d) -> cached {cache.Path(key)}")
+        Call $"[umap] done ({[dim]}d) -> cached {cache.Path(key)}".debug
 
         Return out
     End Function
