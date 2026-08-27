@@ -149,7 +149,7 @@ Module ModuleDBNDemo
             dynamicSteps:=10, crossModuleCorThreshold:=0.3, outputDir:=grnDir)
 
         Call Console.WriteLine($"  训练模块子网络数: {grn.moduleNets.Count}")
-        Call Console.WriteLine($"  全局扰动响应矩阵维度: {grn.finalResponses.Count} 源 × {If(grn.finalResponses.Values.FirstOrDefault() Is Nothing, 0, grn.finalResponses.Values.First().Length)} 基因")
+        Call Console.WriteLine($"  全局扰动响应矩阵维度: {grn.finalResponses.Count} 源 × {If(grn.finalResponses.Values.FirstOrDefault() Is Nothing, 0, grn.finalResponses.Values.First().Count)} 基因")
 
         ' ==================== ⑧ Summary ====================
         Call Console.WriteLine()
