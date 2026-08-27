@@ -72,6 +72,7 @@ Module GRN
         Dim expr = velocity_prior.timeSeries
         Dim workflow As BNLearnWorkflow = GeneRegulatoryNetwork.BuildExpressionGRN(expr, prior)
 
+        workflow.Strict = False
         workflow.StructureParams.MaxIterations = maxIters
 
         ' ① 结构学习（MMHC + 白名单先验）
