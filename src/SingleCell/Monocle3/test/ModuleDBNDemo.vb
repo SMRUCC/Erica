@@ -1,10 +1,10 @@
 Imports System.IO
+Imports System.Linq
 Imports System.Math
 Imports Erica.Analysis.SingleCell.Monocle3
 Imports Erica.Analysis.SingleCell.VirtualGRN
 Imports Microsoft.VisualBasic.Data.Framework.StorageProvider
 Imports Microsoft.VisualBasic.Data.visualize.Network
-Imports SMRUCC.genomics.Analysis.BNLearn
 Imports SMRUCC.genomics.Analysis.BNLearn.Core
 Imports SMRUCC.genomics.Analysis.CellPhenotype
 Imports SMRUCC.genomics.Analysis.HTS.DataFrame
@@ -132,7 +132,7 @@ Module ModuleDBNDemo
         Call Console.WriteLine($"  合并后方向先验边: {prior.Edges.Count}")
 
         ' ==================== ⑥ 读取 WGCNA 模块划分 ====================
-        Dim modules = WGCNA.ReadModuleAssignment(moduleFile)
+        Dim modules = SMRUCC.genomics.Analysis.BNLearn.WGCNA.ReadModuleAssignment(moduleFile)
         Call Console.WriteLine($"  WGCNA 模块分配记录数: {modules.Length}")
 
         ' ==================== ⑦ 模块化 DBN 子网络训练 + 全局级联虚拟扰动 ====================
@@ -155,7 +155,7 @@ Module ModuleDBNDemo
         Call Console.WriteLine()
         Call Console.WriteLine("=== 模块化 DBN 全局虚拟扰动流程完成 ===")
         Call Console.WriteLine($"原始表达矩阵    : {exprFile}")
-        Call Console.WriteLine($"样本数          : {matrix.sampleID.Length}")
+        Call Console.WriteLine($"样本数          : {exprMatrix.sampleID.Length}")
         Call Console.WriteLine($"HV 基因数       : {nHV}")
         Call Console.WriteLine($"DBN 时间序列    : {dbnDir}\dbn_timeseries.csv")
         Call Console.WriteLine($"WGCNA 模块文件  : {moduleFile}")
@@ -168,7 +168,7 @@ Module ModuleDBNDemo
     ''' 不足时退回为时间序列前若干基因。
     ''' </summary>
     Private Function SelectModuleKnockGenes(dbnOut As DBNPreprocessOutput,
-                                            modules As GeneModuleColor(),
+                                            modules As SMRUCC.genomics.Analysis.BNLearn.GeneModuleColor(),
                                             hsaTF As String(),
                                             n As Integer) As String()
         Dim inModules As New HashSet(Of String)(StringComparer.OrdinalIgnoreCase)
