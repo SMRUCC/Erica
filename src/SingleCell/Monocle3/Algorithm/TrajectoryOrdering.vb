@@ -3,6 +3,7 @@ Imports Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra
 Imports Microsoft.VisualBasic.Data.GraphTheory.MinimumSpanningTree
 Imports Microsoft.VisualBasic.Math.LinearAlgebra.Matrix
 Imports std = System.Math
+Imports System.Threading.Tasks
 
 ''' <summary>
 ''' 学习轨迹顺序（ordering）：以团簇为节点构建最小生成树（Kruskal / MST）
@@ -48,13 +49,39 @@ Public Class TrajectoryOrdering
 
         Dim centroid(k - 1, ndim - 1) As Double
         Dim counts(k - 1) As Integer
-        For s As Integer = 0 To n - 1
-            Dim ci = idMap(clusters(s))
-            counts(ci) += 1
-            For d As Integer = 0 To ndim - 1
-                centroid(ci, d) += umap3d(s, d)
-            Next
+
+        ' 按 cluster 分组样本索引（保证每个 cluster 内样本顺序固定，归并结果确定）
+        Dim cellsInCluster(k - 1) As List(Of Integer)
+        For c As Integer = 0 To k - 1
+            cellsInCluster(c) = New List(Of Integer)
         Next
+        For s As Integer = 0 To n - 1
+            cellsInCluster(idMap(clusters(s))).Add(s)
+        Next
+
+        ' 各 cluster 的累加相互独立（写出不同行/不同计数索引），可并行；
+        ' 同一 cluster 内按 cellsInCluster(c) 顺序累加，浮点顺序固定。
+        Dim accumulateCluster = Sub(c As Integer)
+            Dim sum(ndim - 1) As Double
+            Dim cnt = 0
+            For Each s In cellsInCluster(c)
+                cnt += 1
+                For d As Integer = 0 To ndim - 1
+                    sum(d) += umap3d(s, d)
+                Next
+            Next
+            counts(c) = cnt
+            For d As Integer = 0 To ndim - 1
+                centroid(c, d) = sum(d)
+            Next
+        End Sub
+        If opts.parallelEnabled Then
+            Parallel.For(0, k, accumulateCluster)
+        Else
+            For c As Integer = 0 To k - 1
+                accumulateCluster(c)
+            Next
+        End If
         For ci As Integer = 0 To k - 1
             If counts(ci) > 0 Then
                 For d As Integer = 0 To ndim - 1

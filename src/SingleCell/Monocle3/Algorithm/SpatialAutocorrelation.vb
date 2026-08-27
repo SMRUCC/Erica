@@ -1,5 +1,6 @@
 Imports Microsoft.VisualBasic.Imaging.Math2D
 Imports std = System.Math
+Imports System.Threading.Tasks
 
 ''' <summary>
 ''' 基于 Moran's I 的空间自相关评估轨迹/排序质量。
@@ -36,14 +37,21 @@ Public Class SpatialAutocorrelation
 
         Call $"[moran] computing gene-level autocorrelation over {geneNames.Length} genes ...".debug
         Dim moranOfGene(geneNames.Length - 1) As VariantGene
-        For g As Integer = 0 To geneNames.Length - 1
+        Dim evalGene = Sub(g As Integer)
             Dim expr(n - 1) As Double
             For i As Integer = 0 To n - 1
                 expr(i) = geneExpr(i, g)
             Next
             Dim mi = Moran.calc_moran(expr, c1, c2).observed
             moranOfGene(g) = New VariantGene(geneNames(g), mi)
-        Next
+        End Sub
+        If opts.parallelEnabled Then
+            Parallel.For(0, geneNames.Length, evalGene)
+        Else
+            For g As Integer = 0 To geneNames.Length - 1
+                evalGene(g)
+            Next
+        End If
 
         ' 按 |Moran I| 降序取 top N 变化基因
         Dim top = moranOfGene _
