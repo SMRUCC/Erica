@@ -1,13 +1,5 @@
 Imports System.IO
-Imports System.Linq
-Imports System.Math
-Imports Erica.Analysis.SingleCell.Monocle3
 Imports Erica.Analysis.SingleCell.VirtualGRN
-Imports Microsoft.VisualBasic.Data.visualize.Network
-Imports SMRUCC.genomics.Analysis.BNLearn.Core
-Imports SMRUCC.genomics.Analysis.CellPhenotype
-Imports SMRUCC.genomics.Analysis.HTS.DataFrame
-Imports SMRUCC.genomics.InteractionModel
 
 ''' <summary>
 ''' 优化版演示：基于 WGCNA 共表达模块的 DBN 子网络训练 + 全局级联虚拟扰动。
