@@ -58,7 +58,7 @@ Module Program
             .method = "bins",
             .numBins = 300,
             .geneSelection = "top",
-            .topGeneFraction = 0.9,
+            .topGeneFraction = 0.5,
             .discretize = False
         }
         Dim result = Erica.Analysis.SingleCell.Monocle3.Monocle3.Run(matrix, monoOpts)
