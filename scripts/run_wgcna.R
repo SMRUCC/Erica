@@ -25,7 +25,7 @@ CONFIG <- list(
   output_dir       = "WGCNA_output",
 
   # 预处理
-  top_n_genes      = 5000L,     # 保留的高变基因数
+  top_n_genes      = 61000L,     # 保留的高变基因数
   log2_transform   = TRUE,
 
   # 软阈值(固定值)
