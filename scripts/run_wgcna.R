@@ -25,7 +25,7 @@ CONFIG <- list(
   output_dir       = "WGCNA_output",
 
   # 预处理
-  top_n_genes      = 10000L,     # 保留的高变基因数
+  top_n_genes      = 5000L,     # 保留的高变基因数
   log2_transform   = TRUE,
 
   # 软阈值(固定值)
@@ -45,7 +45,9 @@ CONFIG <- list(
   recursive_split        = TRUE,  # 是否开启递归切割
   max_module_size        = 2000L, # 模块基因数上限, 超过则触发二次切割
   split_deep_split       = 4L,   # 二次切割的 deepSplit(更激进)
-  split_min_cluster_size = 30L    # 二次切割的最小簇大小
+  # 二次切割的最小簇大小; 实际生效值 = max(split_min_cluster_size, min_module_size),
+  # 确保递归切割产生的最终子模块基因数始终 >= min_module_size。
+  split_min_cluster_size = 30L
 )
 
 # 已知的性状取值表(用于从样本名鲁棒解析)
@@ -223,77 +225,138 @@ recursive_split_modules <- function(module_colors, tom, gene_ids, cfg) {
   # 返回:          同结构命名向量, 超大模块已被递归切割为 "mod_sub" 复合名
   if (!cfg$recursive_split) return(module_colors)
 
-  maxSize  <- cfg$max_module_size
-  colors   <- module_colors
+  maxSize <- cfg$max_module_size
+  # 递归切割产生的子簇下限: 实际生效 = max(split_min_cluster_size, min_module_size),
+  # 保证最终子模块基因数始终 >= min_module_size(不允许切出过小模块)。
+  minSplitSize <- max(cfg$split_min_cluster_size, cfg$min_module_size)
+  colors  <- module_colors
   names(colors) <- gene_ids
 
-  # 待检查的模块队列(初始为所有唯一模块)
-  queue <- unique(colors)
-  iter  <- 0L
+  # 对单个模块(由 genes 给出其基因)尝试二次切割; 返回命名向量(names = genes)。
+  # prefix: 该模块当前命名(用作子模块前缀); depth: 递归深度(防极端嵌套)。
+  # 关键: 仅当 cutreeDynamic 真正把基因分成 >=2 个不同子簇时才下钻递归;
+  #       若无法再切(只有 1 个唯一簇), 直接保留 prefix 并不再递归, 避免无限堆叠。
+  split_one <- function(genes, prefix, depth) {
+    out <- setNames(rep(prefix, length(genes)), genes)
 
-  while (length(queue) > 0L) {
-    # 找出仍超过上限的模块
-    sizes <- vapply(queue, function(m) sum(colors == m), FUN.VALUE = 0L)
-    big   <- queue[sizes > maxSize]
-    if (length(big) == 0L) break
-
-    iter <- iter + 1L
-    log_msg("  递归切割 [第 ", iter, " 层]: 待切分超大模块 ",
-            length(big), " 个, 当前总模块数 ", length(unique(colors)))
-
-    for (mod in big) {
-      genes_in_mod <- names(colors)[colors == mod]
-      if (length(genes_in_mod) < 2L) next
-
-      # 1) 从完整 TOM 取该模块对应的子矩阵(复用原始 signed hybrid 网络)
-      subTOM <- tom[genes_in_mod, genes_in_mod, drop = FALSE]
-      dissTOM <- 1 - subTOM
-
-      # 2) 二次聚类(平均连锁)
-      subTree <- tryCatch(
-        hclust(as.dist(dissTOM), method = "average"),
-        error = function(e) {
-          log_msg("    警告: 模块 ", mod, " 子聚类失败 (", conditionMessage(e),
-                  "), 跳过切割")
-          NULL
-        }
-      )
-      if (is.null(subTree)) next
-
-      # 3) 二次动树切割(更激进参数)
-      subMods <- cutreeDynamic(
-        dendro          = subTree,
-        distM           = as.matrix(dissTOM),
-        deepSplit       = cfg$split_deep_split,
-        minClusterSize  = cfg$split_min_cluster_size,
-        pamRespectsDendro = FALSE
-      )
-
-      # 4) 子色映射; cutreeDynamic 的 0 类为未分配 -> 映射为 mod_grey 避免撞色
-      subColors <- labels2colors(subMods)
-      subColors[subMods == 0] <- paste0(mod, "_grey")
-
-      # 仅当切分有效(产生了多于 1 个非灰簇或整体簇数>1)才替换
-      new_names <- paste0(mod, "_", subColors)
-      # 若所有子簇都落入同一名字(未真正切分), 则保持原模块
-      if (length(unique(new_names)) <= 1L) next
-
-      colors[colors == mod] <- new_names
-      log_msg("    模块 ", mod, " (", length(genes_in_mod), " 基因) -> 切分为 ",
-              length(unique(new_names)), " 个子模块")
+    # 终止条件: 已达标 或 深度超限 或 基因数不足
+    # 或无法分成两个都 >= min_module_size 的子簇(避免注定违规的切割)
+    if (length(genes) <= maxSize || depth > 10L) return(out)
+    if (length(genes) < 2L) return(out)
+    if (2L * cfg$min_module_size > length(genes)) {
+      log_msg("    模块 ", prefix, " (", length(genes),
+              " 基因) 不足 2*min_module_size, 保留不切")
+      return(out)
     }
 
-    # 更新队列: 检查新产生的子模块是否仍超标
-    queue <- unique(colors)
-    # 防止死循环: 若某模块连续两层都无法切分(簇数不再变化)则退出
-    if (iter > 20L) {
-      log_msg("    达到最大递归层数(20), 停止切割")
-      break
+    subTOM  <- tom[genes, genes, drop = FALSE]
+    dissTOM <- 1 - subTOM
+
+    tree <- tryCatch(
+      hclust(as.dist(dissTOM), method = "average"),
+      error = function(e) {
+        log_msg("    警告: 模块 ", prefix, " 子聚类失败 (", conditionMessage(e),
+                "), 保留不切分")
+        NULL
+      }
+    )
+    if (is.null(tree)) return(out)
+
+    subMods <- cutreeDynamic(
+      dendro           = tree,
+      distM            = as.matrix(dissTOM),
+      deepSplit        = cfg$split_deep_split,
+      minClusterSize   = minSplitSize,
+      pamRespectsDendro = FALSE
+    )
+
+    # cutreeDynamic 的 0 类为"未分配"基因, 不服从 minClusterSize 约束,
+    # 可能形成 < min_module_size 的过小模块。将其并入最大的非灰子簇,
+    # 避免出现违反下限的 *_grey 小模块。
+    if (any(subMods == 0)) {
+      non_grey <- subMods[subMods > 0]
+      if (length(non_grey) == 0L) {
+        # 全部基因都未被分配(无有效子簇) -> 该模块无法在此参数下切分, 保留
+        log_msg("    模块 ", prefix, " (", length(genes),
+                " 基因) cutreeDynamic 全未分配, 保留不切")
+        return(out)
+      }
+      # tabulate 的 bin 编号即簇号, which.max 返回最大簇的编号(整数)
+      max_k <- which.max(tabulate(non_grey))
+      subMods[subMods == 0] <- max_k
     }
+
+    # 若 cutreeDynamic 切出的最大子簇仍 > maxSize(说明在该参数下未有效切分),
+    # 改用"按目标簇数强制切割"兜底, 保证上限被尊重。
+    # 目标簇数 k = ceil(基因数 / maxSize), 使每簇平均不超过 maxSize。
+    # 合法性校验: 强制切割后若任一子簇 < min_module_size, 则放弃兜底、
+    # 保留原模块(宁可 >maxSize 也不产生过小模块, 满足下限硬约束)。
+    max_sub <- max(tabulate(subMods[subMods > 0]))
+    if (max_sub > maxSize) {
+      k_force <- max(2L, ceiling(length(genes) / maxSize))
+      forced  <- cutree(tree, k = k_force)
+      if (min(tabulate(forced[forced > 0])) >= cfg$min_module_size) {
+        subMods <- forced
+        log_msg("    模块 ", prefix, " cutreeDynamic 未达标, 强制按 k=",
+                k_force, " 切割")
+      } else {
+        log_msg("    模块 ", prefix, " (", length(genes),
+                " 基因) 强制切割会产生过小模块(< min_module_size=",
+                cfg$min_module_size, "), 保留不切")
+        return(out)
+      }
+    }
+
+    # 未真正切分(只得到 1 个唯一子簇) -> 保留原 prefix, 不再递归
+    if (length(unique(subMods)) <= 1L) {
+      log_msg("    模块 ", prefix, " (", length(genes),
+              " 基因) 无法继续切分, 保留")
+      return(out)
+    }
+
+    # 父模块名称的最后一段(用于撞色检测, 避免 turquoise_turquoise 式无限堆叠)
+    tail <- sub("^.*_", "", prefix)
+
+    # 为每个子簇生成新前缀:
+    #  - cutreeDynamic 的 0 类(未分配) -> <prefix>_grey
+    #  - 若子名与父末段相同(会自相似堆叠) -> 改用簇号 <prefix>_<k>
+    #  - 否则 -> <prefix>_<子名>(用户期望的"原色_子名"层级形式)
+    new_prefix_for <- function(sc, k) {
+      if (k == 0) return(paste0(prefix, "_grey"))
+      if (sc == tail) return(paste0(prefix, "_", k))
+      paste0(prefix, "_", sc)
+    }
+
+    log_msg("    模块 ", prefix, " (", length(genes), " 基因) -> 切分为 ",
+            length(unique(subMods)), " 个子模块")
+    res <- character(length(genes)); names(res) <- genes
+    for (k in unique(subMods)) {
+      sub_genes  <- genes[subMods == k]
+      sc         <- if (k == 0) paste0(prefix, "_grey") else labels2colors(k)
+      new_prefix <- new_prefix_for(sc, k)
+      # 防御: 若子簇仍 >maxSize 但大小与父相近(未有效减小), 停止递归避免死循环
+      if (length(sub_genes) > maxSize &&
+          length(sub_genes) > 0.9 * length(genes)) {
+        log_msg("    模块 ", prefix, " 子簇仍过大且无法再切, 保留 ",
+                new_prefix)
+        res[sub_genes] <- setNames(rep(new_prefix, length(sub_genes)), sub_genes)
+        next
+      }
+      res[sub_genes] <- split_one(sub_genes, new_prefix, depth + 1L)
+    }
+    res
   }
 
-  log_msg("  递归切割完成: 最终模块数 ", length(unique(colors)))
-  colors
+  res <- character(length(colors)); names(res) <- names(colors)
+  for (mod in unique(colors)) {
+    genes <- names(colors)[colors == mod]
+    res[genes] <- split_one(genes, mod, 0L)
+  }
+
+  n_final <- length(unique(res))
+  log_msg("  递归切割完成: 初始模块数 ", length(unique(colors)),
+          " -> 最终模块数 ", n_final)
+  res
 }
 
 # -----------------------------------------------------------------------------
