@@ -25,7 +25,7 @@ CONFIG <- list(
   output_dir       = "WGCNA_output",
 
   # 预处理
-  top_n_genes      = 61000L,     # 保留的高变基因数
+  top_n_genes      = 10000L,     # 保留的高变基因数
   log2_transform   = TRUE,
 
   # 软阈值(固定值)
@@ -39,7 +39,13 @@ CONFIG <- list(
   deep_split       = 4L,         # 调高以切分更多模块
   merge_cut_height = 0.15,       # 调低以切分更多模块
   max_block_size   = 5000L,      # 分块计算, 控制峰值内存
-  numeric_labels   = TRUE
+  numeric_labels   = TRUE,
+
+  # 递归切割(递归 WGCNA): 对超过上限的超大模块二次切割, 显式限制模块大小
+  recursive_split        = TRUE,  # 是否开启递归切割
+  max_module_size        = 2000L, # 模块基因数上限, 超过则触发二次切割
+  split_deep_split       = 4L,   # 二次切割的 deepSplit(更激进)
+  split_min_cluster_size = 30L    # 二次切割的最小簇大小
 )
 
 # 已知的性状取值表(用于从样本名鲁棒解析)
@@ -190,6 +196,107 @@ build_network <- function(datExpr, power, cfg) {
 }
 
 # -----------------------------------------------------------------------------
+# 3b. 完整 signed TOM 计算(供递归切割与邻接矩阵导出复用)
+# -----------------------------------------------------------------------------
+compute_signed_tom <- function(datExpr, power, gene_ids, cfg) {
+  # 与 export_results 中 adjacency_matrix.csv 的计算逻辑完全一致:
+  # signed hybrid 网络下的带符号邻接矩阵, 再到带符号 TOM。
+  adj <- adjacency(
+    datExpr, power = power,
+    type        = cfg$network_type,
+    corFnc      = if (cfg$cor_type == "bicor") bicor else cor,
+    corOptions  = list(maxPOutliers = cfg$max_p_outliers)
+  )
+  tom <- TOMsimilarity(adj, TOMType = "signed")
+  # TOMsimilarity 返回的矩阵不带 dimnames, 递归切割需用基因名取子矩阵,
+  # 故显式赋予行列名(不影响 adjacency_matrix.csv, 其按列序拼接)。
+  dimnames(tom) <- list(gene_ids, gene_ids)
+  tom
+}
+
+# -----------------------------------------------------------------------------
+# 3c. 递归切割超大模块(递归 WGCNA)
+# -----------------------------------------------------------------------------
+recursive_split_modules <- function(module_colors, tom, gene_ids, cfg) {
+  # module_colors: 命名向量(names = gene_ids), 如 labels2colors(net$colors)
+  # tom:           完整 signed TOM 矩阵(行/列名 = gene_ids)
+  # 返回:          同结构命名向量, 超大模块已被递归切割为 "mod_sub" 复合名
+  if (!cfg$recursive_split) return(module_colors)
+
+  maxSize  <- cfg$max_module_size
+  colors   <- module_colors
+  names(colors) <- gene_ids
+
+  # 待检查的模块队列(初始为所有唯一模块)
+  queue <- unique(colors)
+  iter  <- 0L
+
+  while (length(queue) > 0L) {
+    # 找出仍超过上限的模块
+    sizes <- vapply(queue, function(m) sum(colors == m), FUN.VALUE = 0L)
+    big   <- queue[sizes > maxSize]
+    if (length(big) == 0L) break
+
+    iter <- iter + 1L
+    log_msg("  递归切割 [第 ", iter, " 层]: 待切分超大模块 ",
+            length(big), " 个, 当前总模块数 ", length(unique(colors)))
+
+    for (mod in big) {
+      genes_in_mod <- names(colors)[colors == mod]
+      if (length(genes_in_mod) < 2L) next
+
+      # 1) 从完整 TOM 取该模块对应的子矩阵(复用原始 signed hybrid 网络)
+      subTOM <- tom[genes_in_mod, genes_in_mod, drop = FALSE]
+      dissTOM <- 1 - subTOM
+
+      # 2) 二次聚类(平均连锁)
+      subTree <- tryCatch(
+        hclust(as.dist(dissTOM), method = "average"),
+        error = function(e) {
+          log_msg("    警告: 模块 ", mod, " 子聚类失败 (", conditionMessage(e),
+                  "), 跳过切割")
+          NULL
+        }
+      )
+      if (is.null(subTree)) next
+
+      # 3) 二次动树切割(更激进参数)
+      subMods <- cutreeDynamic(
+        dendro          = subTree,
+        distM           = as.matrix(dissTOM),
+        deepSplit       = cfg$split_deep_split,
+        minClusterSize  = cfg$split_min_cluster_size,
+        pamRespectsDendro = FALSE
+      )
+
+      # 4) 子色映射; cutreeDynamic 的 0 类为未分配 -> 映射为 mod_grey 避免撞色
+      subColors <- labels2colors(subMods)
+      subColors[subMods == 0] <- paste0(mod, "_grey")
+
+      # 仅当切分有效(产生了多于 1 个非灰簇或整体簇数>1)才替换
+      new_names <- paste0(mod, "_", subColors)
+      # 若所有子簇都落入同一名字(未真正切分), 则保持原模块
+      if (length(unique(new_names)) <= 1L) next
+
+      colors[colors == mod] <- new_names
+      log_msg("    模块 ", mod, " (", length(genes_in_mod), " 基因) -> 切分为 ",
+              length(unique(new_names)), " 个子模块")
+    }
+
+    # 更新队列: 检查新产生的子模块是否仍超标
+    queue <- unique(colors)
+    # 防止死循环: 若某模块连续两层都无法切分(簇数不再变化)则退出
+    if (iter > 20L) {
+      log_msg("    达到最大递归层数(20), 停止切割")
+      break
+    }
+  }
+
+  log_msg("  递归切割完成: 最终模块数 ", length(unique(colors)))
+  colors
+}
+
+# -----------------------------------------------------------------------------
 # 4. 性状解析与模块-性状关联
 # -----------------------------------------------------------------------------
 parse_traits <- function(sample_names) {
@@ -299,8 +406,16 @@ export_results <- function(pre, power, net, traits, assoc, cfg) {
   datExpr <- pre$datExpr
   gene_ids <- pre$gene_ids
 
-  # 模块颜色
-  module_colors <- labels2colors(net$colors)
+  # 完整 signed TOM(与导出 adjacency_matrix.csv 的逻辑一致, 供递归切割复用)
+  log_msg("  计算完整 signed TOM 矩阵(供递归切割与邻接矩阵导出复用)...")
+  tom <- compute_signed_tom(datExpr, power, gene_ids, cfg)
+
+  # 模块颜色(初始)
+  init_colors <- labels2colors(net$colors)
+  names(init_colors) <- gene_ids
+
+  # 递归切割超大模块(超过 max_module_size 才触发; 否则等价于 init_colors)
+  module_colors <- recursive_split_modules(init_colors, tom, gene_ids, cfg)
   names(module_colors) <- gene_ids
 
   # 模块特征基因
@@ -357,13 +472,8 @@ export_results <- function(pre, power, net, traits, assoc, cfg) {
 
   # ---- 共表达网络 ----
   log_msg("  导出共表达网络(带符号 signed hybrid TOM)...")
-  # 在 signed hybrid 网络下计算加权邻接矩阵(保留符号, 含负值),
-  # 再通过 TOMsimilarity 得到带符号的拓扑重叠矩阵(TOM)。
-  adj <- adjacency(datExpr, power = power,
-                   type = cfg$network_type,
-                   corFnc = if (cfg$cor_type == "bicor") bicor else cor,
-                   corOptions = list(maxPOutliers = cfg$max_p_outliers))
-  tom <- TOMsimilarity(adj, TOMType = "signed")
+  # tom 已在函数开头由 compute_signed_tom 计算(完整 signed hybrid TOM),
+  # 此处直接复用, 保证与递归切割使用同一份矩阵、且内容与原脚本一致。
   adj_dt <- as.data.table(tom)
   adj_dt <- cbind(gene = gene_ids, adj_dt)
   fwrite(adj_dt, file.path(cfg$output_dir, "adjacency_matrix.csv"))
