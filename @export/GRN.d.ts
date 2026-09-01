@@ -53,4 +53,11 @@ declare namespace GRN {
    /**
    */
    function merge_prior(velocity_prior: object, prior: object): object;
+   /**
+    * get time series expression matrix from processed DBN sample output, for GRN learning
+    * 
+    * 
+     * @param x -
+   */
+   function time_series(x: object): object;
 }

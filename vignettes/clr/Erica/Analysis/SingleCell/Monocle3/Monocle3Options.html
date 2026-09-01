@@ -40,6 +40,8 @@ export class Monocle3Options {
    numPCA: integer;
    # 是否强制覆盖缓存（重算所有步骤）。默认 False。
    overwriteCache: boolean;
+   # 是否启用计算密集型循环的多核并行化（Parallel.For / PLINQ）。 默认 True。关闭时回退为串行循环，用于验证并行结果与串行逐 bit 一致。
+   parallelEnabled: boolean;
    # 是否启用 PseudoVelo 伪速度计算。默认 True。
    pseudoVeloEnabled: boolean;
    # 预留：若改用 LOESS 平滑时的 span 参数（0~1）。默认 0.3。
