@@ -45,7 +45,7 @@ Public Class PseudoVelo
         Dim window = opts.pseudoVeloWindow
         If window < 1 Then
             window = 1
-            Call Console.WriteLine($"[PseudoVelo] pseudoVeloWindow 过小，已裁剪为 {window}")
+            Call $"[PseudoVelo] pseudoVeloWindow 过小，已裁剪为 {window}".debug
         End If
 
         ' 1. 按伪时间升序排序（同伪时间保持稳定顺序）
@@ -90,7 +90,7 @@ Public Class PseudoVelo
         End If
 
         timer.[Stop]()
-        Call Console.WriteLine($"[PseudoVelo] 计算伪速度矩阵完成: {nGenes} 基因 × {nCells} 细胞, 耗时 {timer.Elapsed.TotalSeconds:0.00}s")
+        Call $"[PseudoVelo] 计算伪速度矩阵完成: {nGenes} 基因 × {nCells} 细胞, 耗时 {timer.Elapsed.TotalSeconds:0.00}s".debug
 
         ' 4. 可选：把细胞速度投影到 UMAP2D
         Dim velocityUMAP As Double(,) = Nothing
@@ -116,7 +116,7 @@ Public Class PseudoVelo
             If velocityUMAP IsNot Nothing Then
                 Call cache.SaveMatrix(Path.Combine(cache.cacheDir, "10_pseudovelo_umap.csv"), velocityUMAP)
             End If
-            Call Console.WriteLine($"[PseudoVelo] 已缓存到 {cache.cacheDir}\10_pseudovelo_*")
+            Call $"[PseudoVelo] 已缓存到 {cache.cacheDir}\10_pseudovelo_*".debug
         End If
 
         Return outResult
@@ -251,7 +251,7 @@ Public Class PseudoVelo
             Next
         End If
 
-        Call Console.WriteLine("[PseudoVelo] UMAP 速度向量投影完成")
+        Call $"[PseudoVelo] UMAP 速度向量投影完成".info
         Return velUMAP
     End Function
 End Class
