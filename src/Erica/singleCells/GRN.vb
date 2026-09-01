@@ -62,6 +62,16 @@ Module GRN
         Return dbnOut
     End Function
 
+    ''' <summary>
+    ''' get time series expression matrix from processed DBN sample output, for GRN learning
+    ''' </summary>
+    ''' <param name="x"></param>
+    ''' <returns></returns>
+    <ExportAPI("time_series")>
+    Public Function timeSeries(x As DBNPreprocessOutput) As GeneExpressionData
+        Return x.timeSeries
+    End Function
+
     <ExportAPI("merge_prior")>
     Public Function merge_prior(velocity_prior As DBNPreprocessOutput, prior As PriorNetwork) As PriorNetwork
         Return VelocityNetwork.BuildVelocityPrior(velocity_prior, prior)

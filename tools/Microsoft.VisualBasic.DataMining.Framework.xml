@@ -1426,19 +1426,19 @@ Microsoft.VisualBasic.DataMining.Framework
  通过对数据进行区间离散化来完成归一化
  </summary>
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Normalizer.Normalizations.ZScoreNormalize(Microsoft.VisualBasic.Math.Distributions.SampleDistribution,System.Double)">
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Normalizer.Normalizations.ZScoreNormalize(Microsoft.VisualBasic.Math.Distributions.Summary.SampleDistribution,System.Double)">
  <summary>
  z-score
  </summary>
  <param name="samples">
- the sample value of <see cref="P:Microsoft.VisualBasic.Math.Distributions.SampleDistribution.average"/> and 
- <see cref="P:Microsoft.VisualBasic.Math.Distributions.SampleDistribution.stdErr"/> should not be empty.
+ the sample value of <see cref="P:Microsoft.VisualBasic.Math.Distributions.Summary.SampleDistribution.average"/> and 
+ <see cref="P:Microsoft.VisualBasic.Math.Distributions.Summary.SampleDistribution.stdErr"/> should not be empty.
  </param>
  <param name="x#"></param>
  <returns></returns>
  
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Normalizer.Normalizations.RelativeNormalize(Microsoft.VisualBasic.Math.Distributions.SampleDistribution,System.Double)">
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.Normalizer.Normalizations.RelativeNormalize(Microsoft.VisualBasic.Math.Distributions.Summary.SampleDistribution,System.Double)">
  <summary>
  正实数和负实数是分开进行归一化的
  </summary>
