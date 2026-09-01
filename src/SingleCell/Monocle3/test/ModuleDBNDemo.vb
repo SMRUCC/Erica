@@ -1,5 +1,6 @@
 Imports System.IO
 Imports Erica.Analysis.SingleCell.VirtualGRN
+Imports SMRUCC.genomics.Analysis.BNLearn.ModularNetwork.WGCNA
 
 ''' <summary>
 ''' 优化版演示：基于 WGCNA 共表达模块的 DBN 子网络训练 + 全局级联虚拟扰动。
@@ -51,7 +52,7 @@ Module ModuleDBNDemo
         Call Console.WriteLine($"  合并后方向先验边: {prior.Edges.Count}")
 
         ' ==================== ② 读取 WGCNA 模块划分 ====================
-        Dim modules = SMRUCC.genomics.Analysis.BNLearn.WGCNA.ReadModuleAssignment(moduleFile)
+        Dim modules = WGCNAFiles.ReadModuleAssignment(moduleFile)
         Call Console.WriteLine($"  WGCNA 模块分配记录数: {modules.Length}")
 
         ' ==================== ③ 模块化 DBN 子网络训练 + 全局级联虚拟扰动 ====================
@@ -65,10 +66,10 @@ Module ModuleDBNDemo
 
         Dim grn = SMRUCC.genomics.Analysis.CellPhenotype.GeneRegulatoryNetwork.TrainModularDBNIntervene(
             dbnOut.timeSeries, modules, prior, hsaTF, knockGenes,
-            dynamicSteps:=10, crossModuleCorThreshold:=0.3, outputDir:=grnDir)
+            dynamicSteps:=10, crossModuleCorThreshold:=0.3)
 
-        Call Console.WriteLine($"  训练模块子网络数: {grn.moduleNets.Count}")
-        Call Console.WriteLine($"  全局扰动响应矩阵维度: {grn.finalResponses.Count} 源 × {If(grn.finalResponses.Values.FirstOrDefault() Is Nothing, 0, grn.finalResponses.Values.First().Count)} 基因")
+        Call Console.WriteLine($"  训练模块子网络数: {grn.moduleNets.blocks}")
+        Call Console.WriteLine($"  全局扰动响应矩阵维度: {grn.finalResponses.size} 源 × {If(grn.finalResponses.finalResponses.Values.FirstOrDefault() Is Nothing, 0, grn.finalResponses.finalResponses.Values.First().Count)} 基因")
 
         ' ==================== ④ Summary ====================
         Call Console.WriteLine()
@@ -87,7 +88,7 @@ Module ModuleDBNDemo
     ''' 不足时退回为时间序列前若干基因。
     ''' </summary>
     Private Function SelectModuleKnockGenes(dbnOut As DBNPreprocessOutput,
-                                            modules As SMRUCC.genomics.Analysis.BNLearn.GeneModuleColor(),
+                                            modules As GeneModuleColor(),
                                             hsaTF As String(),
                                             n As Integer) As String()
         Dim inModules As New HashSet(Of String)(StringComparer.OrdinalIgnoreCase)
