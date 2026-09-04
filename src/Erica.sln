@@ -3199,8 +3199,8 @@ Global
 		{701759F1-42E9-07DA-612B-DE66F4B341AF}.Release|x86.Build.0 = Release|Any CPU
 		{701759F1-42E9-07DA-612B-DE66F4B341AF}.Rsharp_app_release|Any CPU.ActiveCfg = Release|Any CPU
 		{701759F1-42E9-07DA-612B-DE66F4B341AF}.Rsharp_app_release|Any CPU.Build.0 = Release|Any CPU
-		{701759F1-42E9-07DA-612B-DE66F4B341AF}.Rsharp_app_release|x64.ActiveCfg = Release|x64
-		{701759F1-42E9-07DA-612B-DE66F4B341AF}.Rsharp_app_release|x64.Build.0 = Release|x64
+		{701759F1-42E9-07DA-612B-DE66F4B341AF}.Rsharp_app_release|x64.ActiveCfg = Rsharp_app_release|x64
+		{701759F1-42E9-07DA-612B-DE66F4B341AF}.Rsharp_app_release|x64.Build.0 = Rsharp_app_release|x64
 		{701759F1-42E9-07DA-612B-DE66F4B341AF}.Rsharp_app_release|x86.ActiveCfg = Release|Any CPU
 		{701759F1-42E9-07DA-612B-DE66F4B341AF}.Rsharp_app_release|x86.Build.0 = Release|Any CPU
 		{31DFD964-A6E0-6A68-7D4F-9294684071A4}.CFD_win32|Any CPU.ActiveCfg = LipidSearch|Any CPU
@@ -3631,8 +3631,8 @@ Global
 		{8AB7327F-83BB-451D-A614-6F399DB58CFC}.Release|x86.Build.0 = Release|Any CPU
 		{8AB7327F-83BB-451D-A614-6F399DB58CFC}.Rsharp_app_release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AB7327F-83BB-451D-A614-6F399DB58CFC}.Rsharp_app_release|Any CPU.Build.0 = Release|Any CPU
-		{8AB7327F-83BB-451D-A614-6F399DB58CFC}.Rsharp_app_release|x64.ActiveCfg = Release|x64
-		{8AB7327F-83BB-451D-A614-6F399DB58CFC}.Rsharp_app_release|x64.Build.0 = Release|x64
+		{8AB7327F-83BB-451D-A614-6F399DB58CFC}.Rsharp_app_release|x64.ActiveCfg = Rsharp_app_release|x64
+		{8AB7327F-83BB-451D-A614-6F399DB58CFC}.Rsharp_app_release|x64.Build.0 = Rsharp_app_release|x64
 		{8AB7327F-83BB-451D-A614-6F399DB58CFC}.Rsharp_app_release|x86.ActiveCfg = Release|Any CPU
 		{8AB7327F-83BB-451D-A614-6F399DB58CFC}.Rsharp_app_release|x86.Build.0 = Release|Any CPU
 		{DDAC6099-3440-973D-0B26-6E14064D4C4A}.CFD_win32|Any CPU.ActiveCfg = MEMI-Desktop|Any CPU
@@ -3919,8 +3919,8 @@ Global
 		{CF9E6525-EB20-608B-66E0-41B34AE5CDCE}.Release|x86.Build.0 = Release|Any CPU
 		{CF9E6525-EB20-608B-66E0-41B34AE5CDCE}.Rsharp_app_release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF9E6525-EB20-608B-66E0-41B34AE5CDCE}.Rsharp_app_release|Any CPU.Build.0 = Release|Any CPU
-		{CF9E6525-EB20-608B-66E0-41B34AE5CDCE}.Rsharp_app_release|x64.ActiveCfg = Release|x64
-		{CF9E6525-EB20-608B-66E0-41B34AE5CDCE}.Rsharp_app_release|x64.Build.0 = Release|x64
+		{CF9E6525-EB20-608B-66E0-41B34AE5CDCE}.Rsharp_app_release|x64.ActiveCfg = Rsharp_app_release|x64
+		{CF9E6525-EB20-608B-66E0-41B34AE5CDCE}.Rsharp_app_release|x64.Build.0 = Rsharp_app_release|x64
 		{CF9E6525-EB20-608B-66E0-41B34AE5CDCE}.Rsharp_app_release|x86.ActiveCfg = Release|Any CPU
 		{CF9E6525-EB20-608B-66E0-41B34AE5CDCE}.Rsharp_app_release|x86.Build.0 = Release|Any CPU
 		{30648DD1-164F-69DB-8C87-F31B77F18972}.CFD_win32|Any CPU.ActiveCfg = Release|Any CPU
@@ -3991,8 +3991,8 @@ Global
 		{30648DD1-164F-69DB-8C87-F31B77F18972}.Release|x86.Build.0 = Release|Any CPU
 		{30648DD1-164F-69DB-8C87-F31B77F18972}.Rsharp_app_release|Any CPU.ActiveCfg = Release|Any CPU
 		{30648DD1-164F-69DB-8C87-F31B77F18972}.Rsharp_app_release|Any CPU.Build.0 = Release|Any CPU
-		{30648DD1-164F-69DB-8C87-F31B77F18972}.Rsharp_app_release|x64.ActiveCfg = Release|x64
-		{30648DD1-164F-69DB-8C87-F31B77F18972}.Rsharp_app_release|x64.Build.0 = Release|x64
+		{30648DD1-164F-69DB-8C87-F31B77F18972}.Rsharp_app_release|x64.ActiveCfg = Rsharp_app_release|x64
+		{30648DD1-164F-69DB-8C87-F31B77F18972}.Rsharp_app_release|x64.Build.0 = Rsharp_app_release|x64
 		{30648DD1-164F-69DB-8C87-F31B77F18972}.Rsharp_app_release|x86.ActiveCfg = Release|Any CPU
 		{30648DD1-164F-69DB-8C87-F31B77F18972}.Rsharp_app_release|x86.Build.0 = Release|Any CPU
 		{3FFCF29A-3BD1-1F5E-01AD-A0486FF18EFB}.CFD_win32|Any CPU.ActiveCfg = Rsharp_app_release|Any CPU

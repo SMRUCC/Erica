@@ -30,8 +30,8 @@
 ' ============================================================================
 
 Imports Erica.Analysis.SingleCell.Expression.MachineLearning.CVAE
-Imports Microsoft.VisualBasic.Language.Java
 Imports Microsoft.VisualBasic.MachineLearning.TensorFlow
+Imports Microsoft.VisualBasic.Math
 Imports std = System.Math
 
 Namespace MachineLearning.Diffusion
@@ -841,7 +841,7 @@ Namespace MachineLearning.Diffusion
                 If libSize > 0 Then
                     Dim scaleFactor As Double = TargetSum / libSize
                     For j As Integer = 0 To nGenes - 1
-                        result(i, j) = JavaMath.Log1p(data(i, j) * scaleFactor)
+                        result(i, j) = log1p(data(i, j) * scaleFactor)
                     Next
                 Else
                     For j As Integer = 0 To nGenes - 1

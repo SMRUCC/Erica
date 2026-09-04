@@ -2540,6 +2540,12 @@ Microsoft.VisualBasic.Data.Framework
  Save the data frame in tsv format? By default is false means saved in csv format.
  </param>
 </member>
+<member name="M:Microsoft.VisualBasic.Data.Framework.IO.Linq.WriteStream`1.CacheMetaIndex(System.Collections.Generic.IEnumerable{System.String})">
+ <summary>
+ Run cache index for <see cref="F:Microsoft.VisualBasic.Data.Framework.IO.Linq.WriteStream`1.rowWriter"/>
+ </summary>
+ <param name="meta"></param>
+</member>
 <member name="M:Microsoft.VisualBasic.Data.Framework.IO.Linq.WriteStream`1.Flush(System.Collections.Generic.IEnumerable{`0})">
  <summary>
  Serialize the object data source into the csv document.
