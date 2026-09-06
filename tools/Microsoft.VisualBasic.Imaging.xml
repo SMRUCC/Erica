@@ -4812,6 +4812,11 @@ Microsoft.VisualBasic.Imaging
  a 3d pie piece
  </summary>
 </member>
+<member name="T:Microsoft.VisualBasic.Imaging.Drawing3D.Models.Isometric.Shapes.Knot">
+ <summary>
+ 彭罗斯三角三维模型
+ </summary>
+</member>
 <member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Models.Isometric.Shapes.Knot.#ctor(Microsoft.VisualBasic.Imaging.Drawing3D.Point3D,System.Double)">
  <summary>
  
