@@ -3,18 +3,26 @@
   <PropertyGroup>
     <RootNamespace>Erica.Analysis.SpatialTissue.RaidData</RootNamespace>
     <TargetFrameworks>net10.0</TargetFrameworks>
-    <Title>Spatial transcriptomics h5ad data reader</Title>
     <Platforms>AnyCPU;x64</Platforms>
     <Configurations>Debug;Release;Rsharp_app_release;MEMI-Desktop</Configurations>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Authors>xie.guigang@gcmodeller.org</Authors>
-    <Company>SMRUCC genomics institute</Company>
-    <Product>Erica Comprehensive Omics</Product>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <AssemblyName>Erica.Analysis.SpatialTissue.RaidData</AssemblyName>
-    <PackageIcon>icons8-jellyfish-96.png</PackageIcon>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <PackageOutputPath>..\..\.nuget</PackageOutputPath>
+    <Title>Erica Spatial Transcriptomics RAID Data I/O</Title>
+    <Description>Data structures and file I/O for spatial transcriptomics. Defines the unified STRaid storage model (expression matrix + spot coordinates) and an in-memory AnnData (h5ad) model, exports to GCModeller expression matrices, parses 10x Visium HD HDF5 via streaming sparse reading, reads Seurat .rda/.rds objects, and loads spatial spot annotations.</Description>
+    <PackageTags>spatial-transcriptomics h5ad seurat 10x-genomics data-io erica</PackageTags>
+    <PackageReleaseNotes>Initial NuGet package release (2026). Introduces the STRaid unified spatial storage model with StreamPack serialization, the AnnData/h5ad model with slots (X, obsm, obs, var, uns), 10x Visium HD HDF5 streaming readers (feature_slice.h5 / molecule_info.h5), SeuratObjectReader, and SpotAnnotation support.</PackageReleaseNotes>
+    <PackageIcon>icons8-jellyfish-96.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/SMRUCC/Erica</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SMRUCC/Erica.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright © SMRUCC genomics, GuiLin China, 2026</Copyright>
+    <Authors>xieguigang@metabolomics.ac.cn</Authors>
+    <Company>SMRUCC genomics institute</Company>
+    <Product>Erica</Product>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-windows|AnyCPU'">

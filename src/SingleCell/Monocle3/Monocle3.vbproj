@@ -8,6 +8,19 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Configurations>Debug;Release;Rsharp_app_release</Configurations>
+    <Title>Erica Monocle3-style Trajectory Inference &amp; PseudoVelocity</Title>
+    <Description>Single-cell trajectory inference following the Monocle3 workflow. Performs PCA, UMAP embedding, KNN graph construction, Louvain/Leiden clustering, MST-based pseudotime ordering, PAGA graph building and spatial-autocorrelation quality assessment, with optional PseudoVelo pseudo-RNA-velocity estimation projected onto UMAP space.</Description>
+    <PackageTags>single-cell trajectory-inference monocle3 pseudotime umap erica</PackageTags>
+    <PackageReleaseNotes>Initial NuGet package release (2026). Provides a cache-aware Monocle3 pipeline (preprocess + HVG, PCA, UMAP, KNN, Louvain/Leiden, MST trajectory, PAGA, Moran's I QA) and PseudoVelo pseudo-velocity (expression-vs-pseudotime derivative, UMAP projection), with algorithm helpers for clustering, PCA, spatial autocorrelation and trajectory ordering.</PackageReleaseNotes>
+    <PackageIcon>icons8-jellyfish-96.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/SMRUCC/Erica</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SMRUCC/Erica.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright © SMRUCC genomics, GuiLin China, 2026</Copyright>
+    <Authors>xieguigang@metabolomics.ac.cn</Authors>
+    <Company>SMRUCC genomics institute</Company>
+    <Product>Erica</Product>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -61,6 +74,13 @@
     <ProjectReference Include="..\..\..\..\GCModeller\src\runtime\sciBASIC#\gr\network-visualization\Datavisualization.Network\network_graph-netcore5.vbproj" />
     <ProjectReference Include="..\..\..\..\GCModeller\src\runtime\sciBASIC#\Microsoft.VisualBasic.Core\src\Core.vbproj" />
     <ProjectReference Include="..\..\..\..\GCModeller\src\workbench\modules\ExperimentDesigner\designer-netcore5.vbproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\.pkg\icons8-jellyfish-96.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

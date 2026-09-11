@@ -7,15 +7,23 @@
     <Configurations>Debug;Release;Rsharp_app_release;MEMI-Desktop</Configurations>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
     <AssemblyName>Erica.Analysis.SingleCell.Expression</AssemblyName>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Product>Erica Comprehensive Omics</Product>
-    <Company>SMRUCC genomics institute</Company>
     <UseApplicationFramework>True</UseApplicationFramework>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <AssemblyTitle>Single Cells Expression Data Builder</AssemblyTitle>
-    <Authors>xieguigang@metabolomics.ac.cn</Authors>
-    <PackageIcon>icons8-jellyfish-96.png</PackageIcon>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageOutputPath>..\..\..\.nuget</PackageOutputPath>
+    <Title>Erica Single-Cell Expression Deep Models (CVAE &amp; Diffusion)</Title>
+    <Description>Deep generative models for single-cell gene-expression analysis. Implements a Conditional Variational Autoencoder (CVAE) for single-cell time-series interpolation and a DDPM denoising diffusion probabilistic model for conditional cell-state generation/prediction, together with TCGA MTX data readers and transcription-factor / VCC reference tables.</Description>
+    <PackageTags>single-cell deep-learning cvae diffusion-model gene-expression erica</PackageTags>
+    <PackageReleaseNotes>Initial NuGet package release (2026). Ships the CVAE module (LinearLayer, LayerNorm, Adam optimizer, encode/decode/reparameterize, InterpolateTimePoint), the Diffusion module (DDPM NoiseScheduler with linear/cosine schedules, conditional generation), and TCGA/AnimalTFDB data helpers.</PackageReleaseNotes>
+    <PackageIcon>icons8-jellyfish-96.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/SMRUCC/Erica</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SMRUCC/Erica.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright © SMRUCC genomics, GuiLin China, 2026</Copyright>
+    <Authors>xieguigang@metabolomics.ac.cn</Authors>
+    <Company>SMRUCC genomics institute</Company>
+    <Product>Erica</Product>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0|AnyCPU'">

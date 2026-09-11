@@ -10,13 +10,22 @@
     <Configurations>Debug;Release;Rsharp_app_release</Configurations>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <UseApplicationFramework>True</UseApplicationFramework>
-    <Product>Erica Comprehensive Omics</Product>
-    <Company>SMRUCC genomics institute</Company>
-    <PackageIcon>icons8-jellyfish-96.png</PackageIcon>
     <PackageOutputPath>..\..\..\..\.nuget</PackageOutputPath>
+    <Title>Erica PhenoGraph Clustering &amp; Similarity Metrics</Title>
+    <Description>PhenoGraph single-cell clustering and graph-based similarity utilities. Builds a k-nearest-neighbor graph and detects communities (Louvain) for phenotypic dissection, supports per-timepoint KNN manifolds with UMAP, spatial correlation graphs, and Jaccard/Pearson/Spearman scoring metrics.</Description>
+    <PackageTags>phenograph clustering single-cell k-nn community-detection erica</PackageTags>
+    <PackageReleaseNotes>Initial NuGet package release (2026). Implements the PhenoGraph algorithm (CommunityGraph: kNN + community detection), GraphManifold (per-timepoint kNN graphs / UMAP), SpatialGraph (graph-clustering correlation), and ScoreMetric helpers (Jaccard, Pearson, Spearman).</PackageReleaseNotes>
+    <PackageIcon>icons8-jellyfish-96.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/SMRUCC/Erica</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SMRUCC/Erica.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright © SMRUCC genomics, GuiLin China, 2026</Copyright>
+    <Authors>xieguigang@metabolomics.ac.cn</Authors>
+    <Company>SMRUCC genomics institute</Company>
+    <Product>Erica</Product>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

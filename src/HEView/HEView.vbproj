@@ -9,8 +9,20 @@
     <AssemblyName>Erica.Analysis.SpatialTissue.HEView</AssemblyName>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageIcon>icons8-jellyfish-96.png</PackageIcon>
     <PackageOutputPath>..\..\.nuget</PackageOutputPath>
+    <Title>Erica H&amp;E / IHC Cell Scanning &amp; Slide Alignment</Title>
+    <Description>Cell-level analysis of H&amp;E and immunohistochemistry (IHC) whole-slide images. Provides DZI (Deep Zoom Image) based cell scanning and morphology quantification, IHC color unmixing (CD11b/CD11c/CD8/PanCK/DAPI reference matrix), KD-tree greedy cell matching across replicates, and L-BFGS-B based rigid slide alignment/registration of tissue sections.</Description>
+    <PackageTags>histology image-analysis cell-morphology ihc slide-alignment erica</PackageTags>
+    <PackageReleaseNotes>Initial NuGet package release (2026). Adds DZI cell-scanner (DziImage, DziScanner, CirclePacker, SimpleCellMorphology), IHC scanner and unmixing, KD-tree CellMatcher with morphology+distance scoring, and LBFGSB slide alignment/rasterization/sampling utilities.</PackageReleaseNotes>
+    <PackageIcon>icons8-jellyfish-96.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/SMRUCC/Erica</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SMRUCC/Erica.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright © SMRUCC genomics, GuiLin China, 2026</Copyright>
+    <Authors>xieguigang@metabolomics.ac.cn</Authors>
+    <Company>SMRUCC genomics institute</Company>
+    <Product>Erica</Product>
   </PropertyGroup>
 
   <ItemGroup>

@@ -8,11 +8,21 @@
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
     <AssemblyName>Erica.Analysis.SpatialTissue.Imaging</AssemblyName>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Product>Erica Comprehensive Omics</Product>
-    <Company>SMRUCC genomics institute</Company>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <PackageIcon>icons8-jellyfish-96.png</PackageIcon>
     <PackageOutputPath>..\..\.nuget</PackageOutputPath>
+    <Title>Erica Spatial Transcriptomics Imaging &amp; Spatial Gene-Expression</Title>
+    <Description>Image rendering and spatial gene-expression analysis for spatial transcriptomics. Provides spot/gene-layer heatmap and spot plotting, Moran's I spatial autocorrelation for spatial variable gene (SVG) identification, SpatialDE Gaussian-process-based variable-gene detection (Svensson et al.), and the spatialGE pipeline (STHet statistics, Kriging interpolation, STclust spatial-aware clustering) plus 10x SpaceRanger data parsing.</Description>
+    <PackageTags>spatial-transcriptomics imaging spatial-gene-expression bioinformatics erica</PackageTags>
+    <PackageReleaseNotes>Initial NuGet package release (2026). Delivers spatial omics rendering (Render, SpotHeatMap, SpotPlot, SpatialSpot/SpaceRanger parsing) and statistical analysis modules (MoransI, SpatialDEModel, SpatialGEModel, Kriging, SpatialStats, STclust) together with math helpers (Matrix, Optimization, Statistics).</PackageReleaseNotes>
+    <PackageIcon>icons8-jellyfish-96.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/SMRUCC/Erica</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SMRUCC/Erica.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright © SMRUCC genomics, GuiLin China, 2026</Copyright>
+    <Authors>xieguigang@metabolomics.ac.cn</Authors>
+    <Company>SMRUCC genomics institute</Company>
+    <Product>Erica</Product>
   </PropertyGroup>
 
   <ItemGroup>

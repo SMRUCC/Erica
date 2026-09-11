@@ -8,8 +8,20 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <UseApplicationFramework>True</UseApplicationFramework>
+    <Title>Erica — Spatial Transcriptomics &amp; Single-Cell Analysis Toolkit</Title>
+    <Description>A comprehensive R# package facade that aggregates the Erica spatial-omics and single-cell analysis libraries into a single umbrella. It exposes high-level APIs for spatial transcriptomics data I/O (STdata), spot/gene-layer imaging (st-imaging), reference-free spatial deconvolution (STdeconvolve), the Bgee knowledge-base toolkit, Monocle3 trajectory inference, pseudo-velocity-driven GRN learning, PhenoGraph clustering, and H&amp;E/IHC single-cell data types.</Description>
+    <PackageTags>spatial-transcriptomics single-cell bioinformatics erica r-sharp genomics</PackageTags>
+    <PackageReleaseNotes>Initial NuGet package release (2026). This umbrella assembly bundles the Erica analysis modules (STImaging, STRaid, HEView, bgee, STdeconvolve, SingleGRN, SingleExpression, Monocle3, PhenoGraph) and re-exports their R# APIs — STdata, st-imaging, STdeconvolve, Bgee, monocle3, GRN, phenograph and singleCell — for end-to-end spatial omics and single-cell analysis.</PackageReleaseNotes>
+    <PackageIcon>icons8-jellyfish-96.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/SMRUCC/Erica</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SMRUCC/Erica.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright © SMRUCC genomics, GuiLin China, 2026</Copyright>
+    <Authors>xieguigang@metabolomics.ac.cn</Authors>
+    <Company>SMRUCC genomics institute</Company>
+    <Product>Erica</Product>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -91,6 +103,11 @@
   
   <Import Project="..\..\..\GCModeller\src\R-sharp\Library\shares\R_graphic.interop\R_graphic.interop.projitems" Label="Shared" />
 
-
+  <ItemGroup>
+    <None Include="..\..\.pkg\icons8-jellyfish-96.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

@@ -6,15 +6,23 @@
     <Platforms>AnyCPU;x64</Platforms>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Configurations>Debug;Release;Rsharp_app_release</Configurations>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
-    <AssemblyTitle>Bgee: gene expression data in animals</AssemblyTitle>
     <AssemblyName>Erica.Analysis.KnowledgeBase.Bgee</AssemblyName>
-    <Title>Discover gene expression data in animals</Title>
-    <Description>Bgee is a database for retrieval and comparison of gene expression patterns across multiple animal species. It provides an intuitive answer to the question "where is a gene expressed?" and supports research in cancer and agriculture, as well as evolutionary biology.</Description>
-    <PackageIcon>icons8-jellyfish-96.png</PackageIcon>
     <PackageOutputPath>..\..\.nuget</PackageOutputPath>
+    <Title>Erica Bgee Knowledge-Base Toolkit</Title>
+    <Description>Tools for working with the Bgee gene-expression knowledge base. Parses Bgee TSV expression-call tables into structured records, builds tissue/cell background models, performs Fisher's exact enrichment across anatomical entities and developmental stages, and maps genes to metabolites (via UniProt catalytic mapping) for metabolomics background construction.</Description>
+    <PackageTags>bgee gene-expression knowledge-base enrichment metabolomics bioinformatics</PackageTags>
+    <PackageReleaseNotes>Initial NuGet package release (2026). Provides BgeeDiskReader/Writer (StreamPack-based expression-call store with anatomical/developmental ID factors), TSVParser/AdvancedCalls/GeneExpression call parsing, Fisher enrichment, tissue BackgroundModel, and metabolomics gene-to-metabolite mapping.</PackageReleaseNotes>
+    <PackageIcon>icons8-jellyfish-96.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/SMRUCC/Erica</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SMRUCC/Erica.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright © SMRUCC genomics, GuiLin China, 2026</Copyright>
+    <Authors>xieguigang@metabolomics.ac.cn</Authors>
+    <Company>SMRUCC genomics institute</Company>
+    <Product>Erica</Product>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

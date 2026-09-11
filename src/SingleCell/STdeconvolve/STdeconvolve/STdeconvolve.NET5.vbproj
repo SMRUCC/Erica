@@ -4,18 +4,25 @@
     <RootNamespace>Erica.Analysis.SingleCell.SpatialDeconvolve</RootNamespace>
     <TargetFrameworks>net10.0</TargetFrameworks>
     <Platforms>AnyCPU;x64</Platforms>
-    <Description>Reference-free cell-type deconvolution of pixel-resolution spatially resolved transcriptomics data</Description>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <AssemblyName>Erica.Analysis.SingleCell.SpatialDeconvolve</AssemblyName>
     <Configurations>Debug;Release;Rsharp_app_release</Configurations>
-    <Title>Reference-free cell-type deconvolution of pixel-resolution spatially resolved transcriptomics data</Title>
-    <Product>Erica Comprehensive Omics</Product>
-    <Company>SMRUCC genomics institute</Company>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
-    <PackageIcon>icons8-jellyfish-96.png</PackageIcon>
     <PackageOutputPath>..\..\..\..\.nuget</PackageOutputPath>
+    <Title>Erica Spatial Transcriptomics Deconvolution (STdeconvolve)</Title>
+    <Description>Reference-free cell-type deconvolution for pixel-resolution spatially resolved transcriptomics. Treats each spatial pixel as an LDA document, fits an LDA topic model (Gibbs sampler) to recover cell-type transcriptional profiles (beta) and per-pixel cell-type proportions (theta) without external single-cell references.</Description>
+    <PackageTags>spatial-transcriptomics deconvolution lda cell-types single-cell erica</PackageTags>
+    <PackageReleaseNotes>Initial NuGet package release (2026). Implements the STdeconvolve workflow: STCorpus (pixel to document vectorization with gene filters), LDA Gibbs sampler, and Deconvolve result extraction (beta/theta matrices and single-cell / deconvolved expression matrices).</PackageReleaseNotes>
+    <PackageIcon>icons8-jellyfish-96.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/SMRUCC/Erica</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SMRUCC/Erica.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright © SMRUCC genomics, GuiLin China, 2026</Copyright>
+    <Authors>xieguigang@metabolomics.ac.cn</Authors>
+    <Company>SMRUCC genomics institute</Company>
+    <Product>Erica</Product>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
