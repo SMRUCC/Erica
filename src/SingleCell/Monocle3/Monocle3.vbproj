@@ -1,5 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <RootNamespace>Erica.Analysis.SingleCell.Monocle3</RootNamespace>
     <TargetFramework>net10.0</TargetFramework>
@@ -7,7 +6,7 @@
     <AssemblyName>Erica.Analysis.SingleCell.Monocle3</AssemblyName>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Configurations>Debug;Release;Rsharp_app_release</Configurations>
+    <Configurations>Debug;Release;Rsharp_app_release;nuget_release</Configurations>
     <Title>Erica Monocle3-style Trajectory Inference &amp; PseudoVelocity</Title>
     <Description>Single-cell trajectory inference following the Monocle3 workflow. Performs PCA, UMAP embedding, KNN graph construction, Louvain/Leiden clustering, MST-based pseudotime ordering, PAGA graph building and spatial-autocorrelation quality assessment, with optional PseudoVelo pseudo-RNA-velocity estimation projected onto UMAP space.</Description>
     <PackageTags>single-cell trajectory-inference monocle3 pseudotime umap erica</PackageTags>
@@ -21,46 +20,38 @@
     <Authors>xieguigang@metabolomics.ac.cn</Authors>
     <Company>SMRUCC genomics institute</Company>
     <Product>Erica</Product>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <RemoveIntegerChecks>True</RemoveIntegerChecks>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <RemoveIntegerChecks>True</RemoveIntegerChecks>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <RemoveIntegerChecks>True</RemoveIntegerChecks>
     <Optimize>False</Optimize>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Rsharp_app_release|AnyCPU'">
     <RemoveIntegerChecks>True</RemoveIntegerChecks>
     <Optimize>False</Optimize>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <RemoveIntegerChecks>True</RemoveIntegerChecks>
     <Optimize>False</Optimize>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Rsharp_app_release|x64'">
     <RemoveIntegerChecks>True</RemoveIntegerChecks>
     <Optimize>False</Optimize>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="test\**" />
     <EmbeddedResource Remove="test\**" />
     <None Remove="test\**" />
   </ItemGroup>
-
   <ItemGroup>
     <None Remove="prompt.txt" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\GCModeller\src\GCModeller\analysis\HTS_matrix\HTS_matrix-netcore5.vbproj" />
     <ProjectReference Include="..\..\..\..\GCModeller\src\runtime\sciBASIC#\Data_science\DataMining\DataMining\DataMining.NET5.vbproj" />
@@ -75,12 +66,13 @@
     <ProjectReference Include="..\..\..\..\GCModeller\src\runtime\sciBASIC#\Microsoft.VisualBasic.Core\src\Core.vbproj" />
     <ProjectReference Include="..\..\..\..\GCModeller\src\workbench\modules\ExperimentDesigner\designer-netcore5.vbproj" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="..\..\..\.pkg\icons8-jellyfish-96.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
-
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='nuget_release|x64'">
+    <PackageOutputPath>..\..\..\.nuget</PackageOutputPath>
+  </PropertyGroup>
 </Project>

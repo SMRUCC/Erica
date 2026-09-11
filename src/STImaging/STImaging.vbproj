@@ -1,10 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <RootNamespace>Erica.Analysis.SpatialTissue.Imaging</RootNamespace>
     <TargetFrameworks>net10.0</TargetFrameworks>
     <Platforms>AnyCPU;x64</Platforms>
-    <Configurations>Debug;Release;Rsharp_app_release;MEMI-Desktop</Configurations>
+    <Configurations>Debug;Release;Rsharp_app_release;MEMI-Desktop;nuget_release</Configurations>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
     <AssemblyName>Erica.Analysis.SpatialTissue.Imaging</AssemblyName>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -23,21 +22,19 @@
     <Authors>xieguigang@metabolomics.ac.cn</Authors>
     <Company>SMRUCC genomics institute</Company>
     <Product>Erica</Product>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="test\**" />
     <EmbeddedResource Remove="test\**" />
     <None Remove="test\**" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="..\..\.pkg\icons8-jellyfish-96.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\..\GCModeller\src\GCModeller\analysis\HTS_matrix\HTS_matrix-netcore5.vbproj" />
     <ProjectReference Include="..\..\..\GCModeller\src\runtime\sciBASIC#\Data\BinaryData\netCDF\netCDF.vbproj" />
@@ -52,5 +49,7 @@
     <ProjectReference Include="..\..\..\GCModeller\src\workbench\modules\ExperimentDesigner\designer-netcore5.vbproj" />
     <ProjectReference Include="..\STRaid\STRaid.vbproj" />
   </ItemGroup>
-
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='nuget_release|x64'">
+    <PackageOutputPath>..\..\.nuget</PackageOutputPath>
+  </PropertyGroup>
 </Project>

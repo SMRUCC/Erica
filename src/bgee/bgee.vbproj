@@ -1,12 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <RootNamespace>Erica.Analysis.KnowledgeBase.Bgee</RootNamespace>
     <TargetFrameworks>net10.0</TargetFrameworks>
     <Platforms>AnyCPU;x64</Platforms>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Configurations>Debug;Release;Rsharp_app_release</Configurations>
+    <Configurations>Debug;Release;Rsharp_app_release;nuget_release</Configurations>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
     <AssemblyName>Erica.Analysis.KnowledgeBase.Bgee</AssemblyName>
     <PackageOutputPath>..\..\.nuget</PackageOutputPath>
@@ -24,29 +23,23 @@
     <Company>SMRUCC genomics institute</Company>
     <Product>Erica</Product>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutputPath>bin\</OutputPath>
     <DocumentationFile>bgee.xml</DocumentationFile>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bgee.xml</DocumentationFile>
     <OutputPath>../../assembly\</OutputPath>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bgee.xml</DocumentationFile>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Rsharp_app_release|AnyCPU'">
     <DocumentationFile>bgee.xml</DocumentationFile>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <DocumentationFile>bgee.xml</DocumentationFile>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Rsharp_app_release|x64'">
     <DocumentationFile>bgee.xml</DocumentationFile>
     <OutputPath>../../assembly/</OutputPath>
@@ -57,7 +50,6 @@
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\..\GCModeller\src\GCModeller\analysis\HTS_matrix\HTS_matrix-netcore5.vbproj" />
     <ProjectReference Include="..\..\..\GCModeller\src\GCModeller\annotations\GSEA\FisherCore\Fisher.NET5.vbproj" />
@@ -71,7 +63,6 @@
     <ProjectReference Include="..\..\..\GCModeller\src\runtime\sciBASIC#\mime\application%rdf+xml\rdf_xml-netcore5.vbproj" />
     <ProjectReference Include="..\..\..\GCModeller\src\workbench\modules\ExperimentDesigner\designer-netcore5.vbproj" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="..\..\.pkg\icons8-jellyfish-96.png">
       <Pack>True</Pack>
@@ -82,5 +73,7 @@
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
-
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='nuget_release|x64'">
+    <PackageOutputPath>..\..\.nuget</PackageOutputPath>
+  </PropertyGroup>
 </Project>

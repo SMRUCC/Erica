@@ -1,10 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <RootNamespace>Erica.Analysis.SpatialTissue.HEView</RootNamespace>
     <TargetFrameworks>net10.0</TargetFrameworks>
     <Platforms>AnyCPU;x64</Platforms>
-    <Configurations>Debug;Release;Rsharp_app_release</Configurations>
+    <Configurations>Debug;Release;Rsharp_app_release;nuget_release</Configurations>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
     <AssemblyName>Erica.Analysis.SpatialTissue.HEView</AssemblyName>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -23,14 +22,13 @@
     <Authors>xieguigang@metabolomics.ac.cn</Authors>
     <Company>SMRUCC genomics institute</Company>
     <Product>Erica</Product>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="test\**" />
     <EmbeddedResource Remove="test\**" />
     <None Remove="test\**" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="..\..\.pkg\icons8-jellyfish-96.png">
       <Pack>True</Pack>
@@ -38,7 +36,6 @@
     </None>
     <None Include="Matches.vb" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\..\GCModeller\src\runtime\sciBASIC#\Data\DataFrame\dataframework-netcore5.vbproj" />
     <ProjectReference Include="..\..\..\GCModeller\src\runtime\sciBASIC#\Data_science\DataMining\DensityQuery\DensityQuery.NET5.vbproj" />
@@ -50,5 +47,7 @@
     <ProjectReference Include="..\..\..\GCModeller\src\runtime\sciBASIC#\gr\physics\physics-netcore5.vbproj" />
     <ProjectReference Include="..\..\..\GCModeller\src\runtime\sciBASIC#\Microsoft.VisualBasic.Core\src\Core.vbproj" />
   </ItemGroup>
-
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='nuget_release|x64'">
+    <PackageOutputPath>..\..\.nuget</PackageOutputPath>
+  </PropertyGroup>
 </Project>
