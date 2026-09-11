@@ -164,7 +164,7 @@ Microsoft.VisualBasic.DataMining.Framework
  @author touhid
  </summary>
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Bisecting.BisectingKMeans.#ctor(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity},System.Int32,System.Int32,System.Boolean,System.Int32)">
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Bisecting.BisectingKMeans.#ctor(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity},System.Int32,System.Int32,System.Boolean,System.Int32)">
  <summary>
  
  </summary>
@@ -173,14 +173,14 @@ Microsoft.VisualBasic.DataMining.Framework
  <param name="iterations"></param>
  <param name="traceback">record the traceback information for run debug?</param>
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Bisecting.BisectingKMeans.kMeansClustering(System.Collections.Generic.List{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity})">
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Bisecting.BisectingKMeans.kMeansClustering(System.Collections.Generic.List{Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity})">
  <summary>
  k = 2
  </summary>
  <param name="dataPoints"></param>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Bisecting.BisectingKMeans.calcCluster(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity})">
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Bisecting.BisectingKMeans.calcCluster(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity})">
  <summary>
  calculate the input data center as first cluster
  </summary>
@@ -212,107 +212,6 @@ Microsoft.VisualBasic.DataMining.Framework
  </summary>
  <returns></returns>
 </member>
-<member name="T:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity">
- <summary>
- A tagged numeric vector
- </summary>
- <remarks>
- uid -- feature_vector
- 
- (计算所使用的对象实例实体模型)
- </remarks>
-</member>
-<member name="P:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.uid">
- <summary>
- the unique reference id of current entity object
- </summary>
- <returns></returns>
-</member>
-<member name="P:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.cluster">
- <summary>
- the cluster class label
- </summary>
- <returns></returns>
-</member>
-<member name="P:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.entityVector">
- <summary>
- the point data vector
- </summary>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.#ctor(System.String,System.Double[])">
- <summary>
- Create a new entity point data
- </summary>
- <param name="id"></param>
- <param name="data"></param>
-</member>
-<member name="M:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.ToDataModel">
- <summary>
- 使用index序列编号来作为属性名称
- </summary>
- <returns></returns>
- 
-</member>
-<member name="M:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.Equals(Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity)">
- <summary>
- check all vector elements equals to another
- </summary>
- <param name="another"></param>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.ToDataModel(System.String[])">
- <summary>
- 
- </summary>
- <param name="maps">名称字符串向量应该是和<see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityBase`1.entityVector"/>属性向量等长的</param>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.op_Equality(Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity,Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity)">
- <summary>
- 值相等判断
- </summary>
- <param name="a"></param>
- <param name="b"></param>
- <returns></returns>
- 
-</member>
-<member name="M:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.op_Explicit(Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity)~System.Int32">
- <summary>
- get the class label of current point
- </summary>
- <param name="c"></param>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.op_Explicit(Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity)~System.Double[]">
- <summary>
- get data vector <see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityBase`1.entityVector"/>.
- </summary>
- <param name="c"></param>
- <returns></returns>
-</member>
-<member name="T:Microsoft.VisualBasic.DataMining.KMeans.EntityClusterModel">
- <summary>
- 存储在Csv文件里面的数据模型，近似等价于csv DataSet对象，
- 只不过多带了一个用来描述cluster的<see cref="P:Microsoft.VisualBasic.DataMining.KMeans.EntityClusterModel.Cluster"/>
- 属性标签
- </summary>
-</member>
-<member name="P:Microsoft.VisualBasic.DataMining.KMeans.EntityClusterModel.Cluster">
- <summary>
- 聚类结果的类编号
- </summary>
- <returns></returns>
-</member>
-<member name="M:Microsoft.VisualBasic.DataMining.KMeans.EntityClusterModel.FromDataSet``1(``0)">
- <summary>
- 用于生成聚类所需要的数据集，所以通过这个函数所构建的数据集对象的<see cref="P:Microsoft.VisualBasic.DataMining.KMeans.EntityClusterModel.Cluster"/>属性值都是空的
- </summary>
- <typeparam name="T"></typeparam>
- <param name="data"></param>
- <returns></returns>
- 
-</member>
 <member name="T:Microsoft.VisualBasic.DataMining.KMeans.Evaluation">
  <summary>
  判断聚类结果优劣的两个距离判定方法
@@ -333,7 +232,7 @@ Microsoft.VisualBasic.DataMining.Framework
  <returns></returns>
  
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Evaluation.Silhouette(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity})">
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Evaluation.Silhouette(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity})">
  <summary>
  Silhouette Coefficient
  </summary>
@@ -370,7 +269,7 @@ Microsoft.VisualBasic.DataMining.Framework
  score [-1, 0] indicates that the samples might have got assigned To the wrong clusters.
  </remarks>
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Evaluation.Dunn(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity})">
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Evaluation.Dunn(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity})">
  <summary>
  Dunn Index
  </summary>
@@ -399,17 +298,17 @@ Microsoft.VisualBasic.DataMining.Framework
  <param name="clusters"></param>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.KMeans.EvaluationScore.CreateClusters(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity})">
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.EvaluationScore.CreateClusters(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity})">
  <summary>
  
  </summary>
  <param name="data">
  all of the data points inside this given collection should 
- be tagged with the <see cref="P:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.cluster"/> labels.
+ be tagged with the <see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity.cluster"/> labels.
  </param>
  <returns></returns>
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Extensions.Kmeans(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.EntityClusterModel},System.Int32,System.Boolean,System.Int32)">
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Extensions.Kmeans(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.EntityClusterModel},System.Int32,System.Boolean,System.Int32)">
  <summary>
  Performance the clustering operation on the entity data model.
  </summary>
@@ -419,7 +318,7 @@ Microsoft.VisualBasic.DataMining.Framework
  输出的元素和输入相比较是乱序的
  </returns>
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Extensions.PopulateObjects(Microsoft.VisualBasic.DataMining.KMeans.ClusterCollection{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity},Microsoft.VisualBasic.DataMining.KMeans.DataSetConvertor)">
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Extensions.PopulateObjects(Microsoft.VisualBasic.DataMining.KMeans.ClusterCollection{Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity},Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.DataSetConvertor)">
  <summary>
  a helper function for convert object data
  </summary>
@@ -518,7 +417,7 @@ Microsoft.VisualBasic.DataMining.Framework
  </returns>
  
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Kmedoids.DoKMedoids(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity},System.Int32,System.Int32)">
+<member name="M:Microsoft.VisualBasic.DataMining.KMeans.Kmedoids.DoKMedoids(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity},System.Int32,System.Int32)">
  <summary>
  Partitioning around medoids(PAM)
  </summary>
@@ -614,7 +513,7 @@ Microsoft.VisualBasic.DataMining.Framework
  进一步“细”聚类。所以Canopy+K-means这种形式聚类算法聚类效果良好。
  </remarks>
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.Clustering.CanopyBuilder.#ctor(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity},System.Double,System.Double)">
+<member name="M:Microsoft.VisualBasic.DataMining.Clustering.CanopyBuilder.#ctor(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity},System.Double,System.Double)">
  <summary>
  
  </summary>
@@ -627,7 +526,7 @@ Microsoft.VisualBasic.DataMining.Framework
  T1 = 8 and T2 = 4
  </remarks>
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.Clustering.CanopyBuilder.AverageDistance(Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity[])">
+<member name="M:Microsoft.VisualBasic.DataMining.Clustering.CanopyBuilder.AverageDistance(Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity[])">
  <summary>
  得到平均距离
  </summary>
@@ -657,7 +556,7 @@ Microsoft.VisualBasic.DataMining.Framework
  evaluate point density
  </summary>
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.Clustering.Density.GetDensity(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity},System.Int32,Microsoft.VisualBasic.DataMining.Clustering.IQueryDensity{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity})">
+<member name="M:Microsoft.VisualBasic.DataMining.Clustering.Density.GetDensity(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity},System.Int32,Microsoft.VisualBasic.DataMining.Clustering.IQueryDensity{Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity})">
  <summary>
  密度为到k个最近邻的平均距离的倒数。如果该距离小，则密度高
  </summary>
@@ -704,15 +603,15 @@ Microsoft.VisualBasic.DataMining.Framework
  this holds the class associated with the values
  </summary>
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.Clustering.KNN.#ctor(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity},System.Collections.Generic.Dictionary{System.Int32,System.String})">
+<member name="M:Microsoft.VisualBasic.DataMining.Clustering.KNN.#ctor(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity},System.Collections.Generic.Dictionary{System.Int32,System.String})">
  <summary>
  
  </summary>
  <param name="trainingSet">
- should contains the <see cref="P:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.cluster"/> index value
+ should contains the <see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity.cluster"/> index value
  </param>
  <param name="clusterNames">
- the class label that associated with the <see cref="P:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.cluster"/>
+ the class label that associated with the <see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity.cluster"/>
  </param>
 </member>
 <member name="T:Microsoft.VisualBasic.DataMining.Clustering.Spectral">
@@ -855,28 +754,28 @@ Microsoft.VisualBasic.DataMining.Framework
  Is more appropriate than hard clustering.
  </remarks>
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.FuzzyCMeans.CMeans.CMeans(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity},System.Int32)">
+<member name="M:Microsoft.VisualBasic.DataMining.FuzzyCMeans.CMeans.CMeans(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity},System.Int32)">
  <summary>
  **Fuzzy clustering** (also referred to as **soft clustering**) is a form of clustering in which 
  each data point can belong to more than one cluster.
  </summary>
  
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.FuzzyCMeans.CMeans.CMeans(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity},System.Int32,System.Double)">
+<member name="M:Microsoft.VisualBasic.DataMining.FuzzyCMeans.CMeans.CMeans(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity},System.Int32,System.Double)">
  <summary>
  **Fuzzy clustering** (also referred to as **soft clustering**) is a form of clustering in which 
  each data point can belong to more than one cluster.
  </summary>
  
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.FuzzyCMeans.CMeans.CMeans(Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity[],System.Int32,System.Double,System.Double,System.Boolean,System.Int32)">
+<member name="M:Microsoft.VisualBasic.DataMining.FuzzyCMeans.CMeans.CMeans(Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity[],System.Int32,System.Double,System.Double,System.Boolean,System.Int32)">
  <summary>
  **Fuzzy clustering** (also referred to as **soft clustering**) is a form of clustering in which 
  each data point can belong to more than one cluster.
  </summary>
  
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.FuzzyCMeans.CMeans.scanRow(System.Double[][],Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity,System.Int32,System.Double)">
+<member name="M:Microsoft.VisualBasic.DataMining.FuzzyCMeans.CMeans.scanRow(System.Double[][],Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity,System.Int32,System.Double)">
  <summary>
  
  </summary>
@@ -886,7 +785,7 @@ Microsoft.VisualBasic.DataMining.Framework
  <param name="m">fuzzification</param>
  <returns>cluster membership vector of current <paramref name="entity"/> object.</returns>
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.FuzzyCMeans.CMeans.J(System.Double,System.Double[][],System.Double[][],Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity[])">
+<member name="M:Microsoft.VisualBasic.DataMining.FuzzyCMeans.CMeans.J(System.Double,System.Double[][],System.Double[][],Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity[])">
  <summary>
  
  </summary>
@@ -1399,6 +1298,107 @@ Microsoft.VisualBasic.DataMining.Framework
  </summary>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity">
+ <summary>
+ A tagged numeric vector
+ </summary>
+ <remarks>
+ uid -- feature_vector
+ 
+ (计算所使用的对象实例实体模型)
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity.uid">
+ <summary>
+ the unique reference id of current entity object
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity.cluster">
+ <summary>
+ the cluster class label
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity.entityVector">
+ <summary>
+ the point data vector
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity.#ctor(System.String,System.Double[])">
+ <summary>
+ Create a new entity point data
+ </summary>
+ <param name="id"></param>
+ <param name="data"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity.ToDataModel">
+ <summary>
+ 使用index序列编号来作为属性名称
+ </summary>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity.Equals(Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity)">
+ <summary>
+ check all vector elements equals to another
+ </summary>
+ <param name="another"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity.ToDataModel(System.String[])">
+ <summary>
+ 
+ </summary>
+ <param name="maps">名称字符串向量应该是和<see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityBase`1.entityVector"/>属性向量等长的</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity.op_Equality(Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity,Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity)">
+ <summary>
+ 值相等判断
+ </summary>
+ <param name="a"></param>
+ <param name="b"></param>
+ <returns></returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity.op_Explicit(Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity)~System.Int32">
+ <summary>
+ get the class label of current point
+ </summary>
+ <param name="c"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity.op_Explicit(Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity)~System.Double[]">
+ <summary>
+ get data vector <see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityBase`1.entityVector"/>.
+ </summary>
+ <param name="c"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.EntityClusterModel">
+ <summary>
+ 存储在Csv文件里面的数据模型，近似等价于csv DataSet对象，
+ 只不过多带了一个用来描述cluster的<see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.EntityClusterModel.Cluster"/>
+ 属性标签
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.EntityClusterModel.Cluster">
+ <summary>
+ 聚类结果的类编号
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.EntityClusterModel.FromDataSet``1(``0)">
+ <summary>
+ 用于生成聚类所需要的数据集，所以通过这个函数所构建的数据集对象的<see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.EntityClusterModel.Cluster"/>属性值都是空的
+ </summary>
+ <typeparam name="T"></typeparam>
+ <param name="data"></param>
+ <returns></returns>
+ 
+</member>
 <member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.IDataEmbedding.GetEmbedding">
  <summary>
  get projection result
@@ -1459,9 +1459,9 @@ Microsoft.VisualBasic.DataMining.Framework
  this function is a safe function, will never returns the null value
  </returns>
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.TraceBackAlgorithm.MeasureCurve(Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity[],Microsoft.VisualBasic.DataMining.ComponentModel.TraceBackIterator)">
+<member name="M:Microsoft.VisualBasic.DataMining.ComponentModel.TraceBackAlgorithm.MeasureCurve(Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity[],Microsoft.VisualBasic.DataMining.ComponentModel.TraceBackIterator)">
  <summary>
- this function set entity <see cref="P:Microsoft.VisualBasic.DataMining.KMeans.ClusterEntity.cluster"/> for each iteration 
+ this function set entity <see cref="P:Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.ClusterEntity.cluster"/> for each iteration 
  traceback and evaluate the silhouette score for the traceback.
  </summary>
  <param name="data"></param>
@@ -2366,7 +2366,7 @@ Microsoft.VisualBasic.DataMining.Framework
  <returns></returns>
  
 </member>
-<member name="M:Microsoft.VisualBasic.DataMining.ValueMapping.Z(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.KMeans.EntityClusterModel})">
+<member name="M:Microsoft.VisualBasic.DataMining.ValueMapping.Z(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.ComponentModel.EntityModels.EntityClusterModel})">
  <summary>
  z-score transform of the data vector
  </summary>
