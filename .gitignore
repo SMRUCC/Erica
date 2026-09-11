@@ -5,6 +5,7 @@
 
 assembly/
 tools/net6.0/
+.nuget/
 
 # User-specific files
 *.rsuser

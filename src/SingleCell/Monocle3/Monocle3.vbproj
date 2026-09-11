@@ -24,25 +24,31 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <RemoveIntegerChecks>True</RemoveIntegerChecks>
+    <OutputPath>G:\Erica\.nuget</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <RemoveIntegerChecks>True</RemoveIntegerChecks>
+    <OutputPath>G:\Erica\.nuget</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <RemoveIntegerChecks>True</RemoveIntegerChecks>
     <Optimize>False</Optimize>
+    <OutputPath>G:\Erica\.nuget</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Rsharp_app_release|AnyCPU'">
     <RemoveIntegerChecks>True</RemoveIntegerChecks>
     <Optimize>False</Optimize>
+    <OutputPath>G:\Erica\.nuget</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <RemoveIntegerChecks>True</RemoveIntegerChecks>
     <Optimize>False</Optimize>
+    <OutputPath>G:\Erica\.nuget</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Rsharp_app_release|x64'">
     <RemoveIntegerChecks>True</RemoveIntegerChecks>
     <Optimize>False</Optimize>
+    <OutputPath>G:\Erica\.nuget</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="test\**" />
@@ -74,5 +80,9 @@
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='nuget_release|x64'">
     <PackageOutputPath>..\..\..\.nuget</PackageOutputPath>
+    <OutputPath>G:\Erica\.nuget</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='nuget_release|AnyCPU'">
+    <OutputPath>G:\Erica\.nuget</OutputPath>
   </PropertyGroup>
 </Project>
