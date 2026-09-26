@@ -124,6 +124,21 @@ Microsoft.VisualBasic.Data.Bootstrapping.Fittings
  </summary>
  <returns></returns>
 </member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LASSO.LassoFit.toNumericTable(System.String[])">
+ <summary>
+ 将 LASSO 的正则化路径导出为统一的二维表对象 <see cref="T:Microsoft.VisualBasic.Data.NumericTable"/>：
+ 
+ 1. 每一行对应 lambda 路径上面的一个步骤
+ 2. 表的第一列是模型的截距，其余的特征列是各个变量的回归系数
+ 3. 标签矩阵之中附带 ``rsquared``、``lambdas``、``Df`` 与
+    ``numberOfWeights`` 这几个路径指标
+ </summary>
+ <param name="featureNames">
+ 特征列的名称。为空的时候使用 <see cref="P:Microsoft.VisualBasic.Data.Bootstrapping.LASSO.LassoFit.featureNames"/> 属性；
+ 数量不匹配的时候自动生成 ``[1]..[n]`` 序号
+ </param>
+ <returns></returns>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.Bootstrapping.LASSO.LassoFitGenerator">
  <summary>
  This implemenation is based on: Friedman, J., Hastie, T. and Tibshirani, R.
@@ -150,6 +165,11 @@ Microsoft.VisualBasic.Data.Bootstrapping.Fittings
  
  @author Yasser Ganjisaffar (http://www.ics.uci.edu/~yganjisa/)
  
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.LASSO.NamespaceDoc">
+ <summary>
+ LASSO (L1 regularized) regression.
  </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.JamaHelper">
@@ -477,6 +497,11 @@ Microsoft.VisualBasic.Data.Bootstrapping.Fittings
                          matrix will be approximated based on the Jacobian
                          matrix </param>
  <returns> Hessian matrix of the error function </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.LevenbergMarquardt.NamespaceDoc">
+ <summary>
+ The Levenberg-Marquardt non-linear least squares fitting algorithm.
+ </summary>
 </member>
 <member name="M:Microsoft.VisualBasic.Data.Bootstrapping.DoubleLinear.doFilterInternal(System.Drawing.PointF[],Microsoft.VisualBasic.Language.List{System.Drawing.PointF}@,System.Boolean,Microsoft.VisualBasic.ComponentModel.Ranges.Model.DoubleRange)">
  <summary>
@@ -917,6 +942,11 @@ Microsoft.VisualBasic.Data.Bootstrapping.Fittings
  <param name="f">与 x 各行对应的观测值向量。(The observed value vector corresponding to each row of x.)</param>
  <returns>拟合得到的 <see cref="T:Microsoft.VisualBasic.Data.Bootstrapping.Multivariate.MLRFit"/> 模型。(The fitted multiple linear regression model.)</returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.Multivariate.NamespaceDoc">
+ <summary>
+ Multivariate linear regression (MLR).
+ </summary>
+</member>
 <member name="M:Microsoft.VisualBasic.Data.Bootstrapping.Multivariate.NormalEquation.LinearRegression(System.Double[0:,0:],System.Double[],System.Int32,System.Int32)">
  <summary>
  多元线性回归（最小二乘法）
@@ -1162,6 +1192,11 @@ Microsoft.VisualBasic.Data.Bootstrapping.Fittings
  Matrix with elements from sigmoid function.
  </returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.Logistic.NamespaceDoc">
+ <summary>
+ Logistic regression.
+ </summary>
+</member>
 <member name="M:Microsoft.VisualBasic.Data.Bootstrapping.LowessFittings.Lowess(System.Collections.Generic.IEnumerable{System.Drawing.PointF},System.Double,System.Int32)">
  <summary>
  Locally-weighted polynomial regression via the LOWESS algorithm.
@@ -1212,6 +1247,320 @@ Microsoft.VisualBasic.Data.Bootstrapping.Fittings
  -   Cleveland, William S. 1979. "Robust Locally and Smoothing Weighted Regression Scatterplots." _Journal of the American Statistical Association_ 74 (368): 829–36. doi:[10.1080/01621459.1979.10481038](https://doi.org/10.1080/01621459.1979.10481038).
  -   Cleveland, William S. 1981. "Lowess: A program for smoothing scatterplots by robust locally weighted regression." _American Statistician_ 35 (1) 54–55. doi:[10.2307/2683591](https://doi.org/10.2307/2683591).
  </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.NamespaceDoc">
+ <summary>
+ Curve fitting and regression: linear, polynomial and non-linear data fitting models.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.NumericTablePrediction">
+ <summary>
+ 将回归模型的预测结果写回到统一二维表 <see cref="T:Microsoft.VisualBasic.Data.NumericTable"/> 的标签矩阵之中，
+ 从而可以方便地把预测值与原始的观测值放在同一张表里面进行对比。
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTablePrediction.SetPrediction(Microsoft.VisualBasic.Data.NumericTable,Microsoft.VisualBasic.Data.Bootstrapping.IFitted,System.String,System.Boolean,System.String)">
+ <summary>
+ 计算回归模型对表中每一个样本的预测值，并且写入指定的标签列
+ （缺省的列名为 ``prediction``）。
+ 
+ 当 <paramref name="withResidual"/> 为 True 的时候，还会额外写入一列
+ ``residual``，其数值为 ``预测值 - 观测值``。
+ </summary>
+ <param name="table">需要写入预测结果的二维表（**会被就地修改**）</param>
+ <param name="fitted">拟合出来的回归模型</param>
+ <param name="name">预测值写入的标签列名称</param>
+ <param name="withResidual">是否同时写入残差列 ``residual``</param>
+ <param name="y">
+ 观测值所在的标签列名，缺省为第一个标签列；
+ 只有在 <paramref name="withResidual"/> 为 True 的时候才会被使用
+ </param>
+ <returns>返回当前表对象以支持链式调用</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTablePrediction.PredictTable(Microsoft.VisualBasic.Data.Bootstrapping.IFitted,Microsoft.VisualBasic.Data.NumericTable,System.String,System.Boolean,System.String)">
+ <summary>
+ 在源表的一个**深拷贝副本**上面计算预测值并且写入标签列，
+ 源表对象不会被修改。
+ </summary>
+ <param name="fitted">拟合出来的回归模型</param>
+ <param name="source">预测所使用的源数据表</param>
+ <param name="name">预测值写入的标签列名称</param>
+ <param name="withResidual">是否同时写入残差列 ``residual``</param>
+ <param name="y">观测值所在的标签列名，缺省为第一个标签列</param>
+ <returns>写入了预测结果的表副本</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTablePrediction.ObservedVector(Microsoft.VisualBasic.Data.NumericTable,System.String)">
+ <summary>
+ 读取观测值向量：指定了 <paramref name="y"/> 的时候读取对应的标签列，
+ 否则自动读取第一个标签列
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions">
+ <summary>
+ 回归/曲线拟合算法的统一二维表入口。
+ 
+ 输入约定：
+ 
+ 1. 自变量 X 取表的**全部**特征列（<see cref="P:Microsoft.VisualBasic.Data.NumericTable.features"/>）
+ 2. 因变量 y 由参数 ``y`` 指定标签列名，缺省为表中的第一个标签列；
+    表中没有标签列的时候会抛出 <see cref="T:System.ArgumentException"/>
+ 3. 一元/多项式类的算法（<see cref="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.LinearFit(Microsoft.VisualBasic.Data.NumericTable,System.String,System.Boolean)"/>、<see cref="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.PolyFit(Microsoft.VisualBasic.Data.NumericTable,System.Int32,System.String,System.Boolean)"/>、
+    <see cref="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.StandardCurveFit(Microsoft.VisualBasic.Data.NumericTable,Microsoft.VisualBasic.Data.Bootstrapping.Weights,System.String,System.Boolean)"/>、<see cref="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.WeightedLinearFit(Microsoft.VisualBasic.Data.NumericTable,System.Int32,Microsoft.VisualBasic.Data.Bootstrapping.Weights,System.String,System.Boolean)"/>、
+    <see cref="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.Lowess(Microsoft.VisualBasic.Data.NumericTable,System.Double,System.Int32,System.Double,System.String,System.Boolean)"/>、<see cref="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.LoessFit(Microsoft.VisualBasic.Data.NumericTable,System.Double,System.Int32,System.String,System.Boolean)"/>、<see cref="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.AutoPointDeletion(Microsoft.VisualBasic.Data.NumericTable,Microsoft.VisualBasic.Data.Bootstrapping.Weights,System.Int32,System.Boolean,System.Boolean,System.Int32[]@,System.String,System.Boolean)"/>、
+    <see cref="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.GaussNewtonFit(Microsoft.VisualBasic.Data.NumericTable,Microsoft.VisualBasic.Data.Bootstrapping.GaussNewtonSolver.FitFunction,System.Int32,System.Double[],System.Int32,System.Double,System.Double,System.String,System.Boolean)"/>、<see cref="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.BayesianCurveFit(Microsoft.VisualBasic.Data.NumericTable,System.Int32,System.String,System.Boolean)"/>）要求表
+    之中**有且仅有一个**特征列，否则会抛出 <see cref="T:System.ArgumentException"/>
+ 
+ 所有的入口方法都直接返回既有的拟合模型对象，模型的输入/输出约定保持不变；
+ 若需要把模型的预测值写回到表的标签矩阵之中，请使用
+ <see cref="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTablePrediction.SetPrediction(Microsoft.VisualBasic.Data.NumericTable,Microsoft.VisualBasic.Data.Bootstrapping.IFitted,System.String,System.Boolean,System.String)"/> 扩展方法。
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.ResponseVector(Microsoft.VisualBasic.Data.NumericTable,System.String,System.String)">
+ <summary>
+ 读取响应/因变量的向量：指定了 <paramref name="y"/> 的时候读取对应的标签列，
+ 否则自动读取第一个标签列
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.FeatureMatrix(Microsoft.VisualBasic.Data.NumericTable,System.String)">
+ <summary>
+ 获取特征矩阵（行主序的锯齿数组）
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.SingleFeature(Microsoft.VisualBasic.Data.NumericTable,System.String)">
+ <summary>
+ 获取唯一的特征列。只有单变量的算法（线性/多项式/局部回归）才可以调用这个方法
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.FeatureNameList(Microsoft.VisualBasic.Data.NumericTable)">
+ <summary>
+ 获取特征矩阵的列名（缺失的时候自动生成 ``1..n`` 序号）
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.LinearFit(Microsoft.VisualBasic.Data.NumericTable,System.String,System.Boolean)">
+ <summary>
+ 一元线性回归：``y = a + b * x``。
+ 
+ 要求表中只有一个特征列。
+ </summary>
+ <param name="table">特征矩阵为 X、指定标签列为 y 的二维表</param>
+ <param name="y">响应变量所在的标签列名，缺省为第一个标签列</param>
+ <param name="Silent">是否关闭算法内部的进度输出</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.PolyFit(Microsoft.VisualBasic.Data.NumericTable,System.Int32,System.String,System.Boolean)">
+ <summary>
+ 多项式回归：``y = a0 + a1*x + a2*x^2 + ... + an*x^n``。
+ 
+ 要求表中只有一个特征列。
+ </summary>
+ <param name="table">特征矩阵为 X、指定标签列为 y 的二维表</param>
+ <param name="poly_n">期望拟合的最高阶数</param>
+ <param name="y">响应变量所在的标签列名，缺省为第一个标签列</param>
+ <param name="Silent">是否关闭算法内部的进度输出</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.StandardCurveFit(Microsoft.VisualBasic.Data.NumericTable,Microsoft.VisualBasic.Data.Bootstrapping.Weights,System.String,System.Boolean)">
+ <summary>
+ 标准曲线的线性回归建模（等价于 <see cref="M:Microsoft.VisualBasic.Data.Bootstrapping.Extensions.LinearRegression(Microsoft.VisualBasic.Math.LinearAlgebra.Vector,Microsoft.VisualBasic.Math.LinearAlgebra.Vector,Microsoft.VisualBasic.Data.Bootstrapping.Weights)"/>）。
+ 
+ + ``weighted`` 为空：<see cref="T:Microsoft.VisualBasic.Data.Bootstrapping.FitResult"/>
+ + ``weighted`` 非空：<see cref="T:Microsoft.VisualBasic.Data.Bootstrapping.WeightedFit"/>
+ 
+ 要求表中只有一个特征列。
+ </summary>
+ <param name="table">特征矩阵为 X、指定标签列为 y 的二维表</param>
+ <param name="weighted">加权回归的权重函数，为空的时候进行普通的线性拟合</param>
+ <param name="y">响应变量所在的标签列名，缺省为第一个标签列</param>
+ <param name="Silent">是否关闭算法内部的进度输出</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.WeightedLinearFit(Microsoft.VisualBasic.Data.NumericTable,System.Int32,Microsoft.VisualBasic.Data.Bootstrapping.Weights,System.String,System.Boolean)">
+ <summary>
+ 加权线性回归：
+ 
+ + ``weighted`` 为空的时候，权重缺省取 ``1 / x^2``（倒数方差权重）
+ 
+ 要求表中只有一个特征列。
+ </summary>
+ <param name="table">特征矩阵为 X、指定标签列为 y 的二维表</param>
+ <param name="orderOfPolynomial">多项式的阶数</param>
+ <param name="weights">权重函数，为空的时候使用 ``1 / x^2``</param>
+ <param name="y">响应变量所在的标签列名，缺省为第一个标签列</param>
+ <param name="Silent">是否关闭算法内部的进度输出</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.MultipleLinearRegression(Microsoft.VisualBasic.Data.NumericTable,System.String,System.Boolean)">
+ <summary>
+ 多元线性回归（MLR）。使用表中的全部特征列作为自变量。
+ </summary>
+ <remarks>
+ 模型的形式为 ``y = b1*x1 + b2*x2 + ... + bn*xn``，**不包含截距项**；
+ 若需要截距，请在表中显式地加入一列常量（例如全为 1 的 ``bias`` 特征列）。
+ </remarks>
+ <param name="table">特征矩阵为 X、指定标签列为 y 的二维表</param>
+ <param name="y">响应变量所在的标签列名，缺省为第一个标签列</param>
+ <param name="Silent">是否关闭算法内部的进度输出</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.Nnls(Microsoft.VisualBasic.Data.NumericTable,System.Int32,System.Double,System.String,System.Boolean)">
+ <summary>
+ 非负最小二乘（NNLS）：求解 ``min ||A*x - b||, x >= 0``。
+ 
+ 这里 A 为表的特征矩阵、b 为响应变量，返回的系数向量的长度等于特征列的数量，
+ 每一个系数对应 <see cref="P:Microsoft.VisualBasic.Data.NumericTable.featureNames"/> 之中的一列。
+ </summary>
+ <param name="table">特征矩阵为 A、指定标签列为 b 的二维表</param>
+ <param name="maxIterations">最大的迭代次数</param>
+ <param name="tolerance">收敛的容差</param>
+ <param name="y">响应变量所在的标签列名，缺省为第一个标签列</param>
+ <param name="Silent">是否关闭算法内部的进度输出</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.Lowess(Microsoft.VisualBasic.Data.NumericTable,System.Double,System.Int32,System.Double,System.String,System.Boolean)">
+ <summary>
+ LOWESS 局部加权回归散点平滑。
+ 
+ 要求表中只有一个特征列。返回已经按照 x 升序排序的
+ ``(x, yfit)``：其中 ``yfit`` 为平滑之后的拟合值。
+ </summary>
+ <param name="table">特征矩阵为 X、指定标签列为 y 的二维表</param>
+ <param name="f">平滑窗口占样本数量的比例，缺省为 2/3</param>
+ <param name="nsteps">鲁棒迭代的次数</param>
+ <param name="delta">用于减少计算量的非负参数</param>
+ <param name="y">响应变量所在的标签列名，缺省为第一个标签列</param>
+ <param name="Silent">是否关闭算法内部的进度输出</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.LoessFit(Microsoft.VisualBasic.Data.NumericTable,System.Double,System.Int32,System.String,System.Boolean)">
+ <summary>
+ LOESS 局部回归模型。
+ 
+ 要求表中只有一个特征列。可以使用
+ <see cref="M:Microsoft.VisualBasic.Data.Bootstrapping.LOESS.PredictLOESS(Microsoft.VisualBasic.Data.Bootstrapping.LOESSModel,System.Double)"/> 对新的 x 值进行预测。
+ </summary>
+ <param name="table">特征矩阵为 X、指定标签列为 y 的二维表</param>
+ <param name="span">局部窗口的跨度</param>
+ <param name="degree">局部多项式的阶数</param>
+ <param name="y">响应变量所在的标签列名，缺省为第一个标签列</param>
+ <param name="Silent">是否关闭算法内部的进度输出</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.LogisticRegression(Microsoft.VisualBasic.Data.NumericTable,System.Double,System.Int32,System.String,System.Boolean)">
+ <summary>
+ 逻辑回归（梯度下降求解）。使用表中的全部特征列作为自变量。
+ </summary>
+ <param name="table">特征矩阵为 X、指定标签列为类别编号的二维表</param>
+ <param name="rate">学习率</param>
+ <param name="iterations">梯度下降的迭代次数</param>
+ <param name="y">响应变量所在的标签列名，缺省为第一个标签列</param>
+ <param name="Silent">是否关闭算法内部的进度输出</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.LassoRegression(Microsoft.VisualBasic.Data.NumericTable,System.Int32,System.String,System.Boolean)">
+ <summary>
+ LASSO 回归（L1 正则化的线性回归）。使用表中的全部特征列作为自变量。
+ 
+ 注意：返回的 ``LassoFit`` 并不是 <see cref="T:Microsoft.VisualBasic.Data.Bootstrapping.IFitted"/> 模型，
+ 其预测值需要根据 lambda 路径上的截距
+ （``LassoFit.intercepts``）与权重
+ （``LassoFit.getWeights``）自行计算。
+ </summary>
+ <param name="table">特征矩阵为 X、指定标签列为 y 的二维表</param>
+ <param name="maxAllowedFeaturesPerModel">
+ 每一个模型所允许的最大特征数量，小于 0 的时候表示不做限制
+ </param>
+ <param name="y">响应变量所在的标签列名，缺省为第一个标签列</param>
+ <param name="Silent">是否关闭LASSO求解器内部的进度输出</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.AutoPointDeletion(Microsoft.VisualBasic.Data.NumericTable,Microsoft.VisualBasic.Data.Bootstrapping.Weights,System.Int32,System.Boolean,System.Boolean,System.Int32[]@,System.String,System.Boolean)">
+ <summary>
+ 自动识别并且剔除异常点之后再进行线性回归建模。
+ 
+ 要求表中只有一个特征列。<paramref name="removed"/> 会返回被剔除的
+ 样本在表中的行下标（基于最终的 ``(x, y)`` 值进行回溯匹配）。
+ </summary>
+ <param name="table">特征矩阵为 X、指定标签列为 y 的二维表</param>
+ <param name="weighted">加权回归的权重函数</param>
+ <param name="max">
+ 最多允许自动剔除的点的数量：
+ 
+ + 负数：自动确定
+ + 0：不删除任何点
+ + 正数：允许自动剔除的最大点数
+ </param>
+ <param name="keepsLowestPoint">是否保留 x 值最小的点</param>
+ <param name="removesZeroY">是否剔除 y 为零的点</param>
+ <param name="removed">返回被剔除的样本行下标</param>
+ <param name="y">响应变量所在的标签列名，缺省为第一个标签列</param>
+ <param name="Silent">是否关闭算法内部的进度输出</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.MapRemovedRows(System.Double[],System.Double[],System.Collections.Generic.IEnumerable{System.Drawing.PointF})">
+ <summary>
+ 将 ``(x, y)`` 点对被剔除的记录回溯映射为表中的样本行下标。
+ 
+ 由于 ``PointF`` 只能够保存 ``Single`` 精度的数值，
+ 因此这里也会使用单精度进行比较。
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.GaussNewtonFit(Microsoft.VisualBasic.Data.NumericTable,Microsoft.VisualBasic.Data.Bootstrapping.GaussNewtonSolver.FitFunction,System.Int32,System.Double[],System.Int32,System.Double,System.Double,System.String,System.Boolean)">
+ <summary>
+ 高斯-牛顿法求解非线性曲线函数的参数。使用表的唯一特征列作为 x。
+ </summary>
+ <param name="table">特征矩阵为 x、指定标签列为 y 的二维表</param>
+ <param name="fitFunction">需要拟合的曲线函数 ``f(x, args)``</param>
+ <param name="argumentSize">曲线函数之中待求解的参数个数</param>
+ <param name="initialArgs">参数的初始值，为空的时候由求解器随机生成</param>
+ <param name="maxIterations">最大的迭代次数</param>
+ <param name="rmseTol">均方根误差的收敛容差</param>
+ <param name="iterTol">迭代量的收敛容差</param>
+ <param name="y">响应变量所在的标签列名，缺省为第一个标签列</param>
+ <param name="Silent">是否关闭算法内部的进度输出</param>
+ <returns>求解出来的曲线函数参数</returns>
+ <remarks>
+ 本方法只是把二维表适配为 <see cref="T:Microsoft.VisualBasic.Data.Bootstrapping.GaussNewtonSolver"/> 所需要的点序列，
+ 求解器自身对于「非方阵」的雅可比矩阵存在维度检查缺陷（属于既有的实现问题），
+ 当样本数量与参数个数不相等的时候可能会抛出维度错误；
+ 一般的线性/多项式建模请优先使用 <see cref="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.MultipleLinearRegression(Microsoft.VisualBasic.Data.NumericTable,System.String,System.Boolean)"/>
+ 或者 <see cref="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.PolyFit(Microsoft.VisualBasic.Data.NumericTable,System.Int32,System.String,System.Boolean)"/>。
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.BayesianCurveFit(Microsoft.VisualBasic.Data.NumericTable,System.Int32,System.String,System.Boolean)">
+ <summary>
+ 贝叶斯曲线拟合模型（多项式基函数 + 高斯先验）。
+ 
+ 要求表中只有一个特征列。
+ </summary>
+ <param name="table">特征矩阵为 x、指定标签列为 t 的二维表</param>
+ <param name="m">拟合曲线的阶数</param>
+ <param name="y">响应变量所在的标签列名，缺省为第一个标签列</param>
+ <param name="Silent">是否关闭算法内部的进度输出</param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.FeatureProjection(Microsoft.VisualBasic.Data.NumericTable,System.Int32,System.String,System.Boolean)">
+ <summary>
+ 对响应变量按照样本序号（``1..n``）进行多项式投影，返回投影系数向量。
+ 
+ 这是 <see cref="M:Microsoft.VisualBasic.Data.Bootstrapping.FeatureProjection.Project(Microsoft.VisualBasic.Math.LinearAlgebra.Vector,System.Int32)"/> 的表入口实现。
+ </summary>
+ <param name="table">提供响应变量的二维表</param>
+ <param name="dimension">投影的维度（多项式的阶数）</param>
+ <param name="y">响应变量所在的标签列名，缺省为第一个标签列</param>
+ <param name="Silent">是否关闭算法内部的进度输出</param>
+ <returns>投影系数向量</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Data.Bootstrapping.NumericTableRegressions.AsFitInputs(Microsoft.VisualBasic.Data.NumericTable,System.String)">
+ <summary>
+ 将二维表转换为 <see cref="T:Microsoft.VisualBasic.Data.Bootstrapping.LMA.FitInput"/> 的集合，以提供给
+ <see cref="M:Microsoft.VisualBasic.Data.Bootstrapping.LMA.NonLinearFit(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.Bootstrapping.LMA.FitInput},System.Int32)"/> 使用。
+ 
+ 注意：<see cref="M:Microsoft.VisualBasic.Data.Bootstrapping.LMA.NonLinearFit(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.Bootstrapping.LMA.FitInput},System.Int32)"/> 目前尚未实现（会抛出
+ <see cref="T:System.NotImplementedException"/>），因此这里只是完成数据形态的适配。
+ </summary>
+ <param name="table">特征矩阵为自变量、指定标签列为 y 的二维表</param>
+ <param name="y">响应变量所在的标签列名，缺省为第一个标签列</param>
+ <returns></returns>
 </member>
 <member name="T:Microsoft.VisualBasic.Data.Bootstrapping.StockPredict">
  <summary>

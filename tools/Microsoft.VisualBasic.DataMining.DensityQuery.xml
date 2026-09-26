@@ -21,6 +21,12 @@ Microsoft.VisualBasic.DataMining.DensityQuery
  the resulted density value is in range of ``[0,1]``.
  </returns>
 </member>
+<member name="T:Microsoft.VisualBasic.DataMining.DensityQuery.NamespaceDoc">
+ <summary>
+ Density based spatial queries: 2D density estimation, grid boxes, K-D tree queries, distance
+ metrics and SLIC superpixel segmentation.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.DataMining.DensityQuery.SLIC">
  <summary>
  SLIC (Simple Linear Iterative Clustering) clusters pixels using pixel channels and image plane space

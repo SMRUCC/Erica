@@ -540,6 +540,13 @@ Microsoft.VisualBasic.MIME.Html
  </summary>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.CSS.NamespaceDoc">
+ <summary>
+ The CSS style environment: CSS layers, length units and typed CSS values, together with
+ the element style models (font style, fill, stroke, padding and size) used to resolve
+ styles.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.MIME.Html.DocumentFormatter">
  <summary>
  Module provides some method for text document
@@ -846,6 +853,17 @@ Microsoft.VisualBasic.MIME.Html
  </param>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.Document.NamespaceDoc">
+ <summary>
+ The HTML document object model: the HtmlDocument model with HTML element types, anchors,
+ images, plain text and attributes that can be built, queried and serialized.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.HTML.Head.NamespaceDoc">
+ <summary>
+ The HTML document head metadata model, covering the meta tag elements of a document.
+ </summary>
+</member>
 <member name="M:Microsoft.VisualBasic.MIME.Html.HTML.jQuery.Extensions.TagName``1(``0)">
  <summary>
  如果定义了<see cref="T:System.Xml.Serialization.XmlTypeAttribute"/>，则优先使用这个属性之中的<see cref="P:System.Xml.Serialization.XmlTypeAttribute.TypeName"/>
@@ -854,6 +872,17 @@ Microsoft.VisualBasic.MIME.Html
  <typeparam name="T"></typeparam>
  <param name="element"></param>
  <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.HTML.jQuery.NamespaceDoc">
+ <summary>
+ A jQuery style fluent query and manipulation API over the HTML document object model.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.NamespaceDoc">
+ <summary>
+ Common HTML helpers shared by the parser, DOM and CSS rendering namespaces of the HTML
+ toolkit, including document formatting and extension utilities.
+ </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.MIME.Html.Language.CSS.CssProperty">
  <summary>
@@ -2491,6 +2520,12 @@ Microsoft.VisualBasic.MIME.Html
  <returns></returns>
  
 </member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.Language.CSS.NamespaceDoc">
+ <summary>
+ The CSS parser: selector, rule file and URL evaluation models together with the CSS
+ property value parsers.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.MIME.Html.Language.CSS.CssParser">
  <summary>
  Parser css code to add/remove or manage it.
@@ -2616,6 +2651,12 @@ Microsoft.VisualBasic.MIME.Html
 <member name="F:Microsoft.VisualBasic.MIME.Html.Language.HtmlTokens.splash">
  <summary>
  /
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.Language.NamespaceDoc">
+ <summary>
+ The HTML parser: the tokenizer, token types, escaping rules and the parser that builds the
+ document object model from HTML source text.
  </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssConstants">
@@ -2896,6 +2937,12 @@ Microsoft.VisualBasic.MIME.Html
  </summary>
  <param name="href"></param>
 </member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.Render.CSS.NamespaceDoc">
+ <summary>
+ The CSS layout engine: the box model, block and line boxes, layout, text splitting and
+ drawing helpers that lay out CSS styled HTML content.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.MIME.Html.Render.HtmlConstants">
  <summary>
  Defines HTML strings
@@ -2932,6 +2979,12 @@ Microsoft.VisualBasic.MIME.Html
  <remarks>
  set the <see cref="P:Microsoft.VisualBasic.Imaging.IGraphics.Stroke"/> to nothing if no needs of the default line stroke value
  </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.Render.NamespaceDoc">
+ <summary>
+ The lightweight HTML renderer: the render tree model (tags, text strings and containers)
+ and the renderer that draws an HTML document.
+ </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.MIME.Html.Render.Parser">
  <summary>
@@ -3120,6 +3173,11 @@ Microsoft.VisualBasic.MIME.Html
  具体的CSS内容
  </summary>
  <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.XmlMeta.NamespaceDoc">
+ <summary>
+ XML node models (generic nodes, meta nodes and CSS nodes) shared by the HTML tooling.
+ </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.MIME.Html.XmlMeta.Node">
  <summary>

@@ -241,6 +241,12 @@ Microsoft.VisualBasic.Drawing.Windows
  
  </remarks>
 </member>
+<member name="T:Microsoft.VisualBasic.Drawing.Imaging.BitmapImage.NamespaceDoc">
+ <summary>
+ Bitmap image effects and filter helpers: image effects, bitmap extension methods and pixel
+ level utilities.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Drawing.Imaging.BitmapImage.Utils">
  <summary>
  Tools function for processing on <see cref="T:System.Drawing.Image"/>/<see cref="T:System.Drawing.Bitmap"/>
@@ -767,6 +773,12 @@ Microsoft.VisualBasic.Drawing.Windows
  <param name="mode"></param>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Drawing.Interop.NamespaceDoc">
+ <summary>
+ The GDI+ interop layer: bitmap buffers, GDI+ image types and the drawing interop helpers
+ that bridge managed graphics models to System.Drawing.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Drawing.DrawingInterop">
  <summary>
  helper for make gdi+ graphics component conversion
@@ -836,6 +848,13 @@ Microsoft.VisualBasic.Drawing.Windows
  <param name="path"></param>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Drawing.NamespaceDoc">
+ <summary>
+ A Windows-only GDI+ graphics wrapper for the sciBASIC# drawing API: the canvas, image filters,
+ GIF/TIFF encoders and font metrics, with converters that bridge the graphics models to
+ System.Drawing.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Drawing.Drawing2D.Text.FontMetrics">
  <summary>
  
@@ -891,6 +910,11 @@ Microsoft.VisualBasic.Drawing.Windows
  <param name="point">旋转点</param>
  <param name="format">布局方式</param>
  <param name="angle">角度</param>
+</member>
+<member name="T:Microsoft.VisualBasic.Drawing.Drawing2D.Text.NamespaceDoc">
+ <summary>
+ GDI+ text rendering: font metrics, graphics text drawing and the text layout model.
+ </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.Drawing.Drawing2D.Text.TextRender">
  <summary>

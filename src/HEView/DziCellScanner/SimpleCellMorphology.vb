@@ -25,7 +25,7 @@ Public Module SimpleCellMorphology
         Next
 
         ' 调用已实现的线性拟合函数
-        Dim fitResult As FitResult = LinearFit(x, y, length)
+        Dim fitResult As FitResult = LeastSquares.LinearFit(x, y, length)
         Dim slope As Double = fitResult.Slope
         Dim intercept As Double = fitResult.Intercept
 

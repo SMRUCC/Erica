@@ -89,6 +89,11 @@ Microsoft.VisualBasic.Data.ChartPlots
  <param name="frameSize">The size of 2D plot canvas</param>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Device.NamespaceDoc">
+ <summary>
+ The 3D plotting device abstraction.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Device.RenderEngine">
  <summary>
  将生成的绘图元素在这个引擎模块之中进行排序操作，然后进行图表的绘制
@@ -112,6 +117,21 @@ Microsoft.VisualBasic.Data.ChartPlots
 <member name="T:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Model.AxisDraw">
  <summary>
  在这个模块之中生成Axis的绘制元素
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Model.NamespaceDoc">
+ <summary>
+ The 3D plotting model types.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.NamespaceDoc">
+ <summary>
+ 3D plotting: the plot models and the 3D rendering device.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Impl.NamespaceDoc">
+ <summary>
+ The 3D plot implementation.
  </summary>
 </member>
 <member name="M:Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Impl.Scatter3D.#ctor(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Data.ChartPlots.Plot3D.Serial3D},Microsoft.VisualBasic.Imaging.Drawing3D.Camera,System.String,System.Boolean,System.Double,System.Single,Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.Theme)">
@@ -378,6 +398,11 @@ Microsoft.VisualBasic.Data.ChartPlots
  <param name="serialColor$"></param>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Data.NamespaceDoc">
+ <summary>
+ Data models for bar plots.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.HistogramData">
  <summary>
  {x, y}，一个柱子的绘图数据
@@ -541,9 +566,19 @@ Microsoft.VisualBasic.Data.ChartPlots
  <param name="alpha"></param>
  <param name="drawRect"></param>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.Histogram.NamespaceDoc">
+ <summary>
+ Histogram plots.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.LevelBarplot">
  <summary>
  只针对单组数据的条形图绘制
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.NamespaceDoc">
+ <summary>
+ Bar chart plots.
  </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.Data.ChartPlots.BarPlot.BiDirectionBarPlot">
@@ -671,6 +706,11 @@ Microsoft.VisualBasic.Data.ChartPlots
  ```
  </summary>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.BoxPlot.NamespaceDoc">
+ <summary>
+ Box plots.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.ChartPlots.Contour.HeatMap.ContourHeatMapPlot">
  <summary>
  Contour heatmap 
@@ -734,6 +774,11 @@ Microsoft.VisualBasic.Data.ChartPlots
  <param name="x"></param>
  <param name="y"></param>
  <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Contour.HeatMap.NamespaceDoc">
+ <summary>
+ Contour and heat map plots.
+ </summary>
 </member>
 <member name="M:Microsoft.VisualBasic.Data.ChartPlots.Contour.HeatMap.Utils.Compile(System.String)">
  <summary>
@@ -831,6 +876,11 @@ Microsoft.VisualBasic.Data.ChartPlots
  </param>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Contour.NamespaceDoc">
+ <summary>
+ Contour plots.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.ChartPlots.Fractions.FractionData">
  <summary>
  扇形/金字塔的数据模型
@@ -859,6 +909,11 @@ Microsoft.VisualBasic.Data.ChartPlots
  与占整体的百分比相对应的实际数量
  </summary>
  <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Fractions.NamespaceDoc">
+ <summary>
+ Fraction (stacked proportion) plots.
+ </summary>
 </member>
 <member name="M:Microsoft.VisualBasic.Data.ChartPlots.Fractions.PieChart.PlotPie(Microsoft.VisualBasic.Imaging.IGraphics@,System.Drawing.Point,Microsoft.VisualBasic.Data.ChartPlots.Fractions.FractionData[],Microsoft.VisualBasic.Imaging.Font,Microsoft.VisualBasic.Imaging.Font,System.Drawing.Rectangle@,System.Single,System.Double,System.Double,Microsoft.VisualBasic.Data.ChartPlots.Fractions.ValueLabels,System.Nullable{System.Boolean})">
  <summary>
@@ -1326,6 +1381,11 @@ Microsoft.VisualBasic.Data.ChartPlots
  <param name="y"></param>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.NamespaceDoc">
+ <summary>
+ Chart axes: the axis models and the tick and label rendering.
+ </summary>
+</member>
 <member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.XAxisLayoutStyles.Bottom">
  <summary>
  (默认样式) x轴位于图表的底部
@@ -1369,6 +1429,11 @@ Microsoft.VisualBasic.Data.ChartPlots
 <member name="F:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis.YAxisLayoutStyles.None">
  <summary>
  不进行Y轴的绘制
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.NamespaceDoc">
+ <summary>
+ The chart canvas abstraction used to draw charts.
  </summary>
 </member>
 <member name="P:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas.FontStyle.layout">
@@ -1733,6 +1798,11 @@ Microsoft.VisualBasic.Data.ChartPlots
  圆角矩形
  </summary>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Legend.NamespaceDoc">
+ <summary>
+ Chart legends.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Mapper">
  <summary>
  将数据坐标转换为绘图坐标
@@ -1789,6 +1859,12 @@ Microsoft.VisualBasic.Data.ChartPlots
  <param name="margin"></param>
  <param name="avg">当这个参数值是一个有效的数字的时候，返回的Y将会以这个平均值为零点</param>
  <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.NamespaceDoc">
+ <summary>
+ The chart graphics layer: the shared drawing primitives and graphics helpers used by the
+ chart types.
+ </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.Data.ChartPlots.Graphic.Plot">
  <summary>
@@ -1953,6 +2029,11 @@ Microsoft.VisualBasic.Data.ChartPlots
  返回dx或者dy
  </summary>
  <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.NamespaceDoc">
+ <summary>
+ The chart plotting library root: the plot base types and the shared chart building blocks.
+ </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.Data.ChartPlots.Bubble">
  <summary>
@@ -2169,6 +2250,11 @@ Microsoft.VisualBasic.Data.ChartPlots
  </param>
  <param name="ylineColor$"></param>
  <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.ChartPlots.Plots.NamespaceDoc">
+ <summary>
+ Scatter plot rendering.
+ </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.Data.ChartPlots.Plots.Scatter2D">
  <summary>

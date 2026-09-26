@@ -27,6 +27,11 @@ Microsoft.VisualBasic.Data.GraphTheory
  <param name="map_dict"></param>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.FastUnfolding.NamespaceDoc">
+ <summary>
+ The fast unfolding (Louvain) community detection algorithm.
+ </summary>
+</member>
 <member name="M:Microsoft.VisualBasic.Data.GraphTheory.Analysis.FastUnfolding.Utils.Modularity(System.Collections.Generic.Dictionary{System.String,System.String},Microsoft.VisualBasic.Data.GraphTheory.Analysis.FastUnfolding.KeyMaps)">
  <summary>
  根据tag和图的连接方式计算模块度
@@ -374,6 +379,11 @@ Microsoft.VisualBasic.Data.GraphTheory
  </param>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Louvain.NamespaceDoc">
+ <summary>
+ The Louvain community detection algorithm.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.Builder">
  <summary>
  将<see cref="T:Microsoft.VisualBasic.Data.GraphTheory.Network.NetworkGraph`2"/>网络图对象构建为LPA标签传播算法
@@ -500,6 +510,16 @@ Microsoft.VisualBasic.Data.GraphTheory
  <param name="labelCounter">所有节点所共享的标签票数计数器</param>
  <param name="touched">当前节点所统计到的标签列表，用于计数器的重置</param>
  <returns>节点的标签是否发生了变化</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.LPA.NamespaceDoc">
+ <summary>
+ Label propagation community detection (LPA).
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.ContractionHierarchies.NamespaceDoc">
+ <summary>
+ Contraction hierarchies preprocessing used to accelerate shortest path queries.
+ </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.DijkstraRouter">
  <summary>
@@ -653,6 +673,11 @@ Microsoft.VisualBasic.Data.GraphTheory
  <param name="prevCost"></param>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.NamespaceDoc">
+ <summary>
+ Dijkstra shortest path search.
+ </summary>
+</member>
 <member name="P:Microsoft.VisualBasic.Data.GraphTheory.Analysis.Dijkstra.RoutePathway.Cost">
  <summary>
  sum edge weight as cost
@@ -797,6 +822,17 @@ Microsoft.VisualBasic.Data.GraphTheory
  </summary>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.MorganFingerprint.NamespaceDoc">
+ <summary>
+ Morgan fingerprint style graph hashing.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.NamespaceDoc">
+ <summary>
+ Graph analysis algorithms: the shared analysis abstractions together with graph community,
+ similarity and centrality routines.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.GraphMatrix">
  <summary>
  可以用来构建<see cref="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.PageRank"/>计算所需要的index矩阵
@@ -812,6 +848,11 @@ Microsoft.VisualBasic.Data.GraphTheory
  对于文本处理的时候，textrank的这部分数据可能会比较有用
  </summary>
  <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.NamespaceDoc">
+ <summary>
+ The PageRank centrality algorithm.
+ </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.Data.GraphTheory.Analysis.PageRank.PageRank">
  <summary>
@@ -928,6 +969,11 @@ Microsoft.VisualBasic.Data.GraphTheory
  </summary>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.DinicMaxFlow.NamespaceDoc">
+ <summary>
+ The Dinic maximum flow algorithm.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.GraphTheory.Dijkstra.PQDijkstra.DijkstraFast">
  <summary> 
  Implements a generalized Dijkstra's algorithm to calculate 
@@ -1014,6 +1060,11 @@ Microsoft.VisualBasic.Data.GraphTheory
  <param name="finish"></param>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.Dijkstra.PQDijkstra.NamespaceDoc">
+ <summary>
+ Priority queue based Dijkstra shortest path search.
+ </summary>
+</member>
 <member name="M:Microsoft.VisualBasic.Data.GraphTheory.Dijkstra.PQDijkstra.PQDijkstraProvider.getInternodeTraversalCost(System.Int32,System.Int32)">
  <summary>
  get costs. If there is no connection, then cost is maximum.(»ñÈ¡)
@@ -1086,6 +1137,11 @@ Microsoft.VisualBasic.Data.GraphTheory
  ICCV 2009
  
  If you use this code, please cite the papers.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.EMD.NamespaceDoc">
+ <summary>
+ Earth mover's distance (EMD) and its fast approximation over distribution signatures.
  </summary>
 </member>
 <member name="M:Microsoft.VisualBasic.Data.GraphTheory.EMD.Run.emdDist(System.Double[],System.Double[],System.Int32,System.Double)">
@@ -1375,6 +1431,11 @@ Microsoft.VisualBasic.Data.GraphTheory
  <param name="generator">The random numbers generator.</param>
  <param name="lambda">Poisson lambda.</param>
  <returns>The level value.</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.NamespaceDoc">
+ <summary>
+ Hierarchical navigable small world (HNSW) approximate nearest neighbour search.
+ </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.HNSW.NeighbourSelectionHeuristic">
  <summary>
@@ -1811,6 +1872,11 @@ Microsoft.VisualBasic.Data.GraphTheory
  the generates index value keeps the same order with input original <paramref name="data"/> matrix rows.
  </returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.NamespaceDoc">
+ <summary>
+ K nearest neighbour graph search.
+ </summary>
+</member>
 <member name="M:Microsoft.VisualBasic.Data.GraphTheory.KNearNeighbors.ScoreMetric.eval(System.Double[],System.Double[])">
  <summary>
  the score function should produce a positive score value,
@@ -2235,6 +2301,11 @@ Microsoft.VisualBasic.Data.GraphTheory
  <see cref="T:Microsoft.VisualBasic.Imaging.RasterPixel"/> is not a readonly 2d point data model
  </remarks>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.NamespaceDoc">
+ <summary>
+ The grid graph model.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.GraphTheory.GridGraph.Spatial3D`1">
  <summary>
  a generic grid graph for fast query of the 3D geometry data
@@ -2468,6 +2539,11 @@ Microsoft.VisualBasic.Data.GraphTheory
  哈夫曼树
  </summary>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.HuffmanTree.NamespaceDoc">
+ <summary>
+ The Huffman tree model used for optimal prefix coding.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor.ApproximateNearNeighbor">
  <summary>
  K Nearest Neighbour Search
@@ -2501,6 +2577,11 @@ Microsoft.VisualBasic.Data.GraphTheory
 <member name="F:Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor.KNeighbors.size">
  <summary>
  the score cutoff maybe applied, so the neighbors size may smaller than the given k
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor.NamespaceDoc">
+ <summary>
+ Approximate nearest neighbour search built on the K-D tree index.
  </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor.TagVector">
@@ -2675,6 +2756,11 @@ Microsoft.VisualBasic.Data.GraphTheory
  </param>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.KdTree.NamespaceDoc">
+ <summary>
+ The K-D tree spatial index.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Data.GraphTheory.PQTree">
  
  <summary>
@@ -2787,6 +2873,11 @@ Microsoft.VisualBasic.Data.GraphTheory
 <member name="T:Microsoft.VisualBasic.Data.GraphTheory.MinimumSpanningTree.Kruskal">
  <summary>
  Minimum spanning tree via Kruskal algorithm
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Data.GraphTheory.MinimumSpanningTree.NamespaceDoc">
+ <summary>
+ Minimum spanning tree algorithms.
  </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.Data.GraphTheory.NamespaceDoc">

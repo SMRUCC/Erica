@@ -9,20 +9,20 @@
       "gibbs_deconv/1.0.0": {
         "dependencies": {
           "Erica.Analysis.SingleCell.SpatialDeconvolve": "1.0.0",
-          "Microsoft.VisualBasic.Data.NLP": "1.0.9742.7537",
-          "Microsoft.VisualBasic.Math.Core": "5.0.9742.7537",
-          "Microsoft.VisualBasic.Runtime": "10.5.9742.7537",
-          "SMRUCC.genomics.Analysis.HTS.DataFrame": "1.0.0",
-          "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner": "1.0.0",
+          "Microsoft.VisualBasic.Data.NLP": "1.0.9762.11310",
+          "Microsoft.VisualBasic.Math.Core": "5.0.9762.11310",
+          "Microsoft.VisualBasic.Runtime": "10.5.9762.11310",
+          "SMRUCC.genomics.Analysis.HTS.DataFrame": "1.0.9762.7562",
+          "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner": "1.0.9762.7562",
           "Erica.Analysis.SingleCell.SpatialDeconvolve.Reference": "1.0.0.0",
-          "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.Reference": "1.0.9742.7537",
-          "Microsoft.VisualBasic.Data.Framework.Reference": "1.0.9742.7537",
-          "Microsoft.VisualBasic.Data.NLP.Reference": "1.0.9742.7537",
-          "Microsoft.VisualBasic.Math.Core.Reference": "1.0.9742.7537",
-          "Microsoft.VisualBasic.Math.Statistics.Reference": "1.0.9742.7537",
-          "Microsoft.VisualBasic.Runtime.Reference": "5.33.9742.7537",
-          "SMRUCC.genomics.Analysis.HTS.DataFrame.Reference": "1.0.0.0",
-          "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.Reference": "1.0.0.0"
+          "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.Reference": "1.0.9762.11310",
+          "Microsoft.VisualBasic.Data.Framework.Reference": "1.0.9762.11310",
+          "Microsoft.VisualBasic.Data.NLP.Reference": "1.0.9762.11310",
+          "Microsoft.VisualBasic.Math.Core.Reference": "1.0.9762.11310",
+          "Microsoft.VisualBasic.Math.Statistics.Reference": "1.0.9762.11310",
+          "Microsoft.VisualBasic.Runtime.Reference": "5.33.9762.11310",
+          "SMRUCC.genomics.Analysis.HTS.DataFrame.Reference": "1.0.9762.7562",
+          "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.Reference": "1.0.9762.7562"
         },
         "runtime": {
           "gibbs_deconv.dll": {}
@@ -151,11 +151,11 @@
       },
       "Erica.Analysis.SingleCell.SpatialDeconvolve/1.0.0": {
         "dependencies": {
-          "Microsoft.VisualBasic.Data.NLP": "1.0.9742.7537",
-          "Microsoft.VisualBasic.Math.Core": "5.0.9742.7537",
-          "Microsoft.VisualBasic.Runtime": "10.5.9742.7537",
-          "SMRUCC.genomics.Analysis.HTS.DataFrame": "1.0.0",
-          "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner": "1.0.0",
+          "Microsoft.VisualBasic.Data.NLP": "1.0.9762.11310",
+          "Microsoft.VisualBasic.Math.Core": "5.0.9762.11310",
+          "Microsoft.VisualBasic.Runtime": "10.5.9762.11310",
+          "SMRUCC.genomics.Analysis.HTS.DataFrame": "1.0.9762.7562",
+          "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner": "1.0.9762.7562",
           "System.Configuration.ConfigurationManager": "10.0.12"
         },
         "runtime": {
@@ -164,10 +164,10 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Data.Bootstrapping.Fittings/5.0.9742.7537": {
+      "Microsoft.VisualBasic.Data.Bootstrapping.Fittings/5.0.9762.11310": {
         "dependencies": {
-          "Microsoft.VisualBasic.Math.Core": "5.0.9742.7537",
-          "Microsoft.VisualBasic.Runtime": "10.5.9742.7537"
+          "Microsoft.VisualBasic.Math.Core": "5.0.9762.11310",
+          "Microsoft.VisualBasic.Runtime": "10.5.9762.11310"
         },
         "runtime": {
           "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.dll": {
@@ -175,9 +175,9 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Data.Framework/5.0.9742.7537": {
+      "Microsoft.VisualBasic.Data.Framework/5.0.9762.11310": {
         "dependencies": {
-          "Microsoft.VisualBasic.Runtime": "10.5.9742.7537"
+          "Microsoft.VisualBasic.Runtime": "10.5.9762.11310"
         },
         "runtime": {
           "Microsoft.VisualBasic.Data.Framework.dll": {
@@ -185,11 +185,11 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Data.NLP/1.0.9742.7537": {
+      "Microsoft.VisualBasic.Data.NLP/1.0.9762.11310": {
         "dependencies": {
-          "Microsoft.VisualBasic.Data.Framework": "5.0.9742.7537",
-          "Microsoft.VisualBasic.Math.Core": "5.0.9742.7537",
-          "Microsoft.VisualBasic.Runtime": "10.5.9742.7537"
+          "Microsoft.VisualBasic.Data.Framework": "5.0.9762.11310",
+          "Microsoft.VisualBasic.Math.Core": "5.0.9762.11310",
+          "Microsoft.VisualBasic.Runtime": "10.5.9762.11310"
         },
         "runtime": {
           "Microsoft.VisualBasic.Data.NLP.dll": {
@@ -197,9 +197,9 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Math.Core/5.0.9742.7537": {
+      "Microsoft.VisualBasic.Math.Core/5.0.9762.11310": {
         "dependencies": {
-          "Microsoft.VisualBasic.Runtime": "10.5.9742.7537"
+          "Microsoft.VisualBasic.Runtime": "10.5.9762.11310"
         },
         "runtime": {
           "Microsoft.VisualBasic.Math.Core.dll": {
@@ -207,10 +207,10 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Math.Statistics/1.0.9742.7537": {
+      "Microsoft.VisualBasic.Math.Statistics/1.0.9762.11310": {
         "dependencies": {
-          "Microsoft.VisualBasic.Math.Core": "5.0.9742.7537",
-          "Microsoft.VisualBasic.Runtime": "10.5.9742.7537"
+          "Microsoft.VisualBasic.Math.Core": "5.0.9762.11310",
+          "Microsoft.VisualBasic.Runtime": "10.5.9762.11310"
         },
         "runtime": {
           "Microsoft.VisualBasic.Math.Statistics.dll": {
@@ -218,7 +218,7 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Runtime/10.5.9742.7537": {
+      "Microsoft.VisualBasic.Runtime/10.5.9762.11310": {
         "dependencies": {
           "System.Composition": "10.0.12",
           "System.Resources.Extensions": "10.0.12"
@@ -229,13 +229,13 @@
           }
         }
       },
-      "SMRUCC.genomics.Analysis.HTS.DataFrame/1.0.0": {
+      "SMRUCC.genomics.Analysis.HTS.DataFrame/1.0.9762.7562": {
         "dependencies": {
-          "Microsoft.VisualBasic.Data.Bootstrapping.Fittings": "5.0.9742.7537",
-          "Microsoft.VisualBasic.Math.Core": "5.0.9742.7537",
-          "Microsoft.VisualBasic.Math.Statistics": "1.0.9742.7537",
-          "Microsoft.VisualBasic.Runtime": "10.5.9742.7537",
-          "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner": "1.0.0",
+          "Microsoft.VisualBasic.Data.Bootstrapping.Fittings": "5.0.9762.11310",
+          "Microsoft.VisualBasic.Math.Core": "5.0.9762.11310",
+          "Microsoft.VisualBasic.Math.Statistics": "1.0.9762.11310",
+          "Microsoft.VisualBasic.Runtime": "10.5.9762.11310",
+          "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner": "1.0.9762.7562",
           "System.Composition": "10.0.12",
           "System.Resources.Extensions": "10.0.12"
         },
@@ -245,9 +245,9 @@
           }
         }
       },
-      "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner/1.0.0": {
+      "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner/1.0.9762.7562": {
         "dependencies": {
-          "Microsoft.VisualBasic.Runtime": "10.5.9742.7537",
+          "Microsoft.VisualBasic.Runtime": "10.5.9762.11310",
           "System.Composition": "10.0.12",
           "System.Resources.Extensions": "10.0.12"
         },
@@ -265,67 +265,67 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.Reference/1.0.9742.7537": {
+      "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.Reference/1.0.9762.11310": {
         "runtime": {
           "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.dll": {
-            "assemblyVersion": "1.0.9742.7537",
-            "fileVersion": "1.0.9742.7537"
+            "assemblyVersion": "1.0.9762.11310",
+            "fileVersion": "1.0.9762.11310"
           }
         }
       },
-      "Microsoft.VisualBasic.Data.Framework.Reference/1.0.9742.7537": {
+      "Microsoft.VisualBasic.Data.Framework.Reference/1.0.9762.11310": {
         "runtime": {
           "Microsoft.VisualBasic.Data.Framework.dll": {
-            "assemblyVersion": "1.0.9742.7537",
-            "fileVersion": "1.0.9742.7537"
+            "assemblyVersion": "1.0.9762.11310",
+            "fileVersion": "1.0.9762.11310"
           }
         }
       },
-      "Microsoft.VisualBasic.Data.NLP.Reference/1.0.9742.7537": {
+      "Microsoft.VisualBasic.Data.NLP.Reference/1.0.9762.11310": {
         "runtime": {
           "Microsoft.VisualBasic.Data.NLP.dll": {
-            "assemblyVersion": "1.0.9742.7537",
-            "fileVersion": "1.0.9742.7537"
+            "assemblyVersion": "1.0.9762.11310",
+            "fileVersion": "1.0.9762.11310"
           }
         }
       },
-      "Microsoft.VisualBasic.Math.Core.Reference/1.0.9742.7537": {
+      "Microsoft.VisualBasic.Math.Core.Reference/1.0.9762.11310": {
         "runtime": {
           "Microsoft.VisualBasic.Math.Core.dll": {
-            "assemblyVersion": "1.0.9742.7537",
-            "fileVersion": "1.0.9742.7537"
+            "assemblyVersion": "1.0.9762.11310",
+            "fileVersion": "1.0.9762.11310"
           }
         }
       },
-      "Microsoft.VisualBasic.Math.Statistics.Reference/1.0.9742.7537": {
+      "Microsoft.VisualBasic.Math.Statistics.Reference/1.0.9762.11310": {
         "runtime": {
           "Microsoft.VisualBasic.Math.Statistics.dll": {
-            "assemblyVersion": "1.0.9742.7537",
-            "fileVersion": "1.0.9742.7537"
+            "assemblyVersion": "1.0.9762.11310",
+            "fileVersion": "1.0.9762.11310"
           }
         }
       },
-      "Microsoft.VisualBasic.Runtime.Reference/5.33.9742.7537": {
+      "Microsoft.VisualBasic.Runtime.Reference/5.33.9762.11310": {
         "runtime": {
           "Microsoft.VisualBasic.Runtime.dll": {
-            "assemblyVersion": "5.33.9742.7537",
-            "fileVersion": "5.33.9742.7537"
+            "assemblyVersion": "5.33.9762.11310",
+            "fileVersion": "5.33.9762.11310"
           }
         }
       },
-      "SMRUCC.genomics.Analysis.HTS.DataFrame.Reference/1.0.0.0": {
+      "SMRUCC.genomics.Analysis.HTS.DataFrame.Reference/1.0.9762.7562": {
         "runtime": {
           "SMRUCC.genomics.Analysis.HTS.DataFrame.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
+            "assemblyVersion": "1.0.9762.7562",
+            "fileVersion": "1.0.9762.7562"
           }
         }
       },
-      "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.Reference/1.0.0.0": {
+      "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.Reference/1.0.9762.7562": {
         "runtime": {
           "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
+            "assemblyVersion": "1.0.9762.7562",
+            "fileVersion": "1.0.9762.7562"
           }
         }
       }
@@ -419,42 +419,42 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Data.Bootstrapping.Fittings/5.0.9742.7537": {
+    "Microsoft.VisualBasic.Data.Bootstrapping.Fittings/5.0.9762.11310": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Data.Framework/5.0.9742.7537": {
+    "Microsoft.VisualBasic.Data.Framework/5.0.9762.11310": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Data.NLP/1.0.9742.7537": {
+    "Microsoft.VisualBasic.Data.NLP/1.0.9762.11310": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Math.Core/5.0.9742.7537": {
+    "Microsoft.VisualBasic.Math.Core/5.0.9762.11310": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Math.Statistics/1.0.9742.7537": {
+    "Microsoft.VisualBasic.Math.Statistics/1.0.9762.11310": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Runtime/10.5.9742.7537": {
+    "Microsoft.VisualBasic.Runtime/10.5.9762.11310": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "SMRUCC.genomics.Analysis.HTS.DataFrame/1.0.0": {
+    "SMRUCC.genomics.Analysis.HTS.DataFrame/1.0.9762.7562": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner/1.0.0": {
+    "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner/1.0.9762.7562": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -464,42 +464,42 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.Reference/1.0.9742.7537": {
+    "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.Reference/1.0.9762.11310": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Data.Framework.Reference/1.0.9742.7537": {
+    "Microsoft.VisualBasic.Data.Framework.Reference/1.0.9762.11310": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Data.NLP.Reference/1.0.9742.7537": {
+    "Microsoft.VisualBasic.Data.NLP.Reference/1.0.9762.11310": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Math.Core.Reference/1.0.9742.7537": {
+    "Microsoft.VisualBasic.Math.Core.Reference/1.0.9762.11310": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Math.Statistics.Reference/1.0.9742.7537": {
+    "Microsoft.VisualBasic.Math.Statistics.Reference/1.0.9762.11310": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Runtime.Reference/5.33.9742.7537": {
+    "Microsoft.VisualBasic.Runtime.Reference/5.33.9762.11310": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "SMRUCC.genomics.Analysis.HTS.DataFrame.Reference/1.0.0.0": {
+    "SMRUCC.genomics.Analysis.HTS.DataFrame.Reference/1.0.9762.7562": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.Reference/1.0.0.0": {
+    "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.Reference/1.0.9762.7562": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

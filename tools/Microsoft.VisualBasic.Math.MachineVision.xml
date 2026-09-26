@@ -36,6 +36,11 @@ Microsoft.VisualBasic.Math.MachineVision
  <param name="tolerance"></param>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.Math.MachineVision.CCL.NamespaceDoc">
+ <summary>
+ Connected component labeling.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Math.MachineVision.CurveAnalysis">
  <summary>
  A collection of static methods for analyzing and comparing 2D curves.
@@ -203,6 +208,16 @@ Microsoft.VisualBasic.Math.MachineVision
  </summary>
  <param name="id"></param>
  <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.MachineVision.HoughCircles.NamespaceDoc">
+ <summary>
+ Hough circle transform based circle detection.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.MachineVision.NamespaceDoc">
+ <summary>
+ Machine vision: image analysis algorithms built on the signal processing math library.
+ </summary>
 </member>
 <member name="M:Microsoft.VisualBasic.Math.MachineVision.ConfusionChars.GetTuple">
  <summary>

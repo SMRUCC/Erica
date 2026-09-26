@@ -28,6 +28,11 @@ Microsoft.VisualBasic.Imaging.Physics
  https://github.com/swharden/Csharp-Data-Visualization/tree/main/dev/old/drawing/boids
  </remarks>
 </member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Boids.NamespaceDoc">
+ <summary>
+ The boids flocking simulation.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Imaging.Physics.Collision.BroadPhase">
  <summary>
  Broad Phase 宽相位剔除。将所有刚体的 AABB 写入均匀网格，
@@ -124,6 +129,11 @@ Microsoft.VisualBasic.Imaging.Physics
 <member name="M:Microsoft.VisualBasic.Imaging.Physics.Collision.Manifold.InitSolver">
  <summary>初始化冲量累加器（每步、每个接触点清零）</summary>
 </member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Collision.NamespaceDoc">
+ <summary>
+ Broad and narrow phase collision detection for the physics engine.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Imaging.Physics.Collision.NarrowPhase">
  <summary>
  Narrow Phase 窄相位精确碰撞检测。根据几何体类型分派到具体算法，
@@ -186,6 +196,11 @@ Microsoft.VisualBasic.Imaging.Physics
 </member>
 <member name="F:Microsoft.VisualBasic.Imaging.Physics.ForceFields.MagneticField.Radius">
  <summary>影响半径（超过此距离的刚体不受影响，默认全局）</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.ForceFields.NamespaceDoc">
+ <summary>
+ Force field implementations (gravity and similar) applied by the physics engine.
+ </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.Imaging.Physics.ForceFields.WindField">
  <summary>
@@ -252,6 +267,11 @@ Microsoft.VisualBasic.Imaging.Physics
 </member>
 <member name="M:Microsoft.VisualBasic.Imaging.Physics.Joints.IConstraint.SolvePosition(System.Double)">
  <summary>位置修正（消除约束漂移）</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Joints.NamespaceDoc">
+ <summary>
+ Physics joints: revolute, prismatic, spring and weld constraints between rigid bodies.
+ </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.Imaging.Physics.Joints.PrismaticJoint">
  <summary>
@@ -352,6 +372,11 @@ Microsoft.VisualBasic.Imaging.Physics
  @author Mathieu Bastian
  </summary>
 </member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.NamespaceDoc">
+ <summary>
+ Force driven label placement layout for 2D scenes.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Imaging.Physics.layout.Node">
  <summary>
  the layout data model
@@ -418,6 +443,13 @@ Microsoft.VisualBasic.Imaging.Physics
  <returns></returns>
  
 </member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.NamespaceDoc">
+ <summary>
+ A fixed step 2D physics engine: rigid bodies, broad and narrow phase collision, revolute,
+ prismatic, spring and weld joints, force fields, SPH fluids and boids flocking, plus force
+ driven label placement.
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Imaging.Physics.Particles2D.Emitter">
  <summary>
  粒子发射器：在 <see cref="F:Microsoft.VisualBasic.Imaging.Physics.Particles2D.Emitter.Position"/> 处沿 <see cref="F:Microsoft.VisualBasic.Imaging.Physics.Particles2D.Emitter.BaseAngle"/> 方向、
@@ -456,6 +488,11 @@ Microsoft.VisualBasic.Imaging.Physics
 </member>
 <member name="M:Microsoft.VisualBasic.Imaging.Physics.Particles2D.GameParticle.Reset(Microsoft.VisualBasic.Imaging.Physics.Vector2,Microsoft.VisualBasic.Imaging.Physics.Vector2,System.Double,System.Single,System.Drawing.Color)">
  <summary>复用该粒子实例，重置其状态</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Physics.Particles2D.NamespaceDoc">
+ <summary>
+ SPH particle based fluid simulation in 2D.
+ </summary>
 </member>
 <member name="T:Microsoft.VisualBasic.Imaging.Physics.Particles2D.ParticleSystem">
  <summary>
