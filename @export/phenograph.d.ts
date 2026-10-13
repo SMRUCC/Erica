@@ -37,7 +37,7 @@ declare namespace phenograph {
     * build phenograph from knn search result
     * 
     * 
-     * @param neighborMatrix should be a collection of the KNN search result: @``T:Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor.KNeighbors``.
+     * @param neighborMatrix should be a collection of the KNN search result: [KNeighbors](cref:T:Microsoft.VisualBasic.Data.GraphTheory.KdTree.ApproximateNearNeighbor.KNeighbors).
      * @param link_cutoff -
      * 
      * + default value Is ``0``.
@@ -55,7 +55,7 @@ declare namespace phenograph {
      * @param x This parameter should be an expression matrix data object
      * @param y 
      * + default value Is ``null``.
-     * @param k The KNN parameter for the phenograph analysis on the input matrix **`x`**
+     * @param k The KNN parameter for the phenograph analysis on the input matrix **x**
      * 
      * + default value Is ``30``.
      * @param link_cutoff -

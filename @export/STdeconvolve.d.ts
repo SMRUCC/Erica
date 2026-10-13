@@ -88,7 +88,7 @@ declare namespace STdeconvolve {
      * + default value Is ``0.95``.
      * @param make_gene_filters if your matrix contains no missing values, then you should set this parameter value to FALSE, 
      *  otherwise all features will be removes: due to the reason of no missing value case the ratio
-     *  greater than the default **`max`** filter threshold value.
+     *  greater than the default **max** filter threshold value.
      * 
      * + default value Is ``true``.
      * @param unify -

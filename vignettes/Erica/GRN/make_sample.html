@@ -53,47 +53,47 @@
 
 
 <dt>hvgenes</dt>
-<dd><p></p></dd>
+<dd><p>-</p></dd>
 
 
 <dt>method</dt>
-<dd><p>[as string]</p></dd>
+<dd><p>分箱模式："bins"（等宽分箱，默认）或 "sliding"（滑动窗口）。. [as string]</p></dd>
 
 
 <dt>num.bins</dt>
-<dd><p>[as integer]</p></dd>
+<dd><p>等宽分箱数量（method="bins" 时有效）。默认 30。. [as integer]</p></dd>
 
 
 <dt>window.size</dt>
-<dd><p>[as integer]</p></dd>
+<dd><p>滑动窗口宽度（method="sliding" 时有效）。默认 5。. [as integer]</p></dd>
 
 
 <dt>step</dt>
-<dd><p>[as integer]</p></dd>
+<dd><p>滑动窗口步长（method="sliding" 时有效）。默认 1。. [as integer]</p></dd>
 
 
 <dt>gene.selection</dt>
-<dd><p>[as string]</p></dd>
+<dd><p>基因筛选方式："top"（取速度幅度最高的 topGeneFraction 比例）或 "threshold"（速度幅度 &gt; velocityThreshold）。默认 "top"。. [as string]</p></dd>
 
 
 <dt>top.gene.fraction</dt>
-<dd><p>[as double]</p></dd>
+<dd><p>top 模式下保留的基因比例（0~1）。默认 0.3。. [as double]</p></dd>
 
 
 <dt>velocity.thres</dt>
-<dd><p>[as double]</p></dd>
+<dd><p>threshold 模式的绝对阈值；设为 NaN 时自动取速度幅度中位数 × 2。. [as double]</p></dd>
 
 
 <dt>discretize</dt>
-<dd><p>[as boolean]</p></dd>
+<dd><p>是否对 bin 表达矩阵做分位数离散化（供离散 DBN）。默认 False。. [as boolean]</p></dd>
 
 
 <dt>num.levels</dt>
-<dd><p>[as integer]</p></dd>
+<dd><p>离散化等级数（discretize=True 时有效）。默认 3。. [as integer]</p></dd>
 
 
 <dt>groupBy</dt>
-<dd><p>[as integer]</p></dd>
+<dd><p>分支标签（每细胞所属 group）；为 Nothing 时按整体单轨迹分箱。预留（本次不启用分支）。. [as integer]</p></dd>
 
         </table>
 
@@ -104,7 +104,7 @@
 
         <h3 style="display: block">Authors</h3>
 
-        Erica
+        SMRUCC genomics institute
 
         <h3>Value</h3>
 

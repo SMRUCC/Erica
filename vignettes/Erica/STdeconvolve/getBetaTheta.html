@@ -22,7 +22,7 @@
 
         <h3>Description</h3>
 
-        <p>&lt;br /&gt; Pull out cell-type proportions across pixels (theta) and&lt;br /&gt; cell-type gene probabilities (beta) matrices from fitted &lt;br /&gt; LDA models from fitLDA
+        <p>&lt;br /&gt; Pull out cell-type proportions across pixels (theta) and&lt;br /&gt; cell-type gene probabilities (beta) matrices from fitted &lt;br /&gt; LDA models from fitLDA</p>
 
         <h3>Usage</h3>
 
@@ -36,11 +36,11 @@
         <table>
             
 <dt>LDA</dt>
-<dd><p>an LDA model from <code>topicmodels. [as <a href="/vignettes/clr/Microsoft/VisualBasic/Data/NLP/LDA/LdaGibbsSampler.html">LdaGibbsSampler</a>]</p></dd>
+<dd><p>an LDA model from <code>topicmodels</code>. From list of models returned by fitLDA. [as <a href="/vignettes/clr/Microsoft/VisualBasic/Data/NLP/LDA/LdaGibbsSampler.html">LdaGibbsSampler</a>]</p></dd>
 
 
 <dt>corpus</dt>
-<dd><p>[as <a href="/vignettes/clr/Erica/Analysis/SingleCell/SpatialDeconvolve/STCorpus.html">STCorpus</a>]</p></dd>
+<dd><p>If corpus is NULL, then it will use the original corpus that the model was fitted to. Otherwise, compute deconvolved topics from this new corpus. Needs to be pixels x genes and nonnegative integer counts. Each row needs at least 1 nonzero entry (default: NULL). [as <a href="/vignettes/clr/Erica/Analysis/SingleCell/SpatialDeconvolve/STCorpus.html">STCorpus</a>]</p></dd>
 
 
 <dt>top.genes</dt>
@@ -55,16 +55,16 @@
 
         <h3 style="display: block">Authors</h3>
 
-        Erica
+        SMRUCC genomics institute
 
         <h3>Value</h3>
 
-        <p>A Deconvolve object that contains
+        <p>A Deconvolve object that contains</p>
 
 
 <ul>
-<li><p>beta: cell-type (rows) by gene (columns) distribution matrix. Each row is a probability distribution of a cell-type expressing each gene in the corpus.</li>
-<li><p>theta: pixel (rows) by cell-types (columns) distribution matrix. Each row is the cell-type composition for a given pixel.</li>
+<li>beta: cell-type (rows) by gene (columns) distribution matrix. Each row is a probability distribution of a cell-type expressing each gene in the corpus.</li>
+<li>theta: pixel (rows) by cell-types (columns) distribution matrix. Each row is the cell-type composition for a given pixel.</li>
 </ul><h4>clr value class</h4><ul><li><a href="/vignettes/clr/Erica/Analysis/SingleCell/SpatialDeconvolve/Deconvolve.html">Deconvolve</a></li></ul>
 
         <h3 style="display: none;">Examples</h3>

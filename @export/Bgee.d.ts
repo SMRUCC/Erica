@@ -26,7 +26,7 @@ declare namespace Bgee {
      * 
      * + default value Is ``'*'``.
      * @return the return data value is depends on the parameter 
-     *  value of **`development_stage`**.
+     *  value of **development_stage**.
      *  
      *  + for a specific development_stage id, this function 
      *    just returns a enrichment result dataframe

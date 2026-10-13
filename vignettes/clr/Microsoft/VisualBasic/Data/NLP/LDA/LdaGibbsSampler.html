@@ -22,11 +22,25 @@
 
         <h3>Description</h3>
 
-        <p>Gibbs sampler for estimating the best assignments of topics for words and documents in a corpus. The algorithm is introduced in Tom Griffiths' paper "Gibbs sampling in the generative model of Latent Dirichlet Allocation" (2002). Gibbs sampler采样算法的实现
+        <p>Gibbs sampler for estimating the best assignments of topics for words and documents in a corpus. The algorithm is introduced in Tom Griffiths' paper "Gibbs sampling in the generative model of Latent Dirichlet Allocation" (2002). Gibbs sampler采样算法的实现</p>
 
-<p>@author heinrich
+<p>@author heinrich</p>
 
-<p><a href="https://github.com/hankcs/LDA4j" title="https://github.com/hankcs/LDA4j">https://github.com/hankcs/LDA4j</a>
+<p><a href="https://github.com/hankcs/LDA4j" title="https://github.com/hankcs/LDA4j">https://github.com/hankcs/LDA4j</a></p>
+
+<h3>并行化实现说明</h3>
+
+<p>collapsed gibbs sampling 是一条马尔可夫链，对第 i 个词语的采样依赖于 除它以外所有词语的当前状态，所以严格的并行化在数学上是不可能的。这里 采用的是与 PLDA / LightLDA / MALLET 相同的近似并行模型：</p>
+
+
+<ol>
+<li>语料在训练开始之前被一次性划分为若干个连续文档块，之后所有迭代都 复用该划分，每个工作线程只处理自己块内的文档；</li>
+<li>文档不跨块，于是文档独占的计数器 nd 完全不需要同步；</li>
+<li>全局共享的 nw / nwsum 通过 System.Threading.Interlocked 原子更新， 计数不再丢失，也不再需要任何钳位修补；</li>
+</ol>
+
+
+<p>结果与串行训练在统计意义上是一致的（主题质量相同），但逐位并不严格 相等。将 <a href="cref:P:Microsoft.VisualBasic.Data.NLP.LDA.LdaGibbsSampler.Workers">LdaGibbsSampler.Workers</a> 设置为 1 即可退回串行模式。</p>
 
         <h3>Declare</h3>        
 
@@ -38,8 +52,16 @@ export class LdaGibbsSampler {
    K: integer;
    # Retrieve estimated topic--word associations. If sample lag &gt; 0 then the mean value of all sampled statistics for phi[][] is taken. 获取主题——词语矩阵
    Phi: <a href="/vignettes/clr/System/Double[].html">Double[][]</a>;
+   # 采样所使用的随机数种子。
+   RandomSeed: integer;
+   # 两次全局同步之间所运行的采样轮数。
+   SyncInterval: integer;
    # Retrieve estimated document--topic associations. If sample lag &gt; 0 then the mean value of all sampled statistics for theta[][] is taken. 获取文档——主题矩阵
    Theta: <a href="/vignettes/clr/System/Double[].html">Double[][]</a>;
+   # 归入各个主题的词语总数
+   TopicTokenTotal: integer;
+   # 并行采样所使用的工作线程数量。
+   Workers: integer;
 }
 </code>
         </pre>

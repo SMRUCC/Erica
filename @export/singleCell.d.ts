@@ -15,9 +15,9 @@ declare namespace singleCell {
     * 
      * @param cells -
      * @param antibody -
-     * @param wrap_cells this function returns a wrapped @``T:Erica.Analysis.SpatialTissue.HEView.CellScan`` object vector if this parameter is set as TRUE, 
+     * @param wrap_cells this function returns a wrapped [CellScan](cref:T:Erica.Analysis.SpatialTissue.HEView.CellScan) object vector if this parameter is set as TRUE, 
      *  otherwise this function returns a numeric vector of the weight value of the specific 
-     *  **`antibody`** data channel.
+     *  **antibody** data channel.
      * 
      * + default value Is ``false``.
      * @param env -
@@ -38,7 +38,7 @@ declare namespace singleCell {
    function dzi_unmix(dzi: object, level: object, dir: object, IHC_antibody: object, export_dir: string): any;
    /**
     * Extract the gene id set with non-missing expression status under 
-    *  the given threshold value **`q`**.
+    *  the given threshold value **q**.
     * 
     * 
      * @param raw -
@@ -174,7 +174,7 @@ declare namespace singleCell {
         *  1. barcodes.tsv
         *  2. features.tsv
         *  3. matrix.mtx
-        * @return a clr @``T:Microsoft.VisualBasic.Data.Framework.DataFrame`` object that contains all information that read from the given TCGA dataset folder.
+        * @return a clr [DataFrame](cref:T:Microsoft.VisualBasic.Data.Framework.DataFrame) object that contains all information that read from the given TCGA dataset folder.
       */
       function TCGA_mtx(dataset: string): object;
    }
@@ -185,7 +185,7 @@ declare namespace singleCell {
        * 
         * @param dzi metadata of the dzi image
         * @param level usually be the max zoom level
-        * @param dir A directory path that contains the image files in current **`level`**.
+        * @param dir A directory path that contains the image files in current **level**.
         * @param ostu_factor -
         * 
         * + default value Is ``0.7``.
