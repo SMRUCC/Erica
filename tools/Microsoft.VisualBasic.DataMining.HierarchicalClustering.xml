@@ -1,0 +1,1456 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Microsoft.VisualBasic.DataMining.HierarchicalClustering
+</name>
+</assembly>
+<members>
+<member name="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions">
+ <summary>
+ BIRCH 预聚类（CF-tree）参数。
+ 
+ <para>
+ BIRCH（Balanced Iterative Reducing and Clustering using Hierarchies）先用 CF-tree 把
+ n 个样本压缩成 m 个子簇（m &lt;&lt; n），再对子簇质心执行（优化后的）凝聚层次聚类。
+ 这样可以完全避免构造 n×n 距离矩阵，是面向 2 万样本以上数据集的近似加速通道。
+ </para>
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions.maxNodeEntries">
+ <summary>
+ 每个 CF 节点最多容纳的条目数（BIRCH 参数 B，branching factor）
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions.threshold">
+ <summary>
+ 距离阈值（BIRCH 参数 T，radius）。当 &lt;= 0 时由 <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions.targetSubclusters"/> 自动推导。
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions.distFunction">
+ <summary>
+ 距离函数，取值 <see cref="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.D0_DIST"/>、<see cref="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.D1_DIST"/>、
+ <see cref="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.D2_DIST"/>、<see cref="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.D3_DIST"/> 或 <see cref="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.D4_DIST"/>
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions.targetSubclusters">
+ <summary>
+ 期望压缩到的子簇数量上限（m）。当 <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions.threshold"/> 未显式指定时，以该值为目标
+ 自动推导阈值（指数增长 + 二分细化）。
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions.linkage">
+ <summary>
+ 第二级凝聚层次聚类的连接策略，缺省为平均连接 <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.AverageLinkageStrategy"/>
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions.silent">
+ <summary>
+ 是否静默运行（缺省 True）
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions.automaticRebuild">
+ <summary>
+ 是否启用 CF-tree 的内存超限自动重建（缺省 False）。
+ 
+ 自动重建会周期性使用反射估算整棵树的内存占用，开销较大，
+ 因此在大数据近似通道中默认关闭；如需严格控制内存可将其置为 True。
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions.thresholdRefineIterations">
+ <summary>
+ 阈值自动推导时二分细化的迭代次数（缺省 6）
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchPreclustering">
+ <summary>
+ BIRCH 预聚类的结果：m 个子簇的名称、质心，以及「子簇 -&gt; 成员样本行索引」的映射。
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchPreclustering.Names">
+ <summary>
+ 子簇名称（<c>sc_1, sc_2, ...</c>），顺序与 <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchPreclustering.Centroids"/> 一致，
+ 并作为第二级凝聚层次聚类的叶节点名称
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchPreclustering.Centroids">
+ <summary>
+ 子簇质心（m x d）
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchPreclustering.Members">
+ <summary>
+ 子簇名称 -&gt; 该子簇包含的原始样本（特征表）行索引
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchPreclustering.Threshold">
+ <summary>
+ 实际使用的 CF-tree 距离阈值
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchPreclustering.Precluster(System.Double[][],Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions)">
+ <summary>
+ 对特征表执行 BIRCH 预聚类，返回至多 <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions.targetSubclusters"/> 个子簇。
+ </summary>
+ <param name="rows">特征矩阵（n x d），每一行为一个样本</param>
+ <param name="options">预聚类参数，缺省使用 <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions"/> 的默认值</param>
+ <returns>预聚类结果</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchPreclustering.build(System.Double[][],System.Int32,System.Double,System.Int32,System.Boolean)">
+ <summary>
+ 以给定的阈值构建 CF-tree 并把所有样本插入其中
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchPreclustering.fromTree(Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree,System.Double[][],System.Double)">
+ <summary>
+ 由 CF-tree 的叶条目（子簇）构造预聚类结果
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchPreclustering.identity(System.Double[][])">
+ <summary>
+ 恒等预聚类：每个样本自成一个子簇
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchPreclustering.centroid(System.Double[][],System.Collections.Generic.List{System.Int32})">
+ <summary>
+ 计算一个子簇的质心
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchPreclustering.seedThreshold(System.Double[][])">
+ <summary>
+ 由随机采样的成对距离估计一个初始阈值（半径）种子
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry">
+ 
+ <summary>
+ @author Roberto Perdisci (roberto.perdisci@gmail.com)
+ 
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry.#ctor(Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry)">
+ <summary>
+ This makes a deep copy of the CFEntry e.
+ WARNING: we do not make a deep copy of the child!!!
+ </summary>
+ <param name="e"> the entry to be cloned </param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry.distance(Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry,System.Int32)">
+ 
+ <param name="e"> </param>
+ <returns> the distance between this entry and e </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntryPair">
+ 
+ <summary>
+ @author Roberto Perdisci (roberto.perdisci@gmail.com)
+ 
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFNode">
+ 
+ <summary>
+ @author Roberto Perdisci (roberto.perdisci@gmail.com)
+ @version 0.1
+ 
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFNode.size">
+ 
+ <returns> the number of CFEntries in the node </returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFNode.Dummy">
+ 
+ <returns> true if this is only a place-holder node for maintaining correct pointers in the list of leaves </returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFNode.MaxNodeEntries">
+ 
+ <returns> the max number of entries the node can host (parameter B) </returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFNode.DistThreshold">
+ 
+ <returns> the distance threshold used to decide whether a CFEntry can absorb a new entry </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFNode.mapToClosestSubcluster(Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry)">
+ <summary>
+ Retrieves the subcluster id of the closest leaf entry to e
+ </summary>
+ <param name="e"> the entry to be mapped </param>
+ <returns> a positive integer, if the leaf entries were enumerated after data insertion is finished, otherwise -1 </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFNode.insertEntry(Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry)">
+ <summary>
+ Inserts a new entry to the CFTree
+ </summary>
+ <param name="e"> the entry to be inserted </param>
+ <returns> TRUE if the new entry could be inserted without problems, otherwise we need to split the node </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFNode.splitEntry(Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry)">
+ 
+ <param name="closest"> the entry to be split </param>
+ <returns> the new entries derived from splitting </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFNode.redistributeEntries(System.Collections.Generic.List{Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry},Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntryPair,Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry,Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry)">
+ <summary>
+ Called when splitting is necessary
+ </summary>
+ <param name="oldEntries"> </param>
+ <param name="farEntries"> </param>
+ <param name="newE1"> </param>
+ <param name="newE2"> </param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFNode.redistributeEntries(System.Collections.Generic.List{Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry},System.Collections.Generic.List{Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry},Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntryPair,Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry,Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry)">
+ <summary>
+ Called when "merging refinement" is attempted but no actual merging can be applied
+ </summary>
+ <param name="oldEntries1"> </param>
+ <param name="oldEntries2"> </param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFNode.redistributeEntries(System.Collections.Generic.List{Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry},System.Collections.Generic.List{Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry},Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry)">
+ <summary>
+ Called when "merging refinement" is attempted and two entries are actually merged
+ </summary>
+ <param name="oldEntries1"> </param>
+ <param name="oldEntries2"> </param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFNode.findClosestEntry(Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry)">
+ 
+ <param name="e"> a CFEntry </param>
+ <returns> the entry in this node that is closest to e </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFNode.replaceClosestPairWithNewEntries(Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntryPair,Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry,Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry)">
+ <summary>
+ Used during merging refinement
+ </summary>
+ <param name="p"> </param>
+ <param name="newE1"> </param>
+ <param name="newE2"> </param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFNode.replaceClosestPairWithNewMergedEntry(Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntryPair,Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry)">
+ <summary>
+ Used during merging refinement
+ </summary>
+ <param name="p"> </param>
+ <param name="newE"> </param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFNode.mergingRefinement(Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntryPair)">
+ 
+ <param name="splitEntries"> the entry that got split
+  </param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFNode.replaceEntries(Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFNode)">
+ <summary>
+ Substitutes the entries in this node with the entries of the parameter node
+ </summary>
+ <param name="n"> the node from which entries are copied </param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFNode.applyMergingRefinement">
+ 
+ <returns> true if merging refinement is enabled </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree">
+ <summary>
+ This is an implementation of the BIRCH clustering algorithm described in:
+ 
+ T. Zhang, R. Ramakrishnan, and M. Livny.
+ "BIRCH: A New Data Clustering Algorithm and Its Applications"
+ Data Mining and Knowledge Discovery, 1997.
+ 
+ @author Roberto Perdisci (roberto.perdisci@gmail.com)
+ @version 0.1
+ 
+ </summary>
+ <remarks>
+ https://github.com/sehee-lee/JBIRCH
+ </remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.MEM_LIM_FRAC">
+ <summary>
+ Used when computing if the tree is reaching memory limit
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.D0_DIST">
+ <summary>
+ Centroid Distance D0
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.D1_DIST">
+ <summary>
+ Centroid distance D1
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.D2_DIST">
+ <summary>
+ Cluster Distance D2
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.D3_DIST">
+ <summary>
+ Cluster Distance D3
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.D4_DIST">
+ <summary>
+ Cluster Distance D4
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.root">
+ <summary>
+ The root node of the CFTree
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.leafListStartField">
+ <summary>
+ dummy node that points to the list of leaves. used for fast retrieval of final subclusters
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.instanceIndex">
+ <summary>
+ keeps count of the instances inserted into the tree
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.automaticRebuildField">
+ <summary>
+ if true, the tree is automatically rebuilt every time the memory limit is reached
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.memLimit">
+ <summary>
+ the memory limit used when automatic rebuilding is active
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.periodicMemLimitCheckField">
+ <summary>
+ used when automatic rebuilding is active
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.#ctor(System.Int32,System.Double,System.Int32,System.Boolean)">
+ 
+ <param name="maxNodeEntries"> parameter B </param>
+ <param name="distThreshold"> parameter T </param>
+ <param name="distFunction"> must be one of CFTree.D0_DIST,...,CFTree.D4_DIST, otherwise it will default to D0_DIST </param>
+ <param name="applyMergingRefinement"> if true, activates merging refinement after each node split </param>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.MemoryLimit">
+ 
+ <returns> the current memory limit used to trigger automatic rebuilding </returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.LeafListStart">
+ <summary>
+ Gets the start of the list of leaf nodes (remember: the first node is a dummy node)
+ 
+ @return
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.MemoryLimitMB(System.Int64)">
+ 
+ <param name="limit"> memory limit in Mbytes </param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.AutomaticRebuild(System.Boolean)">
+ 
+ <param name="auto"> if true, and memory limit is reached, the tree is automatically rebuilt with larger threshold </param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.PeriodicMemLimitCheck(System.Int64)">
+ 
+ <param name="period"> the number of insert operations after which we check whether the tree has reached the memory limit </param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.insertEntry(System.Double[])">
+ <summary>
+ Inserts a single pattern vector into the CFTree
+ </summary>
+ <param name="x"> the pattern vector to be inserted in the tree </param>
+ <returns> true if insertion was successful </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.insertEntry(System.Double[],System.Int32)">
+ <summary>
+ Insert a pattern vector with a specific associated pattern vector index.
+ This method does not use periodic memory limit checks.
+ </summary>
+ <param name="x"> the pattern vector to be inserted in the tree </param>
+ <param name="index"> a specific index associated to the pattern vector x </param>
+ <returns> true if insertion was successful </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.insertEntry(Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFEntry)">
+ <summary>
+ Inserts an entire CFEntry into the tree. Used for tree rebuilding.
+ </summary>
+ <param name="e"> the CFEntry to insert </param>
+ <returns> true if insertion happened without problems </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.rebuildIfAboveMemLimit">
+ <summary>
+ Every time we split the root, we check whether the memory limit imposed on the tree
+ has been reached. In this case, we automatically increase the distance threshold and
+ rebuild the tree. 
+ 
+ It is worth noting that since we only check memory consumption only during root split,
+ and not for all node splits (for performance reasons), we cannot guarantee that
+ the memory limit will not be exceeded. The tree may grow significantly between a 
+ root split and the next.
+ Furthermore, the computation of memory consumption using the SizeOf class is only approximate.
+ 
+ Notice also that if the threshold grows to the point that all the entries fall into one entry
+ of the root (i.e., the root is the only node in the tree, and has only one sub-cluster)
+ the automatic rebuild cannot decrease the memory consumption (because increasing the threshold
+ has not effect on reducing the size of the tree), and if Java runs out of memory
+ the program will terminate.
+ </summary>
+ <returns> true if rebuilt </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.splitRoot">
+ <summary>
+ Splits the root to accommodate a new entry. The height of the tree grows by one.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.copyTree(Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree)">
+ <summary>
+ Overwrites the structure of this tree (all nodes, entreis, and leaf list) with the structure of newTree.
+ </summary>
+ <param name="newTree"> the tree to be copied </param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.computeNewThreshold(Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFNode,System.Int32,System.Double)">
+ <summary>
+ Computes a new threshold based on the average distance of the closest subclusters in each leaf node
+ </summary>
+ <param name="leafListStart"> the pointer to the start of the list (the first node is assumed to be a place-holder dummy node) </param>
+ <param name="distFunction"> </param>
+ <param name="currentThreshold"> </param>
+ <returns> the new threshold </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.hasReachedMemoryLimit(Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree,System.Int64)">
+ <summary>
+ True if CFTree's memory occupation exceeds or is almost equal to the memory limit
+ </summary>
+ <param name="tree"> the tree to be tested </param>
+ <param name="limit"> the memory limit </param>
+ <returns> true if memory limit has been reached </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.computeMemorySize(Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree)">
+ <summary>
+ Computes the memory usage of a CFTree
+ </summary>
+ <param name="t"> a CFTree </param>
+ <returns> memory usage in bytes </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.rebuildTree(System.Int32,System.Double,System.Int32,System.Boolean,System.Boolean)">
+ <summary>
+ This implementation of the rebuilding algorithm is different from
+ the one described in Section 4.5 of the paper. However the effect
+ is practically the same. Namely, given a tree t_i build using
+ threshold T_i, if we set a new threshold T_(i+1) and call
+ rebuildTree (assuming maxEntries stays the same) we will obtain
+ a more compact tree. 
+ 
+ Since the CFTree is sensitive to the order of the data, there
+ may be cases in which, if we set the T_(i+1) so that non of the
+ sub-clusters (i.e., the leaf entries) can be merged (e.g., T_(i+1)=-1)
+ we might actually obtain a new tree t_(i+1) containing more nodes
+ than t_i. However, the obtained sub-clusters in t_(i+1) will be 
+ identical to the sub-clusters in t_i.
+ 
+ In practice, though, if T_(i+1) > T_(i), the tree t_(i+1) will
+ usually be smaller than t_i.
+ Although the Reducibility Theorem in Section 4.5 may not hold
+ anymore, in practice this will not be a big problem, since 
+ even in those cases in which t_(i+1)>t_i, the growth should
+ be very small.
+ 
+ The advantage is that relaxing the constraint that the size
+ of t_(i+1) must be less than t_i makes the implementation
+ of the rebuilding algorithm much easier.
+ </summary>
+ <param name="newMaxEntries"> the new number of entries per node </param>
+ <param name="newThreshold"> the new threshold </param>
+ <param name="applyMergingRefinement"> if true, merging refinement will be applied after every split </param>
+ <param name="discardOldTree"> if true, the old tree will be discarded (to free memory)
+ </param>
+ <returns> the new (usually more compact) CFTree </returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.SubclusterMembers">
+ 
+ <returns> a list of subcluster, and for each subcluster a list of pattern vector indexes that belong to it </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.finishedInsertingData">
+ <summary>
+ Signals the fact that we finished inserting data.
+ The obtained subclusters will be assigned a positive, unique ID number
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.mapToClosestSubcluster(System.Double[])">
+ <summary>
+ Retrieves the subcluster id of the closest leaf entry to e
+ </summary>
+ <param name="x"> the entry to be mapped </param>
+ <returns> a positive integer, if the leaf entries were enumerated using finishedInsertingData(), otherwise -1 </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.computeSumLambdaSquared">
+ <summary>
+ Computes an estimate of the cost of running an O(n^2) algorithm to split each subcluster in more fine-grained clusters
+ </summary>
+ <returns> sqrt(sum_i[(n_i)^2]), where n_i is the number of members of the i-th subcluster </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.printCFTree">
+ <summary>
+ prints the CFTree
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.countNodes">
+ <summary>
+ Counts the nodes of the tree (including leaves)
+ </summary>
+ <returns> the number of nodes in the tree </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.countEntries">
+ <summary>
+ Counts the number of CFEntries in the tree
+ </summary>
+ <returns> the number of entries in the tree </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.countLeafEntries">
+ <summary>
+ Counts the number of leaf entries (i.e., the number of sub-clusters in the tree)
+ </summary>
+ <returns> the number of leaf entries (i.e., the number of sub-clusters) </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.printLeafIndexes">
+ <summary>
+ Prints the index of all the pattern vectors that fall into the leaf nodes.
+ This is only useful for debugging purposes.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.CFTree.printLeafEntries">
+ <summary>
+ Prints the index of the pattern vectors in each leaf entry (i.e., each subcluster)
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.NamespaceDoc">
+ <summary>
+ The BIRCH (balanced iterative reducing and clustering using hierarchies) algorithm.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster">
+ <summary>
+ Represents a node (cluster) in the hierarchical clustering tree (dendrogram).
+ Each cluster can be a leaf node (containing a single data point) or an internal node
+ (containing child clusters formed by merging). Implements the tree node data structure
+ required for hierarchical clustering and provides named identification via <see cref="T:Microsoft.VisualBasic.ComponentModel.Collection.Generic.INamedValue"/> .
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.Distance">
+ <summary>
+ Gets or sets the <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.Distance"/>  object associated with this cluster,
+ representing the distance at which this cluster was formed (for internal nodes)
+ or the initial distance for leaf nodes.
+ </summary>
+ <returns>A <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.Distance"/>  instance containing the distance value and optional weight.</returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.WeightValue">
+ <summary>
+ Gets the weight of this cluster from the underlying <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.Distance"/>  object.
+ The weight is used in weighted linkage strategies such as WPGMA.
+ </summary>
+ <returns>A <see cref="T:System.Double"/>  value representing the weight of this cluster.</returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.DistanceValue">
+ <summary>
+ Gets the distance value of this cluster from the underlying <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.Distance"/>  object.
+ For internal nodes, this represents the cophenetic distance at which child clusters were merged.
+ For leaf nodes, this is typically zero or the initial distance.
+ </summary>
+ <returns>A <see cref="T:System.Double"/>  value representing the distance associated with this cluster.</returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.Parent">
+ <summary>
+ Gets or sets the parent cluster of this node in the dendrogram.
+ A <c>Nothing</c> value indicates this cluster is the root of the tree.
+ Implements <see cref="P:Microsoft.VisualBasic.ComponentModel.DataStructures.Tree.ITreeNodeData`1.Parent"/> .
+ </summary>
+ <returns>The parent <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster"/>  object, or <c>Nothing</c> if this is the root node.</returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.Name">
+ <summary>
+ Gets or sets the unique name identifier for this cluster.
+ The name should be unique among all leaf clusters to ensure correct equality comparisons.
+ Implements <see cref="P:Microsoft.VisualBasic.ComponentModel.DataSourceModel.Repository.IKeyedEntity`1.Key"/>  and <see cref="P:Microsoft.VisualBasic.ComponentModel.DataStructures.Tree.ITreeNodeData`1.FullyQualifiedName"/> .
+ </summary>
+ <returns>A <see cref="T:System.String"/>  representing the name of this cluster.</returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.Id">
+ <summary>
+ 进程内唯一、单调递增的簇标识（非负、小于 2^31）。作为链接表（<see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap"/>）的哈希键，
+ 避免每次链接查找都对簇名执行字符串哈希与 <see cref="T:System.String"/> 比较，
+ 同时保证不同的簇对象不会因为重名而共享同一个链接键。
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.removed">
+ <summary>
+ 供 <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyBuilder"/> 在凝聚过程中以 O(1) 的方式
+ 标记当前簇已经被合并进新簇（等价于旧实现的从 Clusters 列表中物理移除）。
+ 
+ <para>
+ 旧实现每合并一对簇都要对 Clusters 列表做一次 O(n) 的线性查找 + RemoveAt
+ （尾部元素整体前移），累计 O(n^2) 的常数开销；标记位方案把删除降为 O(1)，
+ 失效条目由 HierarchyBuilder 在其数量超过存活条目时一次性压实。
+ </para>
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.Children">
+ <summary>
+ Gets the read-only collection of child clusters directly under this node.
+ An empty collection indicates that this node is a leaf cluster.
+ Implements <see cref="P:Microsoft.VisualBasic.ComponentModel.DataStructures.Tree.ITreeNodeData`1.ChildNodes"/> .
+ </summary>
+ <returns>An <see cref="T:System.Collections.Generic.IReadOnlyCollection`1"/>  containing the direct children of this cluster.</returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.LeafNames">
+ <summary>
+ Gets the list of leaf names contained within this cluster's subtree.
+ For leaf clusters, this list contains the cluster's own name. For internal clusters,
+ it accumulates the names of all descendant leaf nodes.
+ </summary>
+ <returns>A <see cref="T:System.Collections.Generic.List`1"/>  containing the names of all leaf nodes in this subtree.</returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.IsRoot">
+ <summary>
+ Gets a value indicating whether this cluster is the root node of the dendrogram.
+ A cluster is considered the root if it has no parent or if its parent is itself.
+ Implements <see cref="P:Microsoft.VisualBasic.ComponentModel.DataStructures.Tree.ITreeNodeData`1.IsRoot"/> .
+ </summary>
+ <returns><c>True</c> if this cluster is the root; otherwise, <c>False</c>.</returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.isLeaf">
+ <summary>
+ Gets a value indicating whether this cluster is a leaf node.
+ A cluster is a leaf if it has no children.
+ Implements <see cref="P:Microsoft.VisualBasic.ComponentModel.DataStructures.Tree.ITreeNodeData`1.IsLeaf"/> .
+ </summary>
+ <returns><c>True</c> if this cluster has no children (i.e., it is a leaf node);
+ otherwise, <c>False</c>.</returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.Leafs">
+ <summary>
+ Gets the total number of leaf nodes in the subtree rooted at this cluster.
+ Recursively counts all descendant leaf nodes, including direct children and their children.
+ </summary>
+ <returns>An <see cref="T:System.Int32"/>  representing the total count of leaf nodes in this subtree.</returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.LeafCount">
+ <summary>
+ 供 <see cref="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyTreeNode.Agglomerate(System.String)"/> 在合并时 O(1) 写入新簇的叶节点数量，
+ 避免 <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.Leafs"/> 在树切分（cutTree）、<see cref="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.OrderLeafs"/>
+ 以及树图绘制过程中被反复递归重算。
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.TotalDistance">
+ <summary>
+ Gets the total distance value accumulated along the left-most path from this node
+ to its deepest descendant. This is the sum of distances from this node down through
+ the first child at each level.
+ </summary>
+ <returns>A <see cref="T:System.Double"/>  value representing the accumulated distance along the
+ left-most branch of this subtree.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.#ctor(System.String)">
+ <summary>
+ Initializes a new instance of the <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster"/>  class with the specified name.
+ The cluster is created as a leaf node with an empty child list, an empty leaf name list,
+ and a default <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.Distance"/>  object.
+ </summary>
+ <param name="name">The unique name identifier for this cluster.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.AddLeafName(System.String)">
+ <summary>
+ Adds a single leaf name to this cluster's list of leaf names.
+ This is used to track which original data points are contained within a cluster.
+ </summary>
+ <param name="lname">The leaf name to add.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.AppendLeafNames(System.Collections.Generic.IEnumerable{System.String})">
+ <summary>
+ Adds a collection of leaf names to this cluster's list of leaf names.
+ This is used when merging clusters to aggregate all descendant leaf names.
+ </summary>
+ <param name="lnames">An enumerable collection of leaf names to append.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.AddChild(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster)">
+ <summary>
+ Adds a child cluster to this node's children collection.
+ This method is called during the agglomerative clustering process when two clusters are merged.
+ </summary>
+ <param name="cluster">The child <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster"/>  to add.</param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.contains(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster)">
+ <summary>
+ Determines whether the specified cluster is a direct child of this cluster.
+ </summary>
+ <param name="cluster">The <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster"/>  to check for containment.</param>
+ <returns><c>True</c> if the specified cluster is a direct child; otherwise, <c>False</c>.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.OrderLeafs">
+ <summary>
+ Returns the ordered sequence of leaf node names for plotting a dendrogram or heatmap.
+ Leaf clusters are returned in order of increasing leaf count (smallest subtrees first),
+ which produces a visually balanced dendrogram layout.
+ </summary>
+ <returns>An array of <see cref="T:System.String"/>  values representing the leaf names in plot order.
+ For leaf clusters, returns an array containing only the cluster's own name.</returns>
+ <remarks>
+ This function is used to obtain the re-ordered labels for data rows when plotting
+ a clustered heatmap, ensuring that the dendrogram branches are displayed without crossing.
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.ToString">
+ <summary>
+ Returns a string representation of this cluster.
+ Leaf nodes are prefixed with "Leaf" and internal nodes with "Cluster",
+ followed by the cluster's name.
+ </summary>
+ <returns>A <see cref="T:System.String"/>  in the format "Leaf {Name}" or "Cluster {Name}".</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.Equals(System.Object)">
+ <summary>
+ Determines whether the specified object is equal to the current cluster.
+ Equality is determined solely by the <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.Name"/>  property.
+ </summary>
+ <param name="obj">The object to compare with the current cluster.</param>
+ <returns><c>True</c> if the specified object is a <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster"/>  with the same
+ <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.Name"/> ; otherwise, <c>False</c>.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.GetHashCode">
+ <summary>
+ Returns a hash code for this cluster based on its <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.Name"/> .
+ </summary>
+ <returns>A32-bit signed integer hash code derived from the cluster's name,
+ or0 if the name is <c>Nothing</c>.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.CountLeafs(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster,System.Int32)">
+ <summary>
+ Recursively counts the total number of leaf nodes in the subtree rooted at the specified node.
+ This is a helper method used by the <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.Leafs"/>  property.
+ </summary>
+ <param name="node">The root node of the subtree to count leaves for.</param>
+ <param name="count">The current accumulated count (used for recursive accumulation).</param>
+ <returns>An <see cref="T:System.Int32"/>  representing the total number of leaf nodes in the subtree.</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.DefaultClusteringAlgorithm">
+ <summary>
+ Default implementation of the <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.ClusteringAlgorithm"/>  interface that provides
+ hierarchical agglomerative clustering functionality. Supports standard clustering,
+ flat (threshold-based) clustering, and weighted clustering using configurable linkage strategies.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.DefaultClusteringAlgorithm.debug">
+ <summary>
+ Gets or sets a value indicating whether debug progress information should be
+ printed to the console during clustering execution.
+ </summary>
+ <returns><c>True</c> if debug output is enabled; otherwise, <c>False</c>.
+ Default value is <c>False</c>.</returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.DefaultClusteringAlgorithm.Silent">
+ <summary>
+ 是否静默运行？（默认 True，不向控制台输出 tqdm 进度条与调试信息）
+ 
+ 作为库在其它程序中调用层次聚类时应当保持静默；只有在命令行调试场景下
+ 才将其设置为 False 以查看凝聚过程的迭代进度。
+ </summary>
+ <returns><c>True</c> 表示静默运行；否则输出进度信息。默认值为 <c>True</c>。</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.DefaultClusteringAlgorithm.performClustering(System.Double[][],System.String[],Microsoft.VisualBasic.DataMining.HierarchicalClustering.LinkageStrategy)">
+ <summary>
+ Performs full hierarchical agglomerative clustering on the given distance matrix,
+ using the specified linkage strategy. Progress is reported via a console progress bar.
+ </summary>
+ <param name="distances">A symmetric square distance matrix where <c>distances(i)(j)</c>
+ represents the distance between the i-th and j-th data points.</param>
+ <param name="clusterNames">An array of names for each data point/cluster.</param>
+ <param name="linkageStrategy">The linkage strategy (e.g., single, complete, average, weighted)
+ that defines how inter-cluster distances are computed.</param>
+ <returns>A <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster"/>  object representing the root of the complete hierarchical
+ clustering tree (dendrogram).</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.DefaultClusteringAlgorithm.performFlatClustering(System.Double[][],System.String[],Microsoft.VisualBasic.DataMining.HierarchicalClustering.LinkageStrategy,System.Double)">
+ <summary>
+ Performs flat (non-hierarchical) clustering by cutting the dendrogram at a specified
+ distance threshold. Returns a flat list of clusters where the inter-cluster distance
+ exceeds the given threshold.
+ </summary>
+ <param name="distances">A symmetric square distance matrix where <c>distances(i)(j)</c>
+ represents the distance between the i-th and j-th data points.</param>
+ <param name="clusterNames">An array of names for each data point/cluster.</param>
+ <param name="linkageStrategy">The linkage strategy used to compute inter-cluster distances.</param>
+ <param name="threshold">The distance threshold at which to cut the dendrogram. Clusters
+ merged below this threshold will be grouped together.</param>
+ <returns>A list of <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster"/>  objects representing the flat clustering result.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.DefaultClusteringAlgorithm.checkArguments(System.Double[][],System.String[],Microsoft.VisualBasic.DataMining.HierarchicalClustering.LinkageStrategy)">
+ <summary>
+ Validates the input arguments for consistency and correctness before clustering begins.
+ Checks that the distance matrix is valid, the cluster names array matches the matrix size,
+ the linkage strategy is provided, and that there are no duplicate cluster names.
+ </summary>
+ <param name="distances">The distance matrix to validate.</param>
+ <param name="clusterNames">The array of cluster names to validate.</param>
+ <param name="linkageStrategy">The linkage strategy to validate (must not be <c>Nothing</c>).</param>
+ <exception cref="T:System.ArgumentException">Thrown when any of the validation checks fail:
+ invalid distance matrix, mismatched array lengths, undefined linkage strategy,
+ or duplicate cluster names.</exception>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.DefaultClusteringAlgorithm.performWeightedClustering(System.Double[][],System.String[],System.Double[],Microsoft.VisualBasic.DataMining.HierarchicalClustering.LinkageStrategy)">
+ <summary>
+ Performs hierarchical clustering with weighted data points. Each cluster is initialized
+ with a weight that influences the subsequent agglomerative process via the linkage strategy.
+ </summary>
+ <param name="distances">A symmetric square distance matrix where <c>distances(i)(j)</c>
+ represents the distance between the i-th and j-th data points.</param>
+ <param name="clusterNames">An array of names for each data point/cluster.</param>
+ <param name="weights">An array of weights for each data point. The length must match
+ the number of cluster names.</param>
+ <param name="linkageStrategy">The linkage strategy (e.g., weighted linkage) that uses
+ the cluster weights during distance computation.</param>
+ <returns>A <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster"/>  object representing the root of the weighted hierarchical
+ clustering tree (dendrogram).</returns>
+ <exception cref="T:System.ArgumentException">Thrown when the weights array length does not match
+ the cluster names array, or when other input validation fails.</exception>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.DefaultClusteringAlgorithm.createLinkages(System.Double[][],System.Collections.Generic.IList{Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster})">
+ <summary>
+ Builds the initial distance map (pairwise linkages) between all clusters from the
+ distance matrix. For small numbers of clusters (&lt; 100), a simple nested-loop approach
+ is used. For larger datasets, parallel LINQ is employed to improve performance.
+ </summary>
+ <param name="distances">The symmetric square distance matrix.</param>
+ <param name="clusters">The list of cluster objects to build linkages for.</param>
+ <returns>A <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap"/>  containing all pairwise <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyTreeNode"/> 
+ linkages between clusters.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.DefaultClusteringAlgorithm.alignRow(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster,System.Int32,System.Double[][],Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster[])">
+ <summary>
+ Iterator that generates a sequence of <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyTreeNode"/>  linkages for a single
+ row (cluster) against all subsequent clusters in the distance matrix. Used as a helper
+ by <see cref="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.DefaultClusteringAlgorithm.createLinkages(System.Double[][],System.Collections.Generic.IList{Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster})"/>  during parallel linkage construction.
+ </summary>
+ <param name="lCluster">The left (source) cluster for the linkage.</param>
+ <param name="col">The column/index of the left cluster in the distance matrix.</param>
+ <param name="distances">The symmetric square distance matrix.</param>
+ <param name="clusters">The array of all cluster objects.</param>
+ <returns>An enumerable sequence of <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyTreeNode"/>  linkages connecting
+ the left cluster to each subsequent right cluster.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.DefaultClusteringAlgorithm.createClusters(System.String[])">
+ <summary>
+ Creates a list of <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster"/>  objects from the given array of cluster names.
+ Each cluster is initialized with its name and a default distance of zero.
+ </summary>
+ <param name="clusterNames">An array of strings representing the names of the clusters
+ to create.</param>
+ <returns>A list of <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster"/>  objects, one for each provided name.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.DefaultClusteringAlgorithm.createClusters(System.String[],System.Double[])">
+ <summary>
+ Creates a list of <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster"/>  objects with associated weights. Each cluster
+ is initialized with its name and a <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  object that carries the
+ corresponding weight value. This is used for weighted hierarchical clustering.
+ </summary>
+ <param name="clusterNames">An array of strings representing the names of the clusters
+ to create.</param>
+ <param name="weights">An array of weights, one per cluster. The length must match
+ <paramref name="clusterNames"/> .</param>
+ <returns>A list of <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster"/>  objects, each initialized with its name
+ and associated weight.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.DoCluster.RunCluster``1(System.Collections.Generic.IEnumerable{``0},Microsoft.VisualBasic.DataMining.HierarchicalClustering.ClusteringAlgorithm,Microsoft.VisualBasic.DataMining.HierarchicalClustering.LinkageStrategy)">
+ <summary>
+ Run hierarchical clustering
+ </summary>
+ <param name="objects"></param>
+ <param name="algorithm">Default is <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.DoCluster.DefaultClusteringAlgorithm"/></param>
+ <param name="linkageStrategy">Default is <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.AverageLinkageStrategy"/></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.LinkageStrategy">
+ <summary>
+ Defines a strategy for calculating the distance between clusters in hierarchical clustering.
+ This is the core abstraction that allows different linkage criteria (single, complete, average, weighted)
+ to be plugged into the clustering algorithm.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.LinkageStrategy.CalculateDistance(System.Collections.Generic.ICollection{Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance})">
+ <summary>
+ Calculates the distance between two clusters based on a collection of pairwise distances
+ between the elements of the clusters.
+ </summary>
+ <param name="distances">A collection of <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  objects representing the pairwise
+ distances between elements of the two clusters being merged.</param>
+ <returns>A <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  object representing the computed linkage distance between
+ the two clusters.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.LinkageStrategy.CalculateDistance(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance,Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance)">
+ <summary>
+ Calculates a combined distance from two individual <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  values according
+ to the specific linkage strategy.
+ </summary>
+ <param name="a">The first <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  value to combine.</param>
+ <param name="b">The second <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  value to combine.</param>
+ <returns>A <see cref="T:System.Double"/>  value representing the combined distance.</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.SingleLinkageStrategy">
+ <summary>
+ Implements the single-linkage (nearest neighbor) clustering strategy.
+ The distance between two clusters is defined as the minimum distance between any
+ single element from the first cluster and any single element from the second cluster.
+ This strategy tends to produce long, chain-like clusters.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.SingleLinkageStrategy.CalculateDistance(System.Collections.Generic.ICollection{Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance})">
+ <summary>
+ Calculates the single-linkage distance from a collection of pairwise distances
+ by selecting the minimum distance value.
+ </summary>
+ <param name="distances">A collection of <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  objects containing the pairwise
+ distances between elements of two clusters.</param>
+ <returns>A <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  object whose value is the smallest distance found
+ in the collection.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.SingleLinkageStrategy.CalculateDistance(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance,Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance)">
+ <summary>
+ Combines two distances using the single-linkage (minimum) criterion.
+ Returns the smaller of the two distance values.
+ </summary>
+ <param name="a">The first <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  value. May be <c>Nothing</c>.</param>
+ <param name="b">The second <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  value. May be <c>Nothing</c>.</param>
+ <returns>The minimum distance value between <paramref name="a"/>  and <paramref name="b"/> ;
+ returns <see cref="T:System.Double"/>  if both are <c>Nothing</c>.</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.WeightedLinkageStrategy">
+ <summary>
+ Implements the weighted-linkage clustering strategy.
+ The distance between two clusters is computed as the weighted average of the distances
+ between all inter-cluster element pairs, where each distance is weighted by its associated weight.
+ This strategy is also known as the "weighted pair-group method" (WPGMA).
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.WeightedLinkageStrategy.CalculateDistance(System.Collections.Generic.ICollection{Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance})">
+ <summary>
+ Calculates the weighted-linkage distance from a collection of pairwise distances
+ by computing the weighted arithmetic mean, where each distance is multiplied by its
+ corresponding weight.
+ </summary>
+ <param name="distances">A collection of <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  objects containing the pairwise
+ distances and their associated weights.</param>
+ <returns>A <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  object representing the weighted average distance; the
+ returned object also carries the total weight.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.WeightedLinkageStrategy.CalculateDistance(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance,Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance)">
+ <summary>
+ Combines two distances using the weighted-linkage criterion.
+ Returns the weighted arithmetic mean of the two distance values,
+ using each distance's weight as the weighting factor.
+ </summary>
+ <param name="a">The first <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  value with its associated weight. May be <c>Nothing</c>.</param>
+ <param name="b">The second <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  value with its associated weight. May be <c>Nothing</c>.</param>
+ <returns>The weighted average of the two distance values.</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.CompleteLinkageStrategy">
+ <summary>
+ Implements the complete-linkage (farthest neighbor) clustering strategy.
+ The distance between two clusters is defined as the maximum distance between any
+ single element from the first cluster and any single element from the second cluster.
+ This strategy tends to produce compact, spherical clusters.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.CompleteLinkageStrategy.CalculateDistance(System.Collections.Generic.ICollection{Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance})">
+ <summary>
+ Calculates the complete-linkage distance from a collection of pairwise distances
+ by selecting the maximum distance value.
+ </summary>
+ <param name="distances">A collection of <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  objects containing the pairwise
+ distances between elements of two clusters.</param>
+ <returns>A <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  object whose value is the largest distance found
+ in the collection.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.CompleteLinkageStrategy.CalculateDistance(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance,Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance)">
+ <summary>
+ Combines two distances using the complete-linkage (maximum) criterion.
+ Returns the larger of the two distance values.
+ </summary>
+ <param name="a">The first <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  value. May be <c>Nothing</c>.</param>
+ <param name="b">The second <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  value. May be <c>Nothing</c>.</param>
+ <returns>The maximum distance value between <paramref name="a"/>  and <paramref name="b"/> ;
+ returns <see cref="T:System.Double"/>  if both are <c>Nothing</c>.</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.AverageLinkageStrategy">
+ <summary>
+ Implements the average-linkage (unweighted pair-group method using arithmetic averages, UPGMA)
+ clustering strategy.
+ The distance between two clusters is defined as the arithmetic mean of all pairwise distances
+ between elements of the two clusters. This strategy represents a compromise between
+ single-linkage and complete-linkage.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.AverageLinkageStrategy.CalculateDistance(System.Collections.Generic.ICollection{Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance})">
+ <summary>
+ Calculates the average-linkage distance from a collection of pairwise distances
+ by computing the unweighted arithmetic mean of all distance values.
+ </summary>
+ <param name="distances">A collection of <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  objects containing the pairwise
+ distances between elements of two clusters.</param>
+ <returns>A <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  object representing the arithmetic mean of the input distances;
+ returns zero if the collection is empty.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.AverageLinkageStrategy.CalculateDistance(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance,Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance)">
+ <summary>
+ Combines two distances using the average-linkage criterion.
+ Returns the simple arithmetic mean of the two distance values.
+ </summary>
+ <param name="a">The first <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  value. May be <c>Nothing</c>.</param>
+ <param name="b">The second <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance"/>  value. May be <c>Nothing</c>.</param>
+ <returns>The arithmetic mean of the two distance values; returns0 if both are <c>Nothing</c>.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.PDistClusteringAlgorithm.alignRow(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster,System.Int32,System.Int32,System.Double[],Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster[])">
+ <summary>
+ Iterator that generates a sequence of <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyTreeNode"/>  linkages for a single
+ column of the condensed distance matrix against all subsequent clusters.
+ Used as a helper by <see cref="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.PDistClusteringAlgorithm.createLinkages(System.Double[][],System.Collections.Generic.IList{Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster})"/>  during parallel linkage construction.
+ </summary>
+ <param name="lCluster">The left (source) cluster for the linkage.</param>
+ <param name="col">The column/index of the left cluster in the condensed distance matrix.</param>
+ <param name="n">The total number of clusters.</param>
+ <param name="condensed">The condensed (pdist style) distance vector.</param>
+ <param name="clusters">The array of all cluster objects.</param>
+ <returns>An enumerable sequence of <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyTreeNode"/>  linkages connecting
+ the left cluster to each subsequent right cluster.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.PDistClusteringAlgorithm.accessFunction(System.Int32,System.Int32,System.Int32)">
+ <summary>
+ Credit to this function goes to
+ http://stackoverflow.com/questions/13079563/how-does-condensed-distance-matrix-work-pdist
+ </summary>
+ <param name="i"></param>
+ <param name="j"></param>
+ <param name="n"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.Distance">
+ <summary>
+ distance value union the corresponding weight value(default weight is ``1.0``).
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap">
+ <summary>
+ Container for linkages
+ with the minimal methods needed in the package
+ Created by Alexandre Masselot on 7/18/14.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap.linkTable">
+ <summary>
+ O(1) 按键查找：<see cref="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.LinkHashCode.hashCodePair(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster,Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster)"/> 组合键 -> 链接
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap.heap">
+ <summary>
+ 数组式二叉最小堆，按 <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyTreeNode.LinkageDistance"/> 维护堆序。
+ 
+ <para>
+ 这里采用「惰性删除」策略：<see cref="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap.Remove(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyTreeNode)"/> 仅将链接标记为
+ <c>removed</c> 并从 <see cref="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap.linkTable"/> 中移除，堆中的陈旧条目会在
+ <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap.MinimalDistance"/> / <see cref="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap.RemoveFirst"/> 出堆时被跳过。
+ </para>
+ <para>
+ 这样单条链接的删除是 O(1) 的，避免了此前基于 <see cref="T:Microsoft.VisualBasic.Language.List`1"/>
+ 的 <c>List.Remove</c> 线性查找（单次合并累计约 O(c³)，整体 O(n⁴) 的主要瓶颈），
+ 同时也不再需要每次插入/每轮合并都对整个链接表做全量排序。
+ </para>
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap.staleCount">
+ <summary>
+ 堆中已经失效、但仍未被弹出的陈旧条目数量。
+ 当其超过存活链接数时触发一次堆压缩，以维持 <see cref="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap.heap"/> 的规模与缓存友好性
+ （这是惰性删除策略的代价）。
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap.LinkKeyComparer">
+ <summary>
+ 链接键（<see cref="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.LinkHashCode.hashCodePair(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster,Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster)"/>）的字典比较器。
+ 
+ <para>
+ 链接键由两个簇 ID 位拼接而成（<c>(min &lt;&lt; 32) | max</c>）。由于簇 ID 的取值较小，
+ 拼接结果的高/低 32 位都集中在很窄的数值范围内；若直接使用 <see cref="M:System.UInt64.GetHashCode"/>
+ （其实现为高 32 位与低 32 位异或），得到的哈希码会几乎全部落在 <c>[0, 2^k)</c> 的小区间内，
+ 导致哈希桶严重冲突、单次查找退化为近似线性扫描。
+ 这里改用 64 位 avalanche mix 打散哈希码，保持位拼接键无冲突的同时恢复 O(1) 查找。
+ </para>
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap.MinimalDistance">
+ <summary>
+ Peak into the minimum distance
+ @return
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap.compareLink(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyLink,Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyLink)">
+ <summary>
+ 最小堆比较器：仅比较链接距离（与 <see cref="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyLink.compareTo(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyLink)"/> 的语义一致）
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap.Heapify">
+ <summary>
+ 自底向上的建堆操作，O(m)
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap.Push(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyLink)">
+ <summary>
+ 入堆，O(log m)
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap.PopRoot">
+ <summary>
+ 弹出堆顶，O(log m)。调用方需要自行保证堆非空。
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap.CleanStale">
+ <summary>
+ 丢弃堆顶已经失效（被删除）的链接，使得 heap(0) 指向当前仍然存活的最小距离链接
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap.PopMin">
+ <summary>
+ Poll：弹出当前最小的存活链接（不修改 <see cref="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap.linkTable"/>）
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap.FindByCodePair(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster,Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster)">
+ <summary>
+ dictionary hash search for the link
+ </summary>
+ <param name="c1"></param>
+ <param name="c2"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.DistanceMap.Compact">
+ <summary>
+ 丢弃堆中所有已失效的陈旧条目并重新建堆（O(m)）
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyBuilder.aliveCount">
+ <summary>
+ 当前仍然存活的簇数量（即 <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyBuilder.Clusters"/> 列表中
+ <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.removed"/> = False 的条目数）。
+ </summary>
+ <remarks>
+ 凝聚过程中的簇删除采用「标记 + 惰性压实」策略：
+ 合并时仅将两个旧簇标记为 <c>removed</c>（O(1)），失效条目在其数量
+ 超过存活条目时由 <see cref="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyBuilder.CompactClusters"/> 一次性移除。
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyBuilder.TreeComplete">
+ <summary>
+ 当<see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyBuilder.Clusters"/>的数量最终只有一个节点的时候，就认为完成了层次聚类操作了
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyBuilder.RootCluster">
+ <summary>
+ Gets the root cluster of the hierarchy tree
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyBuilder.First">
+ <summary>
+ The first element in this <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyBuilder"/>, 
+ if <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyBuilder.TreeComplete"/> then this first element is the root cluster.
+ </summary>
+ <remarks>
+ 由于凝聚过程中的簇删除采用标记策略（<see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.removed"/>），
+ 这里返回的是第一个仍然存活的簇。
+ </remarks>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyBuilder.flatAgg(Microsoft.VisualBasic.DataMining.HierarchicalClustering.LinkageStrategy,System.Double)">
+ <summary>
+ Returns Flattened clusters, i.e. clusters that are at least apart by a given threshold </summary>
+ <param name="linkageStrategy"> </param>
+ <param name="threshold">
+ @return </param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyBuilder.Agglomerate(Microsoft.VisualBasic.DataMining.HierarchicalClustering.LinkageStrategy)">
+ <summary>
+ 进行层次聚类的迭代计算操作，主要的限速步骤
+ </summary>
+ <param name="linkageStrategy"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyBuilder.CompactClusters">
+ <summary>
+ 一次性移除 <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyBuilder.Clusters"/> 列表中所有已标记删除（<see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.removed"/>）的失效条目。
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.LinkHashCode.hashCodePair(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyTreeNode)">
+ <summary>
+ Compute some kind of unique ID for a given cluster pair. </summary>
+ <returns> The ID </returns>
+ 
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.LinkHashCode.hashCodePair(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster,Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster)">
+ <summary>
+ 由两个簇的唯一整数 <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster.Id"/> 组合出的链接键。
+ 
+ <para>
+ 使用 <c>(min &lt;&lt; 32) | max</c> 的位拼接：两个 ID 均为 &lt; 2^31 的非负整数，
+ 因此不同的簇对所产生的结果必然不同（无哈希冲突）。
+ </para>
+ <para>
+ 相比旧实现基于 <see cref="T:System.String"/> 的簇名哈希 + <c>String.CompareTo</c> 比较，
+ 既消除了每次链接查找的字符串开销，也避免了重名簇共享链接键的风险。
+ </para>
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyTreeNode.GetOtherCluster(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster)">
+ <summary>
+ returns the partner of the given cluster
+ </summary>
+ <param name="c"></param>
+ <returns>
+ if the given c is left then returns partner right, otherwise returns partner left
+ </returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.HierarchyTreeNode.Reverse">
+ <returns> 
+ a new ClusterPair with the two left/right inverted
+ </returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.Hierarchy.NamespaceDoc">
+ <summary>
+ Hierarchical cluster tree building.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.NamespaceDoc">
+ <summary>
+ Hierarchical clustering: the clustering tree (dendrogram) model and the shared hierarchical
+ clustering utilities.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions">
+ <summary>
+ 层次聚类算法（Hierarchical Clustering）的统一二维表入口。
+ 
+ 数据流：``特征表 →（distanceMatrix）→ 距离矩阵表 →（hca / hcut）→ 聚类树 / 带 cluster 标签的表``
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.distanceMatrix(Microsoft.VisualBasic.Data.NumericTable,System.Func{System.Double[],System.Double[],System.Double})">
+ <summary>
+ 将**特征矩阵**形式的二维表转换为**对称距离矩阵**形式的二维表。
+ 
+ 返回的新表中：``features`` 为 ``n x n`` 的对称距离矩阵（对角线为 0），
+ ``rowNames`` 与 ``featureNames`` 均为样本名，并继承源表的标签列与名称/描述信息。
+ 
+ ```vb
+ Dim dist = x.distanceMatrix()
+ Dim tree = dist.hca()
+ ```
+ </summary>
+ <param name="source">特征矩阵形式的二维表（每一行为一个样本，每一列为一个特征）</param>
+ <param name="metric">
+ 距离度量函数，缺省为欧氏距离 <see cref="M:Microsoft.VisualBasic.Math.Correlations.DistanceMethods.EuclideanDistance(System.Double[],System.Double[])"/>。
+ </param>
+ <returns>距离矩阵形式的二维表</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.hca(Microsoft.VisualBasic.Data.NumericTable,Microsoft.VisualBasic.DataMining.HierarchicalClustering.LinkageStrategy,System.Boolean)">
+ <summary>
+ 对**距离矩阵**形式的二维表执行凝聚层次聚类，返回聚类树（dendrogram）。
+ 
+ <para>
+ <b>注意：传入的 NumericTable 必须是距离矩阵！</b>
+ 如果 <paramref name="source"/> 是原始的特征矩阵，请先调用
+ <see cref="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.distanceMatrix(Microsoft.VisualBasic.Data.NumericTable,System.Func{System.Double[],System.Double[],System.Double})"/> 将特征矩阵转换为距离矩阵形式的二维表，
+ 然后再进行层次聚类：
+ </para>
+ 
+ ```vb
+ Dim dist = x.distanceMatrix()
+ Dim tree = dist.hca()
+ ```
+ </summary>
+ <param name="source">
+ 距离矩阵形式的二维表（方阵：``nfeatures = nsamples``，行与列均为样本）。
+ <b>注意：这里不是特征矩阵！</b>
+ </param>
+ <param name="linkage">连接策略，缺省为平均连接 <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.AverageLinkageStrategy"/></param>
+ <param name="silent">是否静默运行（不输出进度信息），缺省为 True</param>
+ <returns>层次聚类树（根节点）</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.hcut(Microsoft.VisualBasic.Data.NumericTable,System.Int32,Microsoft.VisualBasic.DataMining.HierarchicalClustering.LinkageStrategy,System.Boolean)">
+ <summary>
+ 对**距离矩阵**形式的二维表执行层次聚类，并按照目标簇数量 <paramref name="k"/> 切分聚类树，
+ 将得到的类编号写入 ``cluster`` 标签列之后返回原表。
+ 
+ <para>
+ <b>注意：传入的 NumericTable 必须是距离矩阵！</b>
+ 如果 <paramref name="source"/> 是原始的特征矩阵，请先调用
+ <see cref="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.distanceMatrix(Microsoft.VisualBasic.Data.NumericTable,System.Func{System.Double[],System.Double[],System.Double})"/> 进行转换：
+ </para>
+ 
+ ```vb
+ Dim flat = x.distanceMatrix().hcut(k:=3)
+ ```
+ </summary>
+ <param name="source">距离矩阵形式的二维表（方阵），<b>注意：不是特征矩阵！</b></param>
+ <param name="k">目标簇数量</param>
+ <param name="linkage">连接策略，缺省为平均连接 <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.AverageLinkageStrategy"/></param>
+ <param name="silent">是否静默运行，缺省为 True</param>
+ <returns>写入 ``cluster`` 标签之后的原表对象</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.hcut(Microsoft.VisualBasic.Data.NumericTable,System.Double,Microsoft.VisualBasic.DataMining.HierarchicalClustering.LinkageStrategy,System.Boolean)">
+ <summary>
+ 对**距离矩阵**形式的二维表执行层次聚类，并按照距离阈值 <paramref name="threshold"/>
+ 切分聚类树（复用既有的扁平切分实现），将得到的类编号写入 ``cluster`` 标签列之后返回原表。
+ 
+ <para>
+ <b>注意：传入的 NumericTable 必须是距离矩阵！</b>
+ 如果 <paramref name="source"/> 是原始的特征矩阵，请先调用
+ <see cref="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.distanceMatrix(Microsoft.VisualBasic.Data.NumericTable,System.Func{System.Double[],System.Double[],System.Double})"/> 进行转换：
+ </para>
+ 
+ ```vb
+ Dim flat = x.distanceMatrix().hcut(threshold:=5.0)
+ ```
+ </summary>
+ <param name="source">距离矩阵形式的二维表（方阵），<b>注意：不是特征矩阵！</b></param>
+ <param name="threshold">距离阈值，小于该阈值的簇会被合并</param>
+ <param name="linkage">连接策略，缺省为平均连接 <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.AverageLinkageStrategy"/></param>
+ <param name="silent">是否静默运行，缺省为 True</param>
+ <returns>写入 ``cluster`` 标签之后的原表对象</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.hcaApprox(Microsoft.VisualBasic.Data.NumericTable,Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions)">
+ <summary>
+ 面向大规模数据集的**近似**层次聚类入口（BIRCH 预聚类 + 凝聚层次聚类）。
+ 
+ <para>
+ 与 <see cref="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.hca(Microsoft.VisualBasic.Data.NumericTable,Microsoft.VisualBasic.DataMining.HierarchicalClustering.LinkageStrategy,System.Boolean)"/> 不同，这里接收的是**特征矩阵**（而非距离矩阵），并且
+ **不会构造 n×n 距离矩阵**：先用 BIRCH CF-tree 把 n 个样本压缩成 m 个子簇
+ （m 由 <see cref="P:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions.targetSubclusters"/> 控制），再对子簇质心执行
+ 凝聚层次聚类。因此适用于 2 万样本以上的大数据集。
+ </para>
+ 
+ ```vb
+ Dim tree = x.hcaApprox()
+ ```
+ </summary>
+ <param name="source">特征矩阵形式的二维表（每一行为一个样本，每一列为一个特征）</param>
+ <param name="options">BIRCH 预聚类参数，缺省使用 <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions"/> 的默认值</param>
+ <returns>以子簇为叶节点的层次聚类树（dendrogram）</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.hcutApprox(Microsoft.VisualBasic.Data.NumericTable,System.Int32,Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions)">
+ <summary>
+ 面向大规模数据集的**近似**层次聚类并按目标簇数量 <paramref name="k"/> 切分，
+ 将得到的类编号写入 ``cluster`` 标签列之后返回原表。
+ 
+ <para>
+ 输入为**特征矩阵**，内部使用 BIRCH 预聚类，**不会构造 n×n 距离矩阵**。
+ 注意：<paramref name="k"/> 的上限是 BIRCH 实际产生的子簇数量 m；
+ 若 <paramref name="k"/> 大于 m，则最多只能切分出 m 个簇。
+ </para>
+ </summary>
+ <param name="source">特征矩阵形式的二维表（每一行为一个样本，每一列为一个特征）</param>
+ <param name="k">目标簇数量</param>
+ <param name="options">BIRCH 预聚类参数，缺省使用 <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions"/> 的默认值</param>
+ <returns>写入 ``cluster`` 标签之后的原表对象</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.hcutApprox(Microsoft.VisualBasic.Data.NumericTable,System.Double,Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions)">
+ <summary>
+ 面向大规模数据集的**近似**层次聚类并按距离阈值切分，将类编号写入 ``cluster`` 标签列后返回原表。
+ 
+ <para>
+ 输入为**特征矩阵**，内部使用 BIRCH 预聚类，**不会构造 n×n 距离矩阵**。
+ 注意：此处的阈值作用于**子簇质心之间**的连接距离，与原始样本距离的尺度不同。
+ </para>
+ </summary>
+ <param name="source">特征矩阵形式的二维表（每一行为一个样本，每一列为一个特征）</param>
+ <param name="threshold">子簇质心之间的距离阈值</param>
+ <param name="options">BIRCH 预聚类参数，缺省使用 <see cref="T:Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions"/> 的默认值</param>
+ <returns>写入 ``cluster`` 标签之后的原表对象</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.performApproxHca(Microsoft.VisualBasic.Data.NumericTable,Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchOptions,Microsoft.VisualBasic.DataMining.HierarchicalClustering.BIRCH.BirchPreclustering@)">
+ <summary>
+ 在子簇质心上执行（优化后的）凝聚层次聚类
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.assertDistanceMatrix(Microsoft.VisualBasic.Data.NumericTable,System.String)">
+ <summary>
+ 校验目标表是否为距离矩阵（方阵），并给出醒目的转换提示
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.assertUniqueNames(Microsoft.VisualBasic.Data.NumericTable)">
+ <summary>
+ 获取唯一的样本名数组（距离矩阵的行列名以及层次聚类的输入都要求样本名唯一）
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.cutTree(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster,System.Int32)">
+ <summary>
+ 按目标簇数量对聚类树进行切分：反复挑选“叶数最多且仍然可以分裂”的节点，
+ 用其子节点替换之，直到簇的数量达到 <paramref name="k"/> 或者已经没有可分裂的节点。
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.writeClusterLabels(Microsoft.VisualBasic.Data.NumericTable,System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster})">
+ <summary>
+ 将扁平化的簇集合写入 ``cluster`` 标签列并返回原表
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.collectLeafs(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster)">
+ <summary>
+ 递归的收集一个簇（子树）之中所有叶节点的名称
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.assertFeatureRows(Microsoft.VisualBasic.Data.NumericTable,System.String)">
+ <summary>
+ 校验并获取特征矩阵（近似通道的输入是特征矩阵，而不是距离矩阵）
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.centroidDistanceMatrix(System.Double[][])">
+ <summary>
+ 计算子簇质心之间的对称欧氏距离矩阵（m x m，m 为子簇数量，远小于样本数 n）
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.MinParallelRows">
+ <summary>
+ 距离矩阵按行并行计算的样本数下限：低于该值时并行调度的开销
+ 反而会超过计算本身的收益。
+ </summary>
+ <remarks>
+ 注意这里与 <see cref="P:Microsoft.VisualBasic.Math.SIMD.SimdParallel.MinParallelLength"/> 的
+ “数据量”阈值语义不同，这里是“行数”阈值。
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.fillSymmetricMatrix(System.Double[][],System.Double[][],System.Func{System.Double[],System.Double[],System.Double})">
+ <summary>
+ 构建对称距离矩阵：计算上三角并镜像到下三角。
+ 
+ <para>
+ 每一行 <c>i</c> 到 <c>j &gt; i</c> 的距离彼此独立，且并行时行 <c>i</c> 只会写
+ <c>matrix(i)(j)</c> 与 <c>matrix(j)(i)</c> 两个互不重叠的槽位，因此数据规模较大时
+ 可以安全地按行并行；行内的成对距离计算由度量函数完成
+ （缺省的 <see cref="M:Microsoft.VisualBasic.Math.Correlations.DistanceMethods.EuclideanDistance(System.Double[],System.Double[])"/>
+ 已基于 Math.SIMD 引擎实现单趟零分配的向量化计算）。
+ </para>
+ </summary>
+ <param name="rows">特征矩阵（n x d）或者质心矩阵</param>
+ <param name="matrix">与 <paramref name="rows"/> 行数一致的 n x n 目标矩阵（对角线保持零）</param>
+ <param name="f">成对距离度量函数</param>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.HierarchicalClusteringTableExtensions.writePreclusterLabels(Microsoft.VisualBasic.Data.NumericTable,System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster},System.Collections.Generic.Dictionary{System.String,System.Int32[]})">
+ <summary>
+ 将子簇级别的扁平簇结果展开回原始样本，写入 ``cluster`` 标签列
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.HierarchicalClustering.PrintHelper.Print(Microsoft.VisualBasic.DataMining.HierarchicalClustering.Cluster,System.IO.StreamWriter)">
+ <summary>
+ Helper for print the cluster tree
+ </summary>
+ <param name="cluster"></param>
+ <param name="out">
+ If this output pointer is nothing, then by default is print onto the <see cref="M:System.Console.OpenStandardOutput"/>
+ </param>
+</member>
+</members>
+</doc>

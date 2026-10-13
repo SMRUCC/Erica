@@ -2,6 +2,7 @@
 Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic
 Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic.Axis
 Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas
+Imports Microsoft.VisualBasic.Data.Plots
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.Drawing2D
 Imports Microsoft.VisualBasic.Linq
@@ -35,9 +36,9 @@ Public Class VisualCellMatches : Inherits Plot
         Dim y = d3js.scale.linear.domain(values:=yTicks).range(values:=canvas.GetYLinearScaleRange(css))
         Dim scaler As New DataScaler() With {
             .AxisTicks = (xTicks.AsVector, yTicks.AsVector),
-            .region = canvas.PlotRegion(css),
-            .X = x,
-            .Y = y
+            .Region = canvas.PlotRegion(css),
+            .x = x,
+            .y = y
         }
 
         If theme.drawAxis Then

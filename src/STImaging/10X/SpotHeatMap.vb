@@ -1,8 +1,7 @@
 ﻿Imports System.Drawing
-Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic
-Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas
 Imports Microsoft.VisualBasic.Data.GraphTheory
 Imports Microsoft.VisualBasic.Data.GraphTheory.GridGraph
+Imports Microsoft.VisualBasic.Data.Plots
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.Drawing2D
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.HeatMap
@@ -32,13 +31,13 @@ Public Class SpotCell : Implements Pixel
 
 End Class
 
-Public Class SpotHeatMap : Inherits HeatMapPlot
+Public Class SpotHeatMap : Inherits HeatmapPlot
 
     ReadOnly spots As PixelData()
     ReadOnly dimension_size As Size
     ReadOnly spotSize As SizeF
 
-    Public Sub New(layer As PixelData(), dimension_size As Size, theme As Theme)
+    Public Sub New(layer As PixelData(), dimension_size As Size, theme As PlotTheme)
         MyBase.New(theme)
 
         Me.dimension_size = dimension_size
@@ -63,7 +62,7 @@ Public Class SpotHeatMap : Inherits HeatMapPlot
             g:=g,
             raster:=raster,
             colors:=GetColors,
-            defaultColor:=theme.gridFill.TranslateColor,
+            defaultColor:=Theme.gridFill.TranslateColor,
             cw:=physicalCellWidth,
             ch:=physicalCellHeight
         )
