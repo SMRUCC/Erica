@@ -1,10 +1,11 @@
 ﻿Imports System.Drawing
-Imports Microsoft.VisualBasic.Data.GraphTheory
 Imports Microsoft.VisualBasic.Data.GraphTheory.GridGraph
 Imports Microsoft.VisualBasic.Data.Plots
+Imports Microsoft.VisualBasic.Data.Plots.Canvas
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.Drawing2D
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.HeatMap
+Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
 Imports Microsoft.VisualBasic.MIME.Html.CSS
 Imports Microsoft.VisualBasic.MIME.Html.Render
 
@@ -31,13 +32,28 @@ Public Class SpotCell : Implements Pixel
 
 End Class
 
-Public Class SpotHeatMap : Inherits HeatmapPlot
+''' <summary>
+''' visualize the spatial transcriptomics spot data as a heatmap
+''' </summary>
+''' <remarks>
+''' the underlying drawing engine was refactored: <see cref="HeatmapPlot"/> now is a
+''' matrix based <see cref="PlotEngine"/> and no longer provides the spot-raster
+''' rendering hook. So this class is re-based onto the <see cref="Plot"/> canvas
+''' framework which still exposes the <see cref="Plot.PlotInternal"/> override and the
+''' <see cref="Plot.Plot"/> entry point used by the R interop layer.
+''' </remarks>
+Public Class SpotHeatMap : Inherits Plot
 
     ReadOnly spots As PixelData()
     ReadOnly dimension_size As Size
     ReadOnly spotSize As SizeF
 
-    Public Sub New(layer As PixelData(), dimension_size As Size, theme As PlotTheme)
+    ''' <summary>
+    ''' the number of color levels used for the heatmap raster rendering
+    ''' </summary>
+    Public Property mapLevels As Integer = 120
+
+    Public Sub New(layer As PixelData(), dimension_size As Size, theme As Theme)
         MyBase.New(theme)
 
         Me.dimension_size = dimension_size
@@ -61,8 +77,8 @@ Public Class SpotHeatMap : Inherits HeatmapPlot
         Call PixelRender.FillRectangles(
             g:=g,
             raster:=raster,
-            colors:=GetColors,
-            defaultColor:=Theme.gridFill.TranslateColor,
+            colors:=Designer.GetColors(theme.colorSet, mapLevels),
+            defaultColor:=theme.gridFill.TranslateColor,
             cw:=physicalCellWidth,
             ch:=physicalCellHeight
         )
