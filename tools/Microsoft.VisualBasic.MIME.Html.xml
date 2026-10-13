@@ -6,22 +6,6 @@ Microsoft.VisualBasic.MIME.Html
 </name>
 </assembly>
 <members>
-<member name="T:Microsoft.VisualBasic.MIME.Html.My.Resources.Resources">
-<summary>
-  A strongly-typed resource class, for looking up localized strings, etc.
-</summary>
-</member>
-<member name="P:Microsoft.VisualBasic.MIME.Html.My.Resources.Resources.ResourceManager">
-<summary>
-  Returns the cached ResourceManager instance used by this class.
-</summary>
-</member>
-<member name="P:Microsoft.VisualBasic.MIME.Html.My.Resources.Resources.Culture">
-<summary>
-  Overrides the current thread's CurrentUICulture property for all
-  resource lookups using this strongly typed resource class.
-</summary>
-</member>
 <member name="P:Microsoft.VisualBasic.MIME.Html.CSS.CSSEnvirnment.baseFont">
  <summary>
  the base font style of the canvas
@@ -2659,9 +2643,885 @@ Microsoft.VisualBasic.MIME.Html
  document object model from HTML source text.
  </summary>
 </member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssAnonymousBlockBox">
+ <summary>
+ Represents an anonymous block box
+ </summary>
+ <remarks>
+ To learn more about anonymous block boxes visit CSS spec:
+ http://www.w3.org/TR/CSS21/visuren.html#anonymous-block-level
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssAnonymousSpaceBlockBox">
+ <summary>
+ Represents an AnonymousBlockBox which contains only blank spaces
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssAnonymousBox">
+ <summary>
+ Represents an anonymous inline box
+ </summary>
+ <remarks>
+ To learn more about anonymous inline boxes visit:
+ http://www.w3.org/TR/CSS21/visuren.html#anonymous
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssAnonymousSpaceBox">
+ <summary>
+ Represents an anonymous inline box which contains nothing but blank spaces
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBlock">
+ <summary>
+ Represents a block of CSS property values
+ </summary>
+ <remarks>
+ To learn more about CSS blocks visit CSS spec:
+ http://www.w3.org/TR/CSS21/syndata.html#block
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBlock.#ctor">
+ <summary>
+ Initializes internal's
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBlock.#ctor(System.String)">
+ <summary>
+ Creates a new block from the block's source
+ </summary>
+ <param name="blockSource"></param>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBlock.Properties">
+ <summary>
+ Gets the properties and its values
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBlock.PropertyValues">
+ <summary>
+ Gets the dictionary with property-ready values
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBlock.BlockSource">
+ <summary>
+ Gets the block's source
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBlock.UpdatePropertyValues">
+ <summary>
+ Updates the PropertyValues dictionary
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBlock.AssignTo(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Asigns the style on this block o the specified box
+ </summary>
+ <param name="b"></param>
+</member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox">
+ <summary>
+ Represents a CSS Box of text or replaced elements.
+ </summary>
+ <remarks>
+ The Box can contains other boxes, that's the way that the CSS Tree
+ is composed.
+ 
+ To know more about boxes visit CSS spec:
+ http://www.w3.org/TR/CSS21/box.html
+ </remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.Empty">
+ <summary>
+ An empty box with empty values.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox._properties">
+ <summary>
+ Table of 'css-property' => .NET property
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox._defaults">
+ <summary>
+ Dictionary of default values
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox._inheritables">
+ <summary>
+ Hosts all inhertiable properties
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox._cssproperties">
+ <summary>
+ Hosts css properties
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.#cctor">
+ <summary>
+ Static constructor and initialization
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.GetDefaultValue(System.Reflection.PropertyInfo)">
+ <summary>
+ Gets the default value of the specified css property
+ </summary>
+ <param name="prop"></param>
+ <returns></returns>
+</member>
+<member name="F:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.TableFixed">
+ <summary>
+ Do not use or alter this flag
+ </summary>
+ <remarks>
+ Flag that indicates that CssTable algorithm already made fixes on it.
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.BorderRadius">
+ <summary>
+ the standard css name of the <see cref="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.CornerRadius"/> property
+ </summary>
+ <returns></returns>
+ <remarks>
+ this engine uses the ``corner-radius`` name for the corner radius of
+ a box, this property is just an alias of it so that a stylesheet
+ that follows the standard css specification can be used as well.
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.BoxShadow">
+ <summary>
+ the drop shadow of the box, the value is a raw css string like
+ ``2px 2px 4px rgba(0, 0, 0, 0.45)`` and it is parsed by the ui
+ engine that draws the box.
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.Right">
+ <summary>
+ the offset of the right edge of this box from the right edge of its
+ containing block, it is used by the absolutely positioned boxes.
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.Bottom">
+ <summary>
+ the offset of the bottom edge of this box from the bottom edge of
+ its containing block, it is used by the absolutely positioned boxes.
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ZIndex">
+ <summary>
+ the paint order of this box, a box with a larger z-index value is
+ painted on top of a box with a smaller one.
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualPaddingTop">
+ <summary>
+ Gets the actual top's padding
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualPaddingLeft">
+ <summary>
+ Gets the actual padding on the left
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualPaddingBottom">
+ <summary>
+ Gets the actual Padding of the bottom
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualPaddingRight">
+ <summary>
+ Gets the actual padding on the right
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualMarginTop">
+ <summary>
+ Gets the actual top's Margin
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualMarginLeft">
+ <summary>
+ Gets the actual Margin on the left
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualMarginBottom">
+ <summary>
+ Gets the actual Margin of the bottom
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualMarginRight">
+ <summary>
+ Gets the actual Margin on the right
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualBorderTopWidth">
+ <summary>
+ Gets the actual top border width
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualBorderLeftWidth">
+ <summary>
+ Gets the actual Left border width
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualBorderBottomWidth">
+ <summary>
+ Gets the actual Bottom border width
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualBorderRightWidth">
+ <summary>
+ Gets the actual Right border width
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualBorderTopColor">
+ <summary>
+ Gets the actual top border Color
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualBorderLeftColor">
+ <summary>
+ Gets the actual Left border Color
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualBorderBottomColor">
+ <summary>
+ Gets the actual Bottom border Color
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualBorderRightColor">
+ <summary>
+ Gets the actual Right border Color
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualCornerNW">
+ <summary>
+ Gets the actual lenght of the north west corner
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualCornerNE">
+ <summary>
+ Gets the actual lenght of the north east corner
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualCornerSE">
+ <summary>
+ Gets the actual lenght of the south east corner
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualCornerSW">
+ <summary>
+ Gets the actual lenght of the south west corner
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualWordSpacing">
+ <summary>
+ Gets the actual word spacing of the word.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualColor">
+ <summary>
+ 
+ Gets the actual color for the text.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualBackgroundColor">
+ <summary>
+ Gets the actual background color of the box
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.SetBackgroundColor(System.Drawing.Color)">
+ <summary>
+ Overrides the computed background color of this box at runtime: the
+ ui engine uses it to paint the content of a tab page with the very
+ same color as the active tab of a tab strip.
+ </summary>
+ <param name="color"></param>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualBackgroundGradient">
+ <summary>
+ Gets the second color that creates a gradient for the background
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualBackgroundGradientAngle">
+ <summary>
+ Gets the actual angle specified for the background gradient
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualParentFont">
+ <summary>
+ Gets the actual font of the parent
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualFont">
+ <summary>
+ Gets the font that should be actually used to paint the text of the box
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualTextIndent">
+ <summary>
+ Gets the text indentation (on first line only)
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualBorderSpacingHorizontal">
+ <summary>
+ Gets the actual horizontal border spacing for tables
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualBorderSpacingVertical">
+ <summary>
+ Gets the actual vertical border spacing for tables
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ListItemBox">
+ <summary>
+ Gets the • box
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.AvailableWidth">
+ <summary>
+ Gets the width available on the box, counting padding and margin.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.Bounds">
+ <summary>
+ Gets the bounds of the box
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualBottom">
+ <summary>
+ Gets or sets the bottom of the box. 
+ (When setting, alters only the Size.Height of the box)
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.Boxes">
+ <summary>
+ Gets the childrenn boxes of this box
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ClientLeft">
+ <summary>
+ Gets the left of the client rectangle (Where content starts rendering)
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ClientTop">
+ <summary>
+ Gets the top of the client rectangle (Where content starts rendering)
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ClientRight">
+ <summary>
+ Gets the right of the client rectangle
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ClientBottom">
+ <summary>
+ Gets the bottom of the client rectangle
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ClientRectangle">
+ <summary>
+ Gets the client rectangle
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ContainingBlock">
+ <summary>
+ Gets the containing block-box of this box. (The nearest parent box with display=block)
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.FontAscent">
+ <summary>
+ Gets the font's ascent
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.FontLineSpacing">
+ <summary>
+ Gets the font's line spacing
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.FontDescent">
+ <summary>
+ Gets the font's descent
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.FirstWord">
+ <summary>
+ Gets the first word of the box
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.FirstHostingLineBox">
+ <summary>
+ Gets or sets the first linebox where content of this box appear
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.LastHostingLineBox">
+ <summary>
+ Gets or sets the last linebox where content of this box appear
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.HtmlTag">
+ <summary>
+ Gets the HTMLTag that hosts this box
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.InitialContainer">
+ <summary>
+ Gets the InitialContainer of the Box.
+ WARNING: May be null.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.IsImage">
+ <summary>
+ Gets if this box represents an image
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.IsRounded">
+ <summary>
+ Gets a value indicating if at least one of the corners of the box is rounded
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.IsSpaceOrEmpty">
+ <summary>
+ Tells if the box is empty or contains just blank spaces
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.LastWord">
+ <summary>
+ Gets the last word of the box
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.LineBoxes">
+ <summary>
+ Gets the line-boxes of this box (if block box)
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.Location">
+ <summary>
+ Gets or sets the location of the box
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ParentBox">
+ <summary>
+ Gets or sets the parent box of this box
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ParentLineBoxes">
+ <summary>
+ Gets the linebox(es) that contains words of this box (if inline)
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.Rectangles">
+ <summary>
+ Gets the rectangles where this box should be painted
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.PaintBounds">
+ <summary>
+ Gets the rectangle that should be used to paint this box.
+ </summary>
+ <remarks>
+ An inline box does not own a location or a size of its own: its
+ geometry is described by the line boxes that host its words, so the
+ union of these rectangles is returned at here, while a block box
+ simply returns its own bounds.
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ActualRight">
+ <summary>
+ Gets the right of the box. When setting, it will affect only the width of the box.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.Size">
+ <summary>
+ Gets or sets the size of the box
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.Text">
+ <summary>
+ Gets or sets the inner text of the box
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.Words">
+ <summary>
+ Gets the BoxWords of text in the box
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.SetInitialContainer(Microsoft.VisualBasic.MIME.Html.Render.InitialContainer)">
+ <summary>
+ Sets the initial container of the box
+ </summary>
+ <param name="b"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ContainsInlinesOnly">
+ <summary>
+ Returns false if some of the boxes
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.GetIndexForList">
+ <summary>
+ Gets the index of the box to be used on a (ordered) list
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.CreateListItemBox(Microsoft.VisualBasic.Imaging.IGraphics)">
+ <summary>
+ Creates the <see cref="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ListItemBox"/>
+ </summary>
+ <param name="g"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.FirstWordOccourence(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox)">
+ <summary>
+ Searches for the first word occourence inside the box, on the specified linebox
+ </summary>
+ <param name="b"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.GetAttribute(System.String)">
+ <summary>
+ Gets the specified Attribute, returns string.Empty if no attribute specified
+ </summary>
+ <param name="attribute">Attribute to retrieve</param>
+ <returns>Attribute value or string.Empty if no attribute specified</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.GetAttribute(System.String,System.String)">
+ <summary>
+ Gets the value of the specified attribute of the source HTML tag.
+ </summary>
+ <param name="attribute">Attribute to retrieve</param>
+ <param name="defaultValue">Value to return if attribute is not specified</param>
+ <returns>Attribute value or defaultValue if no attribute specified</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.GetEmHeight">
+ <summary>
+ Gets the height of the font in the specified units
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.GetPreviousSibling(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Gets the previous sibling of this box.
+ </summary>
+ <returns>Box before this one on the tree. Null if its the first</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.GetMinimumWidth">
+ <summary>
+ Gets the minimum width that the box can be.
+ The box can be as thin as the longest word plus padding.
+ The check is deep thru box tree.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.GetMinimumWidth_BubblePadding(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,System.Single@)">
+ <summary>
+ Bubbles up the padding from the starting box
+ </summary>
+ <param name="box"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.GetMinimumWidth_LongestWord(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,System.Single@,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBoxWord@)">
+ <summary>
+ Gets the longest word (in width) inside the box, deeply.
+ </summary>
+ <param name="b"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.GetMaximumBottom(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,System.Single)">
+ <summary>
+ Gets the maximum bottom of the boxes inside the startBox
+ </summary>
+ <param name="startBox"></param>
+ <param name="currentMaxBottom"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.GetFullWidth(Microsoft.VisualBasic.Imaging.IGraphics)">
+ <summary>
+ Get the width of the box at full width (No line breaks)
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.GetFullWidth_WordsWith(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,Microsoft.VisualBasic.Imaging.IGraphics,System.Single@,System.Single@)">
+ <summary>
+ Gets the longest word (in width) inside the box, deeply.
+ </summary>
+ <param name="b"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.GetNextSibling">
+ <summary>
+ Gets the next sibling of this box.
+ </summary>
+ <returns>Box after this one on the tree. Null if its the last one.</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.HasJustInlineSiblings">
+ <summary>
+ Gets if this box has only inline siblings (including itself)
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.InheritStyle">
+ <summary>
+ Inherits inheritable values from parent.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.InheritStyle(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,System.Boolean)">
+ <summary>
+ Inherits inheritable values from specified box.
+ </summary>
+ <param name="everything">Set to true to inherit all CSS properties instead of only the ineritables</param>
+ <param name="godfather">Box to inherit the properties</param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.MarginCollapse(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Gets the result of collapsing the vertical margins of the two boxes
+ </summary>
+ <param name="a">Superior box (checks for margin-bottom)</param>
+ <param name="b">Inferior box (checks for margin-top)</param>
+ <returns>Maximum of margins</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.MeasureBounds(Microsoft.VisualBasic.Imaging.IGraphics)">
+ <summary>
+ Measures the bounds of box and children, recursively.
+ </summary>
+ <param name="g">Device context to draw</param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ApplyCssHeight">
+ <summary>
+ Applies the explicit css height of this box: the original html
+ renderer only grows a box by the size of its own content, while a
+ user interface declaration always gives an explicit height to its
+ controls.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.IsAbsolutelyPositioned">
+ <summary>
+ Is this box removed from the normal flow of the document and placed
+ against the edges of its containing block?
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ApplyAbsolutePosition(System.Boolean)">
+ <summary>
+ Resolves the location of an absolutely positioned box against the
+ padding box of its containing block, following the standard css
+ rule: ``left`` and ``top`` are the offsets of the left and the top
+ edge of the box, while ``right`` and ``bottom`` are the offsets of
+ the right and the bottom edge of the box.
+ </summary>
+ <param name="applyVertical">
+ the vertical offset requires the final height of the box, so it is
+ applied again after the content of the box has been measured.
+ </param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.MeasureWordSpacing(Microsoft.VisualBasic.Imaging.IGraphics)">
+ <summary>
+ Measures the word spacing
+ </summary>
+ <param name="g"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.MeasureWordsSize(Microsoft.VisualBasic.Imaging.IGraphics)">
+ <summary>
+ Assigns words its width and height
+ </summary>
+ <param name="g"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.NoEms(System.String)">
+ <summary>
+ Ensures that the specified length is converted to pixels if necessary
+ </summary>
+ <param name="length"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.OffsetTop(System.Single)">
+ <summary>
+ Deeply offsets the top of the box and its contents
+ </summary>
+ <param name="amount"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.Paint(Microsoft.VisualBasic.Imaging.IGraphics)">
+ <summary>
+ Paints the fragment
+ </summary>
+ <param name="g"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.PaintBorder(Microsoft.VisualBasic.Imaging.IGraphics,System.Drawing.RectangleF,System.Boolean,System.Boolean)">
+ <summary>
+ Paints the border of the box
+ </summary>
+ <param name="g"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.PaintBackground(Microsoft.VisualBasic.Imaging.IGraphics,System.Drawing.RectangleF)">
+ <summary>
+ Paints the background of the box
+ </summary>
+ <param name="g"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.PaintDecoration(Microsoft.VisualBasic.Imaging.IGraphics,System.Drawing.RectangleF,System.Boolean,System.Boolean)">
+ <summary>
+ Paints the text decoration
+ </summary>
+ <param name="g"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.OffsetRectangle(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox,System.Single)">
+ <summary>
+ Offsets the rectangle of the specified linebox by the specified gap,
+ and goes deep for rectangles of children in that linebox.
+ </summary>
+ <param name="lineBox"></param>
+ <param name="gap"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.RectanglesReset">
+ <summary>
+ Resets the <see cref="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.Rectangles"/> array
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.RemoveAnonymousSpaces">
+ <summary>
+ Removes boxes that are just blank spaces
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.SetBounds(System.Drawing.Rectangle)">
+ <summary>
+ Sets the bounds of the box
+ </summary>
+ <param name="r"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.SetBounds(System.Drawing.RectangleF)">
+ <summary>
+ Sets the bounds of the box
+ </summary>
+ <param name="rectangle"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.ToString">
+ <summary>
+ ToString override.
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox.UpdateWords">
+ <summary>
+ Splits the text into words and saves the result
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBoxWord">
+ <summary>
+ Represents a word inside an inline box
+ </summary>
+ <remarks>
+ Because of performance, words of text are the most atomic 
+ element in the project. It should be characters, but come on,
+ imagine the performance when drawing char by char on the device.
+ 
+ It may change for future versions of the library
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBoxWord.#ctor(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,Microsoft.VisualBasic.Imaging.Image)">
+ <summary>
+ Creates a new BoxWord which represents an image
+ </summary>
+ <param name="owner"></param>
+ <param name="image"></param>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBoxWord.FullWidth">
+ <summary>
+ Gets the width of the word including white-spaces
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBoxWord.Image">
+ <summary>
+ Gets the image this words represents (if one)
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBoxWord.IsImage">
+ <summary>
+ Gets if the word represents an image.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBoxWord.IsSpaces">
+ <summary>
+ Gets a bool indicating if this word is composed only by spaces.
+ Spaces include tabs and line breaks
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBoxWord.IsLineBreak">
+ <summary>
+ Gets if the word is composed by only a line break
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBoxWord.IsTab">
+ <summary>
+ Gets if the word is composed by only a tab
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBoxWord.OwnerBox">
+ <summary>
+ Gets the Box where this word belongs.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBoxWord.Text">
+ <summary>
+ Gets the text of the word
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBoxWord.LastMeasureOffset">
+ <summary>
+ Gets or sets an offset to be considered in measurements
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBoxWord.ReplaceLineBreaksAndTabs">
+ <summary>
+ Removes line breaks and tabs on the text of the word,
+ replacing them with white spaces
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBoxWord.AppendChar(System.Char)">
+ <summary>
+ Appends the specified char to the word's text
+ </summary>
+ <param name="c"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBoxWord.ToString">
+ <summary>
+ Represents this word for debugging purposes
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBoxWordSplitter">
+ <summary>
+ Splits text on words for a box
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBoxWordSplitter.CollapsesWhiteSpaces(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Returns a bool indicating if the specified box white-space processing model specifies
+ that sequences of white spaces should be collapsed on a single whitespace
+ </summary>
+ <param name="b"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBoxWordSplitter.EliminatesLineBreaks(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Returns a bool indicating if line breaks at the source should be eliminated
+ </summary>
+ <param name="b"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBoxWordSplitter.SplitWords">
+ <summary>
+ Splits the text on words using rules of the specified box
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssConstants">
  <summary>
  String constants to avoid typing errors.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssConstants.InlineBlock">
+ <summary>
+ the ``inline-block`` display mode: the box itself is laid out as an
+ inline level box, but its content is laid out as a block box.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssConstants.Fixed">
+ <summary>
+ the ``fixed`` position mode: the box is removed from the normal flow
+ and is placed against the edges of its containing block.
  </summary>
 </member>
 <member name="F:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssConstants.Cm">
@@ -2752,6 +3612,184 @@ Microsoft.VisualBasic.MIME.Html
  Default font used for the generic 'monospace' family
  </summary>
 </member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssDrawingHelper">
+ <summary>
+ Provides some drawing functionallity
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssDrawingHelper.Border">
+ <summary>
+ Border specifiers
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssDrawingHelper.RoundP(System.Drawing.PointF,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Rounds the specified point
+ </summary>
+ <param name="p"></param>
+ <param name="b"></param>Module
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssDrawingHelper.RoundR(System.Drawing.RectangleF,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Rounds the specified rectangle
+ </summary>
+ <param name="b"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssDrawingHelper.GetBorderPath(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssDrawingHelper.Border,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,System.Drawing.RectangleF,System.Boolean,System.Boolean)">
+ <summary>
+ Makes a border path
+ </summary>
+ <param name="border">Desired border</param>
+ <param name="b">Box wich the border corresponds</param>
+ <param name="isLineStart">Specifies if the border is for a starting line (no bevel on left)</param>
+ <param name="isLineEnd">Specifies if the border is for an ending line (no bevel on right)</param>
+ <returns>Beveled border path</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssDrawingHelper.CreateCorner(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,System.Drawing.RectangleF,System.Int32)">
+ <summary>
+ Creates the corner to place with the borders
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssDrawingHelper.GetRoundRect(System.Drawing.RectangleF,System.Single,System.Single,System.Single,System.Single)">
+ <summary>
+ Creates a rounded rectangle using the specified corner radius
+ </summary>
+ <param name="rect">Rectangle to round</param>
+ <param name="nwRadius">Radius of the north east corner</param>
+ <param name="neRadius">Radius of the north west corner</param>
+ <param name="seRadius">Radius of the south east corner</param>
+ <param name="swRadius">Radius of the south west corner</param>
+ <returns>GraphicsPath with the lines of the rounded rectangle ready to be painted</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLayoutEngine">
+ <summary>
+ Helps on CSS Layout
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLayoutEngine.CreateLineBoxes(Microsoft.VisualBasic.Imaging.IGraphics,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Creates line boxes for the specified blockbox
+ </summary>
+ <param name="g"></param>
+ <param name="blockBox"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLayoutEngine.FlowBox(Microsoft.VisualBasic.Imaging.IGraphics,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,System.Single,System.Single,System.Single,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox@,System.Single@,System.Single@,System.Single@)">
+ <summary>
+ Recursively flows the content of the box using the inline model
+ </summary>
+ <param name="g">Device Info</param>
+ <param name="blockbox">Blockbox that contains the text flow</param>
+ <param name="box">Current box to flow its content</param>
+ <param name="maxright">Maximum reached right</param>
+ <param name="linespacing">Space to use between rows of text</param>
+ <param name="startx">x starting coordinate for when breaking lines of text</param>
+ <param name="line">Current linebox being used</param>
+ <param name="curx">Current x coordinate that will be the left of the next word</param>
+ <param name="cury">Current y coordinate that will be the top of the next word</param>
+ <param name="maxbottom">Maximum bottom reached so far</param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLayoutEngine.BubbleRectangles(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox)">
+ <summary>
+ Recursively creates the rectangles of the blockBox, by bubbling from deep to outside of the boxes 
+ in the rectangle structure
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLayoutEngine.WhiteSpace(Microsoft.VisualBasic.Imaging.IGraphics,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Gets the white space width of the specified box
+ </summary>
+ <param name="g"></param>
+ <param name="b"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLayoutEngine.ApplyAlignment(Microsoft.VisualBasic.Imaging.IGraphics,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox)">
+ <summary>
+ Applies vertical and horizontal alignment to words in lineboxes
+ </summary>
+ <param name="g"></param>
+ <param name="lineBox"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLayoutEngine.ApplyRightToLeft(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox)">
+ <summary>
+ Applies right to left direction to words
+ </summary>
+ <param name="line"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLayoutEngine.GetAscent(Microsoft.VisualBasic.Imaging.Font)">
+ <summary>
+ Gets the ascent of the font
+ </summary>
+ <param name="f"></param>
+ <returns></returns>
+ <remarks>
+ Font metrics from http://msdn.microsoft.com/en-us/library/xwf9s90b(VS.71).aspx
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLayoutEngine.GetDescent(Microsoft.VisualBasic.Imaging.Font)">
+ <summary>
+ Gets the descent of the font
+ </summary>
+ <param name="f"></param>
+ <returns></returns>
+ <remarks>
+ Font metrics from http://msdn.microsoft.com/en-us/library/xwf9s90b(VS.71).aspx
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLayoutEngine.GetLineSpacing(Microsoft.VisualBasic.Imaging.Font)">
+ <summary>
+ Gets the line spacing of the font
+ </summary>
+ <param name="f"></param>
+ <returns></returns>
+ <remarks>
+ Font metrics from http://msdn.microsoft.com/en-us/library/xwf9s90b(VS.71).aspx
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLayoutEngine.ApplyVerticalAlignment(Microsoft.VisualBasic.Imaging.IGraphics,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox)">
+ <summary>
+ Applies vertical alignment to the linebox
+ </summary>
+ <param name="g"></param>
+ <param name="lineBox"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLayoutEngine.ApplyCellVerticalAlignment(Microsoft.VisualBasic.Imaging.IGraphics,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Applies special vertical alignment for table-cells
+ </summary>
+ <param name="g"></param>
+ <param name="cell"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLayoutEngine.ApplyJustifyAlignment(Microsoft.VisualBasic.Imaging.IGraphics,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox)">
+ <summary>
+ Applies centered alignment to the text on the linebox
+ </summary>
+ <param name="g"></param>
+ <param name="lineBox"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLayoutEngine.ApplyCenterAlignment(Microsoft.VisualBasic.Imaging.IGraphics,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox)">
+ <summary>
+ Applies centered alignment to the text on the linebox
+ </summary>
+ <param name="g"></param>
+ <param name="line"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLayoutEngine.ApplyRightAlignment(Microsoft.VisualBasic.Imaging.IGraphics,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox)">
+ <summary>
+ Applies right alignment to the text on the linebox
+ </summary>
+ <param name="g"></param>
+ <param name="line"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLayoutEngine.ApplyLeftAlignment(Microsoft.VisualBasic.Imaging.IGraphics,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox)">
+ <summary>
+ Simplest alignment, just arrange words.
+ </summary>
+ <param name="g"></param>
+ <param name="line"></param>
+</member>
 <member name="T:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLength">
  <summary>
  Represents and gets info about a CSS Length
@@ -2818,6 +3856,102 @@ Microsoft.VisualBasic.MIME.Html
  </summary>
  <returns></returns>
 </member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox">
+ <summary>
+ Represents a line of text.
+ </summary>
+ <remarks>
+ To learn more about line-boxes see CSS spec:
+ http://www.w3.org/TR/CSS21/visuren.html
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox.#ctor(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Creates a new LineBox
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox.RelatedBoxes">
+ <summary>
+ Gets a list of boxes related with the linebox. 
+ To know the words of the box inside this linebox, use the <see cref="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox.WordsOf(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)"/> method.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox.Words">
+ <summary>
+ Gets the words inside the linebox
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox.OwnerBox">
+ <summary>
+ Gets the owner box
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox.Rectangles">
+ <summary>
+ Gets a List of rectangles that are to be painted on this linebox
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox.GetMaxWordBottom">
+ <summary>
+ Gets the maximum bottom of the words
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox.ReportExistanceOf(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBoxWord)">
+ <summary>
+ Lets the linebox add the word an its box to their lists if necessary.
+ </summary>
+ <param name="word"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox.WordsOf(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Return the words of the specified box that live in this linebox
+ </summary>
+ <param name="box"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox.UpdateRectangle(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,System.Single,System.Single,System.Single,System.Single)">
+ <summary>
+ Updates the specified rectangle of the specified box.
+ </summary>
+ <param name="box"></param>
+ <param name="x"></param>
+ <param name="y"></param>
+ <param name="r"></param>
+ <param name="b"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox.AssignRectanglesToBoxes">
+ <summary>
+ Copies the rectangles to their specified box
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox.DrawRectangles(Microsoft.VisualBasic.Imaging.IGraphics)">
+ <summary>
+ Draws the rectangles for debug purposes
+ </summary>
+ <param name="g"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox.GetBaseLineHeight(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,Microsoft.VisualBasic.Imaging.IGraphics)">
+ <summary>
+ Gets the baseline Height of the rectangle
+ </summary>
+ <param name="g"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox.SetBaseLine(Microsoft.VisualBasic.Imaging.IGraphics,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,System.Single)">
+ <summary>
+ Sets the baseline of the words of the specified box to certain height
+ </summary>
+ <param name="g">Device info</param>
+ <param name="b">box to check words</param>
+ <param name="baseline">baseline</param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssLineBox.ToString">
+ <summary>
+ Returns the words of the linebox
+ </summary>
+ <returns></returns>
+</member>
 <member name="T:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssPropertyAttribute">
  <summary>
  Used to mark a property as a Css property.
@@ -2880,6 +4014,215 @@ Microsoft.VisualBasic.MIME.Html
  Gets or sets the size of the rectangle
  </summary>
 </member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.SpacingBox">
+ <summary>
+ Used to make space on vertical cell combination
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.SpacingBox.StartRow">
+ <summary>
+ Gets the index of the row where box starts
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.SpacingBox.EndRow">
+ <summary>
+ Gets the index of the row where box ends
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.WidthSpecified">
+ <summary>
+ Gets if the user specified a width for the table
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.AllRows">
+ <summary>
+ Hosts a list of all rows in the table, including those on the TFOOT, THEAD and TBODY
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.Caption">
+ <summary>
+ Gets the box that represents the caption of this table, if any.
+ WARNING: May be null
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.ColumnCount">
+ <summary>
+ Gets the column count of this table
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.ColumnMinWidths">
+ <summary>
+ Gets the minimum width of each column
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.Columns">
+ <summary>
+ Gets the declared Columns on the TABLE tag
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.ColumnWidths">
+ <summary>
+ Gets an array indicating the withs of each column.
+ This must have the same count than <see cref="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.Columns"/>
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.BodyRows">
+ <summary>
+ Gets the boxes that represents the table-row Boxes of the table, 
+ including those inside of the TBODY tags
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.FooterBox">
+ <summary>
+ Gets the table-footer-group Box
+ WARNING: May be null
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.HeaderBox">
+ <summary>
+ Gets the table-header-group Box
+ WARNING: May be null
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.HorizontalSpacing">
+ <summary>
+ Gets the actual horizontal spacing of the table
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.VerticalSpacing">
+ <summary>
+ Gets the actual vertical spacing of the table
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.RowCount">
+ <summary>
+ Gets the row count of this table, including the rows inside the table-row-group,
+ table-row-heaer and table-row-footer Boxes
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.TableBox">
+ <summary>
+ Gets the original table box
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.Analyze(Microsoft.VisualBasic.Imaging.IGraphics)">
+ <summary>
+ Analyzes the Table and assigns values to this CssTable object.
+ To be called from the constructor
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.GetSpannedMinWidth(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,System.Int32,System.Int32)">
+ <summary>
+ Gets the spanned width of a cell
+ (With of all columns it spans minus one)
+ </summary>
+ <param name="row"></param>
+ <param name="cell"></param>
+ <param name="realcolindex"></param>
+ <param name="colspan"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.GetCellRealColumnIndex(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Gets the cell column index checking its position and other cells colspans
+ </summary>
+ <param name="row"></param>
+ <param name="cell"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.GetCellWidth(System.Int32,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Gets the cells width, taking colspan and being in the specified column
+ </summary>
+ <param name="column"></param>
+ <param name="b"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.GetColSpan(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Gets the colspan of the specified box
+ </summary>
+ <param name="b"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.GetRowSpan(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Gets the rowspan of the specified box
+ </summary>
+ <param name="b"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.Measure(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,Microsoft.VisualBasic.Imaging.IGraphics)">
+ <summary>
+ Recursively measures the specified box
+ </summary>
+ <param name="b"></param>
+ <param name="g"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.MeasureWords(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,Microsoft.VisualBasic.Imaging.IGraphics)">
+ <summary>
+ Recursively measures words inside the box
+ </summary>
+ <param name="b"></param>
+ <param name="g"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.GetReductableColumns">
+ <summary>
+ Gets the number of reductable columns
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.CanReduceWidth">
+ <summary>
+ Tells if the columns widths can be reduced,
+ by checking the minimum widths of all cells
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.CanReduceWidth(System.Int32)">
+ <summary>
+ Tells if the specified column can be reduced,
+ by checking its minimum width
+ </summary>
+ <param name="columnIndex"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.GetAvailableWidth">
+ <summary>
+ Gets the available width for the whole table.
+ It also sets the value of <see cref="P:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.WidthSpecified"/>
+ </summary>
+ <returns></returns>
+ <remarks>
+ The table's width can be larger than the result of this method, because of the minimum 
+ size that individual boxes.
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.GetAvailableCellWidth">
+ <summary>
+ Gets the width available for cells
+ </summary>
+ <returns></returns>
+ <remarks>
+ It takes away the cell-spacing from <see cref="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.GetAvailableWidth"/>
+ </remarks>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.GetWidthSum">
+ <summary>
+ Gets the current sum of column widths
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.GetSpan(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Gets the span attribute of the tag of the specified box
+ </summary>
+ <param name="b"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssTable.CreateColumn(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Creates the column with the specified width
+ </summary>
+ <returns></returns>
+</member>
 <member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssValue.ParseNumber(System.String,System.Single)">
  <summary>
  Evals a number and returns it. If number is a percentage, it will be multiplied by <paramref name="hundredPercent"/>
@@ -2888,12 +4231,38 @@ Microsoft.VisualBasic.MIME.Html
  <param name="hundredPercent">Number that represents the 100% if parsed number is a percentage</param>
  <returns>Parsed number. Zero if error while parsing.</returns>
 </member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssValue.ParseLength(System.String,System.Single,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Parses a length. Lengths are followed by an unit identifier (e.g. 10px, 3.1em)
+ </summary>
+ <param name="length">Specified length</param>
+ <param name="hundredPercent">Equivalent to 100 percent when length is percentage</param>
+ <param name="box"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssValue.ParseLength(System.String,System.Single,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,System.Single,System.Boolean)">
+ <summary>
+ Parses a length. Lengths are followed by an unit identifier (e.g. 10px, 3.1em)
+ </summary>
+ <param name="length">Specified length</param>
+ <param name="hundredPercent">Equivalent to 100 percent when length is percentage</param>
+ <param name="box"></param>
+ <param name="returnPoints">Allows the return float to be in points. If false, result will be pixels</param>
+ <returns></returns>
+</member>
 <member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssValue.GetActualColor(System.String)">
  <summary>
  Parses a color value in CSS style; e.g. #ff0000, red, rgb(255,0,0), rgb(100%, 0, 0)
  </summary>
  <param name="colorValue">Specified color value; e.g. #ff0000, red, rgb(255,0,0), rgb(100%, 0, 0)</param>
  <returns>System.Drawing.Color value</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssValue.GetActualBorderWidth(System.String,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Parses a border value in CSS style; e.g. 1px, 1, thin, thick, medium
+ </summary>
+ <param name="borderValue"></param>
+ <returns></returns>
 </member>
 <member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssValue.SplitValues(System.String)">
  <summary>
@@ -2923,6 +4292,18 @@ Microsoft.VisualBasic.MIME.Html
  </summary>
  <param name="path"></param>
  <returns>One of the following possible objects: FileInfo, MethodInfo, PropertyInfo</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssValue.GetImage(System.String)">
+ <summary>
+ Gets the image of the specified path
+ </summary>
+ <param name="path"></param>
+ <returns></returns>
+ <remarks>
+ the image data model of this function is the cross platform image 
+ type of the ``Microsoft.VisualBasic.Imaging`` namespace, not the 
+ GDI+ image type.
+ </remarks>
 </member>
 <member name="M:Microsoft.VisualBasic.MIME.Html.Render.CSS.CssValue.GetStyleSheet(System.String)">
  <summary>
@@ -2970,6 +4351,24 @@ Microsoft.VisualBasic.MIME.Html
  </summary>
  <param name="assembly"></param>
 </member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.HtmlRenderer.Render(Microsoft.VisualBasic.Imaging.IGraphics,System.String,System.Drawing.PointF,System.Single)">
+ <summary>
+ Draws the HTML on the specified point using the specified width.
+ </summary>
+ <param name="g">Device to draw</param>
+ <param name="html">HTML source</param>
+ <param name="location">Point to start drawing</param>
+ <param name="width">Width to fit HTML drawing</param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.HtmlRenderer.Render(Microsoft.VisualBasic.Imaging.IGraphics,System.String,System.Drawing.RectangleF,System.Boolean)">
+ <summary>
+ Renders the specified HTML source on the specified area clipping if specified
+ </summary>
+ <param name="g">Device to draw</param>
+ <param name="html">HTML source</param>
+ <param name="area">Area where HTML should be drawn</param>
+ <param name="clip">If true, it will only paint on the specified area</param>
+</member>
 <member name="M:Microsoft.VisualBasic.MIME.Html.Render.HtmlRenderer.LoadEnvironment(Microsoft.VisualBasic.Imaging.IGraphics)">
  <summary>
  load the css styling environment from the given graphics canvas object.
@@ -2979,6 +4378,184 @@ Microsoft.VisualBasic.MIME.Html
  <remarks>
  set the <see cref="P:Microsoft.VisualBasic.Imaging.IGraphics.Stroke"/> to nothing if no needs of the default line stroke value
  </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.HtmlTag.Attributes">
+ <summary>
+ Gets the dictionary of attributes in the tag
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.HtmlTag.TagName">
+ <summary>
+ Gets the name of this tag
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.HtmlTag.IsClosing">
+ <summary>
+ Gets if the tag is actually a closing tag
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.HtmlTag.IsSingle">
+ <summary>
+ Gets if the tag is single placed; in other words it doesn't need a closing tag; 
+ e.g. &lt;br&gt;
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.HtmlTag.TranslateLength(System.String)">
+ <summary>
+ Converts an HTML length into a Css length
+ </summary>
+ <param name="htmlLength"></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.HtmlTag.ApplyTableBorder(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,System.String)">
+ <summary>
+ Cascades to the TD's the border spacified in the TABLE tag.
+ </summary>
+ <param name="table"></param>
+ <param name="border"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.HtmlTag.ApplyTablePadding(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox,System.String)">
+ <summary>
+ Cascades to the TD's the border spacified in the TABLE tag.
+ </summary>
+ <param name="table"></param>
+ <param name="padding"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.HtmlTag.HasAttribute(System.String)">
+ <summary>
+ Gets a boolean indicating if the attribute list has the specified attribute
+ </summary>
+ <param name="attribute"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.MIME.Html.Render.InitialContainer">
+ <summary>
+ HTML rendering
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.InitialContainer.#ctor(System.String)">
+ <summary>
+ Create the layout container from the html document source text.
+ </summary>
+ <param name="documentSource"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.InitialContainer.#ctor(System.Xml.Linq.XElement)">
+ <summary>
+ Create the layout container from a xml literal (or any other 
+ <see cref="T:System.Xml.Linq.XElement"/> object) that declares the user interface.
+ </summary>
+ <param name="xml">
+ the ui declaration, example as:
+ <code>
+ &lt;form style="background-color: gray;">
+     &lt;button style="left:50%;top:50%;width:200px;height:60px">hello&lt;/button>
+ &lt;/form>
+ </code>
+ </param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.InitialContainer.EscapeTagClosures(System.String)">
+ <summary>
+ The xml serializer escapes the ``&lt;`` character of an attribute
+ value but leaves the ``&gt;`` one as it is, and such a character
+ terminates the html tag early: a rich text value like
+ ``tooltip="&lt;b&gt;title&lt;/b&gt;"`` is read back as
+ ``tooltip="&amp;lt;b&amp;gt;title"``. the ``&gt;`` characters that
+ are located inside of an attribute value are escaped again at here.
+ </summary>
+ <param name="html"></param>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.InitialContainer.LinkRegions">
+ <summary>
+ Gets the link regions of the container
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.InitialContainer.MediaBlocks">
+ <summary>
+ Gets the blocks of style defined on this structure, separated by media type.
+ General blocks are defined under the "all" Key.
+ </summary>
+ <remarks>
+ Normal use of this dictionary will be something like:
+ 
+ MediaBlocks["print"]["strong"].Properties
+ 
+ - Or -
+ 
+ MediaBlocks["all"]["strong"].Properties
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.InitialContainer.DocumentSource">
+ <summary>
+ Gets the document's source
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.InitialContainer.AvoidGeometryAntialias">
+ <summary>
+ Gets or sets a value indicating if antialiasing should be avoided 
+ for geometry like backgrounds and borders
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.InitialContainer.AvoidTextAntialias">
+ <summary>
+ Gets or sets a value indicating if antialiasing should be avoided
+ for text rendering
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.InitialContainer.MaximumSize">
+ <summary>
+ Gets or sets the maximum size of the container
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.MIME.Html.Render.InitialContainer.ScrollOffset">
+ <summary>
+ Gets or sets the scroll offset of the document
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.InitialContainer.FeedStyleSheet(System.String)">
+ <summary>
+ Feeds the source of the stylesheet
+ </summary>
+ <param name="stylesheet"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.InitialContainer.FeedStyleBlock(System.String,System.String)">
+ <summary>
+ Feeds the style with a block about the specific media.
+ When no media is specified, "all" will be used
+ </summary>
+ <param name="media"></param>
+ <param name="block"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.InitialContainer.ParseDocument">
+ <summary>
+ Parses the document
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.InitialContainer.FindParent(System.String,Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Recursively searches for the parent with the specified HTML Tag name
+ </summary>
+ <param name="tagName"></param>
+ <param name="b"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.InitialContainer.CascadeStyles(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Applies style to all boxes in the tree
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.InitialContainer.BlockCorrection(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Makes block boxes be among only block boxes. 
+ Inline boxes should live in a pool of Inline boxes only.
+ </summary>
+ <param name="startBox"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.MIME.Html.Render.InitialContainer.BlockCorrection_GetInlineGroups(Microsoft.VisualBasic.MIME.Html.Render.CSS.CssBox)">
+ <summary>
+ Scans the boxes (non-deeply) of the box, and returns groups of contiguous inline boxes.
+ </summary>
+ <param name="box"></param>
+ <returns></returns>
 </member>
 <member name="T:Microsoft.VisualBasic.MIME.Html.Render.NamespaceDoc">
  <summary>

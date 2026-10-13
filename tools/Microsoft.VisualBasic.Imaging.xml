@@ -1187,6 +1187,11 @@ Microsoft.VisualBasic.Imaging
  <param name="topN"></param>
  <returns></returns>
 </member>
+<member name="M:Microsoft.VisualBasic.Imaging.Drawing2D.Colors.CustomDesigns.TextToColorHex(System.String)">
+ <summary>
+ 将任意文本哈希为 6 位十六进制颜色值（不含 # 前缀）
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.Imaging.Drawing2D.Colors.Designer">
  <summary>
  Generate color sequence
@@ -4281,6 +4286,165 @@ Microsoft.VisualBasic.Imaging
  <summary>
  由仰角/方位角（度）构造指向光源的单位向量。
  </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayQualityStats">
+ <summary>
+ 三维 Delaunay 网格的质量统计。
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayQualityStats.Tetrahedrons">
+ <summary>四面体总数。</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayQualityStats.Degenerate">
+ <summary>零体积（共面退化）四面体数。</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayQualityStats.MinRadiusRatio">
+ <summary>最小半径比（RadiusRatio = R/(3r)，正四面体 ≈ 1）。</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayQualityStats.MaxRadiusRatio">
+ <summary>最大半径比。</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayQualityStats.MinDihedralAngle">
+ <summary>最小二面角（角度制）。</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayQualityStats.AverageRadiusRatio">
+ <summary>平均半径比。</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayTestHelper">
+ <summary>
+ 3D Delaunay 三角剖分结果的校验与质量度量工具（自测/调试用）。
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayTestHelper.ValidateDelaunay(System.Collections.Generic.List{Microsoft.VisualBasic.Imaging.Drawing3D.Point3D},System.Collections.Generic.List{Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.TetraIndices},System.Double)">
+ <summary>
+ 暴力校验 Delaunay 空球特性：对每个四面体，检查所有非顶点输入点
+ 是否落在其外接球内部。返回违反空球特性的次数（0 表示通过）。
+ 复杂度 O(T × n)，仅适合小规模自测。
+ </summary>
+ <param name="eps">归一化 InSphere 行列式容差。</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayTestHelper.ComputeQuality(System.Collections.Generic.List{Microsoft.VisualBasic.Imaging.Drawing3D.Point3D},System.Collections.Generic.List{Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.TetraIndices})">
+ <summary>统计四面体网格质量（半径比、退化数、最小二面角）。</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayTestHelper.MinDihedralAngle(Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.Tetrahedron)">
+ <summary>四面体的最小二面角（角度制）。退化四面体返回 0。</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayTestHelper.FaceNormalOutward(Microsoft.VisualBasic.Imaging.Drawing3D.Point3D[],System.Int32,System.Int32,System.Int32,System.Int32)">
+ <summary>面的外法向（背离第 4 个顶点 <paramref name="opposite"/>）。</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.TetraIndices">
+ <summary>
+ 四面体的四个顶点索引（指向输入点集的下标）。
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayTriangulation3D">
+ <summary>
+ 三维 Delaunay 四面体化：Bowyer-Watson 逐点插入算法。
+ 
+ 实现要点：
+ 1. 输入坐标内部归一化到单位盒，保证 InSphere 行列式判定的数值稳定性；
+ 2. 以一个巨大的正定向超四面体（super-tetrahedron）覆盖全部输入点作为初始网格；
+ 3. 逐点插入：从最近邻已插入点的关联四面体出发（点定位，借助
+    <see cref="T:Microsoft.VisualBasic.ComponentModel.DataStructures.Octree`1"/> 最近邻搜索做跳走加速），BFS 收集外接球包含
+    新点的"坏四面体"空腔，删除空腔并以新点与空腔边界面重构四面体；
+ 4. 面邻接通过"有序面键 → 四面体"哈希映射维护，重建空腔时自动完成邻接修补；
+ 5. 导出时剔除含超四面体顶点的四面体与零体积退化四面体，并统一为正定向。
+ 
+ 注意：面键采用 3×21bit 位打包，要求点数（含超顶点）不超过 2^21 - 1。
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayTriangulation3D.SkippedPoints">
+ <summary>因重复点或退化而跳过的输入点数。</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayTriangulation3D.LastRunSkipped">
+ <summary>调试用：最近一次运行的状态统计。</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayTriangulation3D.Triangulate(System.Collections.Generic.List{Microsoft.VisualBasic.Imaging.Drawing3D.Point3D},System.Int32,System.Boolean)">
+ <summary>
+ 对输入点集做三维 Delaunay 四面体化。
+ </summary>
+ <param name="points">输入点集（至少 4 个不共面的点）。</param>
+ <param name="seed">插入顺序随机化种子（保证结果可重现）。</param>
+ <param name="shuffle">是否随机化插入顺序（推荐开启，避免最坏复杂度）。</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayTriangulation3D.BoundaryTriangles(System.Collections.Generic.List{Microsoft.VisualBasic.Imaging.Drawing3D.Point3D},System.Collections.Generic.List{Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.TetraIndices})">
+ <summary>
+ 提取四面体集合的边界面（仅被一个四面体使用的面），
+ 顶点序统一为外法向（背离四面体内部）。
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayTriangulation3D.DebugValidateEachStep">
+ <summary>调试开关：每步插入后校验邻接一致性。</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayTriangulation3D.LastDebugLog">
+ <summary>调试：插入历史日志（空腔/删除/创建的四面体索引）。</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayTriangulation3D.DebugLog">
+ <summary>调试：插入历史日志（空腔/删除/创建的四面体索引）。</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayTriangulation3D.ValidateAdjacency">
+ <summary>调试：校验全部存活四面体的面邻接一致性（每条内部面恰好两侧一致）。</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayTriangulation3D.LocateContainingTet(System.Double,System.Double,System.Double,System.Int32)">
+ <summary>
+ 可见性行走（visibility walk）：从 <paramref name="start"/> 四面体出发，
+ 每步跨越"将新点隔在外面"的面，直到找到包含新点的四面体。
+ 返回 -1 表示行走失败（调用方应退回全量扫描）。
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayTriangulation3D.FaceSide(System.Int32[],System.Int32,System.Double,System.Double,System.Double)">
+ <summary>点 (px,py,pz) 相对四面体第 slot 个面（其余三顶点构成）平面的有向侧。</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayTriangulation3D.FaceKeyOf(System.Int32,System.Int32)">
+ <summary>四面体第 <paramref name="slot"/> 个顶点所对的面（其余三个顶点）的有序键。</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.DelaunayTriangulation3D.PackFace(System.Int32,System.Int32,System.Int32)">
+ <summary>三个顶点索引升序排列后位打包为 Long 键（3 × 21bit）。</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.Tetrahedron">
+ <summary>
+ 四面体（由四个三维坐标点构成），提供体积、外接球、InSphere 空球判定与质量度量。
+ 坐标使用 <see cref="T:Microsoft.VisualBasic.Imaging.Drawing3D.Point3D"/>（Double 精度）。
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.Tetrahedron.SignedVolume6">
+ <summary>
+ 有向体积的 6 倍（标量三重积 (B-A) · ((C-A) × (D-A))）。
+ 正值表示 (A, B, C, D) 为正定向（右手定则），零值表示共面退化。
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.Tetrahedron.TryCircumsphere(Microsoft.VisualBasic.Imaging.Drawing3D.Point3D@,System.Double@)">
+ <summary>
+ 求外接球。共面（退化）四面体返回 False。
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.Tetrahedron.RadiusRatio">
+ <summary>
+ 质量度量：外接球半径 / (3 × 内切球半径)。正四面体约为 1，越大越畸变；
+ 退化四面体返回 +∞。
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.Tetrahedron.InSphere(Microsoft.VisualBasic.Imaging.Drawing3D.Point3D,Microsoft.VisualBasic.Imaging.Drawing3D.Point3D,Microsoft.VisualBasic.Imaging.Drawing3D.Point3D,Microsoft.VisualBasic.Imaging.Drawing3D.Point3D,Microsoft.VisualBasic.Imaging.Drawing3D.Point3D)">
+ <summary>
+ InSphere 判定的原始行列式（4×4）：
+ 假设 (A, B, C, D) 正定向，则结果大于 0 表示点 <paramref name="p"/> 在四面体外接球内部。
+ 行列式同时除以 6 倍有向体积以消除定向差异（即返回值恒有"正=在球内"的语义）。
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.Tetrahedron.InSphereDet(Microsoft.VisualBasic.Imaging.Drawing3D.Point3D,Microsoft.VisualBasic.Imaging.Drawing3D.Point3D,Microsoft.VisualBasic.Imaging.Drawing3D.Point3D,Microsoft.VisualBasic.Imaging.Drawing3D.Point3D,Microsoft.VisualBasic.Imaging.Drawing3D.Point3D)">
+ <summary>
+ InSphere 行列式（未做定向归一化）：
+ 正定向四面体返回正值表示点在外接球内。
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.Tetrahedron.Contains(Microsoft.VisualBasic.Imaging.Drawing3D.Point3D,Microsoft.VisualBasic.Imaging.Drawing3D.Point3D,Microsoft.VisualBasic.Imaging.Drawing3D.Point3D,Microsoft.VisualBasic.Imaging.Drawing3D.Point3D,Microsoft.VisualBasic.Imaging.Drawing3D.Point3D,System.Double)">
+ <summary>
+ 带容差与定向归一化的空球判定：点 <paramref name="p"/> 是否位于四面体外接球内。
+ </summary>
+ <param name="eps">行列式相对容差（相对于体积归一化后的量纲）。</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.Delaunay3D.Tetrahedron.TriangleArea(Microsoft.VisualBasic.Imaging.Drawing3D.Point3D,Microsoft.VisualBasic.Imaging.Drawing3D.Point3D,Microsoft.VisualBasic.Imaging.Drawing3D.Point3D)">
+ <summary>三角形面积。</summary>
 </member>
 <member name="F:Microsoft.VisualBasic.Imaging.Drawing3D.Math3D.DistanceFieldSampler.Path">
  <summary>
