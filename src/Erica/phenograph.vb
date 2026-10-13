@@ -162,7 +162,7 @@ Module phenograph
                 data:=link.data
             )
         Next
-        For Each cross In knn
+        For Each cross As (x As String, y As (y2 As String, cor2 As Double)()) In knn
             For Each hit In cross.y
                 Call graph.CreateEdge(
                     u:=graph.GetElementByID(cross.x),

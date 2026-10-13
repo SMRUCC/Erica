@@ -171,12 +171,12 @@ Public Module STdata
             Return s.TryCast(Of Message)
         End If
 
-        Dim rawdata As RData = SMRUCC.Rsharp.RDataSet.Reader.ParseData(s.TryCast(Of Stream))
+        Dim obj = SeuratObjectReader.ReadStream(s)
 
         If is_filepath Then
             Call s.TryCast(Of Stream).Close()
         End If
 
-
+        Return obj
     End Function
 End Module
