@@ -3119,7 +3119,10 @@ Create a new mapper from a given data range.
  <summary>计算绘图区矩形（基于主题边距）</summary>
 </member>
 <member name="M:Microsoft.VisualBasic.Data.Plots.PlotEngine.ToPixelX(System.Double,System.Double,System.Double)">
- <summary>数据坐标 -> 像素坐标</summary>
+ <summary>
+ 数据坐标 -> 像素坐标
+ </summary>
+ 
 </member>
 <member name="M:Microsoft.VisualBasic.Data.Plots.PlotEngine.NiceStep(System.Double,System.Int32)">
  <summary>计算"漂亮"的刻度间隔（基于 nice number 算法）</summary>
