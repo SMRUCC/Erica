@@ -23,8 +23,9 @@
           "Microsoft.VisualBasic.Data.GraphTheory.Reference": "1.0.9781.24297",
           "Microsoft.VisualBasic.DataMining.DensityQuery.Reference": "1.0.9781.24297",
           "Microsoft.VisualBasic.DataMining.Framework.Reference": "1.0.9781.24297",
-          "Microsoft.VisualBasic.DataMining.HierarchicalClustering.Reference": "1.0.9777.32612",
+          "Microsoft.VisualBasic.DataMining.HierarchicalClustering.Reference": "1.0.9781.24297",
           "Microsoft.VisualBasic.Drawing.Windows.Reference": "1.0.9781.24297",
+          "Microsoft.VisualBasic.Engine.Particles.Reference": "1.0.0.0",
           "Microsoft.VisualBasic.Engine.Physics.Reference": "1.0.9781.24297",
           "Microsoft.VisualBasic.Imaging.Reference": "1.0.9781.24297",
           "Microsoft.VisualBasic.Math.Core.Reference": "1.0.9781.24297",
@@ -249,6 +250,7 @@
           "Microsoft.VisualBasic.Data.Framework": "10.6.9781.24297",
           "Microsoft.VisualBasic.Data.GraphTheory": "10.6.9781.24297",
           "Microsoft.VisualBasic.DataMining.DensityQuery": "10.6.9781.24297",
+          "Microsoft.VisualBasic.Engine.Particles": "1.0.0",
           "Microsoft.VisualBasic.Engine.Physics": "10.7.9781.24297",
           "Microsoft.VisualBasic.Imaging": "10.6.9781.24297",
           "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
@@ -376,6 +378,19 @@
         },
         "runtime": {
           "Microsoft.VisualBasic.Drawing.Windows.dll": {
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Microsoft.VisualBasic.Engine.Particles/1.0.0": {
+        "dependencies": {
+          "Microsoft.VisualBasic.Data.GraphTheory": "10.6.9781.24297",
+          "Microsoft.VisualBasic.Engine.Physics": "10.7.9781.24297",
+          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
+          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297"
+        },
+        "runtime": {
+          "Microsoft.VisualBasic.Engine.Particles.dll": {
             "fileVersion": "0.0.0.0"
           }
         }
@@ -515,11 +530,11 @@
           }
         }
       },
-      "Microsoft.VisualBasic.DataMining.HierarchicalClustering.Reference/1.0.9777.32612": {
+      "Microsoft.VisualBasic.DataMining.HierarchicalClustering.Reference/1.0.9781.24297": {
         "runtime": {
           "Microsoft.VisualBasic.DataMining.HierarchicalClustering.dll": {
-            "assemblyVersion": "1.0.9777.32612",
-            "fileVersion": "1.0.9777.32612"
+            "assemblyVersion": "1.0.9781.24297",
+            "fileVersion": "1.0.9781.24297"
           }
         }
       },
@@ -528,6 +543,14 @@
           "Microsoft.VisualBasic.Drawing.Windows.dll": {
             "assemblyVersion": "1.0.9781.24297",
             "fileVersion": "1.0.9781.24297"
+          }
+        }
+      },
+      "Microsoft.VisualBasic.Engine.Particles.Reference/1.0.0.0": {
+        "runtime": {
+          "Microsoft.VisualBasic.Engine.Particles.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
           }
         }
       },
@@ -584,22 +607,6 @@
           "Microsoft.VisualBasic.Runtime.dll": {
             "assemblyVersion": "5.33.9781.24297",
             "fileVersion": "5.33.9781.24297"
-          }
-        }
-      },
-      "Microsoft.VisualBasic.Data.ChartPlots/1.0.9762.11310": {
-        "runtime": {
-          "Microsoft.VisualBasic.Data.ChartPlots.dll": {
-            "assemblyVersion": "1.0.9762.11310",
-            "fileVersion": "1.0.9762.11310"
-          }
-        }
-      },
-      "Microsoft.VisualBasic.Imaging.Physics/1.0.9762.11310": {
-        "runtime": {
-          "Microsoft.VisualBasic.Imaging.Physics.dll": {
-            "assemblyVersion": "1.0.9762.11310",
-            "fileVersion": "1.0.9762.11310"
           }
         }
       }
@@ -745,6 +752,11 @@
       "serviceable": false,
       "sha512": ""
     },
+    "Microsoft.VisualBasic.Engine.Particles/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "Microsoft.VisualBasic.Engine.Physics/10.7.9781.24297": {
       "type": "project",
       "serviceable": false,
@@ -815,12 +827,17 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.DataMining.HierarchicalClustering.Reference/1.0.9777.32612": {
+    "Microsoft.VisualBasic.DataMining.HierarchicalClustering.Reference/1.0.9781.24297": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
     "Microsoft.VisualBasic.Drawing.Windows.Reference/1.0.9781.24297": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.VisualBasic.Engine.Particles.Reference/1.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -856,16 +873,6 @@
       "sha512": ""
     },
     "Microsoft.VisualBasic.Runtime.Reference/5.33.9781.24297": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.VisualBasic.Data.ChartPlots/1.0.9762.11310": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Microsoft.VisualBasic.Imaging.Physics/1.0.9762.11310": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

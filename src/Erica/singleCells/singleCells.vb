@@ -8,8 +8,8 @@ Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.ComponentModel.Algorithm.base
 Imports Microsoft.VisualBasic.ComponentModel.Collection
-Imports Microsoft.VisualBasic.Data.ChartPlots
-Imports Microsoft.VisualBasic.Data.ChartPlots.Graphic.Canvas
+Imports Microsoft.VisualBasic.Data.Plots
+Imports Microsoft.VisualBasic.Data.Plots.Canvas
 Imports Microsoft.VisualBasic.Emit.Delegates
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.BitmapImage
@@ -95,22 +95,23 @@ Public Module singleCells
     Private Function plotCellScans(cells As CellScan(), args As list, env As Environment) As Object
         Dim polygons As Polygon2D() = cells.Select(Function(cell) New Polygon2D(cell.scan_x, cell.scan_y)).ToArray
         Dim colors = RColorPalette.getColorSet(args.getBySynonyms("colors", "colorset", "colorSet"), "paper")
-        Dim size = InteropArgumentHelper.getSize(args.getBySynonyms("size"), env)
+        Dim size = InteropArgumentHelper.getSize(args.getBySynonyms("size"), env).SizeParser
         Dim scatter As Boolean = CLRVector.asScalarLogical(args.getBySynonyms("scatter"))
         Dim padding As String = InteropArgumentHelper.getPadding(args!padding, "padding: 10% 10% 15% 20%;")
-        Dim theme As New Theme With {.colorSet = colors, .padding = padding}
+        Dim theme As New PlotTheme
         Dim driver As Drivers = env.getDriver
 
         If polygons.IsNullOrEmpty Then
             Return g.GraphicsPlots(
-                size.SizeParser, "padding:0px", "white",
+                size, "padding:0px", "white",
                 plotAPI:=Sub(ByRef gfx, rect)
 
                          End Sub,
                 driver:=driver)
         Else
-            Dim app As New FillPolygons(polygons, scatter, theme)
-            Return app.Plot(size, driver:=driver)
+            Dim app As New FillPolygons(size.Width, size.Height, theme, driver:=driver)
+            Call app.Plot()
+            Return app.AsGraphicsData
         End If
     End Function
 

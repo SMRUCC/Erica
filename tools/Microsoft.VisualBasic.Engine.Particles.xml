@@ -1,0 +1,1386 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Microsoft.VisualBasic.Engine.Particles
+</name>
+</assembly>
+<members>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.Boids.Boid">
+ <summary>
+ Boids flocking algorithm
+ </summary>
+ <remarks>
+ https://github.com/swharden/Csharp-Data-Visualization/tree/main/dev/old/drawing/boids
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.Boids.Boid.x">
+ <summary>
+ position x
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.Boids.Boid.y">
+ <summary>
+ position y
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.Boids.Boid.MoveForward(System.Double,System.Double)">
+ <summary>
+ Moves the boid forward in time and clamps its speed into the 
+ ``[minSpeed, maxSpeed]`` range. This is a view operation: it mutates
+ the underlying simulation state slot.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.Boids.Boid.GetSpeed">
+ <summary>
+ Velocity
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.Boids.BoidMath">
+ <summary>
+ Numeric helpers shared by the flocking engine and the renderers.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.Boids.BoidMath.Round(System.Double)">
+ <summary>
+ Fast round-half-to-even (banker's rounding) of a double, bit-compatible 
+ with the VB <c>CInt()</c> conversion but roughly 5x cheaper on hot 
+ paths. Valid for finite values with |v| &lt; 2^51.
+ </summary>
+ <param name="v">the value to round</param>
+ <remarks>
+ Uses the classic magic-number trick: adding ``1.5 * 2^52`` forces the 
+ FPU to round to the nearest integer with ties to even, and the low 32 
+ bits of the resulting bit pattern are the rounded value in two's 
+ complement. Validated bit-for-bit against <c>CInt</c> on 240k samples 
+ (including exact .5 ties and negatives) by the Boids self test.
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.Boids.Field">
+ <summary>
+ Boids flocking algorithm
+ </summary>
+ <remarks>
+ https://github.com/swharden/Csharp-Data-Visualization/tree/main/dev/old/drawing/boids
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.Boids.Field.Entity">
+ <summary>
+ a read only collection view of all boids inside this field; enumerating
+ it yields zero allocation <see cref="T:Microsoft.VisualBasic.Engine.Particles.Boids.Boid"/> value views.
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.Boids.Field.State">
+ <summary>
+ the SoA simulation state; exposes the px/py/vx/vy component arrays for
+ consumers that want to stream over the boids without going through
+ the <see cref="P:Microsoft.VisualBasic.Engine.Particles.Boids.Field.Item(System.Int32)"/> views (e.g. the SIMD renderer).
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.Boids.Field.Grid">
+ <summary>
+ the spatial grid of the most recent <see cref="M:Microsoft.VisualBasic.Engine.Particles.Boids.Field.Advance(System.Boolean,System.Boolean)"/> call
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Boids.Field.Radius">
+ <summary>
+ the spatial grid cell size, in simulation units (pixels)
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.Boids.Field.Advance(System.Boolean,System.Boolean)">
+ <summary>
+ Advances the simulation by one time step: rebuild the spatial grid, 
+ evaluate the flocking rules in parallel, then run the SIMD integration 
+ kernel with the wall rules.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.Boids.BoidCollection">
+ <summary>
+ a read only, allocation free collection view over the boid slots
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid">
+ <summary>
+ Dense uniform spatial grid built with counting sort.
+ </summary>
+ <remarks>
+ <para>
+ The legacy implementation rebuilt the generic <c>Grid(Of T())</c> spatial 
+ hash (a nested dictionary of dictionaries) every frame via LINQ GroupBy, 
+ and every neighbor lookup probed that dictionary-of-dictionaries nine 
+ times. At 80k boids that is ~1.4M dictionary probes plus hundreds of 
+ thousands of allocations per frame.
+ </para>
+ <para>
+ This grid is rebuilt every frame in O(N): one pass computes the rounded 
+ cell coordinate of every boid (the same ``CInt(x / cellSize)`` banker's 
+ rounding the legacy code used), one counting pass produces the CSR-style 
+ <see cref="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.cellStart"/> offsets, and one fill pass writes boid ids into
+ <see cref="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.sortedIds"/> grouped by cell. Boid ids inside a cell keep their 
+ original ascending order, so the neighbor enumeration order is identical 
+ to the legacy grid.
+ </para>
+ <para>
+ The grid is padded by one cell on each side of the per-frame bounding box. 
+ Because the wall bounce rule only applies a steering force (it never 
+ clamps positions), boids can drift outside the canvas; the padding 
+ preserves the legacy behavior where such out-of-bounds boids can still 
+ see each other as neighbors.
+ </para>
+ </remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.cellStart">
+ <summary>
+ cell id = (cy - minCy) * nx + (cx - minCx); 
+ <see cref="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.cellStart"/>(c) .. <see cref="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.cellStart"/>(c+1) is the 
+ half-open range of <see cref="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.sortedIds"/> owned by cell c.
+ length = nCells + 1
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.sortedIds">
+ <summary>
+ boid ids sorted by cell id
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.cellOfX">
+ <summary>
+ rounded cell x of each boid (recomputed on every <see cref="M:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.Build(Microsoft.VisualBasic.Engine.Particles.Boids.FlockState,System.Double)"/>)
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.cellOfY">
+ <summary>
+ rounded cell y of each boid (recomputed on every <see cref="M:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.Build(Microsoft.VisualBasic.Engine.Particles.Boids.FlockState,System.Double)"/>)
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.nx">
+ <summary>
+ padded cell counts: the cell bounding box is expanded by one cell 
+ on every side
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.ny">
+ <summary>
+ padded cell counts: the cell bounding box is expanded by one cell 
+ on every side
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.cursor">
+ <summary>
+ fill cursor reused by <see cref="M:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.Build(Microsoft.VisualBasic.Engine.Particles.Boids.FlockState,System.Double)"/>
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.badCell">
+ <summary>
+ the sentinel stored in <see cref="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.cellOfX"/>/<see cref="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.cellOfY"/> for 
+ boids whose position is not finite (NaN/Inf); such boids are pinned 
+ to the minimum cell corner instead of crashing the sort
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.Build(Microsoft.VisualBasic.Engine.Particles.Boids.FlockState,System.Double)">
+ <summary>
+ Rebuild the grid from the current boid positions.
+ </summary>
+ <param name="state">the SoA simulation state</param>
+ <param name="cellSize">the grid cell size, in simulation units</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.CellId(System.Int32)">
+ <summary>
+ dense cell id of the boid at the given index (requires 
+ <see cref="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.cellOfX"/>/<see cref="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.cellOfY"/> to be filled by <see cref="M:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.Build(Microsoft.VisualBasic.Engine.Particles.Boids.FlockState,System.Double)"/>)
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.Boids.FlockGrid.CellRound(System.Double)">
+ <summary>
+ Fast round-half-to-even (banker's rounding) of a double, bit-compatible
+ with the VB <c>CInt()</c> conversion that the legacy cell hashing used.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.Boids.FlockSolver">
+ <summary>
+ Evaluate the flocking rules for a contiguous boid index range.
+ </summary>
+ <remarks>
+ Runs inside a <see cref="T:Microsoft.VisualBasic.Parallel.VectorTask"/> parallel range; the grid is 
+ read-only during the solve and each boid only writes its own delta slot, 
+ so the parallel execution is race free.
+ </remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockSolver.flockDistance">
+ <summary> cohesion / alignment perception radius </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockSolver.avoidDistance">
+ <summary> separation radius </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockSolver.predatorDistance">
+ <summary> predator perception radius </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.Boids.FlockIntegrate">
+ <summary>
+ The streaming integration kernel: apply rule forces, integrate positions, 
+ clamp speed, bounce off walls and optionally wrap around edges.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockIntegrate.bouncePad">
+ <summary> wall bounce steering band, in simulation units </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Boids.FlockIntegrate.bounceTurn">
+ <summary> wall bounce steering force </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.Boids.FlockIntegrate.Integrate(Microsoft.VisualBasic.Engine.Particles.Boids.FlockState,System.Double,System.Double,System.Boolean,System.Boolean,System.Double,System.Double)">
+ <summary>
+ Advances the whole simulation state by one time step.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.Boids.FlockIntegrate.IntegrateSimd(Microsoft.VisualBasic.Engine.Particles.Boids.FlockState,System.Double,System.Double,System.Boolean,System.Boolean,System.Double,System.Double)">
+ <summary>
+ 4-lane (AVX2) streaming integration over the SoA state.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.Boids.FlockIntegrate.IntegrateScalar(Microsoft.VisualBasic.Engine.Particles.Boids.FlockState,System.Double,System.Double,System.Boolean,System.Boolean,System.Double,System.Double)">
+ <summary>
+ Single thread streaming integration, also used as the fallback path
+ when the SIMD is disabled or the hardware is not accelerated.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.Boids.FlockIntegrate.StepScalar(System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Double[],System.Int32,System.Double,System.Double,System.Boolean,System.Boolean,System.Double,System.Double)">
+ <summary>
+ Advance one boid slot: apply the rule force delta, integrate the
+ position, clamp the speed and apply the wall rules.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.Boids.FlockReference">
+ <summary>
+ Legacy-semantics reference engine (development validation only).
+ </summary>
+ <remarks>
+ The rules, the constants, the accumulation orders and the integrate 
+ semantics mirror the legacy <see cref="T:Microsoft.VisualBasic.Engine.Particles.Boids.Field"/> implementation exactly, 
+ including its neighbor candidate restriction: the legacy spatial hash 
+ used 15px cells and only probed the 3x3 cell block around each boid 
+ (so the effective perception set is the intersection of that box with 
+ the distance filter, NOT the full distance circle). The solve is two 
+ phase here so the result is deterministic; neighbor enumeration order 
+ differs from the grid order by ULP amounts only.
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.Boids.FlockState">
+ <summary>
+ The SoA (structure of arrays) state of the flocking simulation: positions 
+ and velocities are kept in four contiguous <see cref="T:System.Double"/> arrays so 
+ that the vectorized kernels can stream over them sequentially.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.Boids.FlockState.px">
+ <summary>
+ position x, indexed by boid id
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.Boids.FlockState.py">
+ <summary>
+ position y, indexed by boid id
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.Boids.FlockState.vx">
+ <summary>
+ velocity x, indexed by boid id
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.Boids.FlockState.vy">
+ <summary>
+ velocity y, indexed by boid id
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.Boids.FlockState.dvx">
+ <summary>
+ velocity delta produced by the flocking rules for the current frame;
+ it is applied by the integration kernel and acts as the two-phase
+ buffer that keeps the parallel solve race free (every boid reads the
+ frame-start velocities of its neighbors).
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.Boids.FlockState.dvy">
+ <summary>
+ velocity delta produced by the flocking rules for the current frame
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.Boids.FlockState.count">
+ <summary>
+ number of boids inside the current simulation state
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.Boids.FlockState.Clone">
+ <summary>
+ Makes a deep copy of the current simulation state, this function is 
+ used by the unit test for compare the simulation result between 
+ the SIMD engine and the legacy reference implementation.
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.Boids.NamespaceDoc">
+ <summary>
+ The boids flocking simulation.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D">
+ <summary>
+ A 3D Smoothed Particle Hydrodynamics (SPH) fluid simulation engine.
+ 
+ This is the three dimensional counterpart of the 2D <see cref="T:Microsoft.VisualBasic.Engine.Particles.FluidEngine"/>.
+ The simulation pipeline of one (sub) step is:
+ 
+ 1. apply the external forces (gravity + shake disturbance) and predict positions
+ 2. rebuild the flat uniform grid (<see cref="T:Microsoft.VisualBasic.Engine.Particles.UniformGrid3D"/>) for the neighbour search
+ 3. calculate the density and near density of each particle
+ 4. calculate the pressure force (momentum conserving symmetric form)
+ 5. calculate the viscosity force (density normalized, clamped)
+ 6. integrate, then resolve the boundary / moving impeller constraints
+ 
+ The fluid is contained inside an <see cref="T:Microsoft.VisualBasic.Engine.Particles.SphBoundary3D"/> which defaults to
+ the axis aligned box volume <c>[0,BoxSize.x] x [0,BoxSize.y] x [0,BoxSize.z]</c>
+ and gravity pulls the water along <see cref="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.GravityDirection"/> (by default
+ the +Y face, i.e. the bottom of the legacy box container). Cylindrical
+ vessels (<see cref="T:Microsoft.VisualBasic.Engine.Particles.CylinderBoundary3D"/>) and rotating impellers
+ (<see cref="T:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D"/>) can be plugged in for stirred tank scenarios.
+ </summary>
+ <remarks>
+ Optimized revision: the particle state has been moved from an array of
+ objects into Structure-of-Arrays buffers (<see cref="T:Microsoft.VisualBasic.Engine.Particles.SphState3D"/>), the
+ spatial hash from a <c>Dictionary(Of (Integer,Integer,Integer), ...)</c> into a
+ counting sorted flat grid, and every pass is now a race free gather
+ (read only neighbourhood, write only into the own slot) so that the
+ <c>Parallel.For</c> passes are deterministic and match the CUDA backend.
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.SmoothingRadius">
+ <summary>
+ The SPH smoothing radius. changing this rebuilds the kernels.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.BoxSize">
+ <summary>
+ the size(x/y/z extent) of the box volume that holds the fluid.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.DisturbAccel">
+ <summary>
+ An external disturbance acceleration injected by the host application
+ (for example, the inertial force produced when the user shakes the
+ window on the desktop). the engine decays this value every step so the
+ water naturally settles down again after a shake.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.DisturbDamping">
+ <summary>
+ the exponential decay factor(per step) applied to <see cref="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.DisturbAccel"/>.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.GravityDirection">
+ <summary>
+ unit vector of the gravity direction (legacy box scenes pull the water
+ toward +Y; a fermenter with the Z axis pointing up uses (0,0,-1)).
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.Boundary">
+ <summary>the computational domain (box by default, cylinder for a fermenter)</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.Impeller">
+ <summary>an optional rotating impeller (moving boundary forcing)</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.Backend">
+ <summary>
+ the pluggable compute backend; defaults to the parallel CPU backend.
+ a CUDA implementation can be injected from the host application.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.ParticleSpacing">
+ <summary>
+ the particle spacing of the initial fill (used by the CFL condition);
+ 0 defaults to SmoothingRadius / 2.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.AutoCalibrateDensity">
+ <summary>
+ when true the rest density is measured from the current particle fill
+ on the first step (or when <see cref="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.CalibrateDensity(System.Func{System.Int32,System.Boolean})"/> is called).
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.RestDensity">
+ <summary>the calibrated rest density of the (h-r)^2 kernel sum</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.RestNearDensity">
+ <summary>the calibrated rest density of the (h-r)^3 kernel sum</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.AutoPressure">
+ <summary>
+ when true the pressure stiffness is derived from the artificial sound
+ speed instead of using <see cref="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.PressureMultiplier"/> literally.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.SoundSpeed">
+ <summary>the artificial sound speed c (0 = derive from the scene)</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.SoundSpeedFactor">
+ <summary>c / reference velocity ratio; ~8 keeps the density error near 1%</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.ReferenceSpeed">
+ <summary>
+ the reference velocity used to derive the sound speed
+ (0 = estimate: sqrt(2*g*H) plus the impeller tip speed).
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.NearPressureRatio">
+ <summary>near pressure stiffness, as a fraction of the pressure stiffness</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.CflFactor">
+ <summary>CFL coefficient of the acoustic time step limit</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.MaxSubSteps">
+ <summary>upper bound of the sub steps per <see cref="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.RunSimulationStep"/> call</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.MaxVelocity">
+ <summary>velocity clamp (0 = disabled)</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.MaxAccel">
+ <summary>acceleration clamp (0 = disabled)</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.PredictionFactor">
+ <summary>
+ the position prediction factor of the sub step; 0 defaults to the sub
+ step size itself (the legacy engine used a hard coded 1/120 which was
+ inconsistent with <see cref="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.DeltaTime"/>).
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.WallPadding">
+ <summary>wall padding override (0 = use <see cref="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.ParticleSize"/>)</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.Time">
+ <summary>simulated time (accumulated)</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.StepCount">
+ <summary>number of executed steps</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.LastSubSteps">
+ <summary>number of sub steps used by the most recent step</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.EffectiveSoundSpeed">
+ <summary>the (cached) artificial sound speed of the current setup</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.EffectivePressureK">
+ <summary>the (cached) pressure stiffness K = c^2 of the current setup</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.State">
+ <summary>the SoA particle state (shared with the compute backends)</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.Grid">
+ <summary>the flat uniform grid of the neighbour search</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.Kernels3D">
+ <summary>the kernel bundle of the current smoothing radius</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.Params">
+ <summary>the flat parameter bundle that is handed to the compute backend</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.Entity">
+ <summary>
+ the particles of this simulation (legacy array-of-structures view).
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.Count">
+ <summary>
+ the total number of the water particles inside this simulation.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.#ctor(System.Int32,Microsoft.VisualBasic.Engine.Physics.Vector3,System.Single)">
+ <summary>
+ create the engine for <paramref name="n"/> particles inside a box volume.
+ the particles are scattered randomly inside the box (legacy behaviour).
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.#ctor(Microsoft.VisualBasic.Engine.Particles.SphBoundary3D,System.Single)">
+ <summary>
+ create the engine for an arbitrary (cylindrical) domain. no particle is
+ created: the host fills <see cref="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.State"/> and then calls
+ <see cref="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.SetParticleCount(System.Int32)"/>.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.SetParticleCount(System.Int32)">
+ <summary>
+ set the active particle count after the host filled <see cref="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.State"/>.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.Reset">
+ <summary>
+ re-scatter all of the particles randomly inside the current domain
+ and clear their velocities.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.RunDebugStep">
+ <summary>single threaded (debug) variant of <see cref="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.RunSimulationStep"/></summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.RunSimulationStep">
+ <summary>
+ advance the simulation by <see cref="P:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.DeltaTime"/>.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.RunStep(System.Single)">
+ <summary>
+ advance the simulation by the given time step (CFL sub stepped).
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.RunSubStep(System.Single,System.Double,System.Double,System.Double)">
+ <summary>
+ one CFL sub step: predict -> grid -> density+forces -> integrate ->
+ impeller -> boundary.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.ComputeSubSteps(System.Single)">
+ <summary>
+ the CFL limited number of sub steps for the requested step size.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.DecayDisturbance">
+ <summary>
+ decay the external shake disturbance so the water settles back down.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.EstimateReferenceSpeed">
+ <summary>
+ estimate the reference velocity of the scene: the free fall speed over
+ the domain height plus the impeller tip speed.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.CalibrateDensity(System.Func{System.Int32,System.Boolean})">
+ <summary>
+ measure the rest density of the current particle fill: run one density
+ pass and take the mean of the densest quartile (the interior particles
+ of a liquid block).
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.MedianOf(System.Single[],System.Int32,System.Func{System.Int32,System.Boolean})">
+ <summary>
+ median of the given buffer, restricted to the particles accepted by the
+ (optional) interior filter. using the median of the interior particles
+ (instead of the mean over everything) keeps the rest density free of the
+ free surface deficit, so the bulk liquid settles at rho = 1.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.InvalidateParams">
+ <summary>force a rebuild of the cached parameters on the next step</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.CalculateDensity(Microsoft.VisualBasic.Engine.Physics.Vector3,System.Int32)">
+ <summary>density and near density of the particle at the given position</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.PressureFromDensity(System.Single)">
+ <summary>pressure of the given (normalized) density</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.NearPressureFromDensity(System.Single)">
+ <summary>near pressure of the given near density</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.GetPressure(System.Int32)">
+ <summary>the pressure of the given particle</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.GetDensity(System.Int32)">
+ <summary>the density of the given particle</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D.GetNormalizedDensity(System.Int32)">
+ <summary>the normalized density (1 = rest density) of the given particle</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.FluidKernels">
+ <summary>
+ SPH smoothing kernels shared by the 2D solver <see cref="T:Microsoft.VisualBasic.Engine.Particles.FluidEngine"/> and
+ the 3D solver <see cref="T:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D"/>.
+ 
+ The five kernel *functions* are strictly identical in two and in three
+ dimensions -- what differs is only the five normalization scaling factors,
+ which is why this single type carries a <see cref="P:Microsoft.VisualBasic.Engine.Particles.FluidKernels.Dimension"/> switch
+ instead of being duplicated into a 2D and a 3D flavour.
+ 
+ IMPORTANT: the normalization constant is WHERE THE DIMENSION ACTUALLY
+ LIVES. It is not possible to emulate a 2D simulation with the 3D code by
+ simply pinning the z coordinate to zero: the kernels are normalized against
+ <c>∫W dV = 1</c>, and the integration measure is <c>2πr·dr</c> in 2D but
+ <c>4πr²·dr</c> in 3D. The resulting constants do not merely differ by a
+ factor, they differ by a whole power of <c>h</c> (i.e. by their physical
+ dimension: 1/area vs 1/volume). Feeding 3D constants into a 2D solver makes
+ the density estimate -- and therefore every pressure term -- systematically
+ wrong.
+ 
+ The exact constants, obtained from <c>∫ (h-r)^n · 2πr dr</c> (2D) and
+ <c>∫ (h-r)^n · 4πr² dr</c> (3D) over <c>r ∈ [0,h]</c>:
+ 
+ + Poly6            (h²-r²)³ : 2D ∫ = πh⁸/4    → 4   / (PI * h^8)
+                              3D ∫ = 64πh⁹/315 → 315 / (64 * PI * h^9)
+ + SpikyPow3        (h-r)³   : 2D ∫ = πh⁵/10   → 10  / (PI * h^5)
+                              3D ∫ = πh⁶/15    → 15  / (PI * h^6)
+ + SpikyPow2        (h-r)²   : 2D ∫ = πh⁴/6    → 6   / (PI * h^4)
+                              3D ∫ = 2πh⁵/15   → 15  / (2 * PI * h^5)
+ + d/dr SpikyPow3 -3(h-r)²   : 2D → 30  / (PI * h^5)
+                              3D → 45  / (PI * h^6)
+ + d/dr SpikyPow2 -2(h-r)    : 2D → 12  / (PI * h^4)
+                              3D → 15  / (PI * h^5)
+ 
+ NOTE: the SpikyPow2 pair of the 3D solver was previously normalized with the
+ 2D-derived constants (15/(PI*h^5) and 30/(PI*h^5)), which are exactly 2x too
+ large in three dimensions. That factor of two made the pressure term of
+ <see cref="T:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D"/> inconsistent with the near-pressure term and is
+ one of the reasons why the original 3D solver looked unstable.
+ 
+ The scaling factors depend only on the smoothing radius (and the dimension),
+ so they are precomputed once in the constructor.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidKernels.Dimension">
+ <summary>
+ the spatial dimension these kernels are normalized for. 2 = area
+ measure (2D solver), 3 = volume measure (3D solver).
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.FluidKernels.SelfDensity">
+ <summary>the self contribution W(0) of the density kernel (h-r)^2</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.FluidKernels.SelfNearDensity">
+ <summary>the self contribution W(0) of the near density kernel (h-r)^3</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidKernels.#ctor(System.Single,System.Int32)">
+ <summary>
+ create a kernel bundle normalized for the given spatial dimension.
+ </summary>
+ <param name="smoothingRadius">the SPH smoothing radius h</param>
+ <param name="dimension">
+ 2 or 3. this parameter is mandatory on purpose: making it optional would
+ silently hand 3D constants to a 2D caller (and vice versa) whenever it
+ is omitted, which is a physics bug rather than a compile error.
+ </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidKernels.For2D(System.Single)">
+ <summary>a kernel bundle normalized for a two dimensional simulation.</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidKernels.For3D(System.Single)">
+ <summary>a kernel bundle normalized for a three dimensional simulation.</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidKernels.Poly6Factor">
+ <summary>the normalization constant of <see cref="M:Microsoft.VisualBasic.Engine.Particles.FluidKernels.SmoothingKernelPoly6(System.Single,System.Single)"/></summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidKernels.SpikyPow3Factor">
+ <summary>the normalization constant of <see cref="M:Microsoft.VisualBasic.Engine.Particles.FluidKernels.SpikyKernelPow3(System.Single,System.Single)"/></summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidKernels.SpikyPow2Factor">
+ <summary>the normalization constant of <see cref="M:Microsoft.VisualBasic.Engine.Particles.FluidKernels.SpikyKernelPow2(System.Single,System.Single)"/></summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidKernels.GradSpikyPow3Factor">
+ <summary>the normalization constant of <see cref="M:Microsoft.VisualBasic.Engine.Particles.FluidKernels.DerivativeSpikyPow3(System.Single,System.Single)"/></summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.FluidKernels.GradSpikyPow2Factor">
+ <summary>the normalization constant of <see cref="M:Microsoft.VisualBasic.Engine.Particles.FluidKernels.DerivativeSpikyPow2(System.Single,System.Single)"/></summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidKernels.SelfDensityKernel">
+ <summary>
+ The self density contribution W(0) of the (h-r)^2 density kernel: a
+ particle always contributes its own kernel value to its density sum.
+ </summary>
+ <returns>W_spiky2(0); 2D: 6/(PI*h^2), 3D: 15*h^2/(2*PI*h^5)</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.FluidKernels.SelfNearDensityKernel">
+ <summary>
+ The self density contribution W(0) of the (h-r)^3 near density kernel.
+ </summary>
+ <returns>W_spiky3(0); 2D: 10/(PI*h^2), 3D: 15*h^3/(PI*h^6)</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.Grid3D">
+ <summary>
+ The 3D counterpart of the 2D <see cref="T:Microsoft.VisualBasic.Engine.Particles.GridDynamics"/> spatial hash.
+ 
+ Particles are bucketed into cubic cells of side length equal to the SPH
+ smoothing radius. A neighbour query then only needs to visit the 27 cells
+ surrounding the query cell (3x3x3), which reduces the neighbour search
+ cost from O(n^2) down to roughly O(n * k).
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.Grid3D.GetCell3D(Microsoft.VisualBasic.Engine.Physics.Vector3,System.Single)">
+ <summary>
+ compute the integer cell coordinate of a given position under the
+ given cell size(which equals to the SPH smoothing radius).
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.Grid3D.EncodeGrid3D(System.Collections.Generic.IEnumerable{Microsoft.VisualBasic.Engine.Particles.Particle3D},System.Single)">
+ <summary>
+ Build the spatial hash of the given particle set, particles are grouped
+ into cubic cells keyed by their integer cell coordinate.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.Grid3D.SpatialLookup3D(System.Collections.Generic.Dictionary{System.ValueTuple{System.Int32,System.Int32,System.Int32},Microsoft.VisualBasic.Engine.Particles.Particle3D[]},System.ValueTuple{System.Int32,System.Int32,System.Int32})">
+ <summary>
+ Enumerate all of the particles that located inside the 27 cells which
+ surrounding the target cell.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.IContainer3D`1">
+ <summary>
+ the 3D volume container of the particles(the 3D counterpart of the 2D
+ <see cref="T:Microsoft.VisualBasic.Engine.Particles.IContainer`1"/>).
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.IContainer3D`1.BoxSize">
+ <summary>
+ the size(x/y/z extent) of the box volume that holds the fluid.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.UniformGrid3D">
+ <summary>
+ A flat uniform grid (counting sorted) neighbour search structure for the
+ 3D SPH solver.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.UniformGrid3D.CellSize">
+ <summary>edge length of one cell (equals to the SPH smoothing radius)</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.UniformGrid3D.Nx">
+ <summary>number of cells along x</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.UniformGrid3D.Ny">
+ <summary>number of cells along y</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.UniformGrid3D.Nz">
+ <summary>number of cells along z</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.UniformGrid3D.OriginX">
+ <summary>lower corner of the grid domain</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.UniformGrid3D.OriginY">
+ <summary>lower corner of the grid domain</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.UniformGrid3D.OriginZ">
+ <summary>lower corner of the grid domain</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.UniformGrid3D.CellStart">
+ <summary>
+ prefix sum of the per cell particle count. particles of cell <c>c</c> are
+ stored as <c>entries(cellStart(c) .. cellStart(c+1)-1)</c>.
+ length = Nx*Ny*Nz + 1
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.UniformGrid3D.Entries">
+ <summary>particle indices, bucketed by cell. length = capacity</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.UniformGrid3D.CellCount">
+ <summary>total number of grid cells</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.UniformGrid3D.#ctor(System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Int32)">
+ <summary>
+ create a uniform grid that covers the given axis aligned domain.
+ </summary>
+ <param name="cellSize">cell edge length (the SPH smoothing radius)</param>
+ <param name="minX">domain lower bound</param>
+ <param name="minY">domain lower bound</param>
+ <param name="minZ">domain lower bound</param>
+ <param name="maxX">domain upper bound</param>
+ <param name="maxY">domain upper bound</param>
+ <param name="maxZ">domain upper bound</param>
+ <param name="capacity">expected particle count (for buffer sizing)</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.UniformGrid3D.CoordX(System.Single)">
+ <summary>the cell coordinate along x of the given world position (clamped)</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.UniformGrid3D.CoordY(System.Single)">
+ <summary>the cell coordinate along y of the given world position (clamped)</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.UniformGrid3D.CoordZ(System.Single)">
+ <summary>the cell coordinate along z of the given world position (clamped)</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.UniformGrid3D.CellIndex(System.Int32,System.Int32,System.Int32)">
+ <summary>
+ the flat cell index of the given integer cell coordinate,
+ returns -1 when the coordinate is outside of the grid.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.UniformGrid3D.CellOf(System.Single,System.Single,System.Single)">
+ <summary>the (never out of range) cell index of the given world position</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.UniformGrid3D.Build(Microsoft.VisualBasic.Engine.Particles.SphState3D,System.Boolean)">
+ <summary>
+ rebuild the grid from the current particle positions (counting sort, O(n)).
+ </summary>
+ <param name="state">the particle state</param>
+ <param name="predicted">
+ when true the predicted positions (qx/qy/qz) are used, otherwise the
+ integrated positions (px/py/pz).
+ </param>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.UniformGrid3D.CellSizeAt(System.Int32)">
+ <summary>
+ number of particles currently stored inside the given cell.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.layout.AbstractForce">
+ <summary>
+ @author Helder Suzuki
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.layout.Displacement">
+ <summary>
+ @author Helder Suzuki
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.layout.ForceLayoutData">
+ <summary>
+ @author Helder Suzuki
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.layout.ForceVector">
+ <summary>
+ @author Helder Suzuki
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.layout.ForceVectorNodeLayoutData">
+ <summary>
+ @author Mathieu Bastian
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.layout.ForceVectorUtils">
+ <summary>
+ @author Mathieu Jacomy
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.layout.ForceVectorUtils.ApplyBidirectional(Microsoft.VisualBasic.Engine.Particles.layout.Node,Microsoft.VisualBasic.Engine.Particles.layout.Node,System.Double,System.Double,System.Double,System.Double,System.Double)">
+ <summary>
+ Apply a force to both nodes (bidirectional): N1 and N2 are pushed apart / pulled together.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.layout.ForceVectorUtils.ApplyUnidirectional(Microsoft.VisualBasic.Engine.Particles.layout.Node,Microsoft.VisualBasic.Engine.Particles.layout.Node,System.Double,System.Double,System.Double,System.Double,System.Double)">
+ <summary>
+ Apply a force to the target node only (unidirectional): N2 is pushed away from N1.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.layout.LabelAdjust">
+ <summary>
+ @author Mathieu Jacomy
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.layout.LabelAdjust.Iterate(Microsoft.VisualBasic.Engine.Particles.layout.Node[],System.Collections.Generic.Dictionary{Microsoft.VisualBasic.Engine.Particles.layout.Node,Microsoft.VisualBasic.Engine.Particles.layout.TextProperties})">
+ <summary>
+ one iteration
+ </summary>
+ <param name="nodes"></param>
+ <param name="labels"></param>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.layout.LabelAdjustLayoutData">
+ <summary>
+ @author Mathieu Bastian
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.layout.NamespaceDoc">
+ <summary>
+ Force driven label placement layout for 2D scenes.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.layout.Node">
+ <summary>
+ the layout data model
+ </summary>
+ <remarks>
+ contains node layout position and shape size data
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.layout.ProportionalDisplacement">
+ <summary>
+ The movement of the node is in the direction of the force and it's
+ proportional to is module.
+ 
+ @author Helder Suzuki
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.layout.StepDisplacement">
+ <summary>
+ The node is moved a fixed distance (step) in the direction of the force.
+ 
+ @author Helder Suzuki
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.layout.TextProperties">
+ <summary>
+ the label drawing style data
+ </summary>
+ <remarks>
+ text label size data
+ </remarks>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Particle.Density">
+ <summary>
+ Density, Near Density
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.Particle3D">
+ <summary>
+ A single water particle inside the 3D SPH fluid simulation. This is the
+ three dimensional counterpart of the 2D <see cref="T:Microsoft.VisualBasic.Engine.Particles.Particle"/>: all of the
+ spatial state (position, velocity, predicted position) is stored as a
+ <see cref="T:Microsoft.VisualBasic.Engine.Physics.Vector3"/>.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Particle3D.Density">
+ <summary>
+ Density, Near Density. only the <see cref="F:Microsoft.VisualBasic.Engine.Physics.Vector3.x"/> and
+ <see cref="F:Microsoft.VisualBasic.Engine.Physics.Vector3.y"/> component is used, the <see cref="F:Microsoft.VisualBasic.Engine.Physics.Vector3.z"/>
+ component is unused (kept for a compact storage).
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.Particles2D.Emitter">
+ <summary>
+ 粒子发射器：在 <see cref="F:Microsoft.VisualBasic.Engine.Particles.Particles2D.Emitter.Position"/> 处沿 <see cref="F:Microsoft.VisualBasic.Engine.Particles.Particles2D.Emitter.BaseAngle"/> 方向、
+ 以 <see cref="F:Microsoft.VisualBasic.Engine.Particles.Particles2D.Emitter.Spread"/> 张角随机产生粒子。支持一次性爆发或持续生成。
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Particles2D.Emitter.Position">
+ <summary>发射位置</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Particles2D.Emitter.BaseAngle">
+ <summary>发射中心方向（弧度）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Particles2D.Emitter.Spread">
+ <summary>张角（弧度，绕中心方向两侧各 Spread/2）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Particles2D.Emitter.Speed">
+ <summary>初速度大小</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Particles2D.Emitter.Life">
+ <summary>寿命（秒）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Particles2D.Emitter.Size">
+ <summary>粒子尺寸（像素）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Particles2D.Emitter.Color">
+ <summary>粒子颜色</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.Particles2D.Emitter.GenerateOne">
+ <summary>生成单个粒子（处于激活状态）</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.Particles2D.GameParticle">
+ <summary>
+ 单个粒子。数据极简（位置、速度、寿命、尺寸、颜色），
+ 不与其他物理系统耦合以支持海量粒子。
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.Particles2D.GameParticle.Reset(Microsoft.VisualBasic.Engine.Physics.Vector2,Microsoft.VisualBasic.Engine.Physics.Vector2,System.Double,System.Single,System.Drawing.Color)">
+ <summary>复用该粒子实例，重置其状态</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.Particles2D.NamespaceDoc">
+ <summary>
+ SPH particle based fluid simulation in 2D.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.Particles2D.ParticleSystem">
+ <summary>
+ 轻量粒子系统。使用对象池复用 <see cref="T:Microsoft.VisualBasic.Engine.Particles.Particles2D.GameParticle"/>，避免频繁分配；
+ 每个粒子仅受重力与线性阻力影响，可承载海量粒子（爆炸、火花、灰尘、魔法等）。
+ 不与刚体耦合，以保证性能。
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Particles2D.ParticleSystem.Gravity">
+ <summary>重力加速度（像素/秒²）</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.Particles2D.ParticleSystem.Drag">
+ <summary>线性阻力（0 = 无）</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.Particles2D.ParticleSystem.Count">
+ <summary>当前活跃粒子数</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.Particles2D.ParticleSystem.Particles">
+ <summary>活跃粒子集合（用于渲染）</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.Particles2D.ParticleSystem.Emit(Microsoft.VisualBasic.Engine.Particles.Particles2D.Emitter,System.Int32)">
+ <summary>由发射器爆发 n 个粒子</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.Particles2D.ParticleSystem.Step(System.Double)">
+ <summary>每步推进粒子</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.SphBoundary3D">
+ <summary>
+ The computational domain boundary of the 3D SPH solver: pushes escaped
+ particles back into the domain and resolves the wall collision response.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.SphBoundary3D.Project(Microsoft.VisualBasic.Engine.Particles.SphState3D,System.Int32,System.Single,System.Single)">
+ <summary>
+ apply the boundary constraint onto a single particle.
+ </summary>
+ <param name="state">the SoA particle state</param>
+ <param name="i">particle index</param>
+ <param name="padding">wall padding (half of the particle size)</param>
+ <param name="damping">normal restitution damping, 0 = fully inelastic</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.SphBoundary3D.Domain">
+ <summary>
+ the axis aligned bounding box of the domain (used to size the uniform grid).
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.BoxBoundary3D">
+ <summary>
+ The axis aligned box domain used by the original engine: the fluid lives
+ inside <c>[0,size]</c> on every axis and escapes are bounced back with the
+ configured damping. This is the default boundary so that the existing
+ behaviour of <see cref="T:Microsoft.VisualBasic.Engine.Particles.FluidEngine3D"/> is preserved.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.BoxBoundary3D.SizeX">
+ <summary>box extent along x</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.BoxBoundary3D.SizeY">
+ <summary>box extent along y</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.BoxBoundary3D.SizeZ">
+ <summary>box extent along z</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.CylinderBoundary3D">
+ <summary>
+ A vertical cylindrical vessel (axis along +Z, Z is the "up" direction of
+ the fermenter): a radial wall of the given radius, a flat bottom and an
+ open top (the free surface of the fermentation broth).
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.CylinderBoundary3D.CenterX">
+ <summary>axis position along x</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.CylinderBoundary3D.CenterY">
+ <summary>axis position along y</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.CylinderBoundary3D.Radius">
+ <summary>inner radius of the vessel</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.CylinderBoundary3D.ZBottom">
+ <summary>z of the vessel bottom</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.CylinderBoundary3D.ZTop">
+ <summary>z of the vessel top (open / free surface)</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.CylinderBoundary3D.WallFriction">
+ <summary>
+ tangential wall friction: 0 = free slip, 1 = no slip (the tangential
+ velocity is fully removed at the wall).
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.SphCpuCompute3D">
+ <summary>
+ The default parallel CPU backend of the 3D SPH solver.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.SphCpuCompute3D.DensityPass(Microsoft.VisualBasic.Engine.Particles.SphState3D,Microsoft.VisualBasic.Engine.Particles.UniformGrid3D,Microsoft.VisualBasic.Engine.Particles.SphParams3D)">
+ <summary>
+ pass 1: density + near density from the predicted positions.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.SphCpuCompute3D.ForcePass(Microsoft.VisualBasic.Engine.Particles.SphState3D,Microsoft.VisualBasic.Engine.Particles.UniformGrid3D,Microsoft.VisualBasic.Engine.Particles.SphParams3D,System.Single)">
+ <summary>
+ pass 2: symmetric pressure force + normalized viscosity.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.SphCpuCompute3D.ClampF(System.Single,System.Single,System.Single)">
+ <summary>clamp helper (kept local so that the hot loop stays inlinable)</summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D">
+ <summary>
+ A rotating impeller (Rushton style disc turbine plus its shaft) modelled as
+ a moving boundary that drags the surrounding SPH particles.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D.CenterX">
+ <summary>rotation axis position along x</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D.CenterY">
+ <summary>rotation axis position along y</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D.ZCenter">
+ <summary>z of the disc centre</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D.Radius">
+ <summary>disc (blade) radius</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D.BladeHeight">
+ <summary>disc thickness along z</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D.ShaftRadius">
+ <summary>shaft radius (0 disables the shaft)</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D.ShaftTop">
+ <summary>upper end of the shaft</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D.AngularVelocity">
+ <summary>
+ angular velocity around +Z [rad per time unit]. positive = counter
+ clockwise when looking down from +Z.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D.AxialVelocity">
+ <summary>axial (pumping) velocity applied inside the impeller region</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D.RadialPumping">
+ <summary>
+ radial discharge coefficient of a Rushton style turbine: an outward
+ radial velocity of <c>RadialPumping * omega * r</c> is superposed onto the
+ tangential velocity, so the impeller actually pumps the broth outward
+ (and thereby drives the two circulation loops of a stirred tank) instead
+ of only spinning a thin layer of fluid.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D.Influence">
+ <summary>
+ thickness of the velocity forcing band around the solid body: the
+ blending weight decays linearly from 1 (on the surface) to 0 at this
+ distance.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D.BlendRate">
+ <summary>
+ how fast the particle velocity is blended toward the impeller surface
+ velocity [1 / time unit]. the effective per step blend factor is
+ <c>min(1, BlendRate * weight * dt)</c> so the forcing stays stable for
+ any step size.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D.Angle">
+ <summary>accumulated rotation angle (for reporting / animation)</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D.Rpm">
+ <summary>current revolution per minute (derived from <see cref="P:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D.AngularVelocity"/>)</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D.SetRpm(System.Single)">
+ <summary>set the rotation speed in revolution per minute</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D.Advance(System.Single)">
+ <summary>advance the rotation angle</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D.DistanceToBody(System.Single,System.Single,System.Single)">
+ <summary>
+ squared distance from the particle position to the impeller solid body
+ (0 when the particle is inside the solid).
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D.IsInside(System.Single,System.Single,System.Single)">
+ <summary>
+ test whether the given point is inside the impeller solid body.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.SphImpeller3D.Drive(Microsoft.VisualBasic.Engine.Particles.SphState3D,System.Single)">
+ <summary>
+ apply the moving boundary forcing: blend the velocity of the particles
+ that live inside (or close to) the impeller body toward the impeller
+ surface velocity.
+ </summary>
+ <param name="state">the SoA particle state</param>
+ <param name="dt">sub step size</param>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.SphParams3D">
+ <summary>
+ The flat parameter bundle of one 3D SPH sub step.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphParams3D.SmoothingRadius">
+ <summary>SPH smoothing radius h</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphParams3D.SqrRadius">
+ <summary>h*h (pre computed)</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphParams3D.RestDensity">
+ <summary>rest density of the (h-r)^2 kernel sum</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphParams3D.RestNearDensity">
+ <summary>rest density of the (h-r)^3 near kernel sum</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphParams3D.PressureK">
+ <summary>pressure stiffness K (= c^2, the squared artificial sound speed)</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphParams3D.NearPressureK">
+ <summary>near pressure stiffness (always repulsive, Clavet)</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphParams3D.Viscosity">
+ <summary>viscosity relaxation rate [1/time]</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphParams3D.MaxAccel">
+ <summary>upper bound of the acceleration magnitude (0 = disabled)</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphParams3D.SpikyPow2">
+ <summary>kernel scaling factor of (h-r)^2</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphParams3D.SpikyPow3">
+ <summary>kernel scaling factor of (h-r)^3</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphParams3D.GradSpikyPow2">
+ <summary>kernel scaling factor of |d/dr (h-r)^2| (positive)</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphParams3D.GradSpikyPow3">
+ <summary>kernel scaling factor of |d/dr (h-r)^3| (positive)</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphParams3D.Poly6">
+ <summary>kernel scaling factor of the poly6 viscosity kernel</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphParams3D.SelfDensity">
+ <summary>self contribution W(0) of the density kernel</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphParams3D.SelfNearDensity">
+ <summary>self contribution W(0) of the near density kernel</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphParams3D.MinDensityRatio">
+ <summary>
+ lower clamp of the normalized density ratio: protects the symmetric
+ pressure term against the (near zero) density of free surface particles.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphParams3D.MaxDensityRatio">
+ <summary>upper clamp of the normalized density ratio</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphParams3D.MinPressureRatio">
+ <summary>
+ lower clamp of the pressure, given as a fraction of <see cref="P:Microsoft.VisualBasic.Engine.Particles.SphParams3D.PressureK"/>.
+ allows a mild cohesion (keeps the liquid together) but prevents the
+ tensile blow up of the surface particles.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphParams3D.VolumeScale">
+ <summary>particle "volume" m = 1 / RestDensity (the SPH mass of unit density)</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.SphParams3D.FromKernels(Microsoft.VisualBasic.Engine.Particles.FluidKernels,System.Single)">
+ <summary>
+ build the parameter bundle from the smoothing kernels.
+ </summary>
+ <param name="kernels">
+ the (correctly normalized) kernels. the normalization constants are read
+ straight out of this bundle, so a 3D caller must pass a 3D bundle
+ (<c>FluidKernels.For3D</c>) and a 2D caller a 2D one.
+ </param>
+ <param name="h">smoothing radius</param>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.ISphCompute3D">
+ <summary>
+ A pluggable 3D SPH compute backend. The default implementation is the
+ parallel CPU backend <see cref="T:Microsoft.VisualBasic.Engine.Particles.SphCpuCompute3D"/>; the SPHEngine project
+ injects a CUDA implementation of the same interface so that the physics
+ library itself stays free of any CUDA dependency.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.ISphCompute3D.Name">
+ <summary>backend display name ("CPU-Parallel", "CUDA-F32", ...)</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.ISphCompute3D.RunSubstep(Microsoft.VisualBasic.Engine.Particles.SphState3D,Microsoft.VisualBasic.Engine.Particles.UniformGrid3D,Microsoft.VisualBasic.Engine.Particles.SphParams3D,System.Single)">
+ <summary>
+ Run one SPH sub step:
+ 1. rebuild the density / near density of every particle
+ 2. evaluate the pressure + viscosity acceleration into ax/ay/az
+ </summary>
+ <param name="state">the SoA particle state (predicted positions are used)</param>
+ <param name="grid">the uniform grid that has been built from the predicted positions</param>
+ <param name="params">kernel constants and physical coefficients</param>
+ <param name="dt">sub step size</param>
+ <returns>true when the backend did the work; false = caller must fall back</returns>
+ <remarks>
+ The backend never integrates: gravity integration, the velocity clamp,
+ the boundary projection and the impeller forcing are applied by the host
+ engine so that the CPU and the GPU path stay bit comparable.
+ </remarks>
+</member>
+<member name="T:Microsoft.VisualBasic.Engine.Particles.SphState3D">
+ <summary>
+ The Structure-of-Arrays particle state of the 3D SPH solver.
+ </summary>
+ <remarks>
+ All buffers are <c>Single</c> so that they can be uploaded to a CUDA
+ device buffer without any conversion (see <c>CudaSphBackend</c> in the
+ SPHEngine project).
+ </remarks>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphState3D.Count">
+ <summary>current number of active particles.</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.SphState3D.px">
+ <summary>position, x component</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.SphState3D.py">
+ <summary>position, y component</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.SphState3D.pz">
+ <summary>position, z component</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.SphState3D.vx">
+ <summary>velocity, x component</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.SphState3D.vy">
+ <summary>velocity, y component</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.SphState3D.vz">
+ <summary>velocity, z component</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.SphState3D.qx">
+ <summary>predicted position, x component</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.SphState3D.qy">
+ <summary>predicted position, y component</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.SphState3D.qz">
+ <summary>predicted position, z component</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.SphState3D.dens">
+ <summary>SPH density sum of each particle</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.SphState3D.densNear">
+ <summary>SPH near density sum (the (h-r)^3 kernel) of each particle</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.SphState3D.press">
+ <summary>pressure of each particle</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.SphState3D.pressNear">
+ <summary>near pressure of each particle (always repulsive)</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.SphState3D.ax">
+ <summary>accumulated acceleration, x component</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.SphState3D.ay">
+ <summary>accumulated acceleration, y component</summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Engine.Particles.SphState3D.az">
+ <summary>accumulated acceleration, z component</summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Engine.Particles.SphState3D.Capacity">
+ <summary>allocated capacity of every buffer</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.SphState3D.#ctor(System.Int32)">
+ <summary>
+ allocate the SoA buffers for <paramref name="n"/> particles
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.SphState3D.EnsureCapacity(System.Int32)">
+ <summary>
+ grow every buffer so that it can hold at least <paramref name="n"/> particles.
+ buffers are never shrunk so that the hot loop stays allocation free.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.SphState3D.ClearDynamic">
+ <summary>
+ reset the dynamic buffers (velocity / density / acceleration) to zero.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.SphState3D.SyncFromParticles(Microsoft.VisualBasic.Engine.Particles.Particle3D[])">
+ <summary>
+ copy the state from the legacy <see cref="T:Microsoft.VisualBasic.Engine.Particles.Particle3D"/> array-of-structures view.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.SphState3D.SyncToParticles(Microsoft.VisualBasic.Engine.Particles.Particle3D[])">
+ <summary>
+ write the state back into the legacy <see cref="T:Microsoft.VisualBasic.Engine.Particles.Particle3D"/> view
+ (used by the read only <c>Entity</c> property and by the renderer).
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.SphState3D.ToParticles">
+ <summary>
+ materialize the current state as a legacy <see cref="T:Microsoft.VisualBasic.Engine.Particles.Particle3D"/> array.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.SphState3D.MaxSpeed">
+ <summary>the largest particle speed of the current state</summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Engine.Particles.SphState3D.MeanDensity">
+ <summary>the arithmetic mean density over all particles</summary>
+</member>
+</members>
+</doc>
