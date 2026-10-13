@@ -9,30 +9,30 @@
       "LabelerTool/1.0.0": {
         "dependencies": {
           "Erica.Analysis.SpatialTissue.HEView": "1.0.0",
-          "Microsoft.VisualBasic.Data.Framework": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Drawing": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Drawing.Windows": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Imaging": "10.6.9781.24297",
-          "Microsoft.VisualBasic.MIME.Html": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297",
+          "Microsoft.VisualBasic.Data.Framework": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Drawing": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Drawing.Windows": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Imaging": "10.7.9782.41243",
+          "Microsoft.VisualBasic.MIME.Html": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243",
           "Erica.Analysis.SpatialTissue.HEView.Reference": "1.0.0.0",
-          "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.Reference": "1.0.9781.24297",
-          "Microsoft.VisualBasic.Data.DataPlot.Reference": "1.0.9781.24297",
-          "Microsoft.VisualBasic.Data.Framework.Reference": "1.0.9781.24297",
-          "Microsoft.VisualBasic.Data.GraphTheory.Reference": "1.0.9781.24297",
-          "Microsoft.VisualBasic.DataMining.DensityQuery.Reference": "1.0.9781.24297",
-          "Microsoft.VisualBasic.DataMining.Framework.Reference": "1.0.9781.24297",
-          "Microsoft.VisualBasic.DataMining.HierarchicalClustering.Reference": "1.0.9781.24297",
-          "Microsoft.VisualBasic.Drawing.Windows.Reference": "1.0.9781.24297",
-          "Microsoft.VisualBasic.Engine.Particles.Reference": "1.0.0.0",
-          "Microsoft.VisualBasic.Engine.Physics.Reference": "1.0.9781.24297",
-          "Microsoft.VisualBasic.Imaging.Reference": "1.0.9781.24297",
-          "Microsoft.VisualBasic.Math.Core.Reference": "1.0.9781.24297",
-          "Microsoft.VisualBasic.Math.MachineVision.Reference": "1.0.9781.24297",
-          "Microsoft.VisualBasic.Math.SignalProcessing.Reference": "1.0.9781.24297",
-          "Microsoft.VisualBasic.MIME.Html.Reference": "1.0.9781.24297",
-          "Microsoft.VisualBasic.Runtime.Reference": "5.33.9781.24297"
+          "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.Reference": "1.0.9782.41243",
+          "Microsoft.VisualBasic.Data.DataPlot.Reference": "1.0.9782.41243",
+          "Microsoft.VisualBasic.Data.Framework.Reference": "1.0.9782.41243",
+          "Microsoft.VisualBasic.Data.GraphTheory.Reference": "1.0.9782.41243",
+          "Microsoft.VisualBasic.DataMining.DensityQuery.Reference": "1.0.9782.41243",
+          "Microsoft.VisualBasic.DataMining.Framework.Reference": "1.0.9782.41243",
+          "Microsoft.VisualBasic.DataMining.HierarchicalClustering.Reference": "1.0.9782.41243",
+          "Microsoft.VisualBasic.Drawing.Windows.Reference": "1.0.9782.41243",
+          "Microsoft.VisualBasic.Engine.Particles.Reference": "1.0.9782.41243",
+          "Microsoft.VisualBasic.Engine.Physics.Reference": "1.0.9782.41243",
+          "Microsoft.VisualBasic.Imaging.Reference": "1.0.9782.41243",
+          "Microsoft.VisualBasic.Math.Core.Reference": "1.0.9782.41243",
+          "Microsoft.VisualBasic.Math.MachineVision.Reference": "1.0.9782.41243",
+          "Microsoft.VisualBasic.Math.SignalProcessing.Reference": "1.0.9782.41243",
+          "Microsoft.VisualBasic.MIME.Html.Reference": "1.0.9782.41243",
+          "Microsoft.VisualBasic.Runtime.Reference": "5.33.9782.41243"
         },
         "runtime": {
           "LabelerTool.dll": {}
@@ -246,16 +246,16 @@
       },
       "Erica.Analysis.SpatialTissue.HEView/1.0.0": {
         "dependencies": {
-          "Microsoft.VisualBasic.Data.DataPlot": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Data.Framework": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Data.GraphTheory": "10.6.9781.24297",
-          "Microsoft.VisualBasic.DataMining.DensityQuery": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Engine.Particles": "1.0.0",
-          "Microsoft.VisualBasic.Engine.Physics": "10.7.9781.24297",
-          "Microsoft.VisualBasic.Imaging": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Math.MachineVision": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297"
+          "Microsoft.VisualBasic.Data.DataPlot": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Data.Framework": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Data.GraphTheory": "10.7.9782.41243",
+          "Microsoft.VisualBasic.DataMining.DensityQuery": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Engine.Particles": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Engine.Physics": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Imaging": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Math.MachineVision": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243"
         },
         "runtime": {
           "Erica.Analysis.SpatialTissue.HEView.dll": {
@@ -263,10 +263,10 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Data.Bootstrapping.Fittings/10.6.9781.24297": {
+      "Microsoft.VisualBasic.Data.Bootstrapping.Fittings/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297"
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243"
         },
         "runtime": {
           "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.dll": {
@@ -274,16 +274,16 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Data.DataPlot/10.6.9781.24297": {
+      "Microsoft.VisualBasic.Data.DataPlot/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.Data.Framework": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Data.GraphTheory": "10.6.9781.24297",
-          "Microsoft.VisualBasic.DataMining.Framework": "10.6.9781.24297",
-          "Microsoft.VisualBasic.DataMining.HierarchicalClustering": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Imaging": "10.6.9781.24297",
-          "Microsoft.VisualBasic.MIME.Html": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297"
+          "Microsoft.VisualBasic.Data.Framework": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Data.GraphTheory": "10.7.9782.41243",
+          "Microsoft.VisualBasic.DataMining.Framework": "10.7.9782.41243",
+          "Microsoft.VisualBasic.DataMining.HierarchicalClustering": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Imaging": "10.7.9782.41243",
+          "Microsoft.VisualBasic.MIME.Html": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243"
         },
         "runtime": {
           "Microsoft.VisualBasic.Data.DataPlot.dll": {
@@ -291,9 +291,9 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Data.Framework/10.6.9781.24297": {
+      "Microsoft.VisualBasic.Data.Framework/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297"
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243"
         },
         "runtime": {
           "Microsoft.VisualBasic.Data.Framework.dll": {
@@ -301,10 +301,10 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Data.GraphTheory/10.6.9781.24297": {
+      "Microsoft.VisualBasic.Data.GraphTheory/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297"
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243"
         },
         "runtime": {
           "Microsoft.VisualBasic.Data.GraphTheory.dll": {
@@ -312,12 +312,12 @@
           }
         }
       },
-      "Microsoft.VisualBasic.DataMining.DensityQuery/10.6.9781.24297": {
+      "Microsoft.VisualBasic.DataMining.DensityQuery/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.Data.GraphTheory": "10.6.9781.24297",
-          "Microsoft.VisualBasic.DataMining.Framework": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297",
+          "Microsoft.VisualBasic.Data.GraphTheory": "10.7.9782.41243",
+          "Microsoft.VisualBasic.DataMining.Framework": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243",
           "System.Composition": "10.0.12"
         },
         "runtime": {
@@ -326,10 +326,10 @@
           }
         }
       },
-      "Microsoft.VisualBasic.DataMining.Framework/10.6.9781.24297": {
+      "Microsoft.VisualBasic.DataMining.Framework/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297"
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243"
         },
         "runtime": {
           "Microsoft.VisualBasic.DataMining.Framework.dll": {
@@ -337,11 +337,11 @@
           }
         }
       },
-      "Microsoft.VisualBasic.DataMining.HierarchicalClustering/10.6.9781.24297": {
+      "Microsoft.VisualBasic.DataMining.HierarchicalClustering/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.DataMining.Framework": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297",
+          "Microsoft.VisualBasic.DataMining.Framework": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243",
           "System.Composition": "10.0.12"
         },
         "runtime": {
@@ -350,12 +350,12 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Drawing/10.6.9781.24297": {
+      "Microsoft.VisualBasic.Drawing/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.Imaging": "10.6.9781.24297",
-          "Microsoft.VisualBasic.MIME.Html": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297",
+          "Microsoft.VisualBasic.Imaging": "10.7.9782.41243",
+          "Microsoft.VisualBasic.MIME.Html": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243",
           "SkiaSharp": "4.153.1",
           "SkiaSharp.Extended": "3.0.0",
           "SkiaSharp.NativeAssets.Linux": "4.153.1",
@@ -365,16 +365,16 @@
         },
         "runtime": {
           "Microsoft.VisualBasic.Drawing.dll": {
-            "assemblyVersion": "1.0.9781.24297",
-            "fileVersion": "1.0.9781.24297"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.Drawing.Windows/10.6.9781.24297": {
+      "Microsoft.VisualBasic.Drawing.Windows/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.MIME.Html": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297"
+          "Microsoft.VisualBasic.MIME.Html": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243"
         },
         "runtime": {
           "Microsoft.VisualBasic.Drawing.Windows.dll": {
@@ -382,12 +382,12 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Engine.Particles/1.0.0": {
+      "Microsoft.VisualBasic.Engine.Particles/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.Data.GraphTheory": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Engine.Physics": "10.7.9781.24297",
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297"
+          "Microsoft.VisualBasic.Data.GraphTheory": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Engine.Physics": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243"
         },
         "runtime": {
           "Microsoft.VisualBasic.Engine.Particles.dll": {
@@ -395,11 +395,11 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Engine.Physics/10.7.9781.24297": {
+      "Microsoft.VisualBasic.Engine.Physics/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.Data.GraphTheory": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297"
+          "Microsoft.VisualBasic.Data.GraphTheory": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243"
         },
         "runtime": {
           "Microsoft.VisualBasic.Engine.Physics.dll": {
@@ -407,12 +407,12 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Imaging/10.6.9781.24297": {
+      "Microsoft.VisualBasic.Imaging/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.Drawing.Windows": "10.6.9781.24297",
-          "Microsoft.VisualBasic.MIME.Html": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297"
+          "Microsoft.VisualBasic.Drawing.Windows": "10.7.9782.41243",
+          "Microsoft.VisualBasic.MIME.Html": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243"
         },
         "runtime": {
           "Microsoft.VisualBasic.Imaging.dll": {
@@ -420,9 +420,9 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Math.Core/10.6.9781.24297": {
+      "Microsoft.VisualBasic.Math.Core/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297"
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243"
         },
         "runtime": {
           "Microsoft.VisualBasic.Math.Core.dll": {
@@ -430,11 +430,11 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Math.MachineVision/10.6.9781.24297": {
+      "Microsoft.VisualBasic.Math.MachineVision/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Math.SignalProcessing": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297"
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Math.SignalProcessing": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243"
         },
         "runtime": {
           "Microsoft.VisualBasic.Math.MachineVision.dll": {
@@ -442,11 +442,11 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Math.SignalProcessing/10.6.9781.24297": {
+      "Microsoft.VisualBasic.Math.SignalProcessing/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.Data.Bootstrapping.Fittings": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297"
+          "Microsoft.VisualBasic.Data.Bootstrapping.Fittings": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243"
         },
         "runtime": {
           "Microsoft.VisualBasic.Math.SignalProcessing.dll": {
@@ -454,9 +454,9 @@
           }
         }
       },
-      "Microsoft.VisualBasic.MIME.Html/10.6.9781.24297": {
+      "Microsoft.VisualBasic.MIME.Html/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297"
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243"
         },
         "runtime": {
           "Microsoft.VisualBasic.MIME.Html.dll": {
@@ -464,7 +464,7 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Runtime/10.6.9781.24297": {
+      "Microsoft.VisualBasic.Runtime/10.7.9782.41243": {
         "dependencies": {
           "System.Composition": "10.0.12"
         },
@@ -482,131 +482,131 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.Reference/1.0.9781.24297": {
+      "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.Reference/1.0.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.dll": {
-            "assemblyVersion": "1.0.9781.24297",
-            "fileVersion": "1.0.9781.24297"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.Data.DataPlot.Reference/1.0.9781.24297": {
+      "Microsoft.VisualBasic.Data.DataPlot.Reference/1.0.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.Data.DataPlot.dll": {
-            "assemblyVersion": "1.0.9781.24297",
-            "fileVersion": "1.0.9781.24297"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.Data.Framework.Reference/1.0.9781.24297": {
+      "Microsoft.VisualBasic.Data.Framework.Reference/1.0.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.Data.Framework.dll": {
-            "assemblyVersion": "1.0.9781.24297",
-            "fileVersion": "1.0.9781.24297"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.Data.GraphTheory.Reference/1.0.9781.24297": {
+      "Microsoft.VisualBasic.Data.GraphTheory.Reference/1.0.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.Data.GraphTheory.dll": {
-            "assemblyVersion": "1.0.9781.24297",
-            "fileVersion": "1.0.9781.24297"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.DataMining.DensityQuery.Reference/1.0.9781.24297": {
+      "Microsoft.VisualBasic.DataMining.DensityQuery.Reference/1.0.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.DataMining.DensityQuery.dll": {
-            "assemblyVersion": "1.0.9781.24297",
-            "fileVersion": "1.0.9781.24297"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.DataMining.Framework.Reference/1.0.9781.24297": {
+      "Microsoft.VisualBasic.DataMining.Framework.Reference/1.0.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.DataMining.Framework.dll": {
-            "assemblyVersion": "1.0.9781.24297",
-            "fileVersion": "1.0.9781.24297"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.DataMining.HierarchicalClustering.Reference/1.0.9781.24297": {
+      "Microsoft.VisualBasic.DataMining.HierarchicalClustering.Reference/1.0.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.DataMining.HierarchicalClustering.dll": {
-            "assemblyVersion": "1.0.9781.24297",
-            "fileVersion": "1.0.9781.24297"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.Drawing.Windows.Reference/1.0.9781.24297": {
+      "Microsoft.VisualBasic.Drawing.Windows.Reference/1.0.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.Drawing.Windows.dll": {
-            "assemblyVersion": "1.0.9781.24297",
-            "fileVersion": "1.0.9781.24297"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.Engine.Particles.Reference/1.0.0.0": {
+      "Microsoft.VisualBasic.Engine.Particles.Reference/1.0.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.Engine.Particles.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.Engine.Physics.Reference/1.0.9781.24297": {
+      "Microsoft.VisualBasic.Engine.Physics.Reference/1.0.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.Engine.Physics.dll": {
-            "assemblyVersion": "1.0.9781.24297",
-            "fileVersion": "1.0.9781.24297"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.Imaging.Reference/1.0.9781.24297": {
+      "Microsoft.VisualBasic.Imaging.Reference/1.0.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.Imaging.dll": {
-            "assemblyVersion": "1.0.9781.24297",
-            "fileVersion": "1.0.9781.24297"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.Math.Core.Reference/1.0.9781.24297": {
+      "Microsoft.VisualBasic.Math.Core.Reference/1.0.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.Math.Core.dll": {
-            "assemblyVersion": "1.0.9781.24297",
-            "fileVersion": "1.0.9781.24297"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.Math.MachineVision.Reference/1.0.9781.24297": {
+      "Microsoft.VisualBasic.Math.MachineVision.Reference/1.0.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.Math.MachineVision.dll": {
-            "assemblyVersion": "1.0.9781.24297",
-            "fileVersion": "1.0.9781.24297"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.Math.SignalProcessing.Reference/1.0.9781.24297": {
+      "Microsoft.VisualBasic.Math.SignalProcessing.Reference/1.0.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.Math.SignalProcessing.dll": {
-            "assemblyVersion": "1.0.9781.24297",
-            "fileVersion": "1.0.9781.24297"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.MIME.Html.Reference/1.0.9781.24297": {
+      "Microsoft.VisualBasic.MIME.Html.Reference/1.0.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.MIME.Html.dll": {
-            "assemblyVersion": "1.0.9781.24297",
-            "fileVersion": "1.0.9781.24297"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.Runtime.Reference/5.33.9781.24297": {
+      "Microsoft.VisualBasic.Runtime.Reference/5.33.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.Runtime.dll": {
-            "assemblyVersion": "5.33.9781.24297",
-            "fileVersion": "5.33.9781.24297"
+            "assemblyVersion": "5.33.9782.41243",
+            "fileVersion": "5.33.9782.41243"
           }
         }
       }
@@ -707,87 +707,87 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Data.Bootstrapping.Fittings/10.6.9781.24297": {
+    "Microsoft.VisualBasic.Data.Bootstrapping.Fittings/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Data.DataPlot/10.6.9781.24297": {
+    "Microsoft.VisualBasic.Data.DataPlot/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Data.Framework/10.6.9781.24297": {
+    "Microsoft.VisualBasic.Data.Framework/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Data.GraphTheory/10.6.9781.24297": {
+    "Microsoft.VisualBasic.Data.GraphTheory/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.DataMining.DensityQuery/10.6.9781.24297": {
+    "Microsoft.VisualBasic.DataMining.DensityQuery/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.DataMining.Framework/10.6.9781.24297": {
+    "Microsoft.VisualBasic.DataMining.Framework/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.DataMining.HierarchicalClustering/10.6.9781.24297": {
+    "Microsoft.VisualBasic.DataMining.HierarchicalClustering/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Drawing/10.6.9781.24297": {
+    "Microsoft.VisualBasic.Drawing/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Drawing.Windows/10.6.9781.24297": {
+    "Microsoft.VisualBasic.Drawing.Windows/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Engine.Particles/1.0.0": {
+    "Microsoft.VisualBasic.Engine.Particles/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Engine.Physics/10.7.9781.24297": {
+    "Microsoft.VisualBasic.Engine.Physics/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Imaging/10.6.9781.24297": {
+    "Microsoft.VisualBasic.Imaging/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Math.Core/10.6.9781.24297": {
+    "Microsoft.VisualBasic.Math.Core/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Math.MachineVision/10.6.9781.24297": {
+    "Microsoft.VisualBasic.Math.MachineVision/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Math.SignalProcessing/10.6.9781.24297": {
+    "Microsoft.VisualBasic.Math.SignalProcessing/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.MIME.Html/10.6.9781.24297": {
+    "Microsoft.VisualBasic.MIME.Html/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Runtime/10.6.9781.24297": {
+    "Microsoft.VisualBasic.Runtime/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -797,82 +797,82 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.Reference/1.0.9781.24297": {
+    "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.Reference/1.0.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Data.DataPlot.Reference/1.0.9781.24297": {
+    "Microsoft.VisualBasic.Data.DataPlot.Reference/1.0.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Data.Framework.Reference/1.0.9781.24297": {
+    "Microsoft.VisualBasic.Data.Framework.Reference/1.0.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Data.GraphTheory.Reference/1.0.9781.24297": {
+    "Microsoft.VisualBasic.Data.GraphTheory.Reference/1.0.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.DataMining.DensityQuery.Reference/1.0.9781.24297": {
+    "Microsoft.VisualBasic.DataMining.DensityQuery.Reference/1.0.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.DataMining.Framework.Reference/1.0.9781.24297": {
+    "Microsoft.VisualBasic.DataMining.Framework.Reference/1.0.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.DataMining.HierarchicalClustering.Reference/1.0.9781.24297": {
+    "Microsoft.VisualBasic.DataMining.HierarchicalClustering.Reference/1.0.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Drawing.Windows.Reference/1.0.9781.24297": {
+    "Microsoft.VisualBasic.Drawing.Windows.Reference/1.0.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Engine.Particles.Reference/1.0.0.0": {
+    "Microsoft.VisualBasic.Engine.Particles.Reference/1.0.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Engine.Physics.Reference/1.0.9781.24297": {
+    "Microsoft.VisualBasic.Engine.Physics.Reference/1.0.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Imaging.Reference/1.0.9781.24297": {
+    "Microsoft.VisualBasic.Imaging.Reference/1.0.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Math.Core.Reference/1.0.9781.24297": {
+    "Microsoft.VisualBasic.Math.Core.Reference/1.0.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Math.MachineVision.Reference/1.0.9781.24297": {
+    "Microsoft.VisualBasic.Math.MachineVision.Reference/1.0.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Math.SignalProcessing.Reference/1.0.9781.24297": {
+    "Microsoft.VisualBasic.Math.SignalProcessing.Reference/1.0.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.MIME.Html.Reference/1.0.9781.24297": {
+    "Microsoft.VisualBasic.MIME.Html.Reference/1.0.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Runtime.Reference/5.33.9781.24297": {
+    "Microsoft.VisualBasic.Runtime.Reference/5.33.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

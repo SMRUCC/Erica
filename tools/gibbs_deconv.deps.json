@@ -9,18 +9,18 @@
       "gibbs_deconv/1.0.0": {
         "dependencies": {
           "Erica.Analysis.SingleCell.SpatialDeconvolve": "1.0.0",
-          "Microsoft.VisualBasic.Data.NLP": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297",
+          "Microsoft.VisualBasic.Data.NLP": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243",
           "SMRUCC.genomics.Analysis.HTS.DataFrame": "10.5.9775.36927",
           "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner": "10.5.9775.36927",
           "Erica.Analysis.SingleCell.SpatialDeconvolve.Reference": "1.0.0.0",
-          "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.Reference": "1.0.9781.24297",
-          "Microsoft.VisualBasic.Data.Framework.Reference": "1.0.9781.24297",
-          "Microsoft.VisualBasic.Data.NLP.Reference": "1.0.9781.24297",
-          "Microsoft.VisualBasic.Math.Core.Reference": "1.0.9781.24297",
-          "Microsoft.VisualBasic.Math.Statistics.Reference": "1.0.9781.24297",
-          "Microsoft.VisualBasic.Runtime.Reference": "5.33.9781.24297",
+          "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.Reference": "1.0.9782.41243",
+          "Microsoft.VisualBasic.Data.Framework.Reference": "1.0.9782.41243",
+          "Microsoft.VisualBasic.Data.NLP.Reference": "1.0.9782.41243",
+          "Microsoft.VisualBasic.Math.Core.Reference": "1.0.9782.41243",
+          "Microsoft.VisualBasic.Math.Statistics.Reference": "1.0.9782.41243",
+          "Microsoft.VisualBasic.Runtime.Reference": "5.33.9782.41243",
           "SMRUCC.genomics.Analysis.HTS.DataFrame.Reference": "1.0.9775.36927",
           "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner.Reference": "1.0.9775.36927"
         },
@@ -151,9 +151,9 @@
       },
       "Erica.Analysis.SingleCell.SpatialDeconvolve/1.0.0": {
         "dependencies": {
-          "Microsoft.VisualBasic.Data.NLP": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297",
+          "Microsoft.VisualBasic.Data.NLP": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243",
           "SMRUCC.genomics.Analysis.HTS.DataFrame": "10.5.9775.36927",
           "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner": "10.5.9775.36927",
           "System.Configuration.ConfigurationManager": "10.0.12"
@@ -164,10 +164,10 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Data.Bootstrapping.Fittings/10.6.9781.24297": {
+      "Microsoft.VisualBasic.Data.Bootstrapping.Fittings/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297"
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243"
         },
         "runtime": {
           "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.dll": {
@@ -175,9 +175,9 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Data.Framework/10.6.9781.24297": {
+      "Microsoft.VisualBasic.Data.Framework/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297"
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243"
         },
         "runtime": {
           "Microsoft.VisualBasic.Data.Framework.dll": {
@@ -185,11 +185,11 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Data.NLP/10.6.9781.24297": {
+      "Microsoft.VisualBasic.Data.NLP/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.Data.Framework": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297"
+          "Microsoft.VisualBasic.Data.Framework": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243"
         },
         "runtime": {
           "Microsoft.VisualBasic.Data.NLP.dll": {
@@ -197,9 +197,9 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Math.Core/10.6.9781.24297": {
+      "Microsoft.VisualBasic.Math.Core/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297"
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243"
         },
         "runtime": {
           "Microsoft.VisualBasic.Math.Core.dll": {
@@ -207,10 +207,10 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Math.Statistics/10.6.9781.24297": {
+      "Microsoft.VisualBasic.Math.Statistics/10.7.9782.41243": {
         "dependencies": {
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297"
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243"
         },
         "runtime": {
           "Microsoft.VisualBasic.Math.Statistics.dll": {
@@ -218,7 +218,7 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Runtime/10.6.9781.24297": {
+      "Microsoft.VisualBasic.Runtime/10.7.9782.41243": {
         "dependencies": {
           "System.Composition": "10.0.12",
           "System.Resources.Extensions": "10.0.12"
@@ -231,10 +231,10 @@
       },
       "SMRUCC.genomics.Analysis.HTS.DataFrame/10.5.9775.36927": {
         "dependencies": {
-          "Microsoft.VisualBasic.Data.Bootstrapping.Fittings": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Math.Core": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Math.Statistics": "10.6.9781.24297",
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297",
+          "Microsoft.VisualBasic.Data.Bootstrapping.Fittings": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Math.Core": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Math.Statistics": "10.7.9782.41243",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243",
           "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner": "10.5.9775.36927",
           "System.Composition": "10.0.12",
           "System.Resources.Extensions": "10.0.12"
@@ -247,7 +247,7 @@
       },
       "SMRUCC.genomics.GCModeller.Workbench.ExperimentDesigner/10.5.9775.36927": {
         "dependencies": {
-          "Microsoft.VisualBasic.Runtime": "10.6.9781.24297",
+          "Microsoft.VisualBasic.Runtime": "10.7.9782.41243",
           "System.Composition": "10.0.12",
           "System.Resources.Extensions": "10.0.12"
         },
@@ -265,51 +265,51 @@
           }
         }
       },
-      "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.Reference/1.0.9781.24297": {
+      "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.Reference/1.0.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.dll": {
-            "assemblyVersion": "1.0.9781.24297",
-            "fileVersion": "1.0.9781.24297"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.Data.Framework.Reference/1.0.9781.24297": {
+      "Microsoft.VisualBasic.Data.Framework.Reference/1.0.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.Data.Framework.dll": {
-            "assemblyVersion": "1.0.9781.24297",
-            "fileVersion": "1.0.9781.24297"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.Data.NLP.Reference/1.0.9781.24297": {
+      "Microsoft.VisualBasic.Data.NLP.Reference/1.0.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.Data.NLP.dll": {
-            "assemblyVersion": "1.0.9781.24297",
-            "fileVersion": "1.0.9781.24297"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.Math.Core.Reference/1.0.9781.24297": {
+      "Microsoft.VisualBasic.Math.Core.Reference/1.0.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.Math.Core.dll": {
-            "assemblyVersion": "1.0.9781.24297",
-            "fileVersion": "1.0.9781.24297"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.Math.Statistics.Reference/1.0.9781.24297": {
+      "Microsoft.VisualBasic.Math.Statistics.Reference/1.0.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.Math.Statistics.dll": {
-            "assemblyVersion": "1.0.9781.24297",
-            "fileVersion": "1.0.9781.24297"
+            "assemblyVersion": "1.0.9782.41243",
+            "fileVersion": "1.0.9782.41243"
           }
         }
       },
-      "Microsoft.VisualBasic.Runtime.Reference/5.33.9781.24297": {
+      "Microsoft.VisualBasic.Runtime.Reference/5.33.9782.41243": {
         "runtime": {
           "Microsoft.VisualBasic.Runtime.dll": {
-            "assemblyVersion": "5.33.9781.24297",
-            "fileVersion": "5.33.9781.24297"
+            "assemblyVersion": "5.33.9782.41243",
+            "fileVersion": "5.33.9782.41243"
           }
         }
       },
@@ -419,32 +419,32 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Data.Bootstrapping.Fittings/10.6.9781.24297": {
+    "Microsoft.VisualBasic.Data.Bootstrapping.Fittings/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Data.Framework/10.6.9781.24297": {
+    "Microsoft.VisualBasic.Data.Framework/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Data.NLP/10.6.9781.24297": {
+    "Microsoft.VisualBasic.Data.NLP/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Math.Core/10.6.9781.24297": {
+    "Microsoft.VisualBasic.Math.Core/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Math.Statistics/10.6.9781.24297": {
+    "Microsoft.VisualBasic.Math.Statistics/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Runtime/10.6.9781.24297": {
+    "Microsoft.VisualBasic.Runtime/10.7.9782.41243": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -464,32 +464,32 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.Reference/1.0.9781.24297": {
+    "Microsoft.VisualBasic.Data.Bootstrapping.Fittings.Reference/1.0.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Data.Framework.Reference/1.0.9781.24297": {
+    "Microsoft.VisualBasic.Data.Framework.Reference/1.0.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Data.NLP.Reference/1.0.9781.24297": {
+    "Microsoft.VisualBasic.Data.NLP.Reference/1.0.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Math.Core.Reference/1.0.9781.24297": {
+    "Microsoft.VisualBasic.Math.Core.Reference/1.0.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Math.Statistics.Reference/1.0.9781.24297": {
+    "Microsoft.VisualBasic.Math.Statistics.Reference/1.0.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.VisualBasic.Runtime.Reference/5.33.9781.24297": {
+    "Microsoft.VisualBasic.Runtime.Reference/5.33.9782.41243": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

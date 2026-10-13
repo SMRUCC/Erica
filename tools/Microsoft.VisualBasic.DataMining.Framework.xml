@@ -2505,6 +2505,83 @@ Microsoft.VisualBasic.DataMining.Framework
  计算外部聚类指标；当没有提供真值标签的时候返回 ``NaN``。
  </summary>
 </member>
+<member name="T:Microsoft.VisualBasic.DataMining.Evaluation.ModelEvaluation">
+ <summary>
+ 统一评估框架的入口（Facade）。
+ 
+ 对「机器学习分类结果 / 回归结果 / 聚类结果」三类结果数据，调用
+ <see cref="M:Microsoft.VisualBasic.DataMining.Evaluation.ModelEvaluation.Evaluate(Microsoft.VisualBasic.DataMining.Evaluation.ClassificationResult,System.String)"/> 等重载即可得到统一的
+ <see cref="T:Microsoft.VisualBasic.DataMining.Evaluation.EvaluationReport"/>，其中包含该结果种类下所有已注册指标
+ （参见 <see cref="T:Microsoft.VisualBasic.DataMining.Evaluation.MetricRegistry"/>）以及可选的 ROC 曲线。
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Evaluation.ModelEvaluation.Evaluate(Microsoft.VisualBasic.DataMining.Evaluation.ClassificationResult,System.String)">
+ <summary>
+ 评估机器学习分类结果。
+ </summary>
+ <param name="result"></param>
+ <param name="name">可选的结果名字，覆盖 <see cref="P:Microsoft.VisualBasic.DataMining.Evaluation.ClassificationResult.Name"/></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Evaluation.ModelEvaluation.Evaluate(Microsoft.VisualBasic.DataMining.Evaluation.RegressionResult,System.String)">
+ <summary>
+ 评估回归结果。
+ </summary>
+ <param name="result"></param>
+ <param name="name">可选的结果名字，覆盖 <see cref="P:Microsoft.VisualBasic.DataMining.Evaluation.RegressionResult.Name"/></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Evaluation.ModelEvaluation.Evaluate(Microsoft.VisualBasic.DataMining.Evaluation.ClusteringResult,System.String)">
+ <summary>
+ 评估聚类结果。
+ </summary>
+ <param name="result"></param>
+ <param name="name">可选的结果名字，覆盖 <see cref="P:Microsoft.VisualBasic.DataMining.Evaluation.ClusteringResult.Name"/></param>
+ <returns></returns>
+</member>
+<member name="M:Microsoft.VisualBasic.DataMining.Evaluation.ModelEvaluation.Evaluate(Microsoft.VisualBasic.DataMining.Evaluation.IEvaluationResult)">
+ <summary>
+ 评估任意实现了 <see cref="T:Microsoft.VisualBasic.DataMining.Evaluation.IEvaluationResult"/> 的结果数据
+ （例如用户自定义的结果类型）。
+ </summary>
+ <param name="result"></param>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.DataMining.Evaluation.NamespaceDoc">
+ <summary>
+ 模型质量评估工具模块（统一评估框架）。
+ 
+ 本模块为三类结果数据提供统一的评估能力：
+ 
+ + **机器学习分类结果**：<see cref="T:Microsoft.VisualBasic.DataMining.Evaluation.ClassificationResult"/>（分数 + 标签）
+ + **回归结果**：<see cref="T:Microsoft.VisualBasic.DataMining.Evaluation.RegressionResult"/>（预测值 + 连续真值）
+ + **聚类结果**：<see cref="T:Microsoft.VisualBasic.DataMining.Evaluation.ClusteringResult"/>（特征矩阵 + 簇标签，可带真值标签）
+ 
+ 使用方式：
+ 
+ ```vb
+ Dim report As EvaluationReport = ModelEvaluation.Evaluate(
+     ClassificationResult.Create(scores, labels, "my-model"))
+ 
+ Dim auc As Double = report.Metric("auc")
+ Dim curve As RocCurve = report.Curve
+ ```
+ 
+ 架构说明：
+ 
+ 1. **唯一 ROC/AUC 核心**：<see cref="T:Microsoft.VisualBasic.DataMining.Evaluation.RocBuilder"/> 负责曲线生成，
+    <see cref="T:Microsoft.VisualBasic.DataMining.Evaluation.RocAuc"/> 负责面积与最佳阈值计算。模块内不再存在任何重复实现。
+ 2. **统一报告与可扩展指标**：<see cref="T:Microsoft.VisualBasic.DataMining.Evaluation.MetricRegistry"/> 维护
+    「结果种类 → 指标」的注册表，并可注册自定义指标；
+    <see cref="T:Microsoft.VisualBasic.DataMining.Evaluation.ModelEvaluation"/> 是唯一的评估入口。
+ 3. **兼容层**：<see cref="T:Microsoft.VisualBasic.DataMining.Evaluation.Validation"/>、<see cref="T:Microsoft.VisualBasic.DataMining.Evaluation.ROC"/>、<see cref="T:Microsoft.VisualBasic.DataMining.Evaluation.Validate"/>、
+    <see cref="T:Microsoft.VisualBasic.DataMining.Evaluation.RegressionROC"/>、<see cref="T:Microsoft.VisualBasic.DataMining.Evaluation.Metric"/> 保留原有公开签名，
+    但内部全部委托到上述核心实现。
+ 4. **单位约定（重要）**：<see cref="T:Microsoft.VisualBasic.DataMining.Evaluation.Validation"/> 的所有比率字段
+    （Sensibility / Specificity / Accuracy / Precision / FPR）以及 AUC 一律使用
+    ``[0, 1]`` 的分数表示，不再使用 ``[0, 100]`` 的百分数。
+ </summary>
+</member>
 <member name="T:Microsoft.VisualBasic.DataMining.Evaluation.RegressionClassify">
  <summary>
  The regression classifier result.
