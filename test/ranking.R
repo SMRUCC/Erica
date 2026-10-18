@@ -9,7 +9,7 @@ imports "GRN" from "Erica";
 imports "bnlearn" from "biosystem";
 
 let output = "K:\hsa_grn\hsa_rank";
-let monocle3 = monocle3::new( cacheDir = output, num_HVgenes =2000);
+let monocle3 = monocle3::new( cacheDir = output, num_HVgenes =60273);
 let expr = load.expr0("K:\hsa_grn\Homo_sapiens_expr_advanced_all_conditions.dat");
 
 monocle3 <- monocle3::cell_rank(expr, opts = monocle3);
