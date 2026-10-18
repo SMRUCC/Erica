@@ -17,6 +17,13 @@ Microsoft.VisualBasic.Math.SignalProcessing
  </param>
  <returns></returns>
 </member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Alignment.Normalize(Microsoft.VisualBasic.Math.SignalProcessing.GeneralSignal)">
+ <summary>
+ shift the signal curve into the non negative range by the abs of its minimal
+ value (see <see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.DCShift.PositiveShift(System.Double[])"/>), the operation is skipped
+ when the signal has no negative sample.
+ </summary>
+</member>
 <member name="M:Microsoft.VisualBasic.Math.SignalProcessing.NetworkSignalClassifier.ClassifyMetaboliteSignal(System.Double[])">
  <summary>
  主分类函数：返回枚举类型的分类结果
@@ -665,6 +672,68 @@ Microsoft.VisualBasic.Math.SignalProcessing
  Fast Fourier transform and the related spectral analysis helpers.
  </summary>
 </member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.FFT.Radix2">
+ <summary>
+ the in place radix-2 complex fast fourier transformation on the split
+ real/imaginary data arrays.
+ 
+ ### the difference from the other FFT implementations of current library
+ 
+ the library already contains three other fourier transformation implementations,
+ they are **not** interchangeable with this one because of the data layout and the
+ scaling convention:
+ 
+ | implementation | data layout | scaling on the forward transform | length limit |
+ |----------------|-------------|----------------------------------|--------------|
+ | ``FFT.Radix2`` (this module) | two separate ``Double()`` arrays | **no** normalization | any power of two |
+ | ``FFT.FourierTransform.FFT`` | ``Complex()`` | divides by ``n`` | ``n`` in ``[2, 16384]`` |
+ | ``FFT.DoubleFFT_1D`` | interleaved complex | IEEE convention | arbitrary |
+ | ``FFT.TFftAlgorithm`` | real input, cos/sin tables | ``2/n`` | arbitrary |
+ 
+ the caller of this module is responsible for the normalization: the forward
+ transform keeps the raw butterfly sums, so a magnitude spectrum must be scaled
+ by the window gain itself (see <see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.Spectrum.PowerSpectrum(System.Double[],System.Boolean)"/>).
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.Radix2.Fft(System.Double[],System.Double[],System.Boolean)">
+ <summary>
+ in-place radix-2 complex FFT, the length of the data must be a power of two
+ </summary>
+ <param name="re">the real part of the complex signal, modified in place</param>
+ <param name="im">the imaginary part of the complex signal, modified in place</param>
+ <param name="inverse">run the inverse transform (the result is divided by ``n``)</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.Radix2.RoundupPow2(System.Int32)">
+ <summary>
+ round the input value up to the nearest power of two, it is used for
+ zero padding a signal into the size which the radix-2 FFT requires.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.FFT.Spectrum">
+ <summary>
+ the magnitude spectrum helpers which are built on the
+ <see cref="T:Microsoft.VisualBasic.Math.SignalProcessing.FFT.Radix2"/> transform.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.Spectrum.PowerSpectrum(System.Double[],System.Boolean)">
+ <summary>
+ complex spectrum of a real valued signal, the length of the result is ``n/2+1``.
+ 
+ the signal is zero padded into the next power of two before the transform, and
+ the magnitude of each bin is scaled by the half length of the original signal,
+ so the result is directly comparable between the signals of the different length.
+ </summary>
+ <param name="x">the real valued signal samples</param>
+ <param name="window">apply the hann window on the signal before the transform</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.FFT.Spectrum.TopSpectralPeaks(System.Double[],System.Int32,System.Double)">
+ <summary>
+ the top magnitude positions (hertz) on the given signal spectrum
+ </summary>
+ <param name="signal">the real valued signal samples</param>
+ <param name="sampleRate">the sample rate of the signal in hertz</param>
+ <param name="maxHz">the upper frequency limit of the peak search</param>
+</member>
 <member name="T:Microsoft.VisualBasic.Math.SignalProcessing.FFT.TransformCore">
  <summary>
  Core utility class to provide general utility methods
@@ -736,6 +805,43 @@ Microsoft.VisualBasic.Math.SignalProcessing
  
  @author Marcin Rzeźnicki </summary>
  
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Filters.DCShift">
+ <summary>
+ the D.C. offset shift helpers, they move the amplitude of a signal into the non
+ negative range so that the rectifying based analysis (envelope, modulation
+ measurement) would not mix the negative excursion into the positive one.
+ 
+ ### two shift conventions of current library
+ 
+ the two functions of this module are **not** the same thing, the caller must pick
+ the one which matches its signal convention:
+ 
+ | function | shift value | input | in place |
+ |----------|-------------|-------|-----------|
+ | <see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.DCShift.ShiftToPositive(System.Single[])"/> | the max amplitude of the signal, applied unconditionally | ``Single()`` wave samples | yes, the input array is modified |
+ | <see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.DCShift.PositiveShift(System.Double[])"/> | the abs of the minimal value, applied only when the signal has a negative sample | ``Double()`` signal curve | no, a new array is returned when the shift is applied |
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.DCShift.ShiftToPositive(System.Single[])">
+ <summary>
+ shift the single precision wave samples into the non negative range.
+ 
+ the shift value is the max amplitude of the signal, and the input array is
+ modified in place and returned back (the same array instance is returned).
+ </summary>
+ <param name="data">the wave sample data, it is modified in place</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Filters.DCShift.PositiveShift(System.Double[])">
+ <summary>
+ shift a double precision signal curve into the non negative range.
+ 
+ the shift value is the abs of the minimal value, and it is only applied when the
+ signal has a negative sample, otherwise the input array is returned as it is.
+ 
+ this is the shared implementation of ``Alignment.Normalize``.
+ </summary>
+ <param name="data">the signal curve, it is not modified</param>
 </member>
 <member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Filters.Linearizer">
  <summary>
@@ -1443,6 +1549,140 @@ Microsoft.VisualBasic.Math.SignalProcessing
  线性插值
  </summary>
 </member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.MovingAverage(System.Double[],System.Int32)">
+ <summary>
+ centered moving average with a edge clamping.
+ 
+ the window radius is ``Max(1, window \ 2)``, so an even window size is also
+ supported: ``MovingAverage(x, 128)`` uses the radius 64.
+ 
+ ### the difference from <see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.MovingAverageSmooth(System.Double[],System.Int32)"/>
+ 
+ ``MovingAverageSmooth`` is the legacy entry which forces the window size into an
+ odd number (an even input is increased by one), this function uses the window
+ size as it is. both of them share the same centered window and the same edge
+ clamping, therefore for an odd window size the results are mathematically equal.
+ </summary>
+ <param name="x">the input signal</param>
+ <param name="window">the window size in samples</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.Envelope(System.Single[],System.Int32)">
+ <summary>
+ rectify the signal and then smooth it by a moving average window,
+ this is the amplitude envelope of the given analog signal.
+ </summary>
+ <param name="x">the input signal</param>
+ <param name="window">the window size of the low pass filter</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.Decimate(System.Double[],System.Int32)">
+ <summary>
+ decimate the signal by the factor ``k`` using a simple averaging low pass filter
+ </summary>
+ <param name="x">the input signal</param>
+ <param name="k">the decimation factor</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.AutoCorrelation(System.Double[],System.Int32,System.Int32,System.Int32)">
+ <summary>
+ normalized auto correlation of the given signal on the lag range ``[minLag, maxLag]``
+ </summary>
+ <param name="x">the input signal, should be already decimated by the caller</param>
+ <param name="minLag">the minimal lag in samples</param>
+ <param name="maxLag">the maximal lag in samples</param>
+ <param name="maxCount">the maximal number of the samples which are used in the correlation</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.Percentile(System.Double[],System.Double)">
+ <summary>
+ the value at the given percentile position ``p`` in range ``[0,1]``,
+ the input data does not need to be sorted.
+ 
+ this is the exact percentile by the sorted interpolation (the "linear" type of
+ the R quantile), please note that it is **not** the same thing as the GK
+ estimation of ``Microsoft.VisualBasic.Math.Quantile`` which is an approximate
+ query on a data stream. the exact percentile must buffer and sort the whole
+ sample data.
+ </summary>
+ <param name="data">the sample data, it is not modified</param>
+ <param name="p">the percentile position in range ``[0,1]``</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.Percentile(System.Single[],System.Double)">
+ <summary>
+ the exact percentile of a single precision signal, it is the overload of
+ <see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.Percentile(System.Double[],System.Double)"/> for the sample buffers which are
+ loaded from the wave files.
+ </summary>
+ <param name="data">the sample data, it is not modified</param>
+ <param name="p">the percentile position in range ``[0,1]``</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.Quantile(System.Double[],System.Double)">
+ <summary>
+ the quantile value on an already sorted data array, ``p`` in range ``[0,1]``
+ </summary>
+ <param name="sorted">the ascending sorted sample data</param>
+ <param name="p">the quantile position in range ``[0,1]``</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.Median(System.Double[])">
+ <summary>
+ the median value of the given signal, it is the percentile at the position 0.5.
+ 
+ ### the difference from the linq extension ``Median``
+ 
+ the core library provides the linq extension ``Median`` for ``IEnumerable(Of Double)``,
+ this function is a plain module function and it is **not** an extension method, so
+ both of them can be imported at the same place without the overload ambiguity.
+ the interpolation rule of an even length sample is also different.
+ </summary>
+ <param name="x">the sample data, it is not modified</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.Mean(System.Single[])">
+ <summary>
+ the arithmetic mean of the given signal
+ </summary>
+ <param name="x">the sample data</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.Mean(System.Double[])">
+ <summary>
+ the arithmetic mean of a double precision signal, it is the overload of
+ <see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.Mean(System.Single[])"/> for the computed intermediate data.
+ </summary>
+ <param name="x">the sample data</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.Rms(System.Single[])">
+ <summary>
+ the root mean square of the given signal
+ </summary>
+ <param name="x">the sample data</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.BlockPower(System.Single[],System.Int32,System.Int32)">
+ <summary>
+ the root mean square of a data block, a robust intensity measurement of the signal
+ </summary>
+ <param name="x">the sample data</param>
+ <param name="start">the zero based start position of the block</param>
+ <param name="end">the zero based end position (exclusive) of the block</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.LerpClamped(System.Single[],System.Double)">
+ <summary>
+ linear interpolation sample of a signal at a fractional position, the position
+ is clamped into the signal range.
+ 
+ this is the float position sampler which is used by the scan line alignment and
+ the raster folding. do not confuse it with <see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.SampleOrZero(System.Single[],System.Int32)"/> which takes
+ an integer index and returns zero outside of the signal range.
+ </summary>
+ <param name="x">the sample data</param>
+ <param name="pos">the fractional sample position</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.SampleOrZero(System.Single[],System.Int32)">
+ <summary>
+ the sample value at the given integer index, zero is returned when the index is
+ outside of the signal range.
+ 
+ do not confuse it with <see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.LerpClamped(System.Single[],System.Double)"/> which takes a fractional position
+ and clamps the position into the signal range instead of returning zero.
+ </summary>
+ <param name="data">the sample data</param>
+ <param name="i">the integer sample index</param>
+</member>
 <member name="T:Microsoft.VisualBasic.Math.SignalProcessing.NamespaceDoc">
  <summary>
  Digital signal processing root: the signal types, transforms and the shared DSP utilities.
@@ -1611,6 +1851,54 @@ Microsoft.VisualBasic.Math.SignalProcessing
  <param name="signals"></param>
  <param name="quantile">一般建议值为0.65</param>
  <returns>the intensity value cutoff for the noise/baseline</returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.PeakFinding.LocalMaxima">
+ <summary>
+ the local maxima locator by the amplitude threshold and the minimal peak distance.
+ 
+ ### the difference from <see cref="T:Microsoft.VisualBasic.Math.SignalProcessing.PeakFinding.ElevationAlgorithm"/>
+ 
+ the library also provides the ``ElevationAlgorithm`` peak finder, but the two
+ algorithms are not interchangeable:
+ 
+ - ``ElevationAlgorithm`` works on the accumulated line of a chromatogram: it cuts
+   the slope segments which are flatter than the given angle, the peaks are the
+   regions between those flat segments. it needs the time/intensity tick list and it
+   reports the peak area integration.
+ - ``LocalMaxima.FindPeaks`` works on a plain sample array: it scans the local maxima
+   which are above the threshold and then applies a greedy non maximum suppression
+   by the minimal peak distance, so that only one peak is kept per neighbor region.
+ 
+ the scan line synchronization and the envelope pulse detection of the analog image
+ data use this locator.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.PeakFinding.LocalMaxima.FindPeaks(System.Double[],System.Double,System.Int32)">
+ <summary>
+ the local maxima positions <see cref="T:System.Int32"/> index on the given signal,
+ a peak is reported when its magnitude is above <paramref name="threshold"/>
+ and it is the maximum value inside the ``minDistance`` neighbor region.
+ </summary>
+ <remarks>
+ the peaks are detected via a small window local maxima scan and then a
+ greedy non maximum suppression pass, so that the complexity stays linear
+ even when the minimal peak distance is large.
+ </remarks>
+ <param name="x">the signal samples</param>
+ <param name="threshold">the minimal magnitude of a peak</param>
+ <param name="minDistance">the minimal distance in samples between two peaks</param>
+ <returns>the ascending ordered peak positions</returns>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.PeakFinding.LocalMaxima.ParabolicPeak(System.Double[],System.Int32)">
+ <summary>
+ sub sample position of a local maximum via the parabolic interpolation.
+ 
+ the three points around the integer peak position are fitted by a parabola and
+ the position of the parabola vertex is returned, it gives a fractional sample
+ position which is much more accurate than the integer peak index.
+ </summary>
+ <param name="x">the signal samples</param>
+ <param name="i">the integer index of the local maximum</param>
 </member>
 <member name="T:Microsoft.VisualBasic.Math.SignalProcessing.PeakFinding.NamespaceDoc">
  <summary>
@@ -2433,6 +2721,598 @@ Microsoft.VisualBasic.Math.SignalProcessing
    Inverse Haar Wavelet 2D Transform
  </summary>
  <param name="iterations">Iteration must be Integer from 1 to</param>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Waves.DemodulationMode">
+ <summary>
+ the per pixel cell intensity estimator of the analog signal
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.SignalProcessing.Waves.DemodulationMode.Mean">
+ <summary>
+ the signed mean of the cell samples.
+ 
+ this is the estimator which is used by the legacy decoder and it gives the
+ cleanest result: the image brightness is the local level of the analog signal,
+ and the plain mean is a linear low pass filter of the sample data.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.SignalProcessing.Waves.DemodulationMode.Absolute">
+ <summary>
+ the mean of the absolute value of the cell samples (the full wave rectified
+ amplitude). the rectification is a non linear operation: the noise of the
+ analog signal is folded into a positive offset and it is amplified, so the
+ decoded image is noisier than the ``Mean`` mode.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.SignalProcessing.Waves.DemodulationMode.Rms">
+ <summary>
+ the root mean square of the cell samples
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Waves.DemodulateOptions">
+ <summary>
+ the demodulation parameters of a scan line analog signal.
+ 
+ the pixel cell number of a single scan line and the samples per pixel cell (the
+ pixel clock) are the properties of the concrete data source, they are NOT included
+ in this class as the default values: the caller must assign
+ <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Waves.DemodulateOptions.pixels"/> and either <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Waves.DemodulateOptions.pixel_pitch"/> or
+ <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Waves.DemodulateOptions.slots_per_period"/>.
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Waves.DemodulateOptions.pixels">
+ <summary>
+ the number of the image pixel cells inside a single scan line (the image rows),
+ it must be assigned by the caller
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Waves.DemodulateOptions.pixel_pitch">
+ <summary>
+ the samples per pixel cell, zero means it is evaluated from the scan line
+ period and the pixel clock slots of the data source
+ (see <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Waves.DemodulateOptions.slots_per_period"/>)
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Waves.DemodulateOptions.slots_per_period">
+ <summary>
+ the number of the pixel cell slots inside a single scan line period.
+ 
+ one scan line period usually contains more slots than the image pixel number
+ because of the leading blanking/sync region, so the pixel pitch is NOT
+ ``period / pixels``: using the image pixel number as the slot count would miss
+ the blanking region and would scale the decoded image in the vertical
+ direction. this value must be calibrated from the known geometry of the data
+ source (for example a calibration circle image), and it is only used when
+ <see cref="P:Microsoft.VisualBasic.Math.SignalProcessing.Waves.DemodulateOptions.pixel_pitch"/> is not assigned.
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Waves.DemodulateOptions.guard">
+ <summary>
+ the number of the samples which are skipped after the sync pulse position
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Waves.DemodulateOptions.remove_baseline">
+ <summary>
+ remove the per scan line baseline drift before the rectification
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Waves.DemodulateOptions.mode">
+ <summary>
+ the intensity estimator of a pixel cell, the default ``Mean`` mode is the
+ signed mean which matches the legacy decoder result
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Waves.DemodulateOptions.use_rms">
+ <summary>
+ use the rms value instead of the signed mean of the cell samples
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Waves.DemodulateOptions.baseline_window">
+ <summary>
+ the length (in samples) of the baseline tracking window, zero for the
+ whole scan line mean value
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Waves.CellDemodulator">
+ <summary>
+ the brightness demodulation of a scan line analog signal.
+ 
+ the pixel cells are sampled with a sub sample precision, and the baseline drift of
+ each scan line is removed before the intensity combination, those two steps are
+ required for removing the "water wave" like streaks on the decoded image.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.CellDemodulator.PixelPitch(System.Double,System.Double)">
+ <summary>
+ the samples per pixel cell which is evaluated from the scan line period and the
+ pixel clock slots of the data source.
+ </summary>
+ <param name="period">the measured scan line period in samples</param>
+ <param name="slotsPerPeriod">the number of the pixel cell slots inside a single
+ scan line period (including the blanking region)</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.CellDemodulator.ParseMode(System.String)">
+ <summary>
+ parse the name of the intensity estimator: ``mean``/``signed``, ``abs`` and ``rms``
+ </summary>
+ <param name="name">the estimator name</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.CellDemodulator.Demodulate(System.Single[],Microsoft.VisualBasic.Math.SignalProcessing.Waves.LineGrid,Microsoft.VisualBasic.Math.SignalProcessing.Waves.DemodulateOptions)">
+ <summary>
+ demodulate the scan line grid into the image raster.
+ 
+ the scan line of the analog signal is one image column, so the returned
+ matrix is already in the image row major layout: ``matrix(row)(column)``
+ </summary>
+ <param name="data">the sample data of a single audio channel</param>
+ <param name="grid">the scan line time grid</param>
+ <param name="options"></param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.CellDemodulator.PixelValue(System.Single[],System.Double,System.Double,System.Double,Microsoft.VisualBasic.Math.SignalProcessing.Waves.DemodulationMode)">
+ <summary>
+ the area weighted pixel intensity of a pixel cell which is started at the
+ given fractional sample position.
+ 
+ the samples of the cell are combined by the given estimator, the ``Mean`` mode
+ (the signed mean) is a linear low pass filter of the analog signal and it is
+ the estimator which gives the cleanest image, the ``Absolute``/``Rms`` modes
+ rectifies the signal before the combination and they are much noisier.
+ </summary>
+ <param name="data">the sample data of a single audio channel</param>
+ <param name="start">the fractional sample position of the cell start</param>
+ <param name="pitch">the samples per pixel cell</param>
+ <param name="baseline">the baseline level which is removed from the samples</param>
+ <param name="mode">the intensity estimator</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.CellDemodulator.LineBaseline(System.Single[],System.Double,System.Double,System.Int32)">
+ <summary>
+ the baseline of a scan line: the mean level of the analog signal on the line.
+ 
+ the baseline is removed before the amplitude combination, otherwise the baseline
+ drift of the analog recording appears as the streaks on the decoded image.
+ </summary>
+ <param name="data">the sample data of a single audio channel</param>
+ <param name="origin">the fractional sample position of the scan line start</param>
+ <param name="period">the scan line period in samples</param>
+ <param name="window">the length of the baseline tracking window, zero for the
+ whole scan line mean value (the local tracking window is not supported by the
+ whole line scan, the whole line mean value is used instead)</param>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Waves.ChannelCorrelation">
+ <summary>
+ the relationship between two audio channels of a stereo signal: the signal energy
+ of each channel, the best correlation lag (in samples) and the correlation
+ coefficient at that lag
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Waves.ChannelAnalysis">
+ <summary>
+ the correlation analysis between the left and the right channels.
+ 
+ the two channels of the analog recording may carry the same signal with a small
+ time offset or they may carry two different signal components (for example a
+ staggered track layout), the best correlation lag tells which case it is.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.ChannelAnalysis.AnalyseChannels(System.Single[],System.Single[],System.Int32,System.Int32,System.Int32)">
+ <summary>
+ the correlation relationship between the left and the right channel
+ </summary>
+ <param name="left">the sample data of the left channel</param>
+ <param name="right">the sample data of the right channel</param>
+ <param name="k">the decimation factor for the correlation computation</param>
+ <param name="maxLagLimit">the maximal lag (in samples) of the correlation search</param>
+ <param name="maxCount">the maximal number of the decimated samples which are used</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.ChannelAnalysis.ToDoubles(System.Single[])">
+ <summary>
+ convert a single precision channel into the double precision sample buffer
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Waves.LineStat">
+ <summary>
+ the amplitude statistics of a single scan line
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Waves.FoldAnalysis">
+ <summary>
+ the visualization and the diagnostic helpers for make the raw waveform structure
+ visible:
+ 
+ 1. <see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.FoldAnalysis.Oscillogram(System.Single[],System.Int32,System.Int32,System.Int32,System.Int32)"/>: the classic amplitude waveform view of a sample block
+ 2. <see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.FoldAnalysis.Fold(System.Single[],System.Int32,System.Double,System.Int32,System.Int32)"/>: fold the signal at the estimated scan line period, this makes
+    the scan line structure of the periodic analog signal directly visible
+ 3. <see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.FoldAnalysis.FoldPixel(System.Single[],System.Int32,System.Double,System.Int32,System.Int32,System.Boolean)"/>/<see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.FoldAnalysis.DecodeRaster(System.Single[],System.Int32,System.Double,System.Int32,System.Int32,System.Int32,System.Boolean)"/>: fold the signal and decode the
+    pixel cells, this gives a first fast preview of the decoded image
+ 
+ the module also provides the mean scan line template (<see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.FoldAnalysis.MeanLine(System.Single[],System.Int32,System.Double,System.Int32,System.Int32)"/>) which
+ is the base of the per scan line alignment, and the per scan line amplitude
+ statistics (<see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.FoldAnalysis.LineStats(System.Single[],System.Int32,System.Double,System.Int32,System.Int32)"/>) which are used for checking the baseline drift
+ of the analog recording.
+ 
+ ### the merged duplicates
+ 
+ the scan line period refinement (the ``CoherenceScore`` and the ``RefinePeriod``
+ functions) lived in this module as well, but they were the byte identical copies of
+ <see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.ScanLineSync.CoherenceScore(System.Single[],System.Int32,System.Double,System.Int32,System.Int32)"/>
+ and <see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.ScanLineSync.RefinePeriod(System.Single[],System.Int32,System.Double,System.Int32,System.Double,System.Double)"/>, so the duplicated copies are removed
+ and one authoritative implementation is kept in <see cref="T:Microsoft.VisualBasic.Math.SignalProcessing.Waves.ScanLineSync"/>.
+ 
+ the matrix transpose helper is also removed from this module, the core library
+ already provides the linq extension ``MatrixTranspose`` for the jagged matrix.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.FoldAnalysis.Oscillogram(System.Single[],System.Int32,System.Int32,System.Int32,System.Int32)">
+ <summary>
+ the classic amplitude oscillogram of a sample block
+ </summary>
+ <param name="data">the sample data of a single audio channel</param>
+ <param name="start">the zero based start position of the block</param>
+ <param name="count">the number of the samples on the block</param>
+ <param name="width">the width of the output image in pixels</param>
+ <param name="height">the height of the output image in pixels</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.FoldAnalysis.Fold(System.Single[],System.Int32,System.Double,System.Int32,System.Int32)">
+ <summary>
+ fold the signal at the given scan line period, one sample per pixel column
+ </summary>
+ <param name="data">the sample data of a single audio channel</param>
+ <param name="start">the zero based start position of the data section</param>
+ <param name="period">the scan line period in samples</param>
+ <param name="lines">the number of the scan lines</param>
+ <param name="samplesPerRow">the number of the sample columns, zero for the rounded period</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.FoldAnalysis.FoldPixel(System.Single[],System.Int32,System.Double,System.Int32,System.Int32,System.Boolean)">
+ <summary>
+ fold the signal at the scan line period and decode the intensity of each pixel cell,
+ this gives a fast preview of the decoded image
+ </summary>
+ <param name="data">the sample data of a single audio channel</param>
+ <param name="start">the zero based start position of the data section</param>
+ <param name="period">the scan line period in samples</param>
+ <param name="lines">the number of the scan lines</param>
+ <param name="pixels">the number of the pixel cells inside a scan line</param>
+ <param name="rms">use the rms value instead of the sum of the raw sample amplitudes</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.FoldAnalysis.DecodeRaster(System.Single[],System.Int32,System.Double,System.Int32,System.Int32,System.Int32,System.Boolean)">
+ <summary>
+ decode the image data section into the transposed raster layout:
+ each scan line of the analog signal is one image column, and the pixel cells
+ inside the scan line are the image rows.
+ </summary>
+ <param name="data">the sample data of a single audio channel</param>
+ <param name="start">the zero based start position of the data section</param>
+ <param name="period">the scan line period in samples</param>
+ <param name="lines">the number of the scan lines</param>
+ <param name="cells">the number of the pixel cells inside a single scan line</param>
+ <param name="cellOffset">the number of the sample cells which are skipped at the
+ beginning of each scan line (the sync/blanking region)</param>
+ <param name="rms">use the rms value instead of the sum of the raw sample amplitudes</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.FoldAnalysis.MeasureCircle(System.Single[],System.Int32,System.Double,System.Int32,System.Int32,System.Int32@,System.Int32@,System.Int32)">
+ <summary>
+ the measured bounding box of the calibration circle on the transposed raster,
+ it is used for calibrating the pixel clock: the calibration circle is a true
+ circle, so the horizontal extent (in scan lines) and the vertical extent
+ (in pixel cells) of its ring must be equal when the pixel clock is correct.
+ </summary>
+ <param name="data">the sample data of a single audio channel</param>
+ <param name="start">the zero based start position of the data section</param>
+ <param name="period">the scan line period in samples</param>
+ <param name="lines">the number of the scan lines</param>
+ <param name="cells">the number of the pixel cells inside a single scan line</param>
+ <param name="dx">the measured horizontal extent of the ring in scan lines</param>
+ <param name="dy">the measured vertical extent of the ring in pixel cells</param>
+ <param name="cellOffset">the number of the sample cells which are skipped at the
+ beginning of each scan line</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.FoldAnalysis.MeanLine(System.Single[],System.Int32,System.Double,System.Int32,System.Int32)">
+ <summary>
+ the mean scan line waveform, the sync pulse shape is highlighted by the averaging
+ while the image payload content is cancelled out
+ </summary>
+ <param name="data">the sample data of a single audio channel</param>
+ <param name="start">the zero based start position of the data section</param>
+ <param name="period">the scan line period in samples</param>
+ <param name="lines">the number of the scan lines</param>
+ <param name="samplesPerRow">the number of the sample columns, zero for the rounded period</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.FoldAnalysis.LineStats(System.Single[],System.Int32,System.Double,System.Int32,System.Int32)">
+ <summary>
+ the amplitude statistics of each scan line, it is used for checking the
+ baseline drift of the analog recording
+ </summary>
+ <param name="data">the sample data of a single audio channel</param>
+ <param name="start">the zero based start position of the data section</param>
+ <param name="period">the scan line period in samples</param>
+ <param name="lines">the number of the scan lines</param>
+ <param name="samplesPerRow">the number of the sample columns, zero for the rounded period</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.FoldAnalysis.NewMatrix(System.Int32,System.Int32)">
+ <summary>
+ allocate a row major double matrix
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Waves.PayloadAnalysis">
+ <summary>
+ how the brightness of the image pixel is modulated on the carrier of
+ the periodic scan line signal
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Waves.ModulationAnalysis">
+ <summary>
+ determine how the brightness of the image pixel is modulated on the carrier.
+ 
+ the analysis is done on a middle block of the data section (8 scan lines), it
+ measures the number of the pulses inside a single pixel cell, the spectrum of the
+ payload block and the ratio of the energy which is above the pixel clock nyquist
+ frequency, then it classifies the brightness encoding scheme.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.ModulationAnalysis.AnalysePayload(System.Single[],System.Double[],System.Double,System.Int32,System.Double)">
+ <summary>
+ determine how the brightness of the image pixel is modulated on the carrier
+ </summary>
+ <param name="data">the sample data of a single audio channel</param>
+ <param name="pulses">the sub sample positions of the sync pulses</param>
+ <param name="samplesPerPixel">the measured samples per pixel cell</param>
+ <param name="sampleRate">the sample rate of the signal in hertz, it is used for
+ converting the spectrum bins into the frequency</param>
+ <param name="maxHz">the upper frequency limit of the reported spectral peaks</param>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Waves.PeriodEstimation">
+ <summary>
+ the estimated periodic structure of a scan line signal: the period in samples and
+ the normalized auto correlation score of that period
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Waves.PeriodAnalysis">
+ <summary>
+ the period estimation and the sync pulse detection of a periodic scan line signal.
+ 
+ the scan line period is measured by the auto correlation of the signal envelope with
+ a coarse decimated search and then a fine full resolution search, the sync pulses are
+ located by the envelope peaks above an adaptive percentile threshold.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.PeriodAnalysis.EstimateLinePeriod(System.Double[],Microsoft.VisualBasic.Math.SignalProcessing.Waves.PeriodEstimation@,System.Int32)">
+ <summary>
+ estimate the scan line period via the auto correlation of the signal envelope
+ </summary>
+ <param name="envelope">the amplitude envelope of the signal (see <see cref="M:Microsoft.VisualBasic.Math.SignalProcessing.MathUtils.Envelope(System.Single[],System.Int32)"/>)</param>
+ <param name="result">the estimated period and the correlation score</param>
+ <param name="k">the decimation factor for the coarse auto correlation computation</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.PeriodAnalysis.MeasureLinePeriod(System.Single[],System.Int32)">
+ <summary>
+ measure the scan line period (in samples) of a given channel data
+ </summary>
+ <param name="data">the sample data of a single audio channel</param>
+ <param name="envWindow">the window size of the envelope low pass filter</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.PeriodAnalysis.DetectSyncPulses(System.Double[],System.Double)">
+ <summary>
+ detect the sub sample positions of the sync pulses on the signal envelope
+ </summary>
+ <param name="envelope">the amplitude envelope of the signal</param>
+ <param name="linePeriod">the measured scan line period in samples</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.PeriodAnalysis.PulseIntervals(System.Double[])">
+ <summary>
+ the intervals between the consecutive sync pulses
+ </summary>
+ <param name="pulses">the sub sample positions of the sync pulses</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.PeriodAnalysis.StdError(System.Double[])">
+ <summary>
+ the sample standard deviation of the given values
+ </summary>
+ <param name="values">the sample data</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.PeriodAnalysis.IntervalDrift(System.Double[])">
+ <summary>
+ the period drift: the mean interval of the second half data minus the first half data
+ </summary>
+ <param name="pulses">the sub sample positions of the sync pulses</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.PeriodAnalysis.IntervalModes(System.Double[],System.Int32,System.Int32)">
+ <summary>
+ the dominate values on the interval histogram
+ </summary>
+ <param name="intervals">the pulse intervals in samples</param>
+ <param name="binSize">the histogram bin size in samples</param>
+ <param name="top">the number of the dominate bins which are reported</param>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Waves.LineRow">
+ <summary>
+ a single scan line on the analog image signal
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.SignalProcessing.Waves.LineRow.index">
+ <summary>
+ the zero based scan line index
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.SignalProcessing.Waves.LineRow.start">
+ <summary>
+ the start sample position of this scan line on the data section
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.SignalProcessing.Waves.LineRow.period">
+ <summary>
+ the scan line period of this row
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Waves.LineGrid">
+ <summary>
+ the scan line time grid of an image data section
+ </summary>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Waves.LineGrid.period">
+ <summary>
+ the measured scan line period (in samples)
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Waves.LineGrid.score">
+ <summary>
+ the normalized auto correlation score of the scan line period, a value
+ near 1.0 means a stable line structure
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Waves.LineGrid.sync_offset">
+ <summary>
+ the sample position of the sync pulse inside one scan line period,
+ it is the reference origin of the image data cells
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Waves.LineGrid.count">
+ <summary>
+ the number of the scan lines on the data section
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Waves.LineGrid.jitter_std">
+ <summary>
+ the standard deviation (in samples) of the per scan line alignment shifts,
+ it is the residual jitter of the analog recording which is removed by the
+ per scan line synchronization
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Waves.LineGrid.align_score">
+ <summary>
+ the correlation score of the per scan line alignment template, a value near
+ one means a reliable synchronization
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:Microsoft.VisualBasic.Math.SignalProcessing.Waves.LineGrid.aligned">
+ <summary>
+ has the per scan line alignment been applied on current grid
+ </summary>
+ <returns></returns>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Waves.ScanLineSync">
+ <summary>
+ the scan line synchronization of a periodic scan line analog signal.
+ 
+ the analog scan line period is usually NOT an integer number of the sample frames,
+ so the period must be estimated with a sub sample precision, otherwise a tiny
+ period error accumulates along the scan lines and smears the decoded image. the
+ module measures the period from the auto correlation of the signal envelope,
+ refines it by the vertical coherence of the folded raster, and locates the sync
+ pulse offset by the high pass filtered mean scan line profile.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.ScanLineSync.Sync(System.Single[],System.Int32,System.Double,System.Boolean,System.Int32)">
+ <summary>
+ detect the scan line time grid of a given image data section
+ </summary>
+ <param name="data">the sample data of a single audio channel</param>
+ <param name="lines">the expected number of the scan lines, zero for auto detect</param>
+ <param name="period">the scan line period, zero for auto detect and refine</param>
+ <param name="align">apply the per scan line synchronization for removing the
+ residual jitter of the analog recording</param>
+ <param name="alignWindow">the maximal per scan line alignment shift (in samples)</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.ScanLineSync.AlignRows(System.Single[],Microsoft.VisualBasic.Math.SignalProcessing.Waves.LineGrid,System.Int32)">
+ <summary>
+ refine the start sample position of each scan line by aligning the scan line
+ head region (the sync pulse and the blanking level) against the mean scan line
+ template.
+ 
+ the scan line period of the analog recording is not exactly constant, the
+ residual phase jitter of each scan line appears as the "water wave" streaks
+ and the vertical bands on the decoded image. the jitter is measured from the
+ sync pulse of each scan line and is removed by shifting the demodulation
+ window of the scan line.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.ScanLineSync.Correlation(System.Double[],System.Double[],System.Int32,System.Int32)">
+ <summary>
+ the correlation coefficient of ``a(t)`` and ``b(t + shift)`` on the overlapped region
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.ScanLineSync.CoherenceScore(System.Single[],System.Double,System.Double[],System.Int32,System.Int32)">
+ <summary>
+ the vertical coherence score of the aligned raster: the mean squared difference
+ between two adjacent scan lines. the smaller the score is, the better the
+ scan line alignment is.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.ScanLineSync.CoherenceScore(System.Single[],System.Int32,System.Double,System.Int32,System.Int32)">
+ <summary>
+ the vertical coherence score of a folded raster: the mean squared difference
+ between two adjacent scan lines. the smaller the score is, the better the
+ folding period matches the real scan line period of the analog signal.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.ScanLineSync.RefinePeriod(System.Single[],System.Int32,System.Double,System.Int32,System.Double,System.Double)">
+ <summary>
+ refine the scan line period by the vertical coherence of the folded raster.
+ 
+ the analog scan line period is not an integer number of the sample frames, a
+ tiny period error accumulates as a sample phase drift along the scan lines,
+ which smears the decoded image in the horizontal direction. the period is
+ refined by searching the minimum of the folded raster coherence score.
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.ScanLineSync.EstimateSyncOffset(System.Single[],System.Double,System.Int32)">
+ <summary>
+ the sample position of the sync pulse inside the scan line period.
+ 
+ the sync pulse is a sharp transient on the analog signal, so it is located
+ by the high pass filtered mean scan line profile.
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Waves.SpectrumBands">
+ <summary>
+ the energy distribution over the frequency bands and the narrow band chroma
+ carrier measurement of a multi channel signal
+ </summary>
+</member>
+<member name="T:Microsoft.VisualBasic.Math.SignalProcessing.Waves.BandAnalysis">
+ <summary>
+ the spectrum band analysis of a (possibly color) periodic scan line signal.
+ 
+ the luminance data of the image is a wide band amplitude modulation, while a color
+ (chroma) component must be carried by a narrow band sub carrier which is outside of
+ the luminance band, so the ratio between a narrow band peak and its local noise
+ floor is a strong indicator of the existence of a chroma carrier.
+ </summary>
+</member>
+<member name="F:Microsoft.VisualBasic.Math.SignalProcessing.Waves.BandAnalysis.BandEdges">
+ <summary>
+ the frequency bands for the energy distribution analysis
+ </summary>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.BandAnalysis.AnalyseSpectrumBands(System.Single[][],System.Int32,System.Double[],System.Int32,System.Int32,System.Int32)">
+ <summary>
+ detect the narrow band chroma carrier (if any) which is independent from the
+ luminance data
+ </summary>
+ <param name="raw">the sample data of the channels, one array per channel</param>
+ <param name="sampleRate">the sample rate of the signal in hertz</param>
+ <param name="frequencyEdges">the frequency edges of the reported energy bands, nothing for <see cref="F:Microsoft.VisualBasic.Math.SignalProcessing.Waves.BandAnalysis.BandEdges"/></param>
+ <param name="frameSize">the length of the spectrum analysis frame in samples</param>
+ <param name="hop">the hop between two consecutive spectrum frames</param>
+ <param name="maxFrames">the maximal number of the frames on a single channel</param>
+</member>
+<member name="M:Microsoft.VisualBasic.Math.SignalProcessing.Waves.BandAnalysis.ToDoubles(System.Single[])">
+ <summary>
+ convert a single precision channel into the double precision sample buffer
+ </summary>
 </member>
 </members>
 </doc>
