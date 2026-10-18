@@ -140,9 +140,9 @@ Public Class DBNPreprocessOutput
             End If
 
             Dim manifest = JsonSerializer.Deserialize(Of SaveManifest)(manifestText)
-            Dim schemaName = If(manifest Is Nothing, Nothing, manifest.schema)
-            If schemaName Is Nothing OrElse Not String.Equals(schemaName, SchemaName, StringComparison.OrdinalIgnoreCase) Then
-                Throw New InvalidDataException($"无效的 {SchemaName} zip 包：manifest.schema = '{schemaName}'")
+            Dim manifestSchema = If(manifest Is Nothing, Nothing, manifest.schema)
+            If manifestSchema Is Nothing OrElse Not String.Equals(manifestSchema, SchemaName, StringComparison.OrdinalIgnoreCase) Then
+                Throw New InvalidDataException($"无效的 {SchemaName} zip 包：manifest.schema = '{manifestSchema}'")
             End If
             If manifest.formatVersion > FormatVersion Then
                 Throw New InvalidDataException($"不支持的 {SchemaName} zip 包版本 {manifest.formatVersion}，当前最高支持 {FormatVersion}")
@@ -197,7 +197,7 @@ Public Class DBNPreprocessOutput
 
             Return result
         End Using
-    End Sub
+    End Function
 
     ' ==================== 内部实现 ====================
 
@@ -281,7 +281,7 @@ Public Class DBNPreprocessOutput
                 Return ms.ToArray()
             End Using
         End Using
-    End Sub
+    End Function
 
     Private Shared Function ReadStrings(archive As ZipArchive, entryName As String) As String()
         Dim text = ReadText(archive, entryName)
@@ -291,7 +291,7 @@ Public Class DBNPreprocessOutput
 End Class
 
 ''' <summary>zip 包清单（自描述格式，便于 Load 校验与诊断）。</summary>
-Private Class SaveManifest
+Friend Class SaveManifest
     Public Property schema As String
     Public Property formatVersion As Integer
     Public Property created As String
