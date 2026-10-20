@@ -1,6 +1,6 @@
 Imports System.IO
 Imports Erica.Analysis.SingleCell.Monocle3
-Imports SMRUCC.genomics.Analysis.BNLearn.Core
+Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 Imports std = System.Math
 
 ''' <summary>

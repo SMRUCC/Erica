@@ -4,7 +4,7 @@ Imports System.IO.Compression
 Imports System.Runtime.InteropServices
 Imports System.Text
 Imports System.Text.Json
-Imports SMRUCC.genomics.Analysis.BNLearn.Core
+Imports SMRUCC.genomics.Analysis.HTS.DataFrame
 
 ''' <summary>预处理结果。</summary>
 Public Class DBNPreprocessOutput
